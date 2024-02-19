@@ -2,7 +2,7 @@
 
 namespace App\Services\Entity;
 
-use App\Models\OrderMs;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductsCategory;
 use Carbon\Carbon;
@@ -37,10 +37,11 @@ class DashboardService
 
         $needMenuForItem = true;
 
-        $materials = Product::query()->where('type',Product::MATERIAL)->get()->sortBy('sort');
-        $products = Product::query()->where('type',Product::PRODUCTS)->get()->sortByDesc('sort');
+        $materials = Product::query()->where('type', Product::MATERIAL)->get()->sortBy('sort');
+        $products = Product::query()->where('type', Product::PRODUCTS)->get()->sortByDesc('sort');
         $entity = 'orders';
         $resColumns = [];
+
         foreach ($this->columns as $column) {
             $resColumns[$column] = trans("column." . $column);
         }
@@ -48,6 +49,7 @@ class DashboardService
         uasort($resColumns, function ($a, $b) {
             return ($a > $b);
         });
+ 
         return view('Dashboard.index',compact('entityItems', "resColumns", "needMenuForItem", "entity",'products','materials'));
     }
     /**
@@ -59,7 +61,7 @@ class DashboardService
         $selectedDate = $request->input('date');
         $orders = [];
         if( $request->filter =='concrete'){
-            $orders = OrderMs::query()->whereDate('date_plan', $selectedDate)
+            $orders = Order::query()->whereDate('date_plan', $selectedDate)
                 ->whereHas('positions',function ($query){
                     $query->whereHas('product',function ($queries){
                         $queries->where('building_material',Product::CONCRETE)->orWhereIn('building_material',[Product::BLOCK,Product::CONCRETE]);
@@ -68,7 +70,7 @@ class DashboardService
                 ->orderBy('date_plan')
                 ->get();
         }elseif($request->filter =='block'){
-            $orders = OrderMs::query()->whereDate('date_plan', $selectedDate)
+            $orders = Order::query()->whereDate('date_plan', $selectedDate)
                 ->whereHas('positions',function ($query){
                     $query->whereHas('product',function ($queries){
                         $queries->where('building_material',Product::BLOCK)->orWhereIn('building_material',[Product::BLOCK,Product::CONCRETE]);
@@ -77,7 +79,7 @@ class DashboardService
                 ->orderBy('date_plan')
                 ->get();
         }elseif($request->filter == 'index'){
-            $orders = OrderMs::query()->whereDate('date_plan', $selectedDate)
+            $orders = Order::query()->whereDate('date_plan', $selectedDate)
                 ->orderBy('date_plan')
                 ->get();
         }
@@ -91,8 +93,8 @@ class DashboardService
      */
     public function getOrderMonth($request): JsonResponse
     {
-        $arUrl = explode("/",session('_previous.url'));
-        $referer = explode("?", $arUrl[4])[0];
+        $arUrl = explode("/", session('_previous.url'));
+        $referer = explode("?", $arUrl[1])[0];
         $nextTenDaysEnd = Carbon::now()->addDays(10);
         $orders=[];
         $orders2=[];
@@ -107,18 +109,18 @@ class DashboardService
         }
            if ($referer == 'dashboard')
            {
-               $orders = OrderMs::query()
+               $orders = Order::query()
                    ->whereDate('date_plan', '>=', $this->currentDate)
                    ->whereDate('date_plan', '<=', $nextTenDaysEnd)
                    ->orderBy('date_plan')
                    ->get();
-               $orders2 = OrderMs::query()
+               $orders2 = Order::query()
                    ->whereDate('date_plan', '>=', $this->currentDate)
                    ->whereDate('date_plan', '<=', $nextTenDaysEnd)
                    ->orderBy('date_plan')
                    ->get();
            }elseif($referer == 'dashboard-2'){
-                $orders = OrderMs::query()
+                $orders = Order::query()
                        ->whereDate('date_plan', '>=', $this->currentDate)
                        ->whereDate('date_plan', '<=', $nextTenDaysEnd)
                        ->whereHas('positions',function ($query){
@@ -128,7 +130,7 @@ class DashboardService
                        })
                     ->orderBy('date_plan')
                     ->get();
-                 $orders2 = OrderMs::query()
+                 $orders2 = Order::query()
                    ->whereDate('date_plan', '>=', $this->currentDate)
                      ->whereDate('date_plan', '<=', $nextTenDaysEnd)
                       ->whereHas('positions',function ($query){
@@ -141,7 +143,7 @@ class DashboardService
              }
 
            elseif($referer == 'dashboard-3'){
-               $orders = OrderMs::query()
+               $orders = Order::query()
                    ->whereDate('date_plan', '>=', $this->currentDate)
                    ->whereDate('date_plan', '<=', $nextTenDaysEnd)
                    ->whereHas('positions',function ($query){
@@ -151,7 +153,7 @@ class DashboardService
                    })
                    ->orderBy('date_plan')
                    ->get();
-               $orders2 = OrderMs::query()
+               $orders2 = Order::query()
                    ->whereDate('date_plan', '>=', $this->currentDate)
                    ->whereDate('date_plan', '<=', $nextTenDaysEnd)
                    ->whereHas('positions',function ($query){
@@ -185,9 +187,9 @@ class DashboardService
     public function buildingsMaterialDashboard(Request $request):View
     {
         $arUrl = explode("?", $request->getRequestUri());
-        if( $arUrl[0] == '/admin/dashboard-3'){
+        if( $arUrl[0] == '/dashboard-3'){
            return $this->getConcreteOrder($request);
-        }elseif($arUrl[0] == '/admin/dashboard-2'){
+        }elseif($arUrl[0] == '/dashboard-2'){
           return  $this->getBlockOrder($request);
         }else{
             abort(404);
@@ -264,7 +266,7 @@ class DashboardService
         $entityItems = null;
         if ($building_material !== null) {
             if ($request->filter == 'now' || !isset($request->filter)) {
-                $entityItems = OrderMs::query()
+                $entityItems = Order::query()
                     ->whereDate('date_plan', $this->currentDate)
                     ->whereHas('positions', function ($query) use ($building_material) {
                         $query->whereHas('product', function ($queries) use ($building_material) {
@@ -277,7 +279,7 @@ class DashboardService
                     ->get();
                 $this->loadRelations($entityItems);
             }elseif ($request->filter == 'tomorrow'){
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan',$this->currentDate->addDay())
                     ->whereHas('positions',function ($query) use ($building_material){
                         $query->whereHas('product',function ($queries) use ($building_material){
@@ -291,7 +293,7 @@ class DashboardService
                 $this->loadRelations($entityItems);
             }
             elseif ($request->filter == 'three-day') {
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan','>=',$this->currentDate)
                     ->whereDate('date_plan','<=',$this->currentDate->addDays(3))
                     ->whereHas('positions',function ($query) use ($building_material){
@@ -306,7 +308,7 @@ class DashboardService
                 $this->loadRelations($entityItems);
             }
             elseif ($request->filter == 'week'){
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan','>=',$this->currentDate)
                     ->whereDate('date_plan','<=',$this->currentDate->addWeek())
                     ->whereHas('positions',function ($query) use ($building_material){
@@ -321,7 +323,7 @@ class DashboardService
                 $this->loadRelations($entityItems);
             }
             else{
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan',$this->currentDate)
                     ->orderBy('date_plan')
                     ->get();
@@ -331,26 +333,26 @@ class DashboardService
         }else{
             if ($request->filter == 'now' || $request->filter == 'map' || !isset($request->filter))
             {
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan',$this->currentDate)
                     ->orderBy('date_plan')
                     ->get();
                 $this->loadRelations($entityItems);
             }elseif ($request->filter == 'tomorrow'){
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan',$this->currentDate->addDay())
                     ->orderBy('date_plan')
                     ->get();
                 $this->loadRelations($entityItems);
             }elseif ($request->filter == 'three-day'){
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan','>=',$this->currentDate)
                     ->whereDate('date_plan','<=',$this->currentDate->addDays(3))
                     ->orderBy('date_plan')
                     ->get();
                 $this->loadRelations($entityItems);
             }elseif ($request->filter == 'week'){
-                $entityItems=OrderMs::query()
+                $entityItems=Order::query()
                     ->whereDate('date_plan','>=',$this->currentDate)
                     ->whereDate('date_plan','<=',$this->currentDate->addWeek())
                     ->orderBy('date_plan')
@@ -374,7 +376,7 @@ class DashboardService
      */
     public function getOrderDataForMap(): JsonResponse
     {
-        $orderDates = OrderMs::query()->whereDate('date_plan','>=',$this->currentDate)->get();
+        $orderDates = Order::query()->whereDate('date_plan','>=',$this->currentDate)->get();
         foreach ($orderDates as $date) {
             $date->load( 'delivery',);
         }
