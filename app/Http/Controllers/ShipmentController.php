@@ -155,6 +155,7 @@ class ShipmentController extends Controller
             $resColumns[$column] = trans("column." . $column);
         }
 
+        /* Фильтры для отображения */
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 if ($key == 'created_at' || $key == 'updated_at') {

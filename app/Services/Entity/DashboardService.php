@@ -4,7 +4,7 @@ namespace App\Services\Entity;
 
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\ProductsCategory;
+use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -58,6 +58,7 @@ class DashboardService
     {
         $selectedDate = $request->input('date');
         $orders = [];
+
         if ($request->filter == 'concrete') {
 
             $orders = Order::query()->whereDate('date_plan', $selectedDate)
@@ -86,6 +87,7 @@ class DashboardService
                 ->orderBy('date_plan')
                 ->get();
         }
+
         $this->loadRelations($orders);
 
         return response()->json(['entityItems' => $orders]);
@@ -111,7 +113,9 @@ class DashboardService
             $orderData[$currentDates->format('Y-m-d')] = 0;
             $currentDates->addDay();
         }
+
         if ($referer == 'dashboard') {
+
             $orders = Order::query()
                 ->whereDate('date_plan', '>=', $this->currentDate)
                 ->whereDate('date_plan', '<=', $nextTenDaysEnd)
@@ -123,6 +127,7 @@ class DashboardService
                 ->orderBy('date_plan')
                 ->get();
         } else if ($referer == 'dashboard-2') {
+
             $orders = Order::query()
                 ->whereDate('date_plan', '>=', $this->currentDate)
                 ->whereDate('date_plan', '<=', $nextTenDaysEnd)
@@ -144,6 +149,7 @@ class DashboardService
                 ->orderBy('date_plan')
                 ->get();
         } else if ($referer == 'dashboard-3') {
+
             $orders = Order::query()
                 ->whereDate('date_plan', '>=', $this->currentDate)
                 ->whereDate('date_plan', '<=', $nextTenDaysEnd)
@@ -174,6 +180,7 @@ class DashboardService
             }
             $dates[$date] += ($order->sum);
         }
+
         foreach ($orders2 as $order) {
             $date = Carbon::parse($order->date_plan)->format('Y-m-d');
             $orderData[$date]++;
@@ -206,7 +213,7 @@ class DashboardService
     {
         $entityItems = $this->filterOrder($request, Product::BLOCK);
 
-        $categories = ProductsCategory::query()->where('building_material', ProductsCategory::BLOCK)->get();
+        $categories = Category::query()->where('building_material', Category::BLOCK)->get();
         $blocksProducts = Product::query()
             ->where('type', Product::PRODUCTS)
             ->where('building_material', Product::BLOCK)->get()->sortBy('sort');

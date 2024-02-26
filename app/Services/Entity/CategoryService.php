@@ -4,16 +4,16 @@ namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
 use App\Models\Option;
-use App\Models\ProductsCategory;
+use App\Models\Category;
 use App\Services\Api\MoySkladService;
 
-class ProductsCategoryService implements EntityInterface
+class CategoryService implements EntityInterface
 {
 
     public function import(array $rows)
     {
         foreach ($rows['rows'] as $row) {
-            $entity = ProductsCategory::firstOrNew(['ms_id' => $row['id']]);
+            $entity = Category::firstOrNew(['ms_id' => $row['id']]);
 
             if ($entity->ms_id === null) {
                 $entity->ms_id = $row['id'];
@@ -27,7 +27,7 @@ class ProductsCategoryService implements EntityInterface
     }
 
     public function findActiveGroups(){
-        $guids = ProductsCategory::where('is_active', 1)
+        $guids = Category::where('is_active', 1)
             ->select("id")
             ->get();
 

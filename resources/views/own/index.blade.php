@@ -132,13 +132,13 @@
                                                 </div>
                                             @elseif ($filter['type'] == 'select')
                                                 <div class="flex flex-row gap-1 w-100">
-                                                    <div class="basis-1/4">
+                                                    <div class="basis-1/5">
                                                         <label>
                                                             {{ $filter['name_rus'] }}
                                                         </label>
                                                     </div>
-                                                    <div class="basis-3/4">
-                                                        <select class="form-control" ,
+                                                    <div class="basis-4/5">
+                                                        <select class="border border-solid border-neutral-300 rounded w-full py-2 mb-4" ,
                                                             name="filters[{{ $filter['name'] }}]" data-offset="false">
                                                             <option @if ($filter['checked_value'] == 'all') selected @endif
                                                                 value="all">Все</option>

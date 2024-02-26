@@ -30,14 +30,6 @@ class OrderController extends Controller
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
         }
 
-        // uasort($resColumns, function ($a, $b) {
-        //     return ($a > $b);
-        // });
-
-        // uasort($resColumnsAll, function ($a, $b) {
-        //     return ($a > $b);
-        // });
-
         $minCreated = Order::query()->min('created_at');
         $maxCreated = Order::query()->max('created_at');
         $minUpdated = Order::query()->min('updated_at');
@@ -150,10 +142,6 @@ class OrderController extends Controller
             ];
         }
 
-        // uasort($resColumnsAll, function ($a, $b) {
-        //     return ($a > $b);
-        // });
-
         /* Колонки для отображения */
         if (isset($request->columns)) {
             $requestColumns = $request->columns;
@@ -166,10 +154,7 @@ class OrderController extends Controller
             $resColumns[$column] = trans("column." . $column);
         }
 
-        // uasort($resColumns, function ($a, $b) {
-        //     return ($a > $b);
-        // });
-
+        /* Фильтры для отображения */
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 if ($key == 'created_at' || $key == 'updated_at') {

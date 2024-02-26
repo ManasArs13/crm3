@@ -89,11 +89,11 @@
                         Отгрузки
                     </x-nav-link>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard-3')">
+                    <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
                         Остатки
                     </x-nav-link>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard-3')">
+                    <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.*')">
                        Товары
                     </x-nav-link>
 

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipmentController;
 use App\Models\Shipment;
 use Illuminate\Support\Facades\Route;
@@ -35,10 +37,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resources([
         'order' => OrderController::class,
         'shipment' => ShipmentController::class,
+        'product' => ProductController::class,
     ]);
 
+    // Фильтры
     Route::get('/orders/filter', [OrderController::class, 'filter'])->name('order.filter');
     Route::get('/shipments/filter', [ShipmentController::class, 'filter'])->name('shipment.filter');
+    Route::get('/products/filter', [ProductController::class, 'filter'])->name('product.filter');
+
+    // Остатки
+    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
+    Route::get('/residuals/blocks_materials', [ResidualController::class, 'blocksMaterials'])->name('residual.blocksMaterials');
+    Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
+    Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
+    Route::get('/residuals/concretes_materials', [ResidualController::class, 'concretesMaterials'])->name('residual.concretesMaterials');
 
 
 

@@ -5,10 +5,12 @@ namespace App\Services\Entity;
 use App\Contracts\EntityInterface;
 use App\Models\Option;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\TechChart;
 use App\Models\TechChartMaterial;
 use App\Models\TechChartProduct;
 use App\Services\Api\MoySkladService;
+use Illuminate\Support\Arr;
 
 class ProductService implements EntityInterface
 {
@@ -34,14 +36,19 @@ class ProductService implements EntityInterface
                 $entity->is_active = 0;
             }
 
-            $quantity = 0;
-            if (isset($row["minimumBalance"]))
-                $quantity = $row["minimumBalance"];
             $entity->name = $row['name'];
-        //    $entity->category_id = \Arr::exists($row, 'productFolder') && isset($row["productFolder"]["id"]) ? $row["productFolder"]["id"] : null;
+
+            $categoryId = null;
+            if (Arr::exists($row, 'productFolder') && isset($row["productFolder"])) {
+                $category = Category::firstWhere(['ms_id' => $this->getGuidFromUrl($row["productFolder"]["meta"]["href"])]);
+                $categoryId = $category->id;
+            }
+
+            $entity->category_id = $categoryId;
             $entity->weight_kg = $row["weight"];
             $entity->count_pallets = 0;
-            $entity->min_balance = $quantity;
+            $entity->min_balance = isset($row["minimumBalance"]) ? isset($row["minimumBalance"]) : 0;
+
             if (isset($row["attributes"])) {
                 foreach ($row["attributes"] as $attr) {
                     if ($attr["id"] == $countPalletsGuid) {
@@ -81,10 +88,10 @@ class ProductService implements EntityInterface
 
             if ($product) {
                 $tech_chart_product = TechChartProduct::where('product_id', '=', $residual['assortmentId'])->first();
-                
+
                 if ($tech_chart_product) {
                     $tech_chart_materials = TechChartMaterial::where('tech_chart_id', '=', $tech_chart_product->tech_chart_id)->get();
-                    
+
                     if ($tech_chart_materials) {
 
                         if ($product->residual !== null &&  $product->residual_norm !== null) {
@@ -96,7 +103,7 @@ class ProductService implements EntityInterface
                                 foreach ($tech_chart_materials as $tech_chart_material) {
                                     $material = Product::where('id', '=', $tech_chart_material->product_id)->first();
                                     $need_material = $product_need * $tech_chart_material->quantity;
-                                    
+
                                     if ($material->residual < $need_material) {
                                         $residual_material = 'нет';
                                     }

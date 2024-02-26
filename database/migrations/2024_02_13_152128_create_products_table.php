@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer("price")->default(0);
             $table->decimal("weight_kg", 8, 1)->default(0.0);
             $table->integer("count_pallets", false, true)->default(0);
-            $table->foreignId("category_id")->nullable()->index()->constrained("products_categories");
+            $table->foreignId("category_id")->nullable()->index()->constrained("categories");
             $table->foreignId("color_id")->nullable()->index()->constrained("colors");
             $table->boolean("is_active")->default(0);
             $table->boolean("materials")->default(0);
