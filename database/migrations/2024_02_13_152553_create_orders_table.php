@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string("name",190)->nullable();
+            $table->string("name", 190)->nullable();
             $table->foreignId("status_id")->nullable()->index()->constrained("statuses");
             $table->foreignId("contact_id")->nullable()->index()->constrained("contacts");
             $table->dateTime("date_plan")->nullable();
@@ -34,10 +34,10 @@ return new class extends Migration
             $table->boolean("is_demand")->default(0);
             $table->boolean("is_made")->default(0);
             $table->boolean("status_shipped")->default(0);
-            $table->decimal("debt", 10,1)->default(0.0);
+            $table->decimal("debt", 10, 1)->default(0.0);
             $table->string("order_amo_link")->nullable();
             $table->string("order_amo_id")->nullable();
-            $table->string("comment")->nullable();
+            $table->text("comment")->nullable();
             $table->integer('delivery_price_norm')->nullable();
             $table->timestamps();
             $table->char('ms_id', 36)->nullable();

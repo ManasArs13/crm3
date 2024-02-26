@@ -81,11 +81,11 @@
                     </div>
 
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard-3')">
+                    <x-nav-link :href="route('order.index')" :active="request()->routeIs('order.*')">
                         Заказы
                     </x-nav-link>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard-3')">
+                    <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*')">
                         Отгрузки
                     </x-nav-link>
 

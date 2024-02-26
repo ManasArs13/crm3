@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\BlockController;
-use App\Http\Controllers\ConcreteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShipmentController;
+use App\Models\Shipment;
 use Illuminate\Support\Facades\Route;
 
 
@@ -29,6 +30,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/fetch-orders', [DashboardController::class, 'fetchOrders'])->name('filter.orders');
     Route::get('/month-orders', [DashboardController::class, 'getOrderMonth'])->name('month.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
+
+
+    Route::resources([
+        'order' => OrderController::class,
+        'shipment' => ShipmentController::class,
+    ]);
+
+    Route::get('/orders/filter', [OrderController::class, 'filter'])->name('order.filter');
+    Route::get('/shipments/filter', [ShipmentController::class, 'filter'])->name('shipment.filter');
 
 
 

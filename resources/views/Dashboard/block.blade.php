@@ -35,10 +35,10 @@
                     <div>
                         @if (request()->filter == 'week')
                             <a href="{{ route('dashboard-2', ['filter' => 'week']) }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white focus:bg-blue-700">Неделя</a>
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @else
                             <a href="{{ route('dashboard-2', ['filter' => 'week']) }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white focus:bg-blue-700">Неделя</a>
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @endif
                     </div>
                 </div>

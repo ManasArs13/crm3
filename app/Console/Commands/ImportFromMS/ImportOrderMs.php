@@ -4,7 +4,7 @@ namespace App\Console\Commands\ImportFromMS;
 
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
-use App\Services\Entity\OrderMsService;
+use App\Services\Entity\OrderService;
 use Illuminate\Console\Command;
 
 class ImportOrderMs extends Command
@@ -33,10 +33,10 @@ class ImportOrderMs extends Command
     /**
      * Выполнить консольную команду.
      */
-    public function handle(Option $option, MoySkladService $service, OrderMsService $orderMsService)
+    public function handle(Option $option, MoySkladService $service, OrderService $orderService)
     {
         $url = Option::where('code', '=', 'ms_orders_url')->first()?->value;
         $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $service->createUrl($url,$orderMsService,["updated"=>'>='.$date, "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
+        $service->createUrl($url, $orderService, ["updated"=>'>='.$date, "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
     }
 }

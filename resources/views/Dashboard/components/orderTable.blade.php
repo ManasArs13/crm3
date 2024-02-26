@@ -15,13 +15,13 @@
             @foreach ($entityItems as $entityItem)
                 <tr class="border-b">
                     @foreach ($resColumns as $column => $title)
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td class="break-all max-w-38 overflow-hidden px-6 py-4">
                             @if (preg_match('/_id\z/u', $column))
                                 @php
                                     $column = substr($column, 0, -3);
                                 @endphp
                                 @if ($entityItem->$column != null)
-                                    @if ($column == 'status_ms')
+                                    @if ($column == 'status')
                                         @switch($entityItem->$column->name)
                                             @case('[DN] Подтвержден')
                                                 <div id="status" style="background-color: #b5f8e3">

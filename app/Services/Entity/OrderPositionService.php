@@ -3,10 +3,10 @@
 namespace App\Services\Entity;
 
 use App\Models\Option;
-use App\Models\OrderPositionMs;
+use App\Models\OrderPosition;
 use App\Models\Product;
 
-class OrderPositionMsService
+class OrderPositionService
 {
     private $options;
 
@@ -24,7 +24,7 @@ class OrderPositionMsService
         $roundPallet=$this->options::where('code', '=', "round_number")->first()?->value;
 
         foreach ($data['rows'] as $row) {
-            $entity = OrderPositionMs::firstOrNew(['id' => $row["id"]]);
+            $entity = OrderPosition::firstOrNew(['id' => $row["id"]]);
             $product = Product::where('id','=',$row["assortment"]["id"])->first();
 
             if ($product!=null) {
@@ -93,6 +93,6 @@ class OrderPositionMsService
 
     public function deleteDeletedPositionsFromMS($order, $guids)
     {
-        OrderPositionMs::where("order_ms_id", $order)->whereNotIn('id', $guids)->delete();
+        OrderPosition::where("order_ms_id", $order)->whereNotIn('id', $guids)->delete();
     }
 }
