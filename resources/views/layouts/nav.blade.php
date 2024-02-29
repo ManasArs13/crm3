@@ -97,7 +97,7 @@
                        Товары
                     </x-nav-link>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard-3')">
+                    <x-nav-link :href="route('supplies.index')" :active="request()->routeIs('supplies.*')">
                         Приёмки
                      </x-nav-link>
 

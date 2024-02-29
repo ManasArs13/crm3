@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipmentController;
+use App\Http\Controllers\SupplyController;
 use App\Models\Shipment;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
     Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
     Route::get('/residuals/concretes_materials', [ResidualController::class, 'concretesMaterials'])->name('residual.concretesMaterials');
+
+
+    // Приёмки
+    Route::resource('supplies', SupplyController::class)->only([
+        'index', 'show'
+    ]);
+    Route::get('/supply/products', [SupplyController::class, 'products'])->name('supplies.products');
 
 
 
