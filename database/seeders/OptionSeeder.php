@@ -148,7 +148,7 @@ class OptionSeeder extends Seeder
             [
                 'name' => 'Категория ТС: Адрес, с которого будем забирать справочник "Категория ТС"',
                 'code' => 'ms_vehicle_type_url',
-                'value' => 'https://online.moysklad.ru/api/remap/1.2/entity/customentity/86e0e802-8d7e-11ec-0a80-05e6002ff525/',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/86e0e802-8d7e-11ec-0a80-05e6002ff525/',
                 'module' => 'ms'
             ],
             [

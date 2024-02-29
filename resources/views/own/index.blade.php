@@ -138,8 +138,10 @@
                                                         </label>
                                                     </div>
                                                     <div class="basis-4/5">
-                                                        <select class="border border-solid border-neutral-300 rounded w-full py-2 mb-4" ,
-                                                            name="filters[{{ $filter['name'] }}]" data-offset="false">
+                                                        <select
+                                                            class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                            , name="filters[{{ $filter['name'] }}]"
+                                                            data-offset="false">
                                                             <option @if ($filter['checked_value'] == 'all') selected @endif
                                                                 value="all">Все</option>
                                                             @foreach ($filter['values'] as $value)
@@ -218,61 +220,56 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-32 overflow-hidden px-6 py-4" @if($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4" @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
-                                            @php
-                                                $column = substr($column, 0, -3);
-                                            @endphp
-                                            @if ($column == 'status_ms')
-                                                @switch($entityItem->$column->name)
-                                                    @case('[DN] Подтвержден')
-                                                        <div id="status" class="border border-green-500 bg-green-400">
-                                                            <span>{{ $entityItem->$column->name }}</span>
-                                                        </div>
-                                                    @break
+                                            {{ $entityItem->$column }}
+                                        @elseif($column == 'status')
+                                            @switch($entityItem->$column->name)
+                                                @case('[DN] Подтвержден')
+                                                    <div id="status" class="border border-green-500 bg-green-400">
+                                                        <span>{{ $entityItem->$column->name }}</span>
+                                                    </div>
+                                                @break
 
-                                                    @case('На брони')
-                                                        <div id="status" class="border border-purple-500 bg-purple-400">
-                                                            <span>{{ $entityItem->$column->name }}</span>
-                                                        </div>
-                                                    @break
+                                                @case('На брони')
+                                                    <div id="status" class="border border-purple-500 bg-purple-400">
+                                                        <span>{{ $entityItem->$column->name }}</span>
+                                                    </div>
+                                                @break
 
-                                                    @case('[C] Отменен')
-                                                        <div id="status" class="border border-red-500 bg-red-400">
-                                                            <span>{{ $entityItem->$column->name }}</span>
-                                                        </div>
-                                                    @break
+                                                @case('[C] Отменен')
+                                                    <div id="status" class="border border-red-500 bg-red-400">
+                                                        <span>{{ $entityItem->$column->name }}</span>
+                                                    </div>
+                                                @break
 
-                                                    @case('Думают')
-                                                        <div id="status" class="border border-blue-500 bg-blue-400">
-                                                            <span>{{ $entityItem->$column->name }}</span>
-                                                        </div>
-                                                    @break
+                                                @case('Думают')
+                                                    <div id="status" class="border border-blue-500 bg-blue-400">
+                                                        <span>{{ $entityItem->$column->name }}</span>
+                                                    </div>
+                                                @break
 
-                                                    @case('[DD] Отгружен с долгом')
-                                                        <div id="status" class="border border-orange-500 bg-orange-400">
-                                                            <span>{{ $entityItem->$column->name }}</span>
-                                                        </div>
-                                                    @break
+                                                @case('[DD] Отгружен с долгом')
+                                                    <div id="status" class="border border-orange-500 bg-orange-400">
+                                                        <span>{{ $entityItem->$column->name }}</span>
+                                                    </div>
+                                                @break
 
-                                                    @case('[DF] Отгружен и закрыт')
-                                                        <div id="status" class="border border-green-500 bg-green-400">
-                                                            <span>{{ $entityItem->$column->name }}</span>
-                                                        </div>
-                                                    @break
+                                                @case('[DF] Отгружен и закрыт')
+                                                    <div id="status" class="border border-green-500 bg-green-400">
+                                                        <span>{{ $entityItem->$column->name }}</span>
+                                                    </div>
+                                                @break
 
-                                                    @case('[N] Новый')
-                                                        <div id="status" class="border border-yellow-500 bg-yellow-400">
-                                                            <span>{{ $entityItem->$column->name }}</span>
-                                                        </div>
-                                                    @break
+                                                @case('[N] Новый')
+                                                    <div id="status" class="border border-yellow-500 bg-yellow-400">
+                                                        <span>{{ $entityItem->$column->name }}</span>
+                                                    </div>
+                                                @break
 
-                                                    @default
-                                                        {{ $entityItem->$column->name }}
-                                                @endswitch
-                                            @elseif($entityItem->$column != null)
-                                                {{ $entityItem->$column->name }}
-                                            @endif
+                                                @default
+                                                    {{ $entityItem->$column->name }}
+                                            @endswitch
                                         @elseif($column == 'remainder')
                                             @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
                                                 {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
@@ -320,7 +317,9 @@
                                                 class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="bg-red-400 rounded-r font-semibold hover:bg-red-500 hover:text-white border-red-500" style="padding: 0.4rem;"
+                                                <button type="submit"
+                                                    class="bg-red-400 rounded-r font-semibold hover:bg-red-500 hover:text-white border-red-500"
+                                                    style="padding: 0.4rem;"
                                                     href="{{ route($urlDelete, $entityItem->id) }}">
                                                     {{ __('label.delete') }}
                                                 </button>

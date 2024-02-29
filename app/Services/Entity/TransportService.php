@@ -3,9 +3,8 @@
 namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
-use App\Models\Option;
 use App\Models\Transport;
-use App\Services\Api\MoySkladService;
+use Illuminate\Support\Arr;
 
 class TransportService implements EntityInterface
 {
@@ -13,14 +12,14 @@ class TransportService implements EntityInterface
     public function import(array $rows)
     {
         foreach ($rows['rows'] as $row) {
-            $entity = Transport::firstOrNew(['id' => $row['id']]);
+            $entity = Transport::firstOrNew(['ms_id' => $row['id']]);
 
-            if ($entity->id === null) {
-                $entity->id = $row['id'];
+            if ($entity->ms_id === null) {
+                $entity->ms_id = $row['id'];
             }
 
             $entity->name = $row['name'];
-            $entity->description = \Arr::exists($row, 'description') ? $row['description'] : "";
+            $entity->description = Arr::exists($row, 'description') ? $row['description'] : "";
 
             $entity->save();
         }

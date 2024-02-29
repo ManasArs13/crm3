@@ -141,6 +141,7 @@ class ProductController extends Controller
         $entityItem = Product::find($id);
         $columns = Schema::getColumnListing('products');
         $entity = 'products';
+
         if ($entityItem->type == Product::MATERIAL) {
             $entity = 'materials';
         }
@@ -172,6 +173,7 @@ class ProductController extends Controller
         if ($entityItem->type == Product::MATERIAL) {
             $action = '/admin/product?type=materials';
         }
+        
         return redirect()->to($action);
     }
 
@@ -228,7 +230,6 @@ class ProductController extends Controller
             foreach ($request->filters as $key => $value) {
                 if ($key == 'category_id') {
                     if ($value !== 'all') {
-                        //    dump($value);
                         $entityItems
                             ->where('type', $request->type == 'materials' ? Product::MATERIAL : Product::PRODUCTS)
                             ->where($key, $value);
@@ -242,7 +243,6 @@ class ProductController extends Controller
                         ->where('type', $request->type == 'materials' ? Product::MATERIAL : Product::PRODUCTS)
                         ->where($key, '>=', $value['min'] . ' 00:00:00')
                         ->where($key, '<=', $value['max'] . ' 23:59:59');
-                    //  dump($value);
                 } else if ($key == 'weight_kg' || $key == 'price') {
                     $entityItems
                         ->where('type', $request->type == 'materials' ? Product::MATERIAL : Product::PRODUCTS)

@@ -7,7 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SupplyController;
-use App\Models\Shipment;
+use App\Http\Controllers\TransportController;
+use App\Http\Controllers\TransportTypeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -39,12 +40,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'order' => OrderController::class,
         'shipment' => ShipmentController::class,
         'product' => ProductController::class,
+        'transport' => TransportController::class,
+        'transportType' => TransportTypeController::class,
     ]);
 
     // Фильтры
     Route::get('/orders/filter', [OrderController::class, 'filter'])->name('order.filter');
     Route::get('/shipments/filter', [ShipmentController::class, 'filter'])->name('shipment.filter');
     Route::get('/products/filter', [ProductController::class, 'filter'])->name('product.filter');
+    Route::get('/transports/filter', [TransportController::class, 'filter'])->name('transport.filter');
+    Route::get('/transportTypes/filter', [TransportTypeController::class, 'filter'])->name('transportType.filter');
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
