@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContactAmoController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -42,6 +44,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'product' => ProductController::class,
         'transport' => TransportController::class,
         'transportType' => TransportTypeController::class,
+        'contactAmo' => ContactAmoController::class,
+        'contact' => ContactController::class,
     ]);
 
     // Фильтры
@@ -50,6 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/products/filter', [ProductController::class, 'filter'])->name('product.filter');
     Route::get('/transports/filter', [TransportController::class, 'filter'])->name('transport.filter');
     Route::get('/transportTypes/filter', [TransportTypeController::class, 'filter'])->name('transportType.filter');
+    Route::get('/contactAmos/filter', [ContactAmoController::class, 'filter'])->name('contactAmo.filter');
+    Route::get('/contacts/filter', [ContactController::class, 'filter'])->name('contact.filter');
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');

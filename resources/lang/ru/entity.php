@@ -15,7 +15,7 @@ return [
     "walls"=>"Высоты стенки",
     "options"=>"Опции",
     "contact_amos"=>"Контакты Амо",
-    "contact_ms"=>"Контакты МС",
+    "contacts"=>"Контакты",
     "order_amos"=>"Заказы Амо",
     "orders"=>"Заказы",
     "order"=> "Заказ",

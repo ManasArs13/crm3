@@ -14,7 +14,7 @@ class ContactAmo extends Model
         'id'
     ];
 
-    public function contactMs(): HasOneThrough
+    public function contact(): HasOneThrough
     {
         return $this->hasOneThrough(ContactAmo::class, ContactAmoContact::class, 'contact_amo_id', 'id', 'id', 'contact_id');
     }
