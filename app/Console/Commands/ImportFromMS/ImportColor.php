@@ -37,7 +37,6 @@ class ImportColor extends Command
     public function handle(Option $option, MoySkladService $service, ColorService $colorService)
     {
         $url = Option::where('code', '=', 'ms_color_url')->first()?->value;
-        $service = $service;
         $service->createUrl($url,$colorService);
     }
 }

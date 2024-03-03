@@ -14,14 +14,14 @@ class TechProcess extends Model
     public function products()
     {
         return 
-            $this->belongsToMany(Product::class, 'tech_process_products', 'tech_process_id', 'product_id')
+            $this->belongsToMany(Product::class, 'tech_process_products', 'processing_id', 'product_id')
                  ->withPivot('id', 'quantity');
     }
 
     public function materials()
     {
         return 
-            $this->belongsToMany(Product::class, 'tech_process_materials', 'tech_process_id', 'product_id')
+            $this->belongsToMany(Product::class, 'tech_process_materials', 'processing_id', 'product_id')
                  ->withPivot('id', 'quantity', 'quantity_norm');
     }
 

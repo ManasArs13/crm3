@@ -5,6 +5,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Production\ProcessingController;
+use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipmentController;
@@ -71,7 +73,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
     Route::get('/supply/products', [SupplyController::class, 'products'])->name('supplies.products');
 
+    // Техкарты
+    Route::resource('techcharts', TechChartController::class)->only([
+        'index', 'show'
+    ]);
+    Route::get('/techchart/products', [TechChartController::class, 'products'])->name('techcharts.products');
+    Route::get('/techchart/materials', [TechChartController::class, 'materials'])->name('techcharts.materials');
 
+    // Техоперации
+    Route::resource('processings', ProcessingController::class)->only([
+        'index', 'show'
+    ]);
+    Route::get('/processing/products', [ProcessingController::class, 'products'])->name('processings.products');
+    Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
 
 
 });

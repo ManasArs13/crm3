@@ -7,6 +7,7 @@ use App\Models\Option;
 use App\Services\Entity\ColorService;
 use App\Services\Api\MoySkladService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class ImportAll extends Command
 {
@@ -36,8 +37,6 @@ class ImportAll extends Command
      */
     public function handle(Option $option, MoySkladService $service, ColorService $colorService)
     {
-        $url = Option::where('code', '=', 'ms_color_url')->first()?->value;
-        $service = $service;
-        $service->createUrl($url,$colorService);
+        Artisan::call('ms:import-color');
     }
 }

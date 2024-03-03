@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('colors', function (Blueprint $table) {
@@ -16,12 +13,10 @@ return new class extends Migration
             $table->string("name", 190);
             $table->string("hex", 6)->default(000000);
             $table->timestamps();
+            $table->char('ms_id', 36)->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('colors');

@@ -10,10 +10,10 @@ class ColorService implements EntityInterface
     public function import(array $rows)
     {
         foreach ($rows['rows'] as $row) {
-            $entity = Color::firstOrNew(['id' => $row['id']]);
+            $entity = Color::firstOrNew(['ms_id' => $row['id']]);
 
-            if ($entity->id === null) {
-                $entity->id = $row['id'];
+            if ($entity->ms_id === null) {
+                $entity->ms_id = $row['id'];
                 $entity->hex = 000000;
             }
 

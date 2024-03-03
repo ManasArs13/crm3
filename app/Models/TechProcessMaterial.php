@@ -13,7 +13,7 @@ class TechProcessMaterial extends Model
 
     public function processing()
     {
-        return $this->belongsTo(TechProcess::class, 'tech_process_id');
+        return $this->belongsTo(TechProcess::class, 'processing_id');
     }
 
     public function product()
