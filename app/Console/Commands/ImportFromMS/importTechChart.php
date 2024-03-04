@@ -13,7 +13,7 @@ class ImportTechChart extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-tech-chart';
+    protected $signature = 'ms:import-techchart';
 
     /**
      * Описание консольной команды.

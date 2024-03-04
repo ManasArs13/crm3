@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\ImportFromMS;
 
-use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\ProcessingService;
 use Illuminate\Console\Command;
