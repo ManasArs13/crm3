@@ -13,11 +13,6 @@ class Shipment extends Model
     public const NOT_PAID = 'Не оплачен';
     public const APPOINTED = 'Назначен';
 
-    protected $fillable =[
-        'id',
-        'order_id',
-
-    ];
     protected $guarded = false;
 
     /**
@@ -26,5 +21,10 @@ class Shipment extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(ShipmentProduct::class, 'id', 'shipment_id');
     }
 }

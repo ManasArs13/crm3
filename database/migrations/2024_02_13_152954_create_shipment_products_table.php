@@ -27,6 +27,7 @@ return new class extends Migration
                 Shipment::NOT_PAID,
                 Shipment::PAID
             ])->nullable();
+            $table->foreignId("shipment_id")->nullable()->index()->constrained("shipments");
             $table->foreignId("delivery_id")->nullable()->index()->constrained("deliveries");
             $table->integer('delivery_price')->nullable();
             $table->integer('delivery_price_norm')->nullable();

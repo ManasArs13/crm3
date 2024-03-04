@@ -27,7 +27,7 @@ class ImportDemand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(DemandServices $demandServices,  MoySkladService $service)
+    public function handle(DemandServices $demandServices, MoySkladService $service)
     {
         $url = Option::query()->where('code', '=', 'ms_url_demand')->first()?->value;
       //  $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;

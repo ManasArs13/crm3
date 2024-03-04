@@ -436,7 +436,7 @@ class OptionSeeder extends Seeder
             [
                 'name' => 'отгрузки',
                 'code' => 'ms_url_demand',
-                'value' => 'https://online.moysklad.ru/api/remap/1.2/entity/demand/',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/demand/',
                 'module' => 'ms'
             ],
             [
@@ -448,7 +448,7 @@ class OptionSeeder extends Seeder
             [
                 'name' => 'Запрос на получение текущих остатков по складам с указанием типа остатка.',
                 'code' => 'product_residual_url',
-                'value' => 'https://online.moysklad.ru/api/remap/1.2/report/stock/bystore/current?filter=assortmentId=',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/report/stock/bystore/current?filter=assortmentId=',
                 'module' => 'ms'
             ],
 

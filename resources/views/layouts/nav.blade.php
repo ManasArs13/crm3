@@ -187,13 +187,10 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('contact.index')">
-                                    Контакты
+                                <x-dropdown-link :href="route('delivery.index')">
+                                   Доставка
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('contactAmo.index')">
-                                    Контакты АМО
-                                </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>

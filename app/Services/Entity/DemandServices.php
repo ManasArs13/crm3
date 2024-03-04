@@ -4,18 +4,19 @@ namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
 use App\Models\Delivery;
-use App\Models\OrderMs;
 use App\Models\Option;
 use App\Models\Product;
 use App\Models\Shipments;
-use App\Models\ShipmentsProducts;
 use App\Models\ShippingPrice;
-use App\Models\VehicleType;
 use App\Services\Api\MoySkladService;
 use Illuminate\Support\Arr;
 use App\Helpers\Math;
 use App\Models\Order;
 use App\Models\Shipment;
+use App\Models\ShipmentProduct;
+use App\Models\Transport;
+use App\Models\TransportType;
+use Illuminate\Support\Facades\DB;
 
 class DemandServices implements EntityInterface
 {
@@ -45,10 +46,12 @@ class DemandServices implements EntityInterface
             $urlService = 'https://api.moysklad.ru/app/#demand/edit?id=';
 
             $entity = Shipment::query()->firstOrNew(['ms_id' => $row["id"]]);
+            
             if (Arr::exists($row, 'deleted')) {
                 if ($entity->ms_id === null) {
                     $entity->delete();
                 }
+
             } else {
 
                 $delivery = null;
@@ -59,11 +62,14 @@ class DemandServices implements EntityInterface
                 $shipmentWeight = 0.0;
 
                 $orderId = isset($row['customerOrder']) ? $this->getGuidFromUrl($row['customerOrder']['meta']['href']) : null;
-                $entity->id = $row['id'];
+                $entity->ms_id = $row['id'];
                 $entity->name = $row['name'];
                 $entity->description = !empty($row['description']) ? $row['description'] : null;
                 $entity->shipment_address = $row['shipmentAddress'] ?? null;
-                $entity->order_id = Order::query()->where('ms_id', $orderId)->exists() ? Order::query()->where('ms_id', $orderId)->first()->id() : null;
+
+                $order_db = Order::query()->where('ms_id', $orderId)->first();
+                $entity->order_id = $order_db ? $order_db->id : null;
+                
                 $entity->counterparty_link = $row['agent']['meta']['uuidHref'];
                 $entity->service_link = $urlService . $row['id'];
                 $entity->paid_sum = $row['payedSum'] / 100;
@@ -95,32 +101,38 @@ class DemandServices implements EntityInterface
                     }
                 }
 
-                $entity->transport_id=$transport;
-                $entity->delivery_id=$delivery;
-                $entity->vehicle_type_id=$vehicleType;
+                $transport_bd = Transport::where('ms_id', $transport)->first();
+                $entity->transport_id = $transport_bd ? $transport_bd->id : null;
+
+                $delivery_bd = Delivery::where('ms_id', $delivery)->first();
+                $entity->delivery_id = $delivery_bd ? $delivery_bd->id : null;
+
+                $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
+                $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
+
                 $entity->delivery_price=$deliveryPrice;
                 $entity->delivery_fee=$deliveryFee;
                 $entity->weight = $shipmentWeight;
-                $entity->save();
+              //  $entity->save();
 
                 foreach ($products as $product) {
                     $productData = null;
                     if (isset($product['assortment']['meta']['href'])) {
                         $productData = $this->service->actionGetRowsFromJson($product['assortment']['meta']['href'], false);
                     }
-                    $product_db = Product::query()->where('id', $productData['id'])->first();
-                    
+                    $product_db = Product::query()->where('ms_id', $productData['id'])->first();
+
                     if ($product_db) {
-                        ShipmentsProducts::query()->updateOrCreate(
-                            ['shipment_id' => $row['id']],
+                        DB::table('shipment_products')->updateOrInsert(
+                            ['shipment_id' => $entity->id],
                             [
-                                'shipment_id' => $row['id'],
+                                'shipment_id' => $entity->id,
                                 'quantity' => $product['quantity'],
-                                'product_id' => $productData['id'],
+                                'product_id' => $product_db->id,
                             ]
                         );
 
-                        $shipmentWeight += $product["quantity"] * Product::query()->where('id', $productData['id'])->first()->weight_kg;
+                        $shipmentWeight += $product["quantity"] * Product::query()->where('ms_id', $productData['id'])->first()->weight_kg;
 
                     }
                 }
@@ -143,12 +155,12 @@ class DemandServices implements EntityInterface
 
     public function calcOfDeliveryPriceNorm()
     {
-        $shipments = Shipments::get();
+        $shipments = Shipment::get();
 
         foreach ($shipments as $shipment) {
             $delivery = Delivery::where('id', $shipment->delivery_id)->First();
             $weight_kg = $shipment->weight;
-            $vehicleType = VehicleType::where('id', $shipment->vehicle_type_id)->First();
+            $vehicleType = TransportType::where('id', $shipment->vehicle_type_id)->First();
 
             if ($vehicleType && $weight_kg !== '0.0' && $weight_kg && $delivery) {
 

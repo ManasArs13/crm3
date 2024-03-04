@@ -41,13 +41,16 @@ class ImportAll extends Command
         Artisan::call('ms:import-status');
         Artisan::call('ms:import-transport-type');
         Artisan::call('ms:import-transport');
-        Artisan::call('ms:import-categories {--date=null}');
+
         Artisan::command('ms:import-categories {--date=null}', function () {
             $this->info("ms:import-categories {--date=not}!");
         });
+
         Artisan::call('ms:import-delivery');
+        Artisan::call('ms:import-demand');
+
         Artisan::command('ms:import-contact {--date=null}', function () {
-            $this->info("ms:import-categories {--date=not}!");
+            $this->info("ms:import-contact {--date=not}!");
         });
     }
 }

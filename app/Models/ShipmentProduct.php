@@ -9,11 +9,7 @@ class ShipmentProduct extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
-        'shipment_id',
-        'quantity',
-        'product_id',
-    ];
+    protected $guarded = false;
 
     /**
      * @return BelongsTo
