@@ -5,7 +5,6 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\DeliveryService;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportDelivery extends Command

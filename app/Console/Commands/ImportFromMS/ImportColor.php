@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\ImportFromMS;
 
-use App\Models\Color;
 use App\Models\Option;
 use App\Services\Entity\ColorService;
 use App\Services\Api\MoySkladService;

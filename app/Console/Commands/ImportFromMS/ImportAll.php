@@ -2,10 +2,6 @@
 
 namespace App\Console\Commands\ImportFromMS;
 
-use App\Models\Color;
-use App\Models\Option;
-use App\Services\Entity\ColorService;
-use App\Services\Api\MoySkladService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
@@ -39,18 +35,34 @@ class ImportAll extends Command
     {
         Artisan::call('ms:import-color');
         Artisan::call('ms:import-status');
+        
         Artisan::call('ms:import-transport-type');
         Artisan::call('ms:import-transport');
 
         Artisan::command('ms:import-categories {--date=null}', function () {
             $this->info("ms:import-categories {--date=not}!");
         });
+        Artisan::command('ms:import-products {--date=null}', function () {
+            $this->info("ms:import-products {--date=not}!");
+        });
 
         Artisan::call('ms:import-delivery');
-        Artisan::call('ms:import-demand');
 
         Artisan::command('ms:import-contact {--date=null}', function () {
             $this->info("ms:import-contact {--date=not}!");
         });
+        
+        Artisan::call('ms:import-order');
+        Artisan::call('ms:import-demand');
+
+        Artisan::command('ms:import-supply {--date=null}', function () {
+            $this->info("ms:import-supply {--date=not}!");
+        });
+
+        Artisan::call('ms:import-residual');
+
+        Artisan::call('ms:import-tech-chart');
+        Artisan::call('ms:import-processing');
+        
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("name",190);
             $table->string("phone", 56)->nullable();
             $table->string("phone_norm", 56)->nullable();
-            $table->string("email", 100)->nullable();
+            $table->text("email")->nullable();
             $table->string("contact_amo_id")->nullable();
             $table->string("contact_amo_link")->nullable();
             $table->decimal("balance",10,1)->default(0.0)->nullable();

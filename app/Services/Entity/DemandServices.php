@@ -6,17 +6,15 @@ use App\Contracts\EntityInterface;
 use App\Models\Delivery;
 use App\Models\Option;
 use App\Models\Product;
-use App\Models\Shipments;
-use App\Models\ShippingPrice;
 use App\Services\Api\MoySkladService;
 use Illuminate\Support\Arr;
 use App\Helpers\Math;
 use App\Models\Order;
+use App\Models\ShipingPrice;
 use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Transport;
 use App\Models\TransportType;
-use Illuminate\Support\Facades\DB;
 
 class DemandServices implements EntityInterface
 {
@@ -113,7 +111,7 @@ class DemandServices implements EntityInterface
                 $entity->delivery_price=$deliveryPrice;
                 $entity->delivery_fee=$deliveryFee;
                 $entity->weight = $shipmentWeight;
-              //  $entity->save();
+                $entity->save();
 
                 foreach ($products as $product) {
                     $productData = null;
@@ -123,14 +121,19 @@ class DemandServices implements EntityInterface
                     $product_db = Product::query()->where('ms_id', $productData['id'])->first();
 
                     if ($product_db) {
-                        DB::table('shipment_products')->updateOrInsert(
-                            ['shipment_id' => $entity->id],
-                            [
-                                'shipment_id' => $entity->id,
-                                'quantity' => $product['quantity'],
-                                'product_id' => $product_db->id,
-                            ]
-                        );
+                        $shipment_product = ShipmentProduct::where('shipment_id', $entity->id)->first();
+                        
+                        if($shipment_product) {
+
+                            $shipment_product->quantity = $product['quantity'];
+                            $shipment_product->product_id = $product_db->id;
+                            $shipment_product->save();
+
+                        } else {
+                            ShipmentProduct::create([
+                                'shipment_id' => $entity->id
+                            ]);
+                        }
 
                         $shipmentWeight += $product["quantity"] * Product::query()->where('ms_id', $productData['id'])->first()->weight_kg;
 
@@ -216,19 +219,19 @@ class DemandServices implements EntityInterface
                 
                 $weightNew = ceil($shipment->weight * 0.001);
 
-                $shipingPrice = ShippingPrice::where('vehicle_type_id', $vehicleType->id)
+                $shipingPrice = ShipingPrice::where('vehicle_type_id', $vehicleType->id)
                     ->where('distance', $distanceNew)
                     ->where('tonnage', $weightNew)
                     ->first();
 
                 if ($shipingPrice == null) {
-                    $shipingPrice = ShippingPrice::where('vehicle_type_id', $vehicleType->id)
+                    $shipingPrice = ShipingPrice::where('vehicle_type_id', $vehicleType->id)
                         ->where('distance', $distanceNew)
                         ->where('tonnage', 1.0)
                         ->first();
  
                     if ($shipingPrice) {
-                        $shipmentUpdate = Shipments::where('id', $shipment->id)->First();
+                        $shipmentUpdate = Shipment::where('id', $shipment->id)->First();
                         $shipmentUpdate->delivery_price_norm = $shipingPrice->price;
                         $shipmentUpdate->update();
                     }
@@ -236,7 +239,7 @@ class DemandServices implements EntityInterface
                 } else {
 
                     if ($shipingPrice) {
-                        $shipmentUpdate = Shipments::where('id', $shipment->id)->First();
+                        $shipmentUpdate = Shipment::where('id', $shipment->id)->First();
                         $shipmentUpdate->delivery_price_norm = $shipingPrice->price * $weightNew;
                         $shipmentUpdate->update();
                     }

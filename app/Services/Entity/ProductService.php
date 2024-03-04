@@ -6,7 +6,6 @@ use App\Contracts\EntityInterface;
 use App\Models\Option;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\TechChart;
 use App\Models\TechChartMaterial;
 use App\Models\TechChartProduct;
 use App\Services\Api\MoySkladService;
@@ -84,10 +83,10 @@ class ProductService implements EntityInterface
         foreach ($residuals as $residual) {
 
             $residual_material = 'не указано';
-            $product = Product::where('id', '=', $residual['assortmentId'])->first();
+            $product = Product::where('ms_id', '=', $residual['assortmentId'])->first();
 
             if ($product) {
-                $tech_chart_product = TechChartProduct::where('product_id', '=', $residual['assortmentId'])->first();
+                $tech_chart_product = TechChartProduct::where('product_id', '=', $product->id)->first();
 
                 if ($tech_chart_product) {
                     $tech_chart_materials = TechChartMaterial::where('tech_chart_id', '=', $tech_chart_product->tech_chart_id)->get();

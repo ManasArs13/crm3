@@ -2,26 +2,24 @@
 
 namespace App\Console\Commands\ImportFromMS;
 
-use App\Models\VehicleType;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
-use App\Services\Entity\TransportTypeService;
-use App\Services\Entity\VehicleTypeService;
+use App\Services\Entity\ProcessingService;
 use Illuminate\Console\Command;
 
-class ImportTransportType extends Command
+class ImportProcessing extends Command
 {
     /**
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-transport-type';
+    protected $signature = 'ms:import-processing';
 
     /**
      * Описание консольной команды.
      * @var string
      */
-    protected $description = 'Import transport type from ms';
+    protected $description = 'Import processing from ms';
 
     /**
      * Создать новый экземпляр команды.
@@ -35,9 +33,10 @@ class ImportTransportType extends Command
     /**
      * Выполнить консольную команду.
      */
-    public function handle( MoySkladService $service, TransportTypeService $transportTypeService)
+    public function handle(MoySkladService $service, ProcessingService $processingService)
     {
-        $url = Option::where('code', '=', 'ms_vehicle_type_url')->first()?->value;
-        $service->createUrl($url, $transportTypeService);
+        $url = 'https://api.moysklad.ru/api/remap/1.2/entity/processing';
+      //  $date = Option::query()->where('code', 'ms_date_begin_change')->first()?->value;
+        $service->createUrl($url, $processingService);
     }
 }

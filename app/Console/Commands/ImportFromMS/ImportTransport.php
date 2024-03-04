@@ -34,7 +34,7 @@ class ImportTransport extends Command
     /**
      * Выполнить консольную команду.
      */
-    public function handle(Option $option, MoySkladService $service, TransportService $transportService)
+    public function handle(MoySkladService $service, TransportService $transportService)
     {
         $url = Option::where('code', '=', 'ms_transport_url')->first()?->value;
        // $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
