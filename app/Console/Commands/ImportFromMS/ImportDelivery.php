@@ -37,7 +37,7 @@ class ImportDelivery extends Command
     public function handle(Option $option, MoySkladService $service, DeliveryService $deliveryService): void
     {
         $url = Option::query()->where('code', '=', 'ms_delivery_url')->first()?->value;
-        $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $service->createUrl($url,$deliveryService,["updated"=>'>='.$date],'');
+   //     $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $service->createUrl($url,$deliveryService, [], '');
     }
 }

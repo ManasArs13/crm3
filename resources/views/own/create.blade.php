@@ -27,13 +27,7 @@
                                     <div class="flex basis-2/3">
                                         <input type="text" class="rounded w-full bg-gray-300" disabled>
                                     </div>
-    {{--                                    @php--}}
-    {{--                                        $column=substr($column, 0, -3)--}}
-    {{--                                    @endphp--}}
-    {{--                                    @if ($entityItem->$column!=null)--}}
-    {{--                                        {{$entityItem->$column->name}}--}}
-    {{--                                    @endif--}}
-                                    @else
+                                      @else
                                         <div class="flex basis-2/3">
                                             <input type="text" class="rounded w-full" id="input_{{$column}}" name="{{$column}}" placeholder="{{__("column.".$column)}}">
                                         </div>

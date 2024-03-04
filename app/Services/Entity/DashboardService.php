@@ -16,13 +16,14 @@ class DashboardService
 
     private Carbon $currentDate;
     protected array $columns;
+    
     public function __construct()
     {
         $this->currentDate =  Carbon::now()->setTime(0, 0);
         $this->columns = [
-            'contact_ms_id', 'shipped_sum', 'transport_id',
+            'contact_id', 'shipped_sum', 'transport_id',
             'sum', 'delivery_id', 'weight', 'date_plan',
-            'status_ms_id', 'payed_sum',  'comment'
+            'status_id', 'payed_sum',  'comment'
         ];
     }
 

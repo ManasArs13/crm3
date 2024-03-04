@@ -3,9 +3,14 @@
 namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
+use App\Models\Contact;
+use App\Models\Delivery;
 use App\Models\Option;
 use App\Models\Order;
 use App\Models\ShipingPrice;
+use App\Models\Status;
+use App\Models\Transport;
+use App\Models\TransportType;
 use App\Services\Api\MoySkladService;
 use Carbon\Carbon;
 use DateTime;
@@ -52,6 +57,7 @@ class OrderService implements EntityInterface
                 if ($entity->ms_id === null) {
                     $entity->ms_id = $row['id'];
                 }
+
                 $datePlan = isset($row["deliveryPlannedMoment"]) ? new DateTime($row["deliveryPlannedMoment"]) : null;
                 $dateCreated = isset($row["moment"]) ? new DateTime($row["moment"]) : null;
                 $delivery = null;
@@ -64,8 +70,13 @@ class OrderService implements EntityInterface
                 $comment = null;
 
                 $entity->name = $row["name"];
-              //  $entity->contact_ms_id = $row["agent"]["id"];
-              //  $entity->status_ms_id = $row["state"]["id"];
+
+                $contact_bd = Contact::where('ms_id', $row["agent"]["id"])->first();
+                $entity->contact_id = $contact_bd ? $contact_bd->id : null;
+
+                $status_bd = Status::where('ms_id', $row["state"]["id"])->first();
+                $entity->status_id = $status_bd->id;
+
                 $entity->date_plan = $datePlan;
                 $entity->date_moment = $dateCreated;
                 $entity->sum = $row["sum"] / 100;
@@ -102,15 +113,22 @@ class OrderService implements EntityInterface
                     }
                 }
 
-             //   $entity->transport_id = $transport;
-            //    $entity->delivery_id = $delivery;
-            //    $entity->vehicle_type_id = $vehicleType;
+                $transport_bd = Transport::where('ms_id', $transport)->first();
+                $entity->transport_id = $transport_bd ? $transport_bd->id : null;
+
+                $delivery_bd = Delivery::where('ms_id', $delivery)->first();
+                $entity->delivery_id = $delivery_bd ? $delivery_bd->id : null;
+
+                $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
+                $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
+
                 $entity->delivery_price = $deliveryPrice;
                 $entity->is_made = $isMade;
                 $entity->is_demand = 0;
-            //    $entity->order_amo_link = $amoOrderLink;
-            //    $entity->order_amo_id = $amoOrder;
+                $entity->order_amo_link = $amoOrderLink;
+                $entity->order_amo_id = $amoOrder;
                 $entity->comment = $comment;
+
                 if (isset($row["description"])) {
                     $entity->comment = $row["description"];
                 }
@@ -123,15 +141,6 @@ class OrderService implements EntityInterface
                 }
             }
             $entity->save();
-     //       $needDelete = $this->orderPositionService->import($row["positions"], $row["id"]);
-
-            // if ($needDelete["needDelete"]) {
-            //     $entity->positions()->delete();
-            //     $entity->delete();
-            // } else {
-            //     $entity->is_demand = $needDelete["isDemand"];
-            //     $entity->save();
-            // }
         }
     }
 

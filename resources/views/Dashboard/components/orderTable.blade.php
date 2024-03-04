@@ -1,5 +1,5 @@
 <div class="flex flex-col">
-    <table class="text-left text-sm font-light text-nowrap">
+    <table class="text-left text-md text-nowrap">
         <thead class="bg-neutral-200 font-semibold">
             <tr>
                 @foreach ($resColumns as $key => $column)
@@ -15,7 +15,7 @@
             @foreach ($entityItems as $entityItem)
                 <tr class="border-b">
                     @foreach ($resColumns as $column => $title)
-                        <td class="break-all max-w-38 overflow-hidden px-6 py-4">
+                        <td class="break-all max-w-[30rem] overflow-hidden px-6 py-4">
                             @if (preg_match('/_id\z/u', $column))
                                 @php
                                     $column = substr($column, 0, -3);
@@ -24,43 +24,43 @@
                                     @if ($column == 'status')
                                         @switch($entityItem->$column->name)
                                             @case('[DN] Подтвержден')
-                                                <div id="status" style="background-color: #b5f8e3">
+                                                <div id="status" style="background-color: #b5f8e3" class="rounded">
                                                     <span class="px-4">{{ $entityItem->$column->name }}</span>
                                                 </div>
                                             @break
 
                                             @case('На брони')
-                                                <div id="status" style="background-color: #ae96e3">
+                                                <div id="status" style="background-color: #ae96e3" class="rounded">
                                                     <span class="px-4">{{ $entityItem->$column->name }}</span>
                                                 </div>
                                             @break
 
                                             @case('[C] Отменен')
-                                                <div id="status" style="background-color: #f3a3a3">
+                                                <div id="status" style="background-color: #f3a3a3" class="rounded">
                                                     <span class="px-4">{{ $entityItem->$column->name }}</span>
                                                 </div>
                                             @break
 
                                             @case('Думают')
-                                                <div id="status" style="background-color: #6f6ffd">
+                                                <div id="status" class="rounded bg-blue-400">
                                                     <span class="px-4">{{ $entityItem->$column->name }}</span>
                                                 </div>
                                             @break
 
                                             @case('[DD] Отгружен с долгом')
-                                                <div id="status" style="background-color: #e5bf7e">
+                                                <div id="status" style="background-color: #e5bf7e" class="rounded">
                                                     <span class="px-4">{{ $entityItem->$column->name }}</span>
                                                 </div>
                                             @break
 
                                             @case('[DF] Отгружен и закрыт')
-                                                <div id="status" style="background-color: #55c455">
+                                                <div id="status" class="rounded bg-green-400">
                                                     <span class="px-4">{{ $entityItem->$column->name }}</span>
                                                 </div>
                                             @break
 
                                             @case('[N] Новый')
-                                                <div id="status" style="background-color: #f5f590">
+                                                <div id="status" style="background-color: #f5f590" class="rounded">
                                                     <span class="px-4">{{ $entityItem->$column->name }}</span>
                                                 </div>
                                             @break
@@ -82,7 +82,7 @@
                                     </svg>
                                 </a>
                             @elseif($column !== 'weight')
-                                {{ $entityItem->$column }}
+                                <p title="{{ $entityItem->$column }}">{{ $entityItem->$column }}</p>
                             @endif
                         </td>
                     @endforeach

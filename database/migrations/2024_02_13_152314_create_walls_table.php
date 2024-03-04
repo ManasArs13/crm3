@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer("name")->unsigned();
             $table->timestamps();
-            $table->char('ms_id', 36)->nullable();
         });
     }
 

@@ -14,6 +14,8 @@ use App\Models\VehicleType;
 use App\Services\Api\MoySkladService;
 use Illuminate\Support\Arr;
 use App\Helpers\Math;
+use App\Models\Order;
+use App\Models\Shipment;
 
 class DemandServices implements EntityInterface
 {
@@ -42,9 +44,9 @@ class DemandServices implements EntityInterface
             $products = $row['positions']['rows'];
             $urlService = 'https://api.moysklad.ru/app/#demand/edit?id=';
 
-            $entity = Shipments::query()->firstOrNew(['id' => $row["id"]]);
+            $entity = Shipment::query()->firstOrNew(['ms_id' => $row["id"]]);
             if (Arr::exists($row, 'deleted')) {
-                if ($entity->id === null) {
+                if ($entity->ms_id === null) {
                     $entity->delete();
                 }
             } else {
@@ -61,7 +63,7 @@ class DemandServices implements EntityInterface
                 $entity->name = $row['name'];
                 $entity->description = !empty($row['description']) ? $row['description'] : null;
                 $entity->shipment_address = $row['shipmentAddress'] ?? null;
-                $entity->order_id = OrderMs::query()->where('id', $orderId)->exists() ? $orderId : null;
+                $entity->order_id = Order::query()->where('ms_id', $orderId)->exists() ? Order::query()->where('ms_id', $orderId)->first()->id() : null;
                 $entity->counterparty_link = $row['agent']['meta']['uuidHref'];
                 $entity->service_link = $urlService . $row['id'];
                 $entity->paid_sum = $row['payedSum'] / 100;

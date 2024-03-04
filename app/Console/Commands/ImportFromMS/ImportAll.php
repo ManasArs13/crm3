@@ -35,8 +35,19 @@ class ImportAll extends Command
     /**
      * Выполнить консольную команду.
      */
-    public function handle(Option $option, MoySkladService $service, ColorService $colorService)
+    public function handle()
     {
         Artisan::call('ms:import-color');
+        Artisan::call('ms:import-status');
+        Artisan::call('ms:import-transport-type');
+        Artisan::call('ms:import-transport');
+        Artisan::call('ms:import-categories {--date=null}');
+        Artisan::command('ms:import-categories {--date=null}', function () {
+            $this->info("ms:import-categories {--date=not}!");
+        });
+        Artisan::call('ms:import-delivery');
+        Artisan::command('ms:import-contact {--date=null}', function () {
+            $this->info("ms:import-categories {--date=not}!");
+        });
     }
 }

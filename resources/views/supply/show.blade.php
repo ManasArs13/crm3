@@ -23,7 +23,7 @@
 
             {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-left text-sm font-light text-nowrap">
+                <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             <th scope="col" class="px-6 py-4">
