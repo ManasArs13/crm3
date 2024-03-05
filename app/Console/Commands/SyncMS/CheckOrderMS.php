@@ -3,7 +3,7 @@
 namespace App\Console\Commands\SyncMS;
 
 use App\Services\Api\MoySkladService;
-use App\Services\Entity\OrderMsService;
+use App\Services\Entity\OrderService;
 use Illuminate\Console\Command;
 
 
@@ -26,7 +26,7 @@ class CheckOrderMS extends Command
     /**
      * Execute the console command.
      */
-    public function handle(OrderMsService $service, MoySkladService $moySkladService)
+    public function handle(OrderService $service, MoySkladService $moySkladService)
     {
         $service->checkRows();
     }

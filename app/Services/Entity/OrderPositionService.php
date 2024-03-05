@@ -17,19 +17,19 @@ class OrderPositionService
 
     public function import($data, $order)
     {
-        $count=0;
-        $guids=[];
+        $count = 0;
+        $guids = [];
         $isDemand = true;
 
-        $roundPallet=$this->options::where('code', '=', "round_number")->first()?->value;
+        $roundPallet = $this->options::where('code', '=', "round_number")->first()?->value;
 
         foreach ($data['rows'] as $row) {
-            $entity = OrderPosition::firstOrNew(['id' => $row["id"]]);
-            $product = Product::where('id','=',$row["assortment"]["id"])->first();
+            $entity = OrderPosition::firstOrNew(['ms_id' => $row["id"]]);
+            $product = Product::where('ms_id','=',$row["assortment"]["id"])->first();
 
-            if ($product!=null) {
-                if ($entity->id === null) {
-                    $entity->id = $row['id'];
+            if ($product != null) {
+                if ($entity->ms_id === null) {
+                    $entity->ms_id = $row['id'];
                 }
 
                 if ($isDemand && ($product->min_balance_mc - $row["quantity"] + $row["shipped"] < 0)) {
@@ -41,24 +41,25 @@ class OrderPositionService
                 $entity->price = $row["price"] / 100;
 
                 $reserve = 0;
+
                 if (isset($row["reserve"])) {
                     $reserve = $row["reserve"];
                 }
 
                 $entity->reserve = $reserve;
-                $entity->order_ms_id = $order;
+                $entity->order_id = $order;
                 $entity->product_id = $product->id;
-                $entity->weight_kg = $row["quantity"]*$product->weight_kg;
+                $entity->weight_kg = $row["quantity"] * $product->weight_kg;
 
-                $countsPallets=($product->count_pallets!=0)?$row["quantity"]/$product->count_pallets:0;
-                $entity->count_pallets=$this->roundNumber($countsPallets, $roundPallet);
+                $countsPallets = ($product->count_pallets!=0) ? $row["quantity"]/$product->count_pallets : 0;
+                $entity->count_pallets = $this->roundNumber($countsPallets, $roundPallet);
                 $entity->save();
 
             }else{
                 ++$count;
             }
 
-            $guids[]=$entity->id;
+            $guids[] = $entity->id;
         }
         if ($count == count($data['rows'])) {
             return ["needDelete" => 1, "isDemand" => $isDemand];
@@ -93,6 +94,6 @@ class OrderPositionService
 
     public function deleteDeletedPositionsFromMS($order, $guids)
     {
-        OrderPosition::where("order_ms_id", $order)->whereNotIn('id', $guids)->delete();
+        OrderPosition::where("order_id", $order)->whereNotIn('id', $guids)->delete();
     }
 }

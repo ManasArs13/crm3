@@ -40,7 +40,7 @@ class DemandServices implements EntityInterface
         $attributeDeliveryFee = "bf195073-ebc2-11ec-0a80-0173001b47dd";
 
         foreach ($rows['rows'] as $row) {
-            $products = $row['positions']['rows'];
+
             $urlService = 'https://api.moysklad.ru/app/#demand/edit?id=';
 
             $entity = Shipment::query()->firstOrNew(['ms_id' => $row["id"]]);
@@ -113,30 +113,30 @@ class DemandServices implements EntityInterface
                 $entity->weight = $shipmentWeight;
                 $entity->save();
 
-                foreach ($products as $product) {
-                    $productData = null;
-                    if (isset($product['assortment']['meta']['href'])) {
-                        $productData = $this->service->actionGetRowsFromJson($product['assortment']['meta']['href'], false);
-                    }
-                    $product_db = Product::query()->where('ms_id', $productData['id'])->first();
 
-                    if ($product_db) {
-                        $shipment_product = ShipmentProduct::where('shipment_id', $entity->id)->first();
-                        
-                        if($shipment_product) {
+                if (isset($row["positions"])) {
 
-                            $shipment_product->quantity = $product['quantity'];
-                            $shipment_product->product_id = $product_db->id;
-                            $shipment_product->save();
-
-                        } else {
-                            ShipmentProduct::create([
-                                'shipment_id' => $entity->id
-                            ]);
+                    $positions = $this->service->actionGetRowsFromJson($row['positions']['meta']['href']);
+    
+                    foreach ($positions as $position) {
+                        $entity_position = ShipmentProduct::firstOrNew(['ms_id' => $position['id']]);
+    
+                        if ($entity_position->ms_id === null) {
+                            $entity_position->ms_id = $position['id'];
                         }
-
-                        $shipmentWeight += $product["quantity"] * Product::query()->where('ms_id', $productData['id'])->first()->weight_kg;
-
+    
+                        $entity_position->shipment_id = $entity->id;
+                        $entity_position->quantity = $position['quantity'];
+        
+                        usleep(70000);
+                        $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
+                        
+                        if($product_bd) {
+                            $entity_position->product_id = $product_bd['id'];
+                            $entity_position->save();
+                        } 
+                        
+                        $shipmentWeight += $position["quantity"] * Product::query()->where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first()->weight_kg;
                     }
                 }
 
