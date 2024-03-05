@@ -49,7 +49,7 @@ class SupplyService implements EntityInterface
             $entity->save();
 
             if (isset($row["positions"])) {
-                usleep(70000);
+
                 $positions = $this->service->actionGetRowsFromJson($row['positions']['meta']['href']);
 
                 foreach ($positions as $position) {
@@ -63,7 +63,6 @@ class SupplyService implements EntityInterface
                     $entity_position->quantity = $position['quantity'];
                     $entity_position->price = $position['price'] / 100;
 
-                    usleep(70000);
                     $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
                     
                     if($product_bd) {
@@ -73,13 +72,6 @@ class SupplyService implements EntityInterface
                 }
             }
 
-            // if (isset($row["agent"])) {
-            //     usleep(70000);
-            //     $agent = $this->service->actionGetRowsFromJson($row['agent']['meta']['href'], false);
-            //     $entity->contact_id = $agent['id'];
-            // }
-
-            //$entity->save();
         }
     }
 

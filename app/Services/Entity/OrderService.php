@@ -177,7 +177,6 @@ class OrderService implements EntityInterface
 
         $orders = Order::query()
             ->where('date_plan', '!=', null)
-            // ->whereDate('date_plan', '>', Carbon::now()->addDays(-1))
             ->whereDate('date_plan', '<=', Carbon::now()->addDays($reserve_period))
             ->where('status_ms_id', 'c3308ff8-b57a-11ec-0a80-03c60005472c')
             ->orWhere('status_ms_id', '2ff7dd14-5b1e-11ea-0a80-012400161237')
@@ -198,20 +197,6 @@ class OrderService implements EntityInterface
                     $this->service->actionPutRowsFromJson($url . $order->id . '/positions/' . $position->id, ['reserve' => 0]);
                 }
             }
-
-            //     $isMadeSite = $order->is_made == 1;
-            //     $arOrder["attributes"] = [
-            //         [
-            //             'meta' => [
-            //                 'href' => $urlAttr . $guidAttrMade,
-            //                 'type' => "attributemetadata",
-            //                 "mediaType" => "application/json"
-            //             ],
-            //             'value' => $isMadeSite
-            //         ]
-            //     ];
-
-            // $this->service->actionPutRowsFromJson($url . $order->id, $arOrder);
 
         }
     }

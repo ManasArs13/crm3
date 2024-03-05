@@ -2,13 +2,9 @@
 
 namespace App\Console\Commands\ImportFromMS;
 
-use App\Models\Option;
 use App\Services\Api\MoySkladService;
-use App\Services\Entity\OrderMsService;
-use Carbon\Carbon;
+use App\Services\Entity\OrderService;
 use Illuminate\Console\Command;
-use App\Models\OrderMs;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class ReserveOrderMs extends Command
 {
@@ -29,7 +25,7 @@ class ReserveOrderMs extends Command
     /**
      * Execute the console command.
      */
-    public function handle(OrderMsService $service, MoySkladService $moySkladService)
+    public function handle(OrderService $service, MoySkladService $moySkladService)
     {
         $service->reserve();
     }

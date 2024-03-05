@@ -44,19 +44,18 @@ class DemandServices implements EntityInterface
             $urlService = 'https://api.moysklad.ru/app/#demand/edit?id=';
 
             $entity = Shipment::query()->firstOrNew(['ms_id' => $row["id"]]);
-            
+
             if (Arr::exists($row, 'deleted')) {
                 if ($entity->ms_id === null) {
                     $entity->delete();
                 }
-
             } else {
 
                 $delivery = null;
                 $transport = null;
                 $deliveryPrice = 0;
                 $vehicleType = null;
-                $deliveryFee= null;
+                $deliveryFee = null;
                 $shipmentWeight = 0.0;
 
                 $orderId = isset($row['customerOrder']) ? $this->getGuidFromUrl($row['customerOrder']['meta']['href']) : null;
@@ -67,7 +66,7 @@ class DemandServices implements EntityInterface
 
                 $order_db = Order::query()->where('ms_id', $orderId)->first();
                 $entity->order_id = $order_db ? $order_db->id : null;
-                
+
                 $entity->counterparty_link = $row['agent']['meta']['uuidHref'];
                 $entity->service_link = $urlService . $row['id'];
                 $entity->paid_sum = $row['payedSum'] / 100;
@@ -108,8 +107,8 @@ class DemandServices implements EntityInterface
                 $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
                 $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
 
-                $entity->delivery_price=$deliveryPrice;
-                $entity->delivery_fee=$deliveryFee;
+                $entity->delivery_price = $deliveryPrice;
+                $entity->delivery_fee = $deliveryFee;
                 $entity->weight = $shipmentWeight;
                 $entity->save();
 
@@ -117,26 +116,25 @@ class DemandServices implements EntityInterface
                 if (isset($row["positions"])) {
 
                     $positions = $this->service->actionGetRowsFromJson($row['positions']['meta']['href']);
-    
+
                     foreach ($positions as $position) {
                         $entity_position = ShipmentProduct::firstOrNew(['ms_id' => $position['id']]);
-    
+
                         if ($entity_position->ms_id === null) {
                             $entity_position->ms_id = $position['id'];
                         }
-    
+
                         $entity_position->shipment_id = $entity->id;
                         $entity_position->quantity = $position['quantity'];
-        
-                        usleep(70000);
+
                         $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
-                        
-                        if($product_bd) {
+
+                        if ($product_bd) {
                             $entity_position->product_id = $product_bd['id'];
                             $entity_position->save();
-                        } 
-                        
-                        $shipmentWeight += $position["quantity"] * Product::query()->where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first()->weight_kg;
+
+                            $shipmentWeight += $position["quantity"] * $product_bd->weight_kg;
+                        }
                     }
                 }
 
@@ -216,7 +214,7 @@ class DemandServices implements EntityInterface
                         $distanceNew = 220;
                         break;
                 }
-                
+
                 $weightNew = ceil($shipment->weight * 0.001);
 
                 $shipingPrice = ShipingPrice::where('vehicle_type_id', $vehicleType->id)
@@ -229,13 +227,12 @@ class DemandServices implements EntityInterface
                         ->where('distance', $distanceNew)
                         ->where('tonnage', 1.0)
                         ->first();
- 
+
                     if ($shipingPrice) {
                         $shipmentUpdate = Shipment::where('id', $shipment->id)->First();
                         $shipmentUpdate->delivery_price_norm = $shipingPrice->price;
                         $shipmentUpdate->update();
                     }
-
                 } else {
 
                     if ($shipingPrice) {
@@ -243,14 +240,8 @@ class DemandServices implements EntityInterface
                         $shipmentUpdate->delivery_price_norm = $shipingPrice->price * $weightNew;
                         $shipmentUpdate->update();
                     }
-
                 }
-
-            
             }
-
-
         }
-       
     }
 }
