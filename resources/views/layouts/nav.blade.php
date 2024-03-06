@@ -191,6 +191,10 @@
                                    Доставка
                                 </x-dropdown-link>
 
+                                <x-dropdown-link :href="route('shiping_price.index')">
+                                    Прайс (доставка)
+                                 </x-dropdown-link>
+
                             </x-slot>
                         </x-dropdown>
                     </div>

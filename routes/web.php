@@ -11,11 +11,11 @@ use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidualController;
+use App\Http\Controllers\ShipingPriceController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
-use App\Models\ShipingPrice;
 use Illuminate\Support\Facades\Route;
 
 
@@ -53,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'contact' => ContactController::class,
         'delivery' => DeliveryController::class,
         'option' => OptionController::class,
-        'shipingPrice' => ShipingPrice::class,
+        'shiping_price' => ShipingPriceController::class,
     ]);
 
     // Фильтры
@@ -66,6 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/contacts/filter', [ContactController::class, 'filter'])->name('contact.filter');
     Route::get('/deliveries/filter', [DeliveryController::class, 'filter'])->name('delivery.filter');
     Route::get('/options/filter', [OptionController::class, 'filter'])->name('option.filter');
+    Route::get('/shiping_prices/filter', [ShipingPriceController::class, 'filter'])->name('shiping_price.filter');
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');

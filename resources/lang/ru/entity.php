@@ -9,7 +9,7 @@ return [
     'materials' => 'Материалы',
     'products_categories' => 'Категории товаров',
     'products_categories_materials' => 'Категории Материал',
-    'shipping_prices' => 'Цены доставки',
+    'shiping_prices' => 'Прайс (доставка)',
     'users'=>'Пользователи',
     "vehicle_types"=>'Типы ТС',
     "walls"=>"Высоты стенки",
