@@ -226,7 +226,7 @@
                                         @if (preg_match('/_id\z/u', $column))
                                             {{ $entityItem->$column }}
                                         @elseif($column == 'status')
-                                            @switch($entityItem->$column->name)
+                                            @switch($entityItem->$column)
                                                 @case('[DN] Подтвержден')
                                                     <div id="status" class="border border-green-500 bg-green-400">
                                                         <span>{{ $entityItem->$column->name }}</span>
@@ -270,7 +270,7 @@
                                                 @break
 
                                                 @default
-                                                    {{ $entityItem->$column->name }}
+                                                    {{ $entityItem->$column }}
                                             @endswitch
                                         @elseif($column == 'remainder')
                                             @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')

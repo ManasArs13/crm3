@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
+use App\Models\ShipingPrice;
 use Illuminate\Support\Facades\Route;
 
 
@@ -50,6 +52,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'contactAmo' => ContactAmoController::class,
         'contact' => ContactController::class,
         'delivery' => DeliveryController::class,
+        'option' => OptionController::class,
+        'shipingPrice' => ShipingPrice::class,
     ]);
 
     // Фильтры
@@ -61,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/contactAmos/filter', [ContactAmoController::class, 'filter'])->name('contactAmo.filter');
     Route::get('/contacts/filter', [ContactController::class, 'filter'])->name('contact.filter');
     Route::get('/deliveries/filter', [DeliveryController::class, 'filter'])->name('delivery.filter');
+    Route::get('/options/filter', [OptionController::class, 'filter'])->name('option.filter');
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');

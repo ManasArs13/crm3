@@ -50,7 +50,7 @@ class ShipmentController extends Controller
                 'max' => substr($maxUpdated, 0, 10)
             ],
         ];
-
+    //dd($entityItems);
         return view("own.index", compact(
             'entityItems',
             "resColumns",
@@ -168,12 +168,13 @@ class ShipmentController extends Controller
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->getColumn())->paginate(50);
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
         } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->getColumn())->paginate(50);
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
         } else {
+            $orderBy = 'desc';
             $entityItems = $entityItems->paginate(50);
         }
 

@@ -111,11 +111,11 @@ class ProductService implements EntityInterface
                         }
                     }
                 }
-            }
 
-            Product::query()->where('id', $residual['assortmentId'])->update(
-                ['residual' => $residual['stock'], 'materials' => $residual_material]
-            );
+                $product->residual = $residual['stock'];
+                $product->materials = $residual_material;
+                $product->update();
+            }
         }
     }
 

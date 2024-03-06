@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductsCategory;
 
@@ -37,8 +38,8 @@ class ResidualController extends Controller
     {
         $needMenuForItem = true;
 
-        $products = ProductsCategory::query()
-            ->where('building_material', ProductsCategory::BLOCK)->get();
+        $products = Category::query()
+            ->where('building_material', Category::BLOCK)->get();
 
         foreach ($products as $product) {
             $product->residual =  Product::query()->where('type', Product::PRODUCTS)->where('category_id', $product->id)->get()->sum('residual');

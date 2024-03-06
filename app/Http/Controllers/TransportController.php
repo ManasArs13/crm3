@@ -98,11 +98,19 @@ class TransportController extends Controller
     }
     public function filter(FilterRequest $request)
     {
-        $orderBy  = $request->orderBy;
-        $selectColumn = $request->getColumn();
+        $needMenuForItem = true;
+        $urlEdit = "transport.edit";
+        $urlShow = "transport.show";
+        $urlDelete = "transport.destroy";
+        $urlCreate = "transport.create";
+        $urlFilter = 'transport.filter';
+        $urlReset = 'transport.index';
+        $entity = 'transports';
         $entityItems = Transport::query();
-        $columns = Schema::getColumnListing('transports');
+        $orderBy  = $request->orderBy;
 
+        /* Колонки */
+        $columns = Schema::getColumnListing('transports');
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -114,43 +122,53 @@ class TransportController extends Controller
             ];
         }
 
-        uasort($resColumnsAll, function ($a, $b) {
-            return ($a > $b);
-        });
-
+        /* Колонки для отображения */
         if (isset($request->columns)) {
             $requestColumns = $request->columns;
             $requestColumns[] = "id";
             $columns = $requestColumns;
-            $entityItems = Transport::query()->select($requestColumns);
+            $entityItems = $entityItems->select($requestColumns);
         }
 
         foreach ($columns as $column) {
             $resColumns[$column] = trans("column." . $column);
         }
 
-        uasort($resColumns, function ($a, $b) {
-            return ($a > $b);
-        });
+        /* Фильтры для отображения */
+        $categoryFilterValue = 'all';
 
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'category_id') {
+                    if ($value !== 'all') {
+                        $entityItems
+                            ->where($key, $value);
+                    }
+                    $categoryFilterValue = $value;
+                } else if ($key == 'created_at' || $key == 'updated_at') {
+                    $entityItems
+                        ->where($key, '>=', $value['min'] . ' 00:00:00')
+                        ->where($key, '<=', $value['max'] . ' 23:59:59');
+                } else if ($key == 'weight_kg' || $key == 'price') {
+                    $entityItems
+                        ->where($key, '>=', $value['min'])
+                        ->where($key, '<=', $value['max']);
+                }
+            }
+        }
 
+        /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->getColumn())->paginate(50);
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
         } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->getColumn())->paginate(50);
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
         } else {
+            $orderBy = 'desc';
             $entityItems =   $entityItems->paginate(50);
         }
-        $needMenuForItem = true;
-        $urlEdit = "transport.edit";
-        $urlShow = "transport.show";
-        $urlDelete = "transport.destroy";
-        $urlCreate = "transport.create";
-        $urlFilter = 'transport.filter';
-        $urlReset = 'transport.index';
-        $entity = 'transports';
+        
 
         $filters = [];
 
@@ -159,7 +177,6 @@ class TransportController extends Controller
             'filters',
             "resColumns",
             "resColumnsAll",
-            'selectColumn',
             "needMenuForItem",
             "urlShow",
             "urlDelete",

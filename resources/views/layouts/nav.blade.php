@@ -218,6 +218,11 @@
                     </x-slot>
 
                     <x-slot name="content">
+
+                        <x-dropdown-link :href="route('option.index')">
+                            Опции
+                         </x-dropdown-link>
+
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
@@ -268,6 +273,11 @@
             </div>
 
             <div class="mt-3 space-y-1">
+
+                <x-dropdown-link :href="route('option.index')">
+                    Опции
+                 </x-dropdown-link>
+
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>

@@ -21,7 +21,11 @@ return new class extends Migration
             $table->foreignId("category_id")->nullable()->index()->constrained("categories");
             $table->foreignId("color_id")->nullable()->index()->constrained("colors");
             $table->boolean("is_active")->default(0);
-            $table->boolean("materials")->default(0);
+            $table->enum('materials', [
+                'не указано',
+                'нет',
+                'да'
+            ])->default('не указано');
             $table->integer("min_balance")->default(0);
             $table->enum('type', [
                 Product::NOT_SELECTED,

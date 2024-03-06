@@ -27,4 +27,9 @@ class Shipment extends Model
     {
         return $this->hasMany(ShipmentProduct::class, 'id', 'shipment_id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }
