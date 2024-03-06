@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'delivery' => DeliveryController::class,
         'option' => OptionController::class,
         'shiping_price' => ShipingPriceController::class,
+        'category' => CategoryController::class, 
     ]);
 
     // Фильтры
@@ -67,6 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/deliveries/filter', [DeliveryController::class, 'filter'])->name('delivery.filter');
     Route::get('/options/filter', [OptionController::class, 'filter'])->name('option.filter');
     Route::get('/shiping_prices/filter', [ShipingPriceController::class, 'filter'])->name('shiping_price.filter');
+    Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
