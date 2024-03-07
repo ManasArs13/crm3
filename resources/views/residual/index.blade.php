@@ -15,54 +15,52 @@
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
             {{-- header --}}
-            <div class="border-b-2 border-neutral-100">
+            <div class="border-b-2 border-neutral-100 overflow-x-auto">
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex flex-row gap-1">
                         <div>
+                            @if (url()->current() == route('residual.index'))
+                                <a href="{{ route('residual.index') }}"
+                                class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все остатки</a>
+                            @else
+                                <a href="{{ route('residual.index') }}"
+                                class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все остатки</a>
+                            @endif
+                        </div>
+                        <div>
                             @if (url()->current() == route('residual.blocksMaterials'))
                                 <a href="{{ route('residual.blocksMaterials') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
                             @else
                                 <a href="{{ route('residual.blocksMaterials') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
                             @endif
                         </div>
                         <div>
                             @if (url()->current() == route('residual.blocksCategories'))
                                 <a href="{{ route('residual.blocksCategories') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
                             @else
                                 <a href="{{ route('residual.blocksCategories') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
                             @endif
                         </div>
                         <div>
                             @if (url()->current() == route('residual.blocksProducts'))
                                 <a href="{{ route('residual.blocksProducts') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
+                                class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
                             @else
                                 <a href="{{ route('residual.blocksProducts') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
+                                class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
                             @endif
                         </div>
                         <div>
                             @if (url()->current() == route('residual.concretesMaterials'))
                                 <a href="{{ route('residual.concretesMaterials') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
+                                class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
                             @else
                                 <a href="{{ route('residual.concretesMaterials') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="flex">
-                        <div class="card-tools mx-1">
-                            @if (url()->current() == route('residual.index'))
-                                <a href="{{ route('residual.index') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.all') }}</a>
-                            @else
-                                <a href="{{ route('residual.index') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.all') }}</a>
+                                class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
                             @endif
                         </div>
                     </div>
@@ -71,31 +69,31 @@
 
              {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-md text-nowrap">
+                <table class="text-xs md:text-base text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                 {{ __('column.name') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                 {{ __('column.status_id') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                 {{ __('column.residual_norm') }}
                             </th>
                             @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
-                                <th scope="col" class="px-6 py-4">
+                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                     {{ __('column.materials') }}
                                 </th>
                             @endif
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                 {{ __('column.residual') }}
-                            </th scope="col" class="px-6 py-4">
-                            <th scope="col" class="px-6 py-4">
+                            </th scope="col" class="px-1 md:px-6 py-2 md:py-4">
+                            <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                 {{ __('column.need') }}
                             </th>
                             @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
-                                <th scope="col" class="px-6 py-4">
+                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                     {{ __('column.making_dais') }}
                                 </th>
                             @endif
@@ -105,13 +103,13 @@
                         @foreach ($products as $product)
                             @if ($product->residual_norm)
                                 <tr class="border-b-2">
-                                    <th class="text-left px-6 py-4">
+                                    <th class="text-left px-1 md:px-6 py-2 md:py-4">
                                         <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                             {{ $product->name }}
                                         </a>
                                     </th>
 
-                                    <th class="break-all max-w-32 overflow-hidden px-6 py-4">
+                                    <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                         @if ($product->residual_norm !== 0 && $product->residual_norm !== null)
                                             <div
                                                 @if (round(($product->residual / $product->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($product->residual / $product->residual_norm) * 100) > 30 &&
@@ -132,7 +130,7 @@
                                     </th>
 
                                     @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
-                                        <th class="break-all max-w-32 overflow-hidden px-6 py-4">
+                                        <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                             @if ($product->materials == 'нет')
                                                 <div class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center">
                                                     {{ $product->materials }}
