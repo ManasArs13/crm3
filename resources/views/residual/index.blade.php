@@ -71,7 +71,7 @@
 
              {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-left text-md text-nowrap">
+                <table class="text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             <th scope="col" class="px-6 py-4">
@@ -105,8 +105,8 @@
                         @foreach ($products as $product)
                             @if ($product->residual_norm)
                                 <tr class="border-b-2">
-                                    <th class="break-all max-w-32 overflow-hidden px-6 py-4">
-                                        <a href="{{ route('products.show', ['product' => $product->id]) }}">
+                                    <th class="text-left px-6 py-4">
+                                        <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                             {{ $product->name }}
                                         </a>
                                     </th>
@@ -114,8 +114,8 @@
                                     <th class="break-all max-w-32 overflow-hidden px-6 py-4">
                                         @if ($product->residual_norm !== 0 && $product->residual_norm !== null)
                                             <div
-                                                @if (round(($product->residual / $product->residual_norm) * 100) <= 30) class="td-percent-red" @elseif(round(($product->residual / $product->residual_norm) * 100) > 30 &&
-                                                        round(($product->residual / $product->residual_norm) * 100) <= 70) class="td-percent-yellow" @else class="td-percent" @endif>
+                                                @if (round(($product->residual / $product->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($product->residual / $product->residual_norm) * 100) > 30 &&
+                                                        round(($product->residual / $product->residual_norm) * 100) <= 70) class="bg-yellow-300 rounded-sm p-1 h-6 flex justify-center items-center" @else class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center" @endif>
                                                 {{ round(($product->residual / $product->residual_norm) * 100) }}%
                                             </div>
                                         @else
@@ -134,11 +134,11 @@
                                     @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
                                         <th class="break-all max-w-32 overflow-hidden px-6 py-4">
                                             @if ($product->materials == 'нет')
-                                                <div class="td-percent-red">
+                                                <div class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center">
                                                     {{ $product->materials }}
                                                 </div>
                                             @elseif ($product->materials == 'да')
-                                                <div class="td-percent">
+                                                <div class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center">
                                                     {{ $product->materials }}
                                                 </div>
                                             @else

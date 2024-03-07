@@ -17,12 +17,16 @@ use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
+Route::get('/blocks_materials', [WelcomeController::class, 'blocksMaterials'])->name('welcome.blocksMaterials');
+Route::get('/blocks_categories', [WelcomeController::class, 'blocksCategories'])->name('welcome.blocksCategories');
+Route::get('/blocks_products', [WelcomeController::class, 'blocksProducts'])->name('welcome.blocksProducts');
+Route::get('/concretes_materials', [WelcomeController::class, 'concretesMaterials'])->name('welcome.concretesMaterials');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

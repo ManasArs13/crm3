@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 
-class ResidualController extends Controller
+class WelcomeController extends Controller
 {
     public function index()
     {
@@ -15,7 +15,7 @@ class ResidualController extends Controller
             ->get();
         $entity = 'residuals';
 
-        return view("residual.index", compact("entity", 'products'));
+        return view("welcome", compact("entity", 'products'));
     }
 
     public function blocksMaterials()
@@ -26,7 +26,7 @@ class ResidualController extends Controller
             ->where('building_material', Product::BLOCK)->get()->sortBy('sort');
         $entity = 'residuals';
 
-        return view("residual.index", compact("entity", "products"));
+        return view("welcome", compact("entity", "products"));
     }
 
     public function blocksCategories()
@@ -55,7 +55,7 @@ class ResidualController extends Controller
 
         $entity = 'residuals';
 
-        return view("residual.index", compact("entity", "products"));
+        return view("welcome", compact("entity", "products"));
     }
 
     public function blocksProducts()
@@ -66,7 +66,7 @@ class ResidualController extends Controller
             ->where('building_material', Product::BLOCK)->get()->sortBy('sort');
         $entity = 'residuals';
 
-        return view("residual.index", compact("entity", "products"));
+        return view("welcome", compact("entity", "products"));
     }
 
     public function concretesMaterials()
@@ -76,6 +76,6 @@ class ResidualController extends Controller
             ->where('building_material', Product::CONCRETE)->get()->sortBy('sort');
         $entity = 'residuals';
 
-        return view("residual.index", compact("entity", "products"));
+        return view("welcome", compact("entity", "products"));
     }
 }

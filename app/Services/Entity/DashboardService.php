@@ -222,6 +222,7 @@ class DashboardService
             ->where('type', Product::MATERIAL)
             ->where('building_material', Product::BLOCK)->get()->sortBy('sort');
         $entity = 'orders';
+        
         foreach ($categories as $category) {
             $sum_residual =  Product::query()->where('type', Product::PRODUCTS)->where('category_id', $category->id)->get()->sum('residual');
             $residual_norm = Product::query()->where('type', Product::PRODUCTS)->where('category_id', $category->id)->get()->sum('residual_norm');
