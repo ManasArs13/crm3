@@ -115,7 +115,7 @@
                                     <th scope="col" class="px-6 py-4">
                                         {{ __('column.residual_norm') }}
                                     </th>
-                                    @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
+                                    @if (url()->current() == route('welcome.blocksProducts') || url()->current() == route('welcome.index'))
                                         <th scope="col" class="px-6 py-4">
                                             {{ __('column.materials') }}
                                         </th>
@@ -126,7 +126,7 @@
                                     <th scope="col" class="px-6 py-4">
                                         {{ __('column.need') }}
                                     </th>
-                                    @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
+                                    @if (url()->current() !== route('welcome.concretesMaterials') && url()->current() !== route('welcome.blocksMaterials'))
                                         <th scope="col" class="px-6 py-4">
                                             {{ __('column.making_dais') }}
                                         </th>
@@ -163,7 +163,7 @@
                                                 @endif
                                             </th>
         
-                                            @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
+                                            @if (url()->current() == route('welcome.blocksProducts') || url()->current() == route('welcome.index'))
                                                 <th class="break-all max-w-32 overflow-hidden px-6 py-4">
                                                     @if ($product->materials == 'нет')
                                                         <div class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center">
@@ -199,7 +199,7 @@
                                                 @endif
                                             </th>
         
-                                            @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
+                                            @if (url()->current() !== route('welcome.concretesMaterials') && url()->current() !== route('welcome.blocksMaterials'))
                                                 <th>
                                                     @if ($product->making_day)
                                                         {{ $product->making_day }}
