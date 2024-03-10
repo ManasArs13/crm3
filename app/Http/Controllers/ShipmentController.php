@@ -50,7 +50,7 @@ class ShipmentController extends Controller
                 'max' => substr($maxUpdated, 0, 10)
             ],
         ];
-    //dd($entityItems);
+
         return view("own.index", compact(
             'entityItems',
             "resColumns",
@@ -70,7 +70,7 @@ class ShipmentController extends Controller
     public function create()
     {
         $entityItem = new Shipment();
-        $columns = Schema::getColumnListing('shipments'); // users table
+        $columns = Schema::getColumnListing('shipments');
 
         $entity = 'shipments';
         $action = "shipment.store";
@@ -81,6 +81,7 @@ class ShipmentController extends Controller
     public function store(Request $request)
     {
         Shipment::create($request->post());
+
         return redirect()->route("shipment.index");
     }
 
@@ -117,6 +118,7 @@ class ShipmentController extends Controller
 
         return redirect()->route('shipments.index');
     }
+    
     public function filter(FilterRequest $request)
     {
         $needMenuForItem = true;
@@ -129,7 +131,7 @@ class ShipmentController extends Controller
         $entity = 'shipments';
 
         $orderBy  = $request->orderBy;
-    //    $selectColumn = $request->getColumn();
+        $selectColumn = $request->column;
         $entityItems = Shipment::query();
         $columns = Schema::getColumnListing('shipments');
         $resColumns = [];
@@ -213,7 +215,8 @@ class ShipmentController extends Controller
             'urlFilter',
             'urlReset',
             'orderBy',
-            'filters'
+            'filters',
+            'selectColumn'
         ));
     }
 }

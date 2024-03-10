@@ -128,6 +128,7 @@ class ContactController extends Controller
         $urlFilter = 'contact.filter';
         $urlReset = 'contact.index';
         $entity = 'contacts';
+        $selectColumn = $request->column;
         $entityItems = Contact::query();
 
         /* Колонки */
@@ -214,7 +215,8 @@ class ContactController extends Controller
             'urlFilter',
             'urlReset',
             'orderBy',
-            'filters'
+            'filters',
+            'selectColumn'
         ));
     }
 }

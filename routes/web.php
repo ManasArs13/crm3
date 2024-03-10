@@ -81,9 +81,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
     Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
     Route::get('/residuals/concretes_materials', [ResidualController::class, 'concretesMaterials'])->name('residual.concretesMaterials');
-
-
-    // Приёмки
+    
+      // Приёмки
     Route::resource('supplies', SupplyController::class)->only([
         'index', 'show'
     ]);

@@ -108,6 +108,7 @@ class TransportController extends Controller
         $entity = 'transports';
         $entityItems = Transport::query();
         $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
 
         /* Колонки */
         $columns = Schema::getColumnListing('transports');

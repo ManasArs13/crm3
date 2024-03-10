@@ -130,6 +130,7 @@ class TransportTypeController extends Controller
         $urlFilter = 'transportType.filter';
         $urlReset = 'transportType.index';
         $entity = 'vehicle_types';
+        $selectColumn = $request->column;
 
         $entityItems = TransportType::query();
 

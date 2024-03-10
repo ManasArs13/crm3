@@ -109,6 +109,7 @@ class ShipingPriceController extends Controller
         $urlFilter = 'shiping_price.filter';
         $urlReset = 'shiping_price.index';
         $entity = 'shiping_prices';
+        $selectColumn = $request->column;
         $entityItems = ShipingPrice::query();
 
         /* Колонки */
@@ -184,7 +185,8 @@ class ShipingPriceController extends Controller
             'urlFilter',
             'urlReset',
             'orderBy',
-            'filters'
+            'filters',
+            'selectColumn'
         ));
     }
 }

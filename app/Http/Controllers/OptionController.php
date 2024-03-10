@@ -109,6 +109,7 @@ class OptionController extends Controller
         $urlFilter = 'option.filter';
         $urlReset = 'option.index';
         $entity = 'options';
+        $selectColumn = $request->column;
         $entityItems = Option::query();
 
         /* Колонки */
@@ -165,7 +166,8 @@ class OptionController extends Controller
             "entity",
             'urlFilter',
             'urlReset',
-            'orderBy'
+            'orderBy',
+            'selectColumn'
         ));
     }
 }

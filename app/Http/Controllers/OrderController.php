@@ -126,6 +126,7 @@ class OrderController extends Controller
         $urlFilter = 'order.filter';
         $urlReset = 'order.index';
         $entity = 'orders';
+        $selectColumn = $request->column;
         $needMenuForItem = true;
 
         $orderBy  = $request->orderBy;
@@ -212,7 +213,8 @@ class OrderController extends Controller
             'urlReset',
             'orderBy',
             'filters',
-            'needMenuForItem'
+            'needMenuForItem',
+            'selectColumn'
         ));
     }
 }

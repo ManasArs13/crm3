@@ -2,35 +2,70 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterRequest;
 use App\Models\Category;
 use App\Models\Product;
 
 class WelcomeController extends Controller
 {
-    public function index()
+    public function index(FilterRequest $request)
     {
-        $products = Product::where('residual_norm', '<>', null)
-            ->where('type', Product::PRODUCTS)
-            ->orWhere('type', Product::MATERIAL)
-            ->get();
         $entity = 'residuals';
+        $urlFilter = 'welcome.index';
+        $column = $request->column;
 
-        return view("welcome", compact("entity", 'products'));
+        $products = Product::query()
+            ->where('residual_norm', '<>', null)
+            ->where('type', Product::PRODUCTS)
+            ->orWhere('type', Product::MATERIAL);
+
+        /* Сортировка */
+        if (isset($request->orderBy) && $request->orderBy == 'asc') {
+            $products = $products->orderBy($column)->get();
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $products = $products->orderByDesc($column)->get();
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $products = $products->get();
+        }
+
+        return view("welcome", compact("entity", 'products', 'urlFilter', 'orderBy', 'column'));
     }
 
-    public function blocksMaterials()
+    public function blocksMaterials(FilterRequest $request)
     {
-       $products = Product::query()
+        $entity = 'residuals';
+        $urlFilter = 'welcome.blocksMaterials';
+        $column = $request->column;
+
+        $products = Product::query()
             ->where('residual_norm', '<>', null)
             ->where('type', Product::MATERIAL)
-            ->where('building_material', Product::BLOCK)->get()->sortBy('sort');
-        $entity = 'residuals';
+            ->where('building_material', Product::BLOCK);
 
-        return view("welcome", compact("entity", "products"));
+        /* Сортировка */
+        if (isset($request->orderBy) && $request->orderBy == 'asc') {
+            $products = $products->orderBy($column)->get();
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $products = $products->orderByDesc($column)->get();
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $products = $products->get()->sortBy('sort');
+        }
+
+        return view("welcome", compact("entity", 'products', 'urlFilter', 'orderBy', 'column'));
     }
 
-    public function blocksCategories()
+    public function blocksCategories(FilterRequest $request)
     {
+        $entity = 'residuals';
+        $urlFilter = 'welcome.blocksCategories';
+        $column = $request->column;
+
         $products = Category::query()
             ->where('building_material', Category::BLOCK)->get();
 
@@ -55,27 +90,57 @@ class WelcomeController extends Controller
 
         $entity = 'residuals';
 
-        return view("welcome", compact("entity", "products"));
+        return view("welcome", compact("entity", "products", 'urlFilter'));
     }
 
-    public function blocksProducts()
+    public function blocksProducts(FilterRequest $request)
     {
+        $entity = 'residuals';
+        $urlFilter = 'welcome.blocksProducts';
+        $column = $request->column;
+
         $products = Product::query()
             ->where('residual_norm', '<>', null)
             ->where('type', Product::PRODUCTS)
-            ->where('building_material', Product::BLOCK)->get()->sortBy('sort');
-        $entity = 'residuals';
+            ->where('building_material', Product::BLOCK);
 
-        return view("welcome", compact("entity", "products"));
+        /* Сортировка */
+        if (isset($request->orderBy) && $request->orderBy == 'asc') {
+            $products = $products->orderBy($column)->get();
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $products = $products->orderByDesc($column)->get();
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $products = $products->get()->sortBy('sort');
+        }
+
+        return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));
     }
 
-    public function concretesMaterials()
+    public function concretesMaterials(FilterRequest $request)
     {
+        $entity = 'residuals';
+        $urlFilter = 'welcome.concretesMaterials';
+        $column = $request->column;
+
         $products = Product::query()
             ->where('residual_norm', '<>', null)
-            ->where('building_material', Product::CONCRETE)->get()->sortBy('sort');
-        $entity = 'residuals';
+            ->where('building_material', Product::CONCRETE);
+        
+            /* Сортировка */
+        if (isset($request->orderBy) && $request->orderBy == 'asc') {
+            $products = $products->orderBy($column)->get();
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $products = $products->orderByDesc($column)->get();
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $products = $products->get()->sortBy('sort');
+        }
 
-        return view("welcome", compact("entity", "products"));
+        return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));
     }
 }

@@ -132,6 +132,7 @@ class DeliveryController extends Controller
         $urlFilter = 'delivery.filter';
         $urlReset = 'delivery.index';
         $entity = 'deliveries';
+        $selectColumn = $request->column;
         $entityItems = Delivery::query();
 
         /* Колонки */
@@ -219,7 +220,8 @@ class DeliveryController extends Controller
             'urlFilter',
             'urlReset',
             'orderBy',
-            'filters'
+            'filters',
+            'selectColumn'
         ));
     }
 }

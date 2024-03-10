@@ -186,6 +186,7 @@ class ProductController extends Controller
         $urlCreate = "product.create";
         $urlFilter = 'product.filter';
         $urlReset = 'product.index';
+        $selectColumn = $request->column;
 
         if ($request->type == 'products') {
             $entity = 'products';
@@ -335,6 +336,7 @@ class ProductController extends Controller
             'urlFilter',
             'urlReset',
             'orderBy',
+            'selectColumn'
          ));
     }
 }
