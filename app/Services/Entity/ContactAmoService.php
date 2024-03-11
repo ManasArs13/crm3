@@ -3,11 +3,10 @@
 namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
+use App\Models\Contact;
 use App\Models\ContactAmo;
-use App\Models\ContactMs;
-use App\Models\Option;
-use App\Models\OrderMs;
-use App\Models\Shipments;
+use App\Models\Order;
+use App\Models\Shipment;
 use GuzzleHttp\Client;
 
 class ContactAmoService implements EntityInterface
@@ -94,13 +93,13 @@ class ContactAmoService implements EntityInterface
                         continue 2;
                     }
                 }
-                $contactMs = ContactMs::query()->where('contact_amo_id', $row->id);
+                $contactMs = Contact::query()->where('contact_amo_id', $row->id);
                 if ($contactMs->exists()) {
 
                     $budget = 0;
-                    $orders = OrderMs::where('contact_ms_id', $contactMs->id)->get('id');
+                    $orders = Order::where('contact_ms_id', $contactMs->id)->get('id');
                     foreach ($orders as $order) {
-                        $budget += Shipments::where('order_id', $order->id)->sum('suma');
+                        $budget += Shipment::where('order_id', $order->id)->sum('suma');
                     }
 
                     dump($row->id, $this->actionPutRowsFromJson($row->id, $contactMs->value('id')), $budget);
