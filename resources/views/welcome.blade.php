@@ -171,6 +171,15 @@
                                             {{ __('column.name') }}
                                         </th>
                                         <th scope="col" class="px-6 py-4">
+                                            {{ __('column.date_plan') }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-4">
+                                            {{ __('column.created_at') }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-4">
+                                            {{ __('column.updated_at') }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-4">
                                             {{ __('column.price') }}
                                         </th>
                                         <th scope="col" class="px-6 py-4">
@@ -189,6 +198,15 @@
                                             </td>
                                             <td class="break-all max-w-96 overflow-hidden px-6 py-4">
                                                 {{ $techchart->name }}
+                                            </td>
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                                {{ $techchart->moment }}
+                                            </td>
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                                {{ $techchart->created_at }}
+                                            </td>
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                                {{ $techchart->updated_at }}
                                             </td>
                                             <td class="break-all max-w-96 overflow-hidden px-6 py-4">
                                                 {{ $techchart->cost }}
