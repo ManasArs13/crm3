@@ -200,7 +200,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="border-b-2" scope="colspan-4">
+                            <div class="border-b-2 p-3" scope="colspan-4">
                                 {{ $products->appends(request()->query())->links() }}
                             </div>
                         </div>
