@@ -39,18 +39,28 @@ class Kernel extends ConsoleKernel
         ImportTransportType::class,
         ImportTransport::class
     ];
-    /**
-     * Define the application's command schedule.
-     */
+
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('ms:import-all')->daily();
+        //$schedule->command('ms:import-all')->daily();
+        $schedule->command('ms:import-color')->daily();
+        $schedule->command('ms:import-status')->daily();
+        $schedule->command('ms:import-transport-type')->daily();
+        $schedule->command('ms:import-transport')->daily();
+        $schedule->command('ms:import-categories')->daily();
+        $schedule->command('ms:import-products')->daily();
+        $schedule->command('ms:import-delivery')->daily();
+        $schedule->command('ms:import-contact')->daily();
+        $schedule->command('ms:import-order')->daily();
+        $schedule->command('ms:import-demand')->daily();
+        $schedule->command('ms:import-supply')->daily();
+        $schedule->command('ms:import-residual')->daily();
+        $schedule->command('ms:import-tech-chart')->daily();
+        $schedule->command('ms:import-processing')->daily();
+
     }
 
-    /**
-     * Register the commands for the application.
-     */
     protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');

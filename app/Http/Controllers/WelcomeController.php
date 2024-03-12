@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FilterRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\TechProcess;
+use Carbon\Carbon;
 
 class WelcomeController extends Controller
 {
@@ -108,11 +110,11 @@ class WelcomeController extends Controller
             $products = $products->where('name', 'LIKE', '%Колонна%');
         } else if (isset($request->type) && $request->type == 'covers') {
             $products = $products->where('name', 'LIKE', '%Крышка на колонну%');
-        }  else if (isset($request->type) && $request->type == 'parapets') {
+        } else if (isset($request->type) && $request->type == 'parapets') {
             $products = $products->where('name', 'LIKE', '%Парапет%');
-        }  else if (isset($request->type) && $request->type == 'blocks') {
+        } else if (isset($request->type) && $request->type == 'blocks') {
             $products = $products->where('name', 'LIKE', '%Блок%');
-        }  else if (isset($request->type) && $request->type == 'dekors') {
+        } else if (isset($request->type) && $request->type == 'dekors') {
             $products = $products->where('name', 'LIKE', '%Декор%');
         }
 
@@ -140,8 +142,8 @@ class WelcomeController extends Controller
         $products = Product::query()
             ->where('residual_norm', '<>', null)
             ->where('building_material', Product::CONCRETE);
-        
-            /* Сортировка */
+
+        /* Сортировка */
         if (isset($request->orderBy) && $request->orderBy == 'asc') {
             $products = $products->orderBy($column)->get();
             $orderBy = 'desc';
@@ -151,6 +153,55 @@ class WelcomeController extends Controller
         } else {
             $orderBy = 'desc';
             $products = $products->get()->sortBy('sort');
+        }
+
+        return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));
+    }
+
+    public function paint(FilterRequest $request)
+    {
+        $entity = 'residuals';
+        $urlFilter = 'welcome.concretesMaterials';
+        $column = $request->column;
+
+        $products = Product::query()
+            ->where('type', Product::MATERIAL)
+            ->where('name', 'LIKE', '%Краска%');
+
+        /* Сортировка */
+        if (isset($request->orderBy) && $request->orderBy == 'asc') {
+            $products = $products->orderBy($column)->get();
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $products = $products->orderByDesc($column)->get();
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $products = $products->get()->sortBy('sort');
+        }
+
+        return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));
+    }
+
+    public function processing(FilterRequest $request)
+    {
+        $entity = 'residuals';
+        $urlFilter = 'welcome.processing';
+        $column = $request->column;
+
+        $products = TechProcess::with('tech_chart')
+            ->where('moment', '<', Carbon::now()->setTime(0, 0)->subDays(5));
+            
+        /* Сортировка */
+        if (isset($request->orderBy) && $request->orderBy == 'asc') {
+            $products = $products->orderBy($column)->paginate(50);
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $products = $products->orderByDesc($column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $products = $products->orderBy('moment', 'desc')->paginate(50);
         }
 
         return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));
