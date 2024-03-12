@@ -104,6 +104,18 @@ class WelcomeController extends Controller
             ->where('type', Product::PRODUCTS)
             ->where('building_material', Product::BLOCK);
 
+        if (isset($request->type) && $request->type == 'columns') {
+            $products = $products->where('name', 'LIKE', '%Колонна%');
+        } else if (isset($request->type) && $request->type == 'covers') {
+            $products = $products->where('name', 'LIKE', '%Крышка на колонну%');
+        }  else if (isset($request->type) && $request->type == 'parapets') {
+            $products = $products->where('name', 'LIKE', '%Парапет%');
+        }  else if (isset($request->type) && $request->type == 'blocks') {
+            $products = $products->where('name', 'LIKE', '%Блок%');
+        }  else if (isset($request->type) && $request->type == 'dekors') {
+            $products = $products->where('name', 'LIKE', '%Декор%');
+        }
+
         /* Сортировка */
         if (isset($request->orderBy) && $request->orderBy == 'asc') {
             $products = $products->orderBy($column)->get();

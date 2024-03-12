@@ -47,14 +47,49 @@
                                     class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
                             @endif
                         </div>
-                        <div>
+                        <div x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
                             @if (url()->current() == route('residual.blocksProducts'))
-                                <a href="{{ route('residual.blocksProducts') }}"
-                                    class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
+                                <button @click="open = ! open"
+                                    class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    {{ __('column.blocks_products') }} &#9660;
+                                </button>
                             @else
-                                <a href="{{ route('residual.blocksProducts') }}"
-                                    class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
+                                <button @click="open = ! open"
+                                    class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    {{ __('column.blocks_products') }} &#9660;
+                                </button>
                             @endif
+                            <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
+                                class="absolute z-500 mt-2 w-48 rounded-md shadow-lg ltr:origin-top-right rtl:origin-top-left"
+                                style="display: none;">
+                                <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
+
+                                    <x-dropdown-link :href="route('residual.blocksProducts')">
+                                        Все товары
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'columns'])">
+                                        Колонны
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'covers'])">
+                                        Крышки
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'parapets'])">
+                                        Парапеты
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'blocks'])">
+                                        Блоки
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'dekors'])">
+                                        Декор
+                                    </x-dropdown-link>
+
+                                </div>
+                            </div>
                         </div>
                         <div>
                             @if (url()->current() == route('residual.concretesMaterials'))

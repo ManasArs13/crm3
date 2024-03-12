@@ -45,7 +45,7 @@
                 @endif
                 <div
                     class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
-        
+
                     {{-- header --}}
                     <div class="border-b-2 border-neutral-100 overflow-x-auto">
                         <div class="flex flex-row w-full p-3 justify-between">
@@ -53,58 +53,95 @@
                                 <div>
                                     @if (url()->current() == route('welcome.index'))
                                         <a href="{{ route('welcome.index') }}"
-                                        class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все остатки</a>
+                                            class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все
+                                            остатки</a>
                                     @else
                                         <a href="{{ route('welcome.index') }}"
-                                        class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все остатки</a>
+                                            class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все
+                                            остатки</a>
                                     @endif
                                 </div>
                                 <div>
                                     @if (url()->current() == route('welcome.blocksMaterials'))
                                         <a href="{{ route('welcome.blocksMaterials') }}"
-                                        class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                            class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
                                     @else
                                         <a href="{{ route('welcome.blocksMaterials') }}"
-                                        class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                            class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
                                     @endif
                                 </div>
                                 <div>
                                     @if (url()->current() == route('welcome.blocksCategories'))
                                         <a href="{{ route('welcome.blocksCategories') }}"
-                                        class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                            class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
                                     @else
                                         <a href="{{ route('welcome.blocksCategories') }}"
-                                        class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                            class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
                                     @endif
                                 </div>
-                                <div>
+                                <div x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
                                     @if (url()->current() == route('welcome.blocksProducts'))
-                                        <a href="{{ route('welcome.blocksProducts') }}"
-                                        class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
+                                        <button @click="open = ! open"
+                                            class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                            {{ __('column.blocks_products') }} &#9660;
+                                        </button>
                                     @else
-                                        <a href="{{ route('welcome.blocksProducts') }}"
-                                        class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_products') }}</a>
+                                        <button @click="open = ! open"
+                                            class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                            {{ __('column.blocks_products') }} &#9660;
+                                        </button>
                                     @endif
+                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 scale-95"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        x-transition:leave="transition ease-in duration-75"
+                                        x-transition:leave-start="opacity-100 scale-100"
+                                        x-transition:leave-end="opacity-0 scale-95"
+                                        class="absolute z-500 mt-2 w-48 rounded-md shadow-lg ltr:origin-top-right rtl:origin-top-left"
+                                        style="display: none;">
+                                        <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
+
+                                            <x-dropdown-link :href="route('welcome.blocksProducts')">
+                                                Все товары
+                                            </x-dropdown-link>
+                                            <x-dropdown-link :href="route('welcome.blocksProducts', ['type' => 'columns'])">
+                                                Колонны
+                                            </x-dropdown-link>
+                                            <x-dropdown-link :href="route('welcome.blocksProducts', ['type' => 'covers'])">
+                                                Крышки
+                                            </x-dropdown-link>
+                                            <x-dropdown-link :href="route('welcome.blocksProducts', ['type' => 'parapets'])">
+                                                Парапеты
+                                            </x-dropdown-link>
+                                            <x-dropdown-link :href="route('welcome.blocksProducts', ['type' => 'blocks'])">
+                                                Блоки
+                                            </x-dropdown-link>
+                                            <x-dropdown-link :href="route('welcome.blocksProducts', ['type' => 'dekors'])">
+                                                Декор
+                                            </x-dropdown-link>
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     @if (url()->current() == route('welcome.concretesMaterials'))
                                         <a href="{{ route('welcome.concretesMaterials') }}"
-                                        class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
+                                            class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
                                     @else
                                         <a href="{{ route('welcome.concretesMaterials') }}"
-                                        class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
+                                            class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
                                     @endif
                                 </div>
                             </div>
-                        </div>              
+                        </div>
                     </div>
-        
-                     {{-- body --}}
+
+                    {{-- body --}}
                     <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                         <table class="text-xs md:text-base text-nowrap">
                             <thead>
                                 <tr class="bg-neutral-200 font-semibold">
-        
+
                                     @if (isset($orderBy) && $orderBy == 'desc')
                                         <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                             <a class="text-black"
@@ -122,11 +159,11 @@
                                             @endif
                                         </th>
                                     @endif
-        
+
                                     <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                         {{ __('column.status_id') }}
                                     </th>
-        
+
                                     @if (isset($orderBy) && $orderBy == 'desc')
                                         <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                             <a class="text-black"
@@ -144,9 +181,9 @@
                                             @endif
                                         </th>
                                     @endif
-        
+
                                     @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
-        
+
                                         @if (isset($orderBy) && $orderBy == 'desc')
                                             <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                                 <a class="text-black"
@@ -164,9 +201,9 @@
                                                 @endif
                                             </th>
                                         @endif
-        
+
                                     @endif
-        
+
                                     @if (isset($orderBy) && $orderBy == 'desc')
                                         <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                             <a class="text-black"
@@ -184,17 +221,15 @@
                                             @endif
                                         </th>
                                     @endif
-        
+
                                     <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                         {{ __('column.need') }}
                                     </th scope="col" class="px-1 md:px-6 py-2 md:py-4">
-        
+
                                     @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
-        
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
-                                        {{ __('column.making_dais') }}
-                                    </th scope="col" class="px-1 md:px-6 py-2 md:py-4">
-        
+                                        <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
+                                            {{ __('column.making_dais') }}
+                                        </th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                     @endif
                                 </tr>
                             </thead>
@@ -207,7 +242,7 @@
                                                     {{ $product->name }}
                                                 </a>
                                             </th>
-        
+
                                             <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                                 @if ($product->residual_norm !== 0 && $product->residual_norm !== null)
                                                     <div
@@ -219,7 +254,7 @@
                                                     {{ __('column.no') }}
                                                 @endif
                                             </th>
-        
+
                                             <th>
                                                 @if ($product->residual_norm)
                                                     {{ $product->residual_norm }}
@@ -227,9 +262,10 @@
                                                     {{ __('column.no') }}
                                                 @endif
                                             </th>
-        
+
                                             @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
-                                                <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
+                                                <th
+                                                    class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                                     @if ($product->materials == 'нет')
                                                         <div
                                                             class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center">
@@ -245,7 +281,7 @@
                                                     @endif
                                                 </th>
                                             @endif
-        
+
                                             <th>
                                                 @if ($product->residual)
                                                     {{ $product->residual }}
@@ -253,7 +289,7 @@
                                                     {{ __('column.no') }}
                                                 @endif
                                             </th>
-        
+
                                             <th>
                                                 @if ($product->residual && $product->residual_norm)
                                                     @if ($product->residual - $product->residual_norm < 0)
@@ -265,7 +301,7 @@
                                                     {{ __('column.no') }}
                                                 @endif
                                             </th>
-        
+
                                             @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
                                                 <th>
                                                     @if ($product->making_day)
@@ -283,7 +319,7 @@
                                                     @endif
                                                 </th>
                                             @endif
-        
+
                                         </tr>
                                     @endif
                                 @endforeach
