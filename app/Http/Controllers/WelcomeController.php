@@ -190,7 +190,7 @@ class WelcomeController extends Controller
         $column = $request->column;
 
         $products = TechProcess::with('tech_chart')
-            ->where('moment', '<', Carbon::now()->setTime(0, 0)->subDays(5));
+            ->where('moment', '>', Carbon::now()->setTime(0, 0)->subDays(6));
             
         /* Сортировка */
         if (isset($request->orderBy) && $request->orderBy == 'asc') {
