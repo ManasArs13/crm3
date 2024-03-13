@@ -13,7 +13,7 @@ class ImportProcessing extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-processing';
+    protected $signature = 'ms:import-processing {--date=null}';
 
     /**
      * Описание консольной команды.
@@ -36,7 +36,21 @@ class ImportProcessing extends Command
     public function handle(MoySkladService $service, ProcessingService $processingService)
     {
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/processing';
-      //  $date = Option::query()->where('code', 'ms_date_begin_change')->first()?->value;
-        $service->createUrl($url, $processingService);
+
+        if ($this->option('date') == 'null') {
+
+            $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+            $service->createUrl($url, $processingService, ["updated"=>'>='.$date], '');
+
+        } else if($this->option('date') == 'not') {
+
+            $service->createUrl($url, $processingService);
+
+        } else {
+
+            $date = $this->option('date');
+            $service->createUrl($url, $processingService, ["updated"=>'>='.$date], '');
+
+        }
     }
 }
