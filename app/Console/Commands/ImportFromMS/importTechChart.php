@@ -36,7 +36,7 @@ class ImportTechChart extends Command
     public function handle(MoySkladService $service, TechChartService $techChart)
     {
         $url = Option::where('code', '=', 'ms_tech_chart_url')->first()?->value;
-        $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $service->createUrl($url, $techChart, ["updated"=>'>='.$date], '');
+     //   $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $service->createUrl($url, $techChart);
     }
 }
