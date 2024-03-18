@@ -192,7 +192,6 @@ class WelcomeController extends Controller
 
         foreach ($products as $product) {
             $product->setAttribute('need_from_tc', 0);
-            $product->setAttribute('need_from_p', 0);
 
             foreach ($goods as $good) {
 
@@ -216,8 +215,6 @@ class WelcomeController extends Controller
                 }
             }
         }
-
-
 
         return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));
     }
