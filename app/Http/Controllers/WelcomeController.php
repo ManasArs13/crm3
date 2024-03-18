@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FilterRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\TechChartMaterial;
+use App\Models\TechChartProduct;
 use App\Models\TechProcess;
+use App\Models\TechProcessMaterial;
+use App\Models\TechProcessProduct;
 use Carbon\Carbon;
 
 class WelcomeController extends Controller
@@ -180,6 +184,41 @@ class WelcomeController extends Controller
             $products = $products->get()->sortBy('sort');
         }
 
+        $goods = Product::query()
+            ->where('residual_norm', '<>', null)
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', Product::BLOCK)
+            ->get();
+
+        foreach ($products as $product) {
+            $product->setAttribute('need_from_tc', 0);
+            $product->setAttribute('need_from_p', 0);
+
+            foreach ($goods as $good) {
+
+                if ($good->residual && $good->residual_norm) {
+                    if ($good->residual - $good->residual_norm < 0) {
+
+                        $tech_chart_product = TechChartProduct::where('product_id', '=', $good->id)->first();
+
+                        if ($tech_chart_product) {
+
+                            $tech_chart_material =
+                                TechChartMaterial::where('tech_chart_id', '=', $tech_chart_product->tech_chart_id)
+                                ->where('product_id', '=', $product->id)
+                                ->First();
+
+                            if ($tech_chart_material) {
+                                $product->need_from_tc += $tech_chart_material->quantity * abs($good->residual - $good->residual_norm);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));
     }
 
@@ -191,7 +230,7 @@ class WelcomeController extends Controller
 
         $products = TechProcess::with('tech_chart')
             ->whereDate('moment', '>=', Carbon::now()->setTime(0, 0)->subDays(6));
-            
+
         /* Сортировка */
         if (isset($request->orderBy) && $request->orderBy == 'asc') {
             $products = $products->orderBy($column)->paginate(50);
