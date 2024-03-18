@@ -250,7 +250,7 @@
                                             {{ __('column.status_id') }}
                                         </th>
 
-                                        @if (isset($orderBy) && $orderBy == 'desc')
+                                        {{-- @if (isset($orderBy) && $orderBy == 'desc')
                                             <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
                                                 <a class="text-black"
                                                     href="{{ route($urlFilter, ['column' => 'residual_norm', 'orderBy' => 'desc']) }}">{{ __('column.residual_norm') }}</a>
@@ -266,7 +266,7 @@
                                                     &#9660;
                                                 @endif
                                             </th>
-                                        @endif
+                                        @endif --}}
 
                                         @if (isset($orderBy) && $orderBy == 'desc')
                                             <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
@@ -287,11 +287,11 @@
                                         @endif
 
                                         <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
-                                            {{ __('column.need') }}
+                                            {{ __('column.need_from_tc') }}
                                         </th scope="col" class="px-1 md:px-6 py-2 md:py-4">
 
                                         <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
-                                            {{ __('column.need_from_tc') }}
+                                            {{ __('column.need') }}
                                         </th scope="col" class="px-1 md:px-6 py-2 md:py-4">
 
                                     </tr>
@@ -320,13 +320,13 @@
                                                     @endif
                                                 </th>
 
-                                                <th>
+                                                {{-- <th>
                                                     @if ($product->residual_norm)
                                                         {{ $product->residual_norm }}
                                                     @else
                                                         {{ __('column.no') }}
                                                     @endif
-                                                </th>
+                                                </th> --}}
 
                                                 <th>
                                                     @if ($product->residual)
@@ -337,20 +337,20 @@
                                                 </th>
 
                                                 <th>
-                                                    @if ($product->residual && $product->residual_norm)
-                                                        @if ($product->residual - $product->residual_norm < 0)
-                                                            {{ abs($product->residual - $product->residual_norm) }}
-                                                        @else
-                                                            {{ 0 }}
-                                                        @endif
+                                                    @if ($product->need_from_tc)
+                                                        {{ $product->need_from_tc }}
                                                     @else
                                                         {{ __('column.no') }}
                                                     @endif
                                                 </th>
 
                                                 <th>
-                                                    @if ($product->need_from_tc)
-                                                        {{ $product->need_from_tc }}
+                                                    @if ($product->residual && $product->need_from_tc)
+                                                        @if ($product->residual - $product->need_from_tc < 0)
+                                                            {{ abs($product->residual - $product->need_from_tc) }}
+                                                        @else
+                                                            {{ 0 }}
+                                                        @endif
                                                     @else
                                                         {{ __('column.no') }}
                                                     @endif
