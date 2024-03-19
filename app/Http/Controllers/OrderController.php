@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterRequest;
+use App\Models\Contact;
+use App\Models\Delivery;
 use App\Models\Order;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -69,12 +72,14 @@ class OrderController extends Controller
 
     public function create()
     {
-        $entityItem = new Order();
-        $columns = Schema::getColumnListing('orders');
         $entity = 'order';
         $action = "order.store";
 
-        return view('own.create', compact('entityItem', 'columns', 'action', 'entity'));
+        $statuses = Status::all();
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+        $deliveries = Delivery::orderBy('name')->get();
+
+        return view('order.create', compact('action', 'entity', 'statuses', 'contacts', 'deliveries'));
     }
 
     public function store(Request $request)
