@@ -28,7 +28,7 @@ class TechChartService implements EntityInterface
                 $entity->ms_id = $row['id'];
             }
 
-            
+
             if (isset($row["description"])) {
                 $entity->description = $row["description"];
             }
@@ -42,7 +42,7 @@ class TechChartService implements EntityInterface
             } else {
                 $entity->group = null;
             }
-           // dump($row);
+            // dump($row);
             $entity->name = $row["name"];
             $entity->updated_at = $row["updated"];
 
@@ -61,14 +61,16 @@ class TechChartService implements EntityInterface
                     }
 
                     $entity_product->tech_chart_id = $entity->id;
-                    
+
 
                     $product_ms = $this->service->actionGetRowsFromJson($product['assortment']['meta']['href'], false);
                     $product_bd = Product::where('ms_id', $product_ms['id'])->first();
-                    
-                    $entity_product->product_id = $product_bd['id'];
-                    $entity_product->quantity = $product['quantity'];
-                    $entity_product->save();
+
+                    if ($product_bd) {
+                        $entity_product->product_id = $product_bd['id'];
+                        $entity_product->quantity = $product['quantity'];
+                        $entity_product->save();
+                    }
                 }
             }
 
@@ -89,8 +91,10 @@ class TechChartService implements EntityInterface
                     $product_ms = $this->service->actionGetRowsFromJson($material['assortment']['meta']['href'], false);
                     $product_bd = Product::where('ms_id', $product_ms['id'])->first();
 
-                    $entity_material->product_id = $product_bd['id'];
-                    $entity_material->save();
+                    if ($product_bd) {
+                        $entity_material->product_id = $product_bd['id'];
+                        $entity_material->save();
+                    }
                 }
             }
         }
