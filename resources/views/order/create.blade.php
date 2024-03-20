@@ -154,6 +154,13 @@
                                 </button>
                             </div>
                         </div>
+
+                        <hr class="w-full">
+
+                        {{-- Comment --}}
+                        <div class="flex flex-row my-5 w-full">
+                            <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий"></textarea>
+                        </div>
                         <script>
                             document.addEventListener('alpine:init', () => {
                                 Alpine.data('products', () => ({

@@ -114,6 +114,10 @@ class OrderController extends Controller
         $order->transport_id = $request->transport;
         $order->date_plan = $request->date;
 
+        if($request->comment) {
+            $order->comment = $request->comment;
+        }
+
         $order->save();
 
         $sum = 0;
