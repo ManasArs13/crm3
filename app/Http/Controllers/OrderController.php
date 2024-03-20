@@ -6,7 +6,11 @@ use App\Http\Requests\FilterRequest;
 use App\Models\Contact;
 use App\Models\Delivery;
 use App\Models\Order;
+use App\Models\OrderPosition;
+use App\Models\Product;
 use App\Models\Status;
+use App\Models\Transport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -78,14 +82,68 @@ class OrderController extends Controller
         $statuses = Status::all();
         $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
         $deliveries = Delivery::orderBy('name')->get();
+        $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+        $transports = Transport::orderBy('name')->get();
+        $date = Carbon::now();
 
-        return view('order.create', compact('action', 'entity', 'statuses', 'contacts', 'deliveries'));
+        return view(
+            'order.create',
+            compact(
+                'action',
+                'entity',
+                'statuses',
+                'contacts',
+                'transports',
+                'deliveries',
+                'products',
+                'date'
+            )
+        );
     }
 
     public function store(Request $request)
     {
-        Order::create($request->post());
-        return redirect()->route("order.index");
+        $order = new Order();
+        $order->name = 'CRM-' . $request->name;
+        $order->status_id = $request->status;
+        $order->contact_id = $request->contact;
+        $order->delivery_id = $request->delivery;
+        $order->transport_id = $request->transport;
+        $order->date_plan = $request->date;
+
+        $order->save();
+
+        $sum = 0;
+        $weight = 0;
+
+        foreach ($request->products as $product) {
+
+            $position = new OrderPosition();
+
+            $product_bd = Product::find($product['product']);
+            $position->product_id = $product_bd->id;
+            $position->order_id = $order->id;
+            $position->quantity = $product['count'];
+            $position->price = $product_bd->price;
+            $position->weight_kg = $product_bd->price * $product['count'];
+            $position->shipped = 0;
+            $position->reserve = 0;
+
+            $position->save();
+
+            $sum += $position->price;
+            $weight += $position->weight_kg;
+        }
+
+        $order->sum = $sum;
+        $order->weight = $weight;
+
+        $order->update();
+
+        return redirect()->route("order.index")->with('succes', 'Заказ №' .$order->id. ' добавлен');
     }
 
     public function show(string $id)

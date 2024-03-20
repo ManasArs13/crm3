@@ -8,6 +8,13 @@
 
 
     <div class="w-11/12 mx-auto py-8">
+
+        @if (session('succes'))
+            <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-base text-green-700 ">
+                {{ session('succes') }}
+            </div>
+        @endif
+
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
         @endif
