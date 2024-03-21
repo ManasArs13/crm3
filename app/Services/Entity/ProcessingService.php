@@ -82,10 +82,12 @@ class ProcessingService implements EntityInterface
 
                     $product_ms = $this->service->actionGetRowsFromJson($product['assortment']['meta']['href'], false);
                     $product_bd = Product::where('ms_id', $product_ms['id'])->first();
-                    
-                    $entity_product->product_id = $product_bd['id'];
-                    $entity_product->quantity = $product['quantity'];
-                    $entity_product->save();
+
+                    if ($product_bd) {
+                        $entity_product->product_id = $product_bd['id'];
+                        $entity_product->quantity = $product['quantity'];
+                        $entity_product->save();
+                    }
                 }
             }
 
@@ -106,19 +108,21 @@ class ProcessingService implements EntityInterface
                     $product_ms = $this->service->actionGetRowsFromJson($material['assortment']['meta']['href'], false);
                     $product_bd = Product::where('ms_id', $product_ms['id'])->first();
 
-                    $entity_material->product_id = $product_bd['id'];
+                    if ($product_bd) {
+                        $entity_material->product_id = $product_bd['id'];
 
-                    if (isset($row["processingPlan"])) {
-                        $techart_material = TechChartMaterial::where('tech_chart_id', '=', $techchart_bd['id'])
-                            ->where('product_id', '=', $product_bd['id'])
-                            ->first();
+                        if (isset($row["processingPlan"])) {
+                            $techart_material = TechChartMaterial::where('tech_chart_id', '=', $techchart_bd['id'])
+                                ->where('product_id', '=', $product_bd['id'])
+                                ->first();
 
-                        if ($techart_material) {
-                            $entity_material->quantity_norm = $row["quantity"] * $techart_material->quantity;
+                            if ($techart_material) {
+                                $entity_material->quantity_norm = $row["quantity"] * $techart_material->quantity;
+                            }
                         }
-                    }
 
-                    $entity_material->save();
+                        $entity_material->save();
+                    }
                 }
             }
         }
