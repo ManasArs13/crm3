@@ -155,7 +155,7 @@
                         Остатки
                     </x-nav-link>
 
-                    <x-nav-link :href="route('product.index', ['type' => 'products'])" :active="request()->routeIs('product.*')">
+                    <x-nav-link :href="route('product.index', ['type' => 'products'])" :active="request()->routeIs('product.*') && request()->type == 'products'">
                         Товары
                     </x-nav-link>
 
@@ -163,7 +163,7 @@
                         Приёмки
                     </x-nav-link>
 
-                    <x-nav-link :href="route('product.index', ['type' => 'materials'])">
+                    <x-nav-link :href="route('product.index', ['type' => 'materials'])" :active="request()->routeIs('product.*') && request()->type == 'materials'">
                         Материалы
                     </x-nav-link>
 

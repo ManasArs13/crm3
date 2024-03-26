@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Schema;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(FilterRequest $request)
     {
-        $entityItems = Order::query()->paginate(50);
+        $entityItems = Order::query();
         $columns = Schema::getColumnListing('orders');
 
         $urlEdit = "order.edit";
@@ -28,6 +28,20 @@ class OrderController extends Controller
         $urlFilter = 'order.filter';
         $entity = 'orders';
         $needMenuForItem = true;
+        $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
+
+        /* Сортировка */
+        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $entityItems->paginate(50);
+        }
 
         $resColumns = [];
         $resColumnsAll = [];
@@ -70,7 +84,9 @@ class OrderController extends Controller
             "urlCreate",
             "entity",
             'urlFilter',
-            'filters'
+            'filters',
+            'orderBy',
+            'selectColumn'
         ));
     }
 

@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Schema;
 
 class ShipmentController extends Controller
 {
-    public function index()
+    public function index(FilterRequest $request)
     {
-        $entityItems = Shipment::query()->paginate(50);
+        $entityItems = Shipment::query();
         $columns = Schema::getColumnListing('shipments');
         $needMenuForItem = true;
         $urlEdit = "shipment.edit";
@@ -20,6 +20,20 @@ class ShipmentController extends Controller
         $urlCreate = "shipment.create";
         $urlFilter = 'shipment.filter';
         $entity = 'shipments';
+        $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
+
+        /* Сортировка */
+        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+        } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $entityItems->paginate(50);
+        }
 
         $resColumns = [];
         $resColumnsAll = [];
@@ -62,7 +76,9 @@ class ShipmentController extends Controller
             "urlCreate",
             "entity",
             'urlFilter',
-            "filters"
+            "filters",
+            'orderBy',
+            'selectColumn'
         ));
     }
 

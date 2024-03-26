@@ -17,16 +17,30 @@ class ProductController extends Controller
         $urlDelete = "product.destroy";
         $urlCreate = "product.create";
         $urlFilter = 'product.filter';
+        $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
 
         if ($request->type == 'products') {
             $entity = 'products';
-            $entityItems = Product::query()->where('type', Product::PRODUCTS)->orderByDesc('sort')->paginate(50);
+            $entityItems = Product::query()->where('type', Product::PRODUCTS);
         } else if ($request->type == 'materials') {
             $entity = 'materials';
-            $entityItems = Product::query()->where('type', Product::MATERIAL)->orderByDesc('sort')->paginate(50);
+            $entityItems = Product::query()->where('type', Product::MATERIAL);
         } else {
             $entity = 'products';
-            $entityItems = Product::query()->orderByDesc('sort')->paginate(50);;
+            $entityItems = Product::query();
+        }
+
+        /* Сортировка */
+        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $entityItems->orderByDesc('sort')->paginate(50);
         }
 
         /* Колонки */
@@ -105,7 +119,9 @@ class ProductController extends Controller
             "urlCreate",
             "entity",
             'urlFilter',
-            'filters'
+            'filters',
+            'orderBy',
+            'selectColumn'
         ));
     }
 

@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Schema;
 
 class ShipingPriceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $entityItems = ShipingPrice::query()->paginate(50);
+        $entityItems = ShipingPrice::query();
         $columns = Schema::getColumnListing('shiping_prices');
         $needMenuForItem = true;
         $urlEdit = "shiping_price.edit";
@@ -20,6 +20,20 @@ class ShipingPriceController extends Controller
         $urlCreate = "shiping_price.create";
         $urlFilter = 'shiping_price.filter';
         $entity = 'shiping_prices';
+        $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
+
+        /* Сортировка */
+        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $entityItems->paginate(50);
+        }
 
         $resColumns = [];
         $resColumnsAll = [];
@@ -42,7 +56,9 @@ class ShipingPriceController extends Controller
             "urlCreate",
             "entity",
             'urlFilter',
-            'filters'
+            'filters',
+            'orderBy',
+            'selectColumn'
         ));
     }
 

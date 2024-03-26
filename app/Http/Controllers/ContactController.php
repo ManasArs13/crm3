@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Schema;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index(FilterRequest $request)
     {
-        $entityItems = Contact::query()->paginate(50);
+        $entityItems = Contact::query();
         $needMenuForItem = true;
         $urlEdit = "contact.edit";
         $urlShow = "contact.show";
@@ -19,6 +19,20 @@ class ContactController extends Controller
         $urlCreate = "contact.create";
         $urlFilter = 'contact.filter';
         $entity = 'contacts';
+        $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
+
+        /* Сортировка */
+        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $entityItems->paginate(50);
+        }
 
         /* Колонки */
         $columns = Schema::getColumnListing('contacts');
@@ -64,7 +78,9 @@ class ContactController extends Controller
             "urlCreate",
             "entity",
             'urlFilter',
-            'filters'
+            'filters',
+            'orderBy',
+            'selectColumn'
         ));
     }
 

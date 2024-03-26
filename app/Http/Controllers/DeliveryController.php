@@ -11,7 +11,7 @@ class DeliveryController extends Controller
 {
     public function index(Request $request)
     {
-        $entityItems = Delivery::query()->paginate(50);
+        $entityItems = Delivery::query();
         $needMenuForItem = true;
         $urlEdit = "delivery.edit";
         $urlShow = "delivery.show";
@@ -19,6 +19,20 @@ class DeliveryController extends Controller
         $urlCreate = "delivery.create";
         $urlFilter = 'delivery.filter';
         $entity = 'deliveries';
+        $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
+
+        /* Сортировка */
+        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $entityItems->paginate(50);
+        }
 
         /* Колонки */
         $columns = Schema::getColumnListing('deliveries');
@@ -65,7 +79,9 @@ class DeliveryController extends Controller
             "urlCreate",
             "entity",
             'urlFilter',
-            'filters'
+            'filters',
+            'orderBy',
+            'selectColumn'
         ));
     }
 

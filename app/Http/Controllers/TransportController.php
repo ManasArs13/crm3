@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Schema;
 
 class TransportController extends Controller
 {
-    public function index()
+    public function index(FilterRequest $request)
     {
-        $entityItems = Transport::query()->paginate(50);
+        $entityItems = Transport::query();
         $columns = Schema::getColumnListing('transports');
         $needMenuForItem = true;
         $urlEdit = "transport.edit";
@@ -20,6 +20,20 @@ class TransportController extends Controller
         $urlCreate = "transport.create";
         $urlFilter = 'transport.filter';
         $entity = 'transports';
+        $orderBy  = $request->orderBy;
+        $selectColumn = $request->column;
+
+        /* Сортировка */
+        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+        } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+        } else {
+            $orderBy = 'desc';
+            $entityItems =   $entityItems->paginate(50);
+        }
 
         $resColumns = [];
         $resColumnsAll = [];
@@ -42,7 +56,9 @@ class TransportController extends Controller
             "urlEdit",
             "urlCreate",
             "entity",
-            'urlFilter'
+            'urlFilter',
+            'orderBy',
+            'selectColumn'
         ));
     }
 

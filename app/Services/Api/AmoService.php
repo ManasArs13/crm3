@@ -76,8 +76,7 @@ class AmoService
     {
         try {
             $accessToken = $this->provider->getAccessToken('authorization_code', [
-               // 'code' => $this->options['code'],
-               'code' => 'dpzr3s0sp33iuesvoqqywnyx56bgoafx1tfhvmch',
+                'code' => $this->options['code'],
             ]);
             $data = [
                 'accessToken' => $accessToken->getToken(),

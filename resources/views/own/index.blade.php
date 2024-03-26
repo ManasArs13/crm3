@@ -10,7 +10,7 @@
     <div class="w-11/12 mx-auto py-8">
 
         @if (session('succes'))
-            <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-base text-green-700 ">
+            <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
                 {{ session('succes') }}
             </div>
         @endif
@@ -195,7 +195,7 @@
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
                                     <th scope="col" class="px-6 py-4">
                                         <a class="text-black"
-                                            href="{{ route($urlFilter, ['column' => $key, 'orderBy' => 'desc', 'resColumns' => $resColumns, 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
                                             &#9650;
                                         @endif
@@ -203,7 +203,7 @@
                                 @else
                                     <th scope="col" class="px-6 py-4">
                                         <a class="text-black"
-                                            href="{{ route($urlFilter, ['column' => $key, 'orderBy' => 'asc', 'resColumns' => $resColumns, 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
                                             &#9660;
                                         @endif
