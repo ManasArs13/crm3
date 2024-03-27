@@ -10,6 +10,7 @@ use App\Models\OrderPosition;
 use App\Models\Product;
 use App\Models\Status;
 use App\Models\Transport;
+use App\Models\TransportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -102,8 +103,8 @@ class OrderController extends Controller
             ->where('type', Product::PRODUCTS)
             ->orderBy('name')
             ->get();
-        $transports = Transport::orderBy('name')->get();
-        $date = Carbon::now();
+        $transports = TransportType::orderBy('name')->get();
+        $date = Carbon::now()->format('Y-m-d');
 
         return view(
             'order.create',
@@ -127,8 +128,8 @@ class OrderController extends Controller
         $order->status_id = $request->status;
         $order->contact_id = $request->contact;
         $order->delivery_id = $request->delivery;
-        $order->transport_id = $request->transport;
-        $order->date_plan = $request->date;
+        $order->transport_type_id = $request->transport_type;
+        $order->date_plan = $request->date .' '. $request->time;
 
         if($request->comment) {
             $order->comment = $request->comment;

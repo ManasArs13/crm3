@@ -1,5 +1,11 @@
 <x-app-layout>
 
+    <x-slot:head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    </x-slot>
+
     @if (isset($entity) && $entity != '')
         <x-slot:title>
             Добавить {{ __('entity.' . $entity) }}
@@ -28,8 +34,9 @@
                                     <span
                                         class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Заказ №</span>
-                                    <input type="number" name="name" min="79999" value="{{ strtotime($date) }}" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                    <input type="number" name="name" min="79999" value="{{ strtotime($date) }}"
+                                        required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
                             <div class="basis-1/2">
@@ -51,56 +58,120 @@
                         {{-- Contacts --}}
                         <div class="flex flex-row mb-3 w-full">
                             <span
-                                class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                 Контрагент</span>
-                            <select name="contact" required
-                                class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                            <select name="contact" required style="width:36%" class="select2">
                                 <option value="" selected disabled>не выбрано</option>
                                 @foreach ($contacts as $contact)
                                     <option value="{{ $contact->id }}">{{ $contact->name }}</option>
                                 @endforeach
                             </select>
+                            <x-modalWindow align="top" width="default">
+                                <x-slot name="trigger">
+
+                                    <button type="button"
+                                        class="inline-block rounded bg-green-400 ml-1 pt-1 px-3 text-white hover:bg-green-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                        </svg>
+                                    </button>
+
+                                </x-slot>
+
+                                {{-- Model new contact --}}
+                                <x-slot name="content">
+                                    <h4 class="text-3xl font-bold mb-6">Добавить контакт</h4>
+                                    <form action="" method="post">
+                                        @csrf
+                                        @method('post')
+                                        <div class="flex flex-row w-full px-1">
+                                            <span
+                                                class="flex basis-[11%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                                Имя</span>
+                                            <input type="text" name="name" required
+                                                placeholder="ФИО или название контрагента"
+                                                class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                        </div>
+                                        <div class="flex flex-row w-full px-1 my-2">
+                                            <div class="flex basis-1/2">
+                                                <span
+                                                    class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                                    Телефон</span>
+                                                <input type="tel" name="phone" required
+                                                    placeholder="+7(000)000-00-00"
+                                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                            </div>
+                                            <div class="flex basis-1/2">
+                                                <span
+                                                    class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                                    Почта</span>
+                                                <input type="mail" name="email" required
+                                                    placeholder="example@example.com"
+                                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-row w-full px-1 my-2">
+                                            <button type="submit"
+                                                class="w-full p-2 bg-green-400 hover:bg-green-600 rounded">сохранить
+                                                контакт</button>
+                                        </div>
+                                    </form>
+                                </x-slot>
+                            </x-modalWindow>
                         </div>
 
                         {{-- Delivery --}}
                         <div class="flex flex-row mb-3 w-full gap-3">
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
-                                <span
-                                    class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                    Транспорт</span>
-                                <select name="transport" required
-                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                    <option value="" selected disabled>не выбрано</option>
-                                    @foreach ($transports as $transport)
-                                        <option value="{{ $transport->id }}">{{ $transport->name }}</option>
-                                    @endforeach
-                                </select>
+                                    <span
+                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Транспорт</span>
+                                    <select name="transport_type" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        <option value="" selected disabled>не выбрано</option>
+                                        @foreach ($transports as $transport)
+                                            <option value="{{ $transport->id }}">{{ $transport->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
-                                <span
-                                    class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                    Доставка</span>
-                                <select name="delivery" required
-                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                    <option value="" selected disabled>не выбрано</option>
-                                    @foreach ($deliveries as $delivery)
-                                        <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
-                                    @endforeach
-                                </select>
+                                    <span
+                                        class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Доставка</span>
+                                    <select name="delivery" required class="select2" style="width: 100%">
+                                        <option value="" selected disabled>не выбрано</option>
+                                        @foreach ($deliveries as $delivery)
+                                            <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
                         {{-- Date --}}
                         <div class="flex flex-row mb-5 w-full">
-                            <span
-                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Плановая дата</span>
-                            <input type="datetime-local" min="0" value="{{ $date }}" name="date" required
-                                class="relative m-0 flex basis-1/5 rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                            <div class="flex flex-row">
+                                <span
+                                    class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    Плановая дата</span>
+                                <input type="date" min="2020-01-01" value="{{ $date }}" name="date"
+                                    required
+                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                            </div>
+                            <div class="flex flex-row">
+                                <span
+                                    class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    время</span>
+                                <input type="time" min="08:00" max="20:00" name="time" required
+                                    value="08:00" step="3600"
+                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+
+                            </div>
                         </div>
 
                         <hr class="w-full">
@@ -112,8 +183,8 @@
                             <template x-for="(row, index) in rows" :key="index">
                                 <div class="flex flex-row mb-3 w-full">
 
-                                    <select x-bind:name="`products[${row.id}][product]`"
-                                        x-model.number="row.product" x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
+                                    <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
+                                        x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
                                         class="relative m-0 flex basis-full rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
@@ -124,10 +195,10 @@
                                     </select>
 
                                     <input x-model.number="row.count" x-init="$watch('row', (row) => changeProduct(row.product, row.id))" min="1"
-                                        x-bind:max="row.residual" type="number" x-bind:name="`products[${row.id}][count]`" required
+                                        x-bind:max="row.residual" type="number"
+                                        x-bind:name="`products[${row.id}][count]`" required
                                         class="relative m-0 flex basis-1/5 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
                                         placeholder="количество" />
-
 
                                     <span x-text="row.weight_kg"
                                         class="flex basis-1/6 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
@@ -146,6 +217,23 @@
 
                                 </div>
                             </template>
+
+                            <div
+                                class="flex flex-row rounded text-lg mb-3 w-full justify-end pr-20 border border-1 py-3 bg-gray-100">
+                                <span class="flex basis-1/6">
+                                    Итого
+                                </span>
+                                <label for="">количество:</label>
+                                <span class="mr-6" x-text="allCount">
+                                </span>
+                                <label for="">вес: </label>
+                                <span class="mr-6" x-text="allWeight">
+                                </span>
+                                <label for="">сумма: </label>
+                                <span class="mr-6" x-text="allSum">
+                                </span>
+
+                            </div>
 
                             <div class="flex flex-row mb-3 w-full">
                                 <button @click="addNewRow()" type="button"
@@ -169,19 +257,33 @@
                                     rows: [{
                                         id: 0,
                                         product: '',
-                                        count: null,
+                                        count: 0,
                                         residual: 0,
                                         weight_kg: 'вес',
+                                        weight: 0,
                                         price: 'цена',
                                         sum: 'сумма'
                                     }],
 
+                                    allSum: 0,
+                                    allWeight: 0,
+                                    allCount: 0,
+
                                     changeProduct(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
-                                            this.rows[index].weight_kg = this.entities.find(x => x.id == Id).weight_kg
+                                            this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                            this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg * this
+                                                .rows[index].count
                                             this.rows[index].price = this.entities.find(x => x.id == Id).price
                                             this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                             this.rows[index].sum = this.rows[index].price * this.rows[index].count
+
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                            this.allWeight = this.rows.map(item => item.weight).reduce((prev, curr) =>
+                                                prev + curr, 0);
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                                curr, 0);
                                         }
                                     },
 
@@ -189,8 +291,9 @@
                                         this.rows.push({
                                             id: this.rows.length,
                                             product: '',
-                                            count: null,
+                                            count: 0,
                                             weight_kg: 'вес',
+                                            weight: 0,
                                             price: 'цена',
                                             residual: 0,
                                             sum: 'сумма'
@@ -199,6 +302,13 @@
 
                                     removeRow(row) {
                                         this.rows.splice(this.rows.indexOf(row), 1);
+                                        
+                                        this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev + curr,
+                                        0);
+                                        this.allWeight = this.rows.map(item => item.weight).reduce((prev, curr) => prev +
+                                            curr, 0);
+                                        this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                            curr, 0);
                                     }
                                 }))
                             })
@@ -214,4 +324,10 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            //change selectboxes to selectize mode to be searchable
+            $(".select2").select2();
+        });
+    </script>
 </x-app-layout>
