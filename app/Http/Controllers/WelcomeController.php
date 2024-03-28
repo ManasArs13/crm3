@@ -8,8 +8,6 @@ use App\Models\Product;
 use App\Models\TechChartMaterial;
 use App\Models\TechChartProduct;
 use App\Models\TechProcess;
-use App\Models\TechProcessMaterial;
-use App\Models\TechProcessProduct;
 use Carbon\Carbon;
 
 class WelcomeController extends Controller

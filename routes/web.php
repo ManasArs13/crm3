@@ -44,7 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard-2', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-2');
     Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
-    
+
     Route::get('/fetch-orders', [DashboardController::class, 'fetchOrders'])->name('filter.orders');
     Route::get('/month-orders', [DashboardController::class, 'getOrderMonth'])->name('month.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
@@ -61,7 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'delivery' => DeliveryController::class,
         'option' => OptionController::class,
         'shiping_price' => ShipingPriceController::class,
-        'category' => CategoryController::class, 
+        'category' => CategoryController::class,
     ]);
 
     // Фильтры
@@ -83,8 +83,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
     Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
     Route::get('/residuals/concretes_materials', [ResidualController::class, 'concretesMaterials'])->name('residual.concretesMaterials');
-    
-      // Приёмки
+    Route::get('/residuals/paint', [ResidualController::class, 'paint'])->name('residual.paint');
+    Route::get('/residuals/processing', [ResidualController::class, 'processing'])->name('residual.processing');
+
+    // Приёмки
     Route::resource('supplies', SupplyController::class)->only([
         'index', 'show'
     ]);
@@ -103,8 +105,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
     Route::get('/processing/products', [ProcessingController::class, 'products'])->name('processings.products');
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
-
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
