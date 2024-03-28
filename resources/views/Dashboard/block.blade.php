@@ -41,6 +41,34 @@
                                 class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @endif
                     </div>
+
+                    <div class="ml-10">
+                        @if (request()->routeIs('dashboard'))
+                            <a href="{{ route('dashboard') }}"
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
+                        @else
+                            <a href="{{ route('dashboard') }}"
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
+                        @endif
+                    </div>
+                    <div>
+                        @if (request()->routeIs('dashboard-2'))
+                            <a href="{{ route('dashboard-2') }}"
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
+                        @else
+                            <a href="{{ route('dashboard-2') }}"
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
+                        @endif
+                    </div>
+                    <div>
+                        @if (request()->routeIs('dashboard-3'))
+                            <a href="{{ route('dashboard-3') }}"
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
+                        @else
+                            <a href="{{ route('dashboard-3') }}"
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
+                        @endif
+                    </div>
                 </div>
                 <div class="flex px-3 text-center font-bold">
                     {{ \Illuminate\Support\Carbon::now()->format('Y-m-d') }}

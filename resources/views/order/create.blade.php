@@ -223,13 +223,13 @@
                                 <span class="flex basis-1/6">
                                     Итого
                                 </span>
-                                <label for="">количество:</label>
+                                <label>количество:</label>
                                 <span class="mr-6" x-text="allCount">
                                 </span>
-                                <label for="">вес: </label>
+                                <label>вес: </label>
                                 <span class="mr-6" x-text="allWeight">
                                 </span>
-                                <label for="">сумма: </label>
+                                <label>сумма: </label>
                                 <span class="mr-6" x-text="allSum">
                                 </span>
 
