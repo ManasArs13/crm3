@@ -13,13 +13,13 @@
     @endif
 
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 max-w-7xl mx-auto py-8">
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
         @endif
 
         <div
-            class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+            class="max-w-7xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                 <form action="{{ route($action) }}" method="post">
                     @csrf
@@ -82,10 +82,7 @@
 
                                 {{-- Model new contact --}}
                                 <x-slot name="content">
-                                    <h4 class="text-3xl font-bold mb-6">Добавить контакт</h4>
-                                    <form action="" method="post">
-                                        @csrf
-                                        @method('post')
+                                    <h4 class="text-3xl max-w-7xl mx-auto font-bold mb-6">Добавить контакт</h4>
                                         <div class="flex flex-row w-full px-1">
                                             <span
                                                 class="flex basis-[11%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">

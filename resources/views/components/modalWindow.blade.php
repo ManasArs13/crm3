@@ -39,7 +39,7 @@ switch ($width) {
             x-transition:leave="transition ease-in duration-75"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95"
-            class="fixed mx-auto z-50 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
+            class="fixed mx-auto z-50 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }} max-w-7xl"
             style="display: none;transform: translate(-50%, -50%); top:50%; left:50%; width:95%">
         <div class="rounded-md mx-auto ring-1 ring-black p-9 {{ $contentClasses }}">
             {{ $content }}
