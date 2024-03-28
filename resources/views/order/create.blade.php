@@ -34,8 +34,8 @@
                                     <span
                                         class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Заказ №</span>
-                                    <input type="number" name="name" min="79999" value="{{ strtotime($dateNow) }}"
-                                        required
+                                    <input type="number" name="name" min="79999"
+                                        value="{{ strtotime($dateNow) }}" required
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                                 <div class="flex flex-row mb-1 w-full">
@@ -43,8 +43,8 @@
                                         <span
                                             class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                             дата создания</span>
-                                        <input type="datetime-local" min="2020-01-01" value="{{ $dateNow }}" name="date_created"
-                                            required
+                                        <input type="datetime-local" min="2020-01-01" value="{{ $dateNow }}"
+                                            name="date_created" required
                                             class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                             </div>
                         </div>
 
-                        
+
 
                         {{-- Contacts --}}
                         <div class="flex flex-row mb-3 w-full">
@@ -78,6 +78,8 @@
                                     <option value="{{ $contact->id }}">{{ $contact->name }}</option>
                                 @endforeach
                             </select>
+
+                            {{--
                             <x-modalWindow align="top" width="default">
                                 <x-slot name="trigger">
 
@@ -92,14 +94,14 @@
 
                                 </x-slot>
 
-                                {{-- Model new contact --}}
+                                {{-- Model new contact 
                                 <x-slot name="content">
                                     <h4 class="text-3xl max-w-7xl mx-auto font-bold mb-6">Добавить контакт</h4>
                                         <div class="flex flex-row w-full px-1">
                                             <span
                                                 class="flex basis-[11%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                                 Имя</span>
-                                            <input type="text" name="name" required
+                                            <input type="text" name="name_cont"
                                                 placeholder="ФИО или название контрагента"
                                                 class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                         </div>
@@ -108,7 +110,7 @@
                                                 <span
                                                     class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                                     Телефон</span>
-                                                <input type="tel" name="phone" required
+                                                <input type="tel" name="phone"
                                                     placeholder="+7(000)000-00-00"
                                                     class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                             </div>
@@ -116,7 +118,7 @@
                                                 <span
                                                     class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                                     Почта</span>
-                                                <input type="mail" name="email" required
+                                                <input type="mail" name="email"
                                                     placeholder="example@example.com"
                                                     class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                             </div>
@@ -128,7 +130,7 @@
                                         </div>
                                     </form>
                                 </x-slot>
-                            </x-modalWindow>
+                            </x-modalWindow> --}}
                         </div>
 
                         {{-- Delivery --}}
@@ -289,7 +291,8 @@
 
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = Math.round(this.rows.map(item => item.weight).reduce((prev, curr) =>
+                                            this.allWeight = Math.round(this.rows.map(item => item.weight).reduce((prev,
+                                                    curr) =>
                                                 prev + curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
@@ -311,9 +314,9 @@
 
                                     removeRow(row) {
                                         this.rows.splice(this.rows.indexOf(row), 1);
-                                        
+
                                         this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev + curr,
-                                        0);
+                                            0);
                                         this.allWeight = this.rows.map(item => item.weight).reduce((prev, curr) => prev +
                                             curr, 0);
                                         this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
