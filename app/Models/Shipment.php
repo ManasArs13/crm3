@@ -32,4 +32,9 @@ class Shipment extends Model
     {
         return $this->belongsTo(Status::class);
     }
+
+    public function contact()
+    {
+        return $this->hasManyThrough(Contact::class, Order::class,  'contact_id','order_id', 'id', 'id');
+    }
 }

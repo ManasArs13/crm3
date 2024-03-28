@@ -11,7 +11,7 @@ class ShipmentController extends Controller
 {
     public function index(FilterRequest $request)
     {
-        $entityItems = Shipment::query();
+        $entityItems = Shipment::query()->with('order.contact');
         $columns = Schema::getColumnListing('shipments');
         $needMenuForItem = true;
         $urlEdit = "shipment.edit";
@@ -39,6 +39,13 @@ class ShipmentController extends Controller
         $resColumnsAll = [];
 
         foreach ($columns as $column) {
+            if ($column == 'name') {
+                $resColumns[$column] = trans("column." . $column);
+                $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
+
+                $resColumns['contact_id'] = trans("column." . 'contact_id');
+                $resColumnsAll['contact_id'] = ['name_rus' => trans("column." . 'contact_id'), 'checked' => false];
+            }
             $resColumns[$column] = trans("column." . $column);
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
         }
@@ -65,7 +72,7 @@ class ShipmentController extends Controller
             ],
         ];
 
-        return view("own.index", compact(
+        return view("shipment.index", compact(
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -81,7 +88,6 @@ class ShipmentController extends Controller
             'selectColumn'
         ));
     }
-
 
     public function create()
     {
@@ -134,7 +140,7 @@ class ShipmentController extends Controller
 
         return redirect()->route('shipments.index');
     }
-    
+
     public function filter(FilterRequest $request)
     {
         $needMenuForItem = true;
@@ -148,13 +154,24 @@ class ShipmentController extends Controller
 
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
-        $entityItems = Shipment::query();
+        $entityItems = Shipment::query()->with('order.contact');
         $columns = Schema::getColumnListing('shipments');
         $resColumns = [];
         $resColumnsAll = [];
 
         /* Колонки для меню */
         foreach ($columns as $column) {
+            if ($column == 'name') {
+                $resColumnsAll[$column] = [
+                    'name_rus' => trans("column." . $column),
+                    'checked' => in_array($column, $request->columns ? $request->columns : []) ? true : false
+                ];
+
+                $resColumnsAll['contact_id'] = [
+                    'name_rus' => trans("column." . 'contact_id'),
+                    'checked' => in_array('contact_id', $request->columns ? $request->columns : []) ? true : false
+                ];
+            }
             $resColumnsAll[$column] = [
                 'name_rus' => trans("column." . $column),
                 'checked' => in_array($column, $request->columns ? $request->columns : []) ? true : false
@@ -170,6 +187,10 @@ class ShipmentController extends Controller
         }
 
         foreach ($columns as $column) {
+            if ($column == 'name') {
+                $resColumns[$column] = trans("column." . $column);
+                $resColumns['contact_id'] = trans("column." . 'contact_id');
+            }
             $resColumns[$column] = trans("column." . $column);
         }
 
@@ -218,7 +239,7 @@ class ShipmentController extends Controller
             ],
         ];
 
-        return view("own.index", compact(
+        return view("shipment.index", compact(
             'entityItems',
             "resColumns",
             "resColumnsAll",

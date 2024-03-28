@@ -36,6 +36,11 @@ class Order extends Model
         return $this->hasOne(Contact::class, 'id', 'contact_id');
     }
 
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class);
+    }
+
     public function positions()
     {
         return $this->hasMany(OrderPosition::class);

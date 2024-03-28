@@ -9,7 +9,6 @@ use App\Models\Order;
 use App\Models\OrderPosition;
 use App\Models\Product;
 use App\Models\Status;
-use App\Models\Transport;
 use App\Models\TransportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,7 +18,7 @@ class OrderController extends Controller
 {
     public function index(FilterRequest $request)
     {
-        $entityItems = Order::query();
+        $entityItems = Order::query()->with('contact');
         $columns = Schema::getColumnListing('orders');
 
         $urlEdit = "order.edit";
@@ -237,7 +236,7 @@ class OrderController extends Controller
         $needMenuForItem = true;
 
         $orderBy  = $request->orderBy;
-        $entityItems = Order::query();
+        $entityItems = Order::query()->with('contact');
         $columns = Schema::getColumnListing('orders');
         $resColumns = [];
         $resColumnsAll = [];
