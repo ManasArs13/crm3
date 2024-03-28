@@ -235,13 +235,13 @@
                                     Итого
                                 </span>
                                 <label>количество:</label>
-                                <span class="mr-6" x-text="allCount">
+                                <span class="mr-6 ml-1" x-text="allCount">
                                 </span>
                                 <label>вес: </label>
-                                <span class="mr-6" x-text="allWeight">
+                                <span class="mr-6 ml-1" x-text="allWeight">
                                 </span>
                                 <label>сумма: </label>
-                                <span class="mr-6" x-text="allSum">
+                                <span class="mr-6 ml-1" x-text="allSum">
                                 </span>
 
                             </div>
