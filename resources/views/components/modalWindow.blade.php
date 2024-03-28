@@ -41,7 +41,8 @@ switch ($width) {
             x-transition:leave-end="opacity-0 scale-95"
             class="fixed mx-auto z-50 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }} max-w-7xl"
             style="display: none;transform: translate(-50%, -50%); top:50%; left:50%; width:95%">
-        <div class="rounded-md mx-auto ring-1 ring-black p-9 {{ $contentClasses }}">
+        <div class="relative rounded-md mx-auto ring-1 ring-black p-9 {{ $contentClasses }}">
+            <div @click="open = ! open" class="absolute top-5 right-5 cursor-pointer">закрыть</div>
             {{ $content }}
         </div>
     </div>

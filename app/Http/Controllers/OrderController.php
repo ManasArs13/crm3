@@ -95,6 +95,7 @@ class OrderController extends Controller
     {
         $entity = 'order';
         $action = "order.store";
+        $newContact = 'contact.store';
 
         $statuses = Status::all();
         $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
@@ -112,6 +113,7 @@ class OrderController extends Controller
             compact(
                 'action',
                 'entity',
+                'newContact',
                 'statuses',
                 'contacts',
                 'transports',

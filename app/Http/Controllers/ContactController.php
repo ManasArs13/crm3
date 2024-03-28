@@ -98,8 +98,15 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
-        Contact::create($request->post());
-        return redirect()->route("contact.index");
+        $contact = new Contact();
+
+        $contact->name = $request->name;
+        $contact->phone = $request->tel;
+        $contact->email = $request->mail;
+
+        $contact->save();
+
+        return redirect()->back()->with('succes', 'Контакт ' .$contact->name. ' добавлен');
     }
 
     public function show(string $id)

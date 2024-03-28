@@ -14,6 +14,13 @@
 
 
     <div class="w-11/12 max-w-7xl mx-auto py-8">
+
+        @if (session('succes'))
+            <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
+                {{ session('succes') }}
+            </div>
+        @endif
+
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
         @endif
@@ -65,8 +72,6 @@
                             </div>
                         </div>
 
-
-
                         {{-- Contacts --}}
                         <div class="flex flex-row mb-3 w-full">
                             <span
@@ -79,58 +84,16 @@
                                 @endforeach
                             </select>
 
-                            {{--
-                            <x-modalWindow align="top" width="default">
-                                <x-slot name="trigger">
 
-                                    <button type="button"
-                                        class="inline-block rounded bg-green-400 ml-1 pt-1 px-3 text-white hover:bg-green-600">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                                        </svg>
-                                    </button>
-
-                                </x-slot>
-
-                                {{-- Model new contact 
-                                <x-slot name="content">
-                                    <h4 class="text-3xl max-w-7xl mx-auto font-bold mb-6">Добавить контакт</h4>
-                                        <div class="flex flex-row w-full px-1">
-                                            <span
-                                                class="flex basis-[11%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                                Имя</span>
-                                            <input type="text" name="name_cont"
-                                                placeholder="ФИО или название контрагента"
-                                                class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                        </div>
-                                        <div class="flex flex-row w-full px-1 my-2">
-                                            <div class="flex basis-1/2">
-                                                <span
-                                                    class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                                    Телефон</span>
-                                                <input type="tel" name="phone"
-                                                    placeholder="+7(000)000-00-00"
-                                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                            </div>
-                                            <div class="flex basis-1/2">
-                                                <span
-                                                    class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                                    Почта</span>
-                                                <input type="mail" name="email"
-                                                    placeholder="example@example.com"
-                                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-row w-full px-1 my-2">
-                                            <button type="submit"
-                                                class="w-full p-2 bg-green-400 hover:bg-green-600 rounded">сохранить
-                                                контакт</button>
-                                        </div>
-                                    </form>
-                                </x-slot>
-                            </x-modalWindow> --}}
+                            {{-- Add contact button --}}
+                            <button type="button" id="button-modal"
+                                class="inline-block rounded ml-1 px-3 pt-1 text-black hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                </svg>
+                            </button>
                         </div>
 
                         {{-- Delivery --}}
@@ -335,11 +298,70 @@
                 </form>
             </div>
         </div>
+
+        <div class="hidden absolute top-[13%] border-2 border-black w-full bg-gray-200 text-center p-5 mx-auto z-50 rounded-md shadow-lg max-w-7xl"
+            id="contact-modal">
+            <div class="absolute top-5 right-5 cursor-pointer" id="close-modal">закрыть</div>
+            <h4 class="text-3xl max-w-7xl mx-auto font-bold mb-6">Добавить контакт</h4>
+            <form action="{{ route($newContact) }}" method="post" id="newContact">
+                @csrf
+                @method('post')
+                <div class="flex flex-row w-full px-1">
+                    <span
+                        class="flex basis-[11%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                        Имя</span>
+                    <input type="text" name="name" required placeholder="ФИО или название контрагента"
+                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                </div>
+                <div class="flex flex-row w-full px-1 my-2">
+                    <div class="flex basis-1/2">
+                        <span
+                            class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                            Телефон</span>
+                        <input type="tel" name="tel" placeholder="+7(000)000-00-00" required
+                            class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                    </div>
+                    <div class="flex basis-1/2">
+                        <span
+                            class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                            Почта</span>
+                        <input type="mail" name="mail" placeholder="example@example.com" required
+                            class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                    </div>
+                </div>
+                <div class="flex flex-row w-full px-1 my-2">
+                    <button type="submit" class="w-full p-2 bg-green-400 hover:bg-green-600 rounded">сохранить
+                        контакт</button>
+                </div>
+            </form>
+        </div>
+
     </div>
     <script>
         $(document).ready(function() {
             //change selectboxes to selectize mode to be searchable
             $(".select2").select2();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var modal = document.getElementById("contact-modal");
+            var btn = document.getElementById("button-modal");
+            var close = document.getElementById('close-modal');
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            close.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
         });
     </script>
 </x-app-layout>

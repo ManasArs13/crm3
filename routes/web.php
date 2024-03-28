@@ -18,6 +18,7 @@ use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Route;
 
 
