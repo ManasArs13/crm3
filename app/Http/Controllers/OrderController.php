@@ -105,6 +105,7 @@ class OrderController extends Controller
             ->get();
         $transports = TransportType::orderBy('name')->get();
         $date = Carbon::now()->format('Y-m-d');
+        $dateNow = Carbon::now()->format('Y-m-d H:i:s');
 
         return view(
             'order.create',
@@ -116,7 +117,8 @@ class OrderController extends Controller
                 'transports',
                 'deliveries',
                 'products',
-                'date'
+                'date',
+                'dateNow'
             )
         );
     }
@@ -130,7 +132,8 @@ class OrderController extends Controller
         $order->delivery_id = $request->delivery;
         $order->transport_type_id = $request->transport_type;
         $order->date_plan = $request->date .' '. $request->time;
-
+        $order->date_moment = $request->date_created;
+        
         if($request->comment) {
             $order->comment = $request->comment;
         }
