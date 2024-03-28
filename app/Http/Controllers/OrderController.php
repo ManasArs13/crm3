@@ -102,6 +102,12 @@ class OrderController extends Controller
         $deliveries = Delivery::orderBy('name')->get();
         $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
             ->where('type', Product::PRODUCTS)
+            ->whereNot('category_id', 20)
+            ->orderBy('name')
+            ->get();
+        $productDeliveries = Product::select('id', 'name')
+            ->where('type', Product::PRODUCTS)
+            ->where('category_id', 20)
             ->orderBy('name')
             ->get();
         $transports = TransportType::orderBy('name')->get();
@@ -119,6 +125,7 @@ class OrderController extends Controller
                 'transports',
                 'deliveries',
                 'products',
+                'productDeliveries',
                 'date',
                 'dateNow'
             )
@@ -133,14 +140,25 @@ class OrderController extends Controller
         $order->contact_id = $request->contact;
         $order->delivery_id = $request->delivery;
         $order->transport_type_id = $request->transport_type;
-        $order->date_plan = $request->date .' '. $request->time;
+        $order->date_plan = $request->date . ' ' . $request->time;
         $order->date_moment = $request->date_created;
-        
-        if($request->comment) {
+
+        if ($request->comment) {
             $order->comment = $request->comment;
         }
 
         $order->save();
+
+        if ($request->delivery_products) {
+            $position = new OrderPosition();
+
+            $product_bd = Product::find($request->delivery_products);
+            $position->product_id = $product_bd->id;
+            $position->order_id = $order->id;
+            $position->quantity = 1;
+
+            $position->save();
+        }
 
         $sum = 0;
         $weight = 0;
@@ -169,7 +187,7 @@ class OrderController extends Controller
 
         $order->update();
 
-        return redirect()->route("order.index")->with('succes', 'Заказ №' .$order->id. ' добавлен');
+        return redirect()->route("order.index")->with('succes', 'Заказ №' . $order->id . ' добавлен');
     }
 
     public function show(string $id)

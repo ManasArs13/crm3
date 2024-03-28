@@ -217,6 +217,16 @@
                             </div>
                         </div>
 
+                        <div class="flex flex-row mb-3 w-full gap-3">
+                            <span class="flex text-left font-semibold text-lg">Доставка</span>
+                            <select name="delivery_products" required class="m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                <option value="" selected disabled>не выбрано</option>
+                                @foreach ($productDeliveries as $product)
+                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <hr class="w-full">
 
                         {{-- Comment --}}
