@@ -8,6 +8,8 @@ use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\OrderPosition;
 use App\Models\Product;
+use App\Models\Shipment;
+use App\Models\ShipmentProduct;
 use App\Models\Status;
 use App\Models\TransportType;
 use Carbon\Carbon;
@@ -108,14 +110,9 @@ class OrderController extends Controller
         $deliveries = Delivery::orderBy('name')->get();
         $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
             ->where('type', Product::PRODUCTS)
-            ->whereNot('category_id', 20)
-            ->orderBy('name')
+             ->orderBy('name')
             ->get();
-        $productDeliveries = Product::select('id', 'name')
-            ->where('type', Product::PRODUCTS)
-            ->where('category_id', 20)
-            ->orderBy('name')
-            ->get();
+
         $transports = TransportType::orderBy('name')->get();
         $date = Carbon::now()->format('Y-m-d');
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
@@ -131,7 +128,6 @@ class OrderController extends Controller
                 'transports',
                 'deliveries',
                 'products',
-                'productDeliveries',
                 'date',
                 'dateNow'
             )
@@ -155,20 +151,10 @@ class OrderController extends Controller
 
         $order->save();
 
-        if ($request->delivery_products) {
-            $position = new OrderPosition();
-
-            $product_bd = Product::find($request->delivery_products);
-            $position->product_id = $product_bd->id;
-            $position->order_id = $order->id;
-            $position->quantity = 1;
-
-            $position->save();
-        }
-
         $sum = 0;
         $weight = 0;
 
+        // Add Order position
         foreach ($request->products as $product) {
 
             $position = new OrderPosition();
@@ -192,6 +178,35 @@ class OrderController extends Controller
         $order->weight = $weight;
 
         $order->update();
+
+
+        // Add shipment
+        if($request->shipment_need) {
+
+            $shipment = new Shipment();
+            $shipment->name = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $shipment->order_id = $order->id;
+            $shipment->delivery_id = $request->delivery;
+            $shipment->transport_type_id = $request->transport_type;
+            $shipment->weight = $weight;
+            $shipment->paid_sum = 0;
+            $shipment->suma = 0;
+
+            $shipment->save();
+
+            foreach ($request->products as $product) {
+
+                $shipmentproduct = new ShipmentProduct();
+    
+                $product_bd = Product::find($product['product']);
+                $shipmentproduct->product_id = $product_bd->id;
+                $shipmentproduct->shipment_id = $shipment->id;
+                $shipmentproduct->quantity = $product['count'];
+    
+                $shipmentproduct->save();
+            }
+
+        }
 
         return redirect()->route("order.index")->with('succes', 'Заказ №' . $order->id . ' добавлен');
     }

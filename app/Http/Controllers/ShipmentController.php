@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterRequest;
+use App\Models\Delivery;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Shipment;
+use App\Models\Transport;
+use App\Models\TransportType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -45,7 +50,7 @@ class ShipmentController extends Controller
                 $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
 
                 $resColumns['contact_id'] = trans("column." . 'contact_id');
-             //   $resColumnsAll['contact_id'] = ['name_rus' => trans("column." . 'contact_id'), 'checked' => false];
+                //   $resColumnsAll['contact_id'] = ['name_rus' => trans("column." . 'contact_id'), 'checked' => false];
             }
             $resColumns[$column] = trans("column." . $column);
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
@@ -99,13 +104,25 @@ class ShipmentController extends Controller
 
     public function create()
     {
-        $entityItem = new Shipment();
-        $columns = Schema::getColumnListing('shipments');
-
-        $entity = 'shipments';
+        $entity = 'shipment';
         $action = "shipment.store";
 
-        return view('own.create', compact('entityItem', 'columns', 'action', 'entity'));
+        $orders = Order::all();
+        $deliveries = Delivery::orderBy('name')->get();
+        $transportTypes = TransportType::orderBy('name')->get();
+        $transports = Transport::orderBy('name')->get();
+        $date = Carbon::now()->format('Y-m-d');
+        $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+
+        return view('shipment.create', compact(
+            'action',
+            'entity',
+            'deliveries',
+            'transportTypes',
+            'transports',
+            'date',
+            'dateNow'
+        ));
     }
 
     public function store(Request $request)
@@ -210,7 +227,7 @@ class ShipmentController extends Controller
                         $queries->where('building_material', Product::CONCRETE);
                     });
                 });
-                $material = '1';
+            $material = '1';
         } else if ($request->filters['material'] == '0') {
 
             $entityItems = $entityItems
@@ -219,11 +236,11 @@ class ShipmentController extends Controller
                         $queries->where('building_material', Product::BLOCK);
                     });
                 });
-                $material = '0';
+            $material = '0';
         } else {
             $entityItems = $entityItems;
             $material = 'all';
-        } 
+        }
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
