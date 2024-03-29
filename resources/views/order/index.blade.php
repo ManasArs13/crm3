@@ -223,9 +223,9 @@
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
-                                             {{ $entityItem->order && $entityItem->order->contact  ? $entityItem->order->contact->name : '-' }}
+                                                {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
                                             @else
-                                              {{ $entityItem->$column }}
+                                                {{ $entityItem->$column }}
                                             @endif
                                         @elseif($column == 'status')
                                             @switch($entityItem->$column)

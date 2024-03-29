@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterRequest;
+use App\Models\Product;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -44,7 +45,7 @@ class ShipmentController extends Controller
                 $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
 
                 $resColumns['contact_id'] = trans("column." . 'contact_id');
-                $resColumnsAll['contact_id'] = ['name_rus' => trans("column." . 'contact_id'), 'checked' => false];
+             //   $resColumnsAll['contact_id'] = ['name_rus' => trans("column." . 'contact_id'), 'checked' => false];
             }
             $resColumns[$column] = trans("column." . $column);
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
@@ -69,6 +70,13 @@ class ShipmentController extends Controller
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
                 'max' => substr($maxUpdated, 0, 10)
+            ],
+            [
+                'type' => 'select',
+                'name' => 'material',
+                'name_rus' => 'Материал',
+                'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
+                'checked_value' => 'all',
             ],
         ];
 
@@ -167,10 +175,10 @@ class ShipmentController extends Controller
                     'checked' => in_array($column, $request->columns ? $request->columns : []) ? true : false
                 ];
 
-                $resColumnsAll['contact_id'] = [
-                    'name_rus' => trans("column." . 'contact_id'),
-                    'checked' => in_array('contact_id', $request->columns ? $request->columns : []) ? true : false
-                ];
+                // $resColumnsAll['contact_id'] = [
+                //     'name_rus' => trans("column." . 'contact_id'),
+                //     'checked' => in_array('contact_id', $request->columns ? $request->columns : []) ? true : false
+                // ];
             }
             $resColumnsAll[$column] = [
                 'name_rus' => trans("column." . $column),
@@ -183,7 +191,7 @@ class ShipmentController extends Controller
             $requestColumns = $request->columns;
             $requestColumns[] = "id";
             $columns = $requestColumns;
-            $entityItems = Shipment::query()->select($requestColumns);
+            $entityItems = $entityItems->select($requestColumns);
         }
 
         foreach ($columns as $column) {
@@ -195,10 +203,32 @@ class ShipmentController extends Controller
         }
 
         /* Фильтры для отображения */
+        if ($request->filters['material'] == '1') {
+            $entityItems = $entityItems
+                ->whereHas('products', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::CONCRETE);
+                    });
+                });
+                $material = '1';
+        } else if ($request->filters['material'] == '0') {
+
+            $entityItems = $entityItems
+                ->whereHas('products', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::BLOCK);
+                    });
+                });
+                $material = '0';
+        } else {
+            $entityItems = $entityItems;
+            $material = 'all';
+        } 
+
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 if ($key == 'created_at' || $key == 'updated_at') {
-                    $entityItems = Shipment::query()
+                    $entityItems = $entityItems
                         ->where($key, '>=', $value['min'] . ' 00:00:00')
                         ->where($key, '<=', $value['max'] . ' 23:59:59');
                 }
@@ -236,6 +266,13 @@ class ShipmentController extends Controller
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
                 'max' => substr($maxUpdated, 0, 10)
+            ],
+            [
+                'type' => 'select',
+                'name' => 'material',
+                'name_rus' => 'Материал',
+                'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
+                'checked_value' =>  $material,
             ],
         ];
 
