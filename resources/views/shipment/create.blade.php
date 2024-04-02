@@ -261,8 +261,9 @@
                                                 residual: 0,
                                                 weight_kg: ents.find(x => x.id == pos.product_id).weight_kg ? +
                                                     ents.find(x => x.id == pos.product_id).weight_kg : 0,
-                                                weight: Math.round(ents.find(x => x.id == pos.product_id)
-                                                    .weight_kg * pos.quantity * 100) / 100,
+                                                weight: ents.find(x => x.id == pos.product_id).weight_kg ? Math.round(
+                                                    ents.find(x => x.id == pos.product_id)
+                                                    .weight_kg * pos.quantity * 100) / 100 : 0,
                                                 price: pos.price,
                                             }));
                                             this.allWeight = Math.round(this.rows.map(item => item.weight)
