@@ -7,6 +7,7 @@ use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Shipment;
+use App\Models\ShipmentProduct;
 use App\Models\Transport;
 use App\Models\TransportType;
 use Carbon\Carbon;
@@ -102,34 +103,139 @@ class ShipmentController extends Controller
         ));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $entity = 'shipment';
+        $entity = 'new shipment';
         $action = "shipment.store";
+        $actionWithOrder = "shipment.createWithOrder";
+        $searchOrders = "api.get.order";
+        $order = [];
 
-        $orders = Order::all();
         $deliveries = Delivery::orderBy('name')->get();
-        $transportTypes = TransportType::orderBy('name')->get();
         $transports = Transport::orderBy('name')->get();
         $date = Carbon::now()->format('Y-m-d');
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+        $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $positions = "[{
+            id: 0,
+            product: '',
+            count: 0,
+            residual: 0,
+            weight_kg: 0,
+            weight: 0,
+            price: 0,
+            sum: 0
+        }]";
 
         return view('shipment.create', compact(
             'action',
+            'actionWithOrder',
+            'searchOrders',
             'entity',
             'deliveries',
-            'transportTypes',
             'transports',
             'date',
-            'dateNow'
+            'dateNow',
+            'order',
+            'products',
+            'positions'
+        ));
+    }
+
+    public function createWithOrder(Request $request)
+    {
+        if ($request->order_id == null) {
+            return response()->redirectToRoute('shipment.create');
+        }
+
+        $order = Order::select('id', 'name')->with('positions')->find($request->order_id);
+
+        if ($order == null) {
+            return response()->redirectToRoute('shipment.create');
+        }
+
+        $entity = 'new shipment';
+        $action = "shipment.store";
+        $actionWithOrder = "shipment.createWithOrder";
+        $searchOrders = "api.get.order";
+
+        $deliveries = Delivery::orderBy('name')->get();
+        $transports = Transport::orderBy('name')->get();
+        $date = Carbon::now()->format('Y-m-d');
+        $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+        $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $positions = $order->positions;
+
+
+        return view('shipment.create', compact(
+            'action',
+            'actionWithOrder',
+            'searchOrders',
+            'entity',
+            'deliveries',
+            'transports',
+            'date',
+            'dateNow',
+            'order',
+            'products',
+            'positions'
         ));
     }
 
     public function store(Request $request)
     {
-        Shipment::create($request->post());
+        $shipment = new Shipment();
 
-        return redirect()->route("shipment.index");
+        $shipment->name = 'CRM_' .$request->name;
+        $shipment->status = $request->status;
+        
+        $shipment->paid_sum = 0;
+        $shipment->suma = 0;
+        $shipment->delivery_id = $request->delivery;
+        $shipment->transport_id = $request->transport;
+        $shipment->weight = $request->weight;
+
+        if ($request->order_id) {
+            $shipment->order_id = $request->order_id;
+        }
+
+        if ($request->transport_type_id) {
+            $shipment->tranport_type_id = $request->tranport_type;
+        }
+
+        if ($request->comment) {
+            $shipment->description = $request->comment;
+        }
+
+        if ($request->address) {
+            $shipment->shipment_address = $request->address;
+        }
+
+        $shipment->save();
+
+        // Add shipment position
+        foreach ($request->products as $product) {
+
+            $position = new ShipmentProduct();
+
+            $product_bd = Product::find($product['product']);
+
+            $position->product_id = $product_bd->id;
+            $position->shipment_id = $shipment->id;
+            $position->quantity = $product['count'];
+
+            $position->save();
+        }
+
+        return redirect()->route("shipment.index")->with('succes', 'Отгрузка №' . $shipment->id . ' добавлена');
     }
 
     public function show(string $id)

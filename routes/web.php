@@ -19,6 +19,7 @@ use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\Contact;
+use App\Models\Shipment;
 use Illuminate\Support\Facades\Route;
 
 
@@ -63,6 +64,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'shiping_price' => ShipingPriceController::class,
         'category' => CategoryController::class,
     ]);
+
+    //Доп
+    Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
 
     // Фильтры
     Route::get('/orders/filter', [OrderController::class, 'filter'])->name('order.filter');

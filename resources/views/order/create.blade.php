@@ -150,9 +150,7 @@
                                 <span
                                     class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                     Добавить доставку к заказу</span>
-                                <input
-                                    class="relative flex"
-                                    type="checkbox" name="shipment_need" checked />
+                                <input class="relative flex" type="checkbox" name="shipment_need" checked />
                             </div>
                         </div>
 
@@ -276,13 +274,15 @@
 
                                     changeProduct(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
-                                            this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
-                                            this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg * this
-                                                .rows[index].count
-                                            this.rows[index].price = this.entities.find(x => x.id == Id).price
-                                            this.rows[index].residual = this.entities.find(x => x.id == Id).residual
-                                            this.rows[index].sum = this.rows[index].price * this.rows[index].count
-
+                                            if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                    .rows[index].count
+                                                this.rows[index].price = this.entities.find(x => x.id == Id).price
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                this.rows[index].sum = this.rows[index].price * this.rows[index].count
+                                            }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
                                             this.allWeight = Math.round(this.rows.map(item => item.weight).reduce((prev,
@@ -324,7 +324,7 @@
 
                     <div class="px-5 mb-3 w-full">
                         <button type="submit"
-                            class="w-full p-1 bg-green-500 hover:bg-green-400 text-white hover:text-gray-700 rounded font-semibold uppercase">{{ __('label.save') }}</button>
+                            class="w-full p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase">{{ __('label.save') }}</button>
                     </div>
                 </form>
             </div>
@@ -361,7 +361,8 @@
                     </div>
                 </div>
                 <div class="flex flex-row w-full px-1 my-2">
-                    <button type="submit" class="w-full p-1 bg-green-500 hover:bg-green-400 text-white hover:text-gray-700 rounded font-semibold uppercased">сохранить
+                    <button type="submit"
+                        class="w-full p-1 bg-green-500 hover:bg-green-400 text-white hover:text-gray-700 rounded font-semibold uppercase">сохранить
                         контакт</button>
                 </div>
             </form>

@@ -29,6 +29,24 @@
                         Отгрузки
                     </x-nav-link>
 
+                    
+
+                    <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
+                        Остатки
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('product.index', ['type' => 'products'])" :active="request()->routeIs('product.*') && request()->type == 'products'">
+                        Товары
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('supplies.index')" :active="request()->routeIs('supplies.*')">
+                        Приёмки
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('product.index', ['type' => 'materials'])" :active="request()->routeIs('product.*') && request()->type == 'materials'">
+                        Материалы
+                    </x-nav-link>
+
                     {{-- Контакты --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
@@ -121,22 +139,6 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
-
-                    <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
-                        Остатки
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('product.index', ['type' => 'products'])" :active="request()->routeIs('product.*') && request()->type == 'products'">
-                        Товары
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('supplies.index')" :active="request()->routeIs('supplies.*')">
-                        Приёмки
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('product.index', ['type' => 'materials'])" :active="request()->routeIs('product.*') && request()->type == 'materials'">
-                        Материалы
-                    </x-nav-link>
 
                     {{-- Прочее --}}
                     <div class="hidden md:flex md:items-center md:ms-6">

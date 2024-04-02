@@ -25,7 +25,8 @@ return new class extends Migration
             $table->enum('status',[
                 Shipment::APPOINTED,
                 Shipment::NOT_PAID,
-                Shipment::PAID
+                Shipment::PAID,
+                'В долг'
             ])->nullable();
             $table->foreignId("delivery_id")->nullable()->index()->constrained("deliveries");
             $table->integer('delivery_price')->nullable();

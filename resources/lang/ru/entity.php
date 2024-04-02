@@ -18,6 +18,7 @@ return [
     "contacts"=>"Контакты",
     "order_amos"=>"Заказы Амо",
     "orders"=>"Заказы",
+    'new order' => 'Новый заказ',
     "order"=> "Заказ",
     "status_ms"=>"Статусы МС",
     "status_amos"=>"Статусы Амо",
@@ -30,5 +31,6 @@ return [
     'processing' => 'Техоперация №',
     'techchart' => 'Техкарта ',
     'supplies' => 'Приёмки',
-    'supply' => 'Приёмка №'
+    'supply' => 'Приёмка №',
+    'new shipment' => 'Новая отгрузка'
 ];

@@ -101,7 +101,7 @@ class OrderController extends Controller
 
     public function create()
     {
-        $entity = 'order';
+        $entity = 'new order';
         $action = "order.store";
         $newContact = 'contact.store';
 
@@ -386,4 +386,16 @@ class OrderController extends Controller
             'selectColumn'
         ));
     }
+
+    public function get_api(Request $request)
+    {
+        $orders = Order::query()
+                ->where('name', 'LIKE', '%' .$request->query('term'). '%')
+                ->orWhere('id', 'LIKE',  '%' .$request->query('term'). '%')
+                ->orWhere('date_plan', 'LIKE',  '%' .$request->query('term'). '%')
+                ->orWhere('date_moment', 'LIKE',  '%' .$request->query('term'). '%')
+                ->latest()->take(5)->get();
+
+        return response()->json($orders);
+    }   
 }
