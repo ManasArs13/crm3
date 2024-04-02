@@ -259,9 +259,9 @@
                                                 product: pos.product_id,
                                                 count: pos.quantity,
                                                 residual: 0,
-                                                weight_kg: ents.find(x => x.id == pos.product_id).weight_kg ? +
+                                                weight_kg: ents.find(x => x.id == pos.product_id) || ents.find(x => x.id == pos.product_id).weight_kg ? +
                                                     ents.find(x => x.id == pos.product_id).weight_kg : 0,
-                                                weight: ents.find(x => x.id == pos.product_id).weight_kg ? Math.round(
+                                                weight: ents.find(x => x.id == pos.product_id) || ents.find(x => x.id == pos.product_id).weight_kg ? Math.round(
                                                     ents.find(x => x.id == pos.product_id)
                                                     .weight_kg * pos.quantity * 100) / 100 : 0,
                                                 price: pos.price,
