@@ -117,23 +117,25 @@ class DemandServices implements EntityInterface
 
                     $positions = $this->service->actionGetRowsFromJson($row['positions']['meta']['href']);
 
-                    foreach ($positions as $position) {
-                        $entity_position = ShipmentProduct::firstOrNew(['ms_id' => $position['id']]);
+                    if ($positions) {
+                        foreach ($positions as $position) {
+                            $entity_position = ShipmentProduct::firstOrNew(['ms_id' => $position['id']]);
 
-                        if ($entity_position->ms_id === null) {
-                            $entity_position->ms_id = $position['id'];
-                        }
+                            if ($entity_position->ms_id === null) {
+                                $entity_position->ms_id = $position['id'];
+                            }
 
-                        $entity_position->shipment_id = $entity->id;
-                        $entity_position->quantity = $position['quantity'];
+                            $entity_position->shipment_id = $entity->id;
+                            $entity_position->quantity = $position['quantity'];
 
-                        $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
+                            $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
 
-                        if ($product_bd) {
-                            $entity_position->product_id = $product_bd['id'];
-                            $entity_position->save();
+                            if ($product_bd) {
+                                $entity_position->product_id = $product_bd['id'];
+                                $entity_position->save();
 
-                            $shipmentWeight += $position["quantity"] * $product_bd->weight_kg;
+                                $shipmentWeight += $position["quantity"] * $product_bd->weight_kg;
+                            }
                         }
                     }
                 }

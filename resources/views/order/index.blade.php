@@ -224,56 +224,56 @@
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
                                                 {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                            @elseif($column == 'status_id')
+                                                @switch($entityItem->$column)
+                                                    @case(1)
+                                                        <div id="status" class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                            <span>[N] Новый</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(2)
+                                                        <div id="status" class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                            <span>Думают</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(3)
+                                                        <div id="status" class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            <span>[DN] Подтвержден</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(4)
+                                                        <div id="status" class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                            <span>На брони</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(5)
+                                                        <div id="status" class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                            <span>[DD] Отгружен с долгом</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(6)
+                                                        <div id="status" class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            <span>[DF] Отгружен и закрыт</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(7)
+                                                        <div id="status" class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                            <span>[C] Отменен</span>
+                                                        </div>
+                                                    @break
+
+                                                    @default
+                                                        -
+                                                @endswitch
                                             @else
                                                 {{ $entityItem->$column }}
                                             @endif
-                                        @elseif($column == 'status')
-                                            @switch($entityItem->$column)
-                                                @case('[DN] Подтвержден')
-                                                    <div id="status" class="border border-green-500 bg-green-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('На брони')
-                                                    <div id="status" class="border border-purple-500 bg-purple-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[C] Отменен')
-                                                    <div id="status" class="border border-red-500 bg-red-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('Думают')
-                                                    <div id="status" class="border border-blue-500 bg-blue-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[DD] Отгружен с долгом')
-                                                    <div id="status" class="border border-orange-500 bg-orange-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[DF] Отгружен и закрыт')
-                                                    <div id="status" class="border border-green-500 bg-green-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[N] Новый')
-                                                    <div id="status" class="border border-yellow-500 bg-yellow-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @default
-                                                    {{ $entityItem->$column }}
-                                            @endswitch
                                         @elseif($column == 'remainder')
                                             @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
                                                 {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
