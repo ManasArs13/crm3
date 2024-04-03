@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -52,5 +53,30 @@ class Order extends Model
     public function orderAmo()
     {
         return $this->hasOneThrough(OrderAmo::class, OrderAmoOrder::class, 'order_id', 'id', 'id', 'order_amo_id');
+    }
+
+    public function getDatePlanAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y H:i:s');
+    }
+
+    public function getDateMomentAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y H:i:s');
+    }
+
+    public function getDateFactAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y H:i:s');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y H:i:s');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y H:i:s');
     }
 }
