@@ -30,7 +30,7 @@
                             <x-dropdown align="left" width="64" outside='false'>
                                 <x-slot name="trigger">
                                     <button type="button"
-                                        class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-2 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
+                                        class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-1 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
                                         столбцы
                                         <div class="ms-1 mt-1">
                                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@
                             <x-dropdown align="left" width="64" outside='false'>
                                 <x-slot name="trigger">
                                     <button type="button"
-                                        class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-2 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
+                                        class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-1 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
                                         фильтр
                                         <div class="ms-1 mt-1">
                                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -168,11 +168,38 @@
                         </div>
                         <div>
                             <button type="submit"
-                                class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-2 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
                                 поиск
                             </button>
                         </div>
                     </form>
+
+
+                    {{-- Material --}}
+                    <div class="flex flex-row gap-1">
+                        @if (request()->filter == 'index' || request()->filter == null)
+                            <a href="{{ route(Route::current()->getName(), ['filter' => 'index']) }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                        @else
+                            <a href="{{ route(Route::current()->getName(), ['filter' => 'index']) }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                        @endif
+                        @if (request()->filter == 'block')
+                            <a href="{{ route(Route::current()->getName(), ['filter' => 'block']) }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                        @else
+                            <a href="{{ route(Route::current()->getName(), ['filter' => 'block']) }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                        @endif
+                        @if (request()->filter == 'concrete')
+                            <a href="{{ route(Route::current()->getName(), ['filter' => 'concrete']) }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                        @else
+                            <a href="{{ route(Route::current()->getName(), ['filter' => 'concrete']) }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                        @endif
+                    </div>
+
                     @if (isset($urlCreate) && $urlCreate != '')
                         <div class="flex px-3 text-center font-bold">
                             <a href="{{ route($urlCreate) }}"
@@ -227,43 +254,50 @@
                                             @elseif($column == 'status_id')
                                                 @switch($entityItem->$column)
                                                     @case(1)
-                                                        <div id="status" class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                        <div id="status"
+                                                            class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
                                                             <span>[N] Новый</span>
                                                         </div>
                                                     @break
 
                                                     @case(2)
-                                                        <div id="status" class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                        <div id="status"
+                                                            class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
                                                             <span>Думают</span>
                                                         </div>
                                                     @break
 
                                                     @case(3)
-                                                        <div id="status" class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                        <div id="status"
+                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
                                                             <span>[DN] Подтвержден</span>
                                                         </div>
                                                     @break
 
                                                     @case(4)
-                                                        <div id="status" class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                        <div id="status"
+                                                            class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
                                                             <span>На брони</span>
                                                         </div>
                                                     @break
 
                                                     @case(5)
-                                                        <div id="status" class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                        <div id="status"
+                                                            class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
                                                             <span>[DD] Отгружен с долгом</span>
                                                         </div>
                                                     @break
 
                                                     @case(6)
-                                                        <div id="status" class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                        <div id="status"
+                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
                                                             <span>[DF] Отгружен и закрыт</span>
                                                         </div>
                                                     @break
 
                                                     @case(7)
-                                                        <div id="status" class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                        <div id="status"
+                                                            class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
                                                             <span>[C] Отменен</span>
                                                         </div>
                                                     @break
@@ -271,8 +305,6 @@
                                                     @default
                                                         -
                                                 @endswitch
-                                            @else
-                                                {{ $entityItem->$column }}
                                             @endif
                                         @elseif($column == 'remainder')
                                             @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
@@ -294,6 +326,11 @@
                                                     </path>
                                                 </svg>
                                             </a>
+                                        @elseif($column == 'name' || $column == 'id')
+                                            <a href="{{ route($urlShow, $entityItem->id) }}"
+                                                class="text-blue-500 hover:text-blue-600">
+                                                {{ $entityItem->$column }}
+                                            </a>
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
@@ -302,30 +339,21 @@
 
                                 @if (isset($needMenuForItem) && $needMenuForItem)
                                     <td class=" text-nowrap px-6 py-4">
-                                        @if (isset($urlShow) && $urlShow != '')
-                                            <a class="bg-green-400 p-2 rounded-l font-semibold hover:bg-green-500 hover:text-white hover:border-y-2 border-green-500"
-                                                href="{{ route($urlShow, $entityItem->id) }}">
-                                                <i class="fas fa-folder">
-                                                </i>
-                                                {{ __('label.view') }}
-                                            </a>
-                                        @endif
-                                        @if (isset($urlEdit) && $urlEdit != '')
-                                            <a class="bg-blue-400 p-2 font-semibold hover:bg-blue-500 hover:text-white  hover:border-y-2 border-blue-500"
-                                                href="{{ route($urlEdit, $entityItem->id) }}">
-                                                {{ __('label.edit') }}
-                                            </a>
-                                        @endif
                                         @if (isset($urlDelete) && $urlDelete != '')
                                             <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
                                                 class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="bg-red-400 rounded-r font-semibold hover:bg-red-500 hover:text-white border-red-500"
-                                                    style="padding: 0.4rem;"
+                                                    class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500"
                                                     href="{{ route($urlDelete, $entityItem->id) }}">
-                                                    {{ __('label.delete') }}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6 stroke-red-500 hover:stroke-white">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                    </svg>
+
                                                 </button>
                                             </form>
                                         @endif

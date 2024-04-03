@@ -20,8 +20,21 @@ class OrderController extends Controller
 {
     public function index(FilterRequest $request)
     {
-        $entityItems = Order::query()->with('contact');
-        $columns = Schema::getColumnListing('orders');
+        $columns = [
+            "id",
+            "name",
+            "date_moment",
+            "contact_id",
+            "sum",
+            "date_plan",
+            "status_id",
+            "comment",
+            "delivery_id",
+            "transport_type_id",
+            "delivery_price",
+        ];
+
+        $entityItems = Order::query()->with('contact')->select($columns);
 
         $urlEdit = "order.edit";
         $urlShow = "order.show";
@@ -32,6 +45,25 @@ class OrderController extends Controller
         $needMenuForItem = true;
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
+
+        /* Фильтры для отображения */
+        if ($request->filter == 'concrete') {
+            $entityItems = $entityItems
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::CONCRETE);
+                    });
+                });
+        } else if ($request->filter == 'block') {
+            $entityItems = $entityItems
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::BLOCK);
+                    });
+                });
+        } else {
+            $entityItems = $entityItems;
+        }
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
@@ -46,12 +78,43 @@ class OrderController extends Controller
         }
 
         $resColumns = [];
-        $resColumnsAll = [];
 
         foreach ($columns as $column) {
             $resColumns[$column] = trans("column." . $column);
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
         }
+
+        $resColumnsAll = [
+            "id" => ['name_rus' => trans("column.id"), 'checked' => true],
+            "name" => ['name_rus' => trans("column.name"), 'checked' => true],
+            "date_moment" => ['name_rus' => trans("column.date_moment"), 'checked' => true],
+            "contact_id" => ['name_rus' => trans("column.contact_id"), 'checked' => true],
+            "sum" => ['name_rus' => trans("column.sum"), 'checked' => true],
+            "date_plan" => ['name_rus' => trans("column.date_plan"), 'checked' => true],
+            "status_id" => ['name_rus' => trans("column.status_id"), 'checked' => true],
+            "comment" => ['name_rus' => trans("column.comment"), 'checked' => true],
+            "delivery_id" => ['name_rus' => trans("column.delivery_id"), 'checked' => true],
+            "transport_type_id" => ['name_rus' => trans("column.transport_type_id"), 'checked' => true],
+            "delivery_price" => ['name_rus' => trans("column.delivery_price"), 'checked' => true],
+            "date_fact" => ['name_rus' => trans("column.date_fact"), 'checked' => false],
+            "payed_sum" => ['name_rus' => trans("column.payed_sum"), 'checked' => false],
+            "shipped_sum" => ['name_rus' => trans("column.shipped_sum"), 'checked' => false],
+            "reserved_sum" => ['name_rus' => trans("column.reserved_sum"), 'checked' => false],
+            "weight" => ['name_rus' => trans("column.weight"), 'checked' => false],
+            "count_pallets" => ['name_rus' => trans("column.count_pallets"), 'checked' => false],
+            "norm1_price" => ['name_rus' => trans("column.norm1_price"), 'checked' => false],
+            "norm2_price" => ['name_rus' => trans("column.norm2_price"), 'checked' => false],
+            "transport_id" => ['name_rus' => trans("column.transport_id"), 'checked' => false],
+            "is_demand" => ['name_rus' => trans("column.is_demand"), 'checked' => false],
+            "is_made" => ['name_rus' => trans("column.is_made"), 'checked' => false],
+            "status_shipped" => ['name_rus' => trans("column.status_shipped"), 'checked' => false],
+            "debt" => ['name_rus' => trans("column.debt"), 'checked' => false],
+            "order_amo_link" => ['name_rus' => trans("column.order_amo_link"), 'checked' => false],
+            "order_amo_id" => ['name_rus' => trans("column.order_amo_id"), 'checked' => false],
+            "delivery_price_norm" => ['name_rus' => trans("column.delivery_price_norm"), 'checked' => false],
+            "created_at" => ['name_rus' => trans("column.created_at"), 'checked' => false],
+            "updated_at" => ['name_rus' => trans("column.updated_at"), 'checked' => false],
+            "ms_id" => ['name_rus' => trans("column.ms_id"), 'checked' => false]
+        ];
 
         $minCreated = Order::query()->min('created_at');
         $maxCreated = Order::query()->max('created_at');
@@ -73,13 +136,13 @@ class OrderController extends Controller
                 'min' => substr($minUpdated, 0, 10),
                 'max' => substr($maxUpdated, 0, 10)
             ],
-            [
-                'type' => 'select',
-                'name' => 'material',
-                'name_rus' => 'Материал',
-                'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
-                'checked_value' => 'all',
-            ],
+            // [
+            //     'type' => 'select',
+            //     'name' => 'material',
+            //     'name_rus' => 'Материал',
+            //     'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
+            //     'checked_value' => 'all',
+            // ],
         ];
 
         return view("order.index", compact(
@@ -110,7 +173,7 @@ class OrderController extends Controller
         $deliveries = Delivery::orderBy('name')->get();
         $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
             ->where('type', Product::PRODUCTS)
-             ->orderBy('name')
+            ->orderBy('name')
             ->get();
 
         $transports = TransportType::orderBy('name')->get();
@@ -181,7 +244,7 @@ class OrderController extends Controller
 
 
         // Add shipment
-        if($request->shipment_need) {
+        if ($request->shipment_need) {
 
             $shipment = new Shipment();
             $shipment->name = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
@@ -197,15 +260,14 @@ class OrderController extends Controller
             foreach ($request->products as $product) {
 
                 $shipmentproduct = new ShipmentProduct();
-    
+
                 $product_bd = Product::find($product['product']);
                 $shipmentproduct->product_id = $product_bd->id;
                 $shipmentproduct->shipment_id = $shipment->id;
                 $shipmentproduct->quantity = $product['count'];
-    
+
                 $shipmentproduct->save();
             }
-
         }
 
         return redirect()->route("order.index")->with('succes', 'Заказ №' . $order->id . ' добавлен');
@@ -259,7 +321,40 @@ class OrderController extends Controller
 
         $orderBy  = $request->orderBy;
         $entityItems = Order::query()->with('contact');
-        $columns = Schema::getColumnListing('orders');
+
+        $columns = [
+            "id",
+            "name",
+            "date_moment",
+            "contact_id",
+            "sum",
+            "date_plan",
+            "status_id",
+            "comment",
+            "delivery_id",
+            "transport_type_id",
+            "delivery_price",
+            "date_fact",
+            "payed_sum",
+            "shipped_sum",
+            "reserved_sum",
+            "weight",
+            "count_pallets",
+            "norm1_price",
+            "norm2_price",
+            "transport_id",
+            "is_demand",
+            "is_made",
+            "status_shipped",
+            "debt",
+            "order_amo_link",
+            "order_amo_id",
+            "delivery_price_norm",
+            "created_at",
+            "updated_at",
+            "ms_id"
+        ];
+
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -295,27 +390,27 @@ class OrderController extends Controller
         }
 
         /* Фильтры для отображения */
-        if ($request->filters['material'] == '1') {
-            $entityItems = $entityItems
-                ->whereHas('positions', function ($query) {
-                    $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::CONCRETE);
-                    });
-                });
-                $material = '1';
-        } else if ($request->filters['material'] == '0') {
+
+        if ($request->filter == 'concrete') {
 
             $entityItems = $entityItems
                 ->whereHas('positions', function ($query) {
                     $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::BLOCK);
+                        $queries->where('building_material', Product::CONCRETE)->orWhereIn('building_material', [Product::BLOCK, Product::CONCRETE]);
                     });
                 });
-                $material = '0';
+        } else if ($request->filter == 'block') {
+
+            $entityItems = $entityItems
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::BLOCK)->orWhereIn('building_material', [Product::BLOCK, Product::CONCRETE]);
+                    });
+                });
         } else {
+
             $entityItems = $entityItems;
-            $material = 'all';
-        } 
+        }
 
         /* Фильтры для отображения */
         if (isset($request->filters)) {
@@ -360,13 +455,13 @@ class OrderController extends Controller
                 'min' => substr($minUpdated, 0, 10),
                 'max' => substr($maxUpdated, 0, 10)
             ],
-            [
-                'type' => 'select',
-                'name' => 'material',
-                'name_rus' => 'Материал',
-                'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
-                'checked_value' =>  $material,
-            ],
+            // [
+            //     'type' => 'select',
+            //     'name' => 'material',
+            //     'name_rus' => 'Материал',
+            //     'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
+            //     'checked_value' =>  $material,
+            // ],
         ];
 
         return view("order.index", compact(
@@ -390,12 +485,12 @@ class OrderController extends Controller
     public function get_api(Request $request)
     {
         $orders = Order::query()
-                ->where('name', 'LIKE', '%' .$request->query('term'). '%')
-                ->orWhere('id', 'LIKE',  '%' .$request->query('term'). '%')
-                ->orWhere('date_plan', 'LIKE',  '%' .$request->query('term'). '%')
-                ->orWhere('date_moment', 'LIKE',  '%' .$request->query('term'). '%')
-                ->latest()->take(5)->get();
+            ->where('name', 'LIKE', '%' . $request->query('term') . '%')
+            ->orWhere('id', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orWhere('date_plan', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orWhere('date_moment', 'LIKE',  '%' . $request->query('term') . '%')
+            ->latest()->take(5)->get();
 
         return response()->json($orders);
-    }   
+    }
 }
