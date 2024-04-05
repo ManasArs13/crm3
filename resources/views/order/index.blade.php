@@ -149,12 +149,10 @@
                                                             class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
                                                             , name="filters[{{ $filter['name'] }}]"
                                                             data-offset="false">
-                                                            <option @if ($filter['checked_value'] == 'all') selected @endif
-                                                                value="all">Все</option>
                                                             @foreach ($filter['values'] as $value)
                                                                 <option
-                                                                    @if ($value['id'] == $filter['checked_value']) selected @endif
-                                                                    value="{{ $value['id'] }} ">
+                                                                    @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                                    value="{{ $value['value'] }} ">
                                                                     {{ $value['name'] }}</option>
                                                             @endforeach
                                                         </select>
@@ -174,28 +172,60 @@
                         </div>
                     </form>
 
+                    {{-- Date --}}
+                    <div class="flex flex-row gap-1">
+                        @if ($queryPlan == 'all')
+                            <a href="{{ route($urlFilter). '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' .$dateAll.'&filters%5Bmaterial%5D='.$queryFilter  }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                        @else
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D='.$dateAll.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                        @endif
+                        @if ($queryPlan == 'today')
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateToday.'24:59:59'.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
+                        @else
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateToday.'24:59:59'.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
+                        @endif
+                        @if ($queryPlan == 'threeday')
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateThreeDay.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3 дня</a>
+                        @else
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateThreeDay.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3 дня</a>
+                        @endif
+                        @if ($queryPlan == 'week')
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '0&filters%5Bdate_plan%5D%5Bmax%5D='.$dateWeek.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
+                        @else
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateWeek.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
+                        @endif
+                    </div>
+
 
                     {{-- Material --}}
                     <div class="flex flex-row gap-1">
-                        @if (request()->filter == 'index' || request()->filter == null)
-                            <a href="{{ route(Route::current()->getName(), ['filter' => 'index']) }}"
+                        @if ($queryFilter == 'index')
+                            <a href="{{ route($urlFilter). '?filters%5Bmaterial%5D=index' }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                         @else
-                            <a href="{{ route(Route::current()->getName(), ['filter' => 'index']) }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=index+' }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                         @endif
-                        @if (request()->filter == 'block')
-                            <a href="{{ route(Route::current()->getName(), ['filter' => 'block']) }}"
+                        @if ($queryFilter == 'block')
+                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=block+' }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                         @else
-                            <a href="{{ route(Route::current()->getName(), ['filter' => 'block']) }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=block+' }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                         @endif
-                        @if (request()->filter == 'concrete')
-                            <a href="{{ route(Route::current()->getName(), ['filter' => 'concrete']) }}"
+                        @if ($queryFilter == 'concrete')
+                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=concrete+' }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                         @else
-                            <a href="{{ route(Route::current()->getName(), ['filter' => 'concrete']) }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=concrete+' }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                         @endif
                     </div>

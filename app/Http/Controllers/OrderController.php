@@ -45,25 +45,12 @@ class OrderController extends Controller
         $needMenuForItem = true;
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
-
-        /* Фильтры для отображения */
-        if ($request->filter == 'concrete') {
-            $entityItems = $entityItems
-                ->whereHas('positions', function ($query) {
-                    $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::CONCRETE);
-                    });
-                });
-        } else if ($request->filter == 'block') {
-            $entityItems = $entityItems
-                ->whereHas('positions', function ($query) {
-                    $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::BLOCK);
-                    });
-                });
-        } else {
-            $entityItems = $entityItems;
-        }
+        $dateToday = Carbon::now();
+        $dateThreeDay = Carbon::now()->addDays(3);
+        $dateWeek = Carbon::now()->addDays(7);
+        $dateAll = Carbon::now()->addDays(30);
+        $queryFilter = 'index';
+        $queryPlan = 'index';
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
@@ -120,6 +107,8 @@ class OrderController extends Controller
         $maxCreated = Order::query()->max('created_at');
         $minUpdated = Order::query()->min('updated_at');
         $maxUpdated = Order::query()->max('updated_at');
+        $minDatePlan = Order::query()->min('date_plan');
+        $maxDatePlan = Order::query()->max('date_plan');
 
         $filters = [
             [
@@ -136,13 +125,20 @@ class OrderController extends Controller
                 'min' => substr($minUpdated, 0, 10),
                 'max' => substr($maxUpdated, 0, 10)
             ],
-            // [
-            //     'type' => 'select',
-            //     'name' => 'material',
-            //     'name_rus' => 'Материал',
-            //     'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
-            //     'checked_value' => 'all',
-            // ],
+            [
+                'type' => 'date',
+                'name' =>  'date_plan',
+                'name_rus' => 'Плановая дата',
+                'min' => substr($minDatePlan, 0, 10),
+                'max' => substr($maxDatePlan, 0, 10)
+            ],
+            [
+                'type' => 'select',
+                'name' => 'material',
+                'name_rus' => 'Материал',
+                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
+                'checked_value' => 'all',
+            ],
         ];
 
         return view("order.index", compact(
@@ -158,7 +154,13 @@ class OrderController extends Controller
             'urlFilter',
             'filters',
             'orderBy',
-            'selectColumn'
+            'selectColumn',
+            'dateToday',
+            'dateThreeDay',
+            'dateWeek',
+            'dateAll',
+            'queryFilter',
+            'queryPlan'
         ));
     }
 
@@ -318,6 +320,12 @@ class OrderController extends Controller
         $entity = 'orders';
         $selectColumn = $request->column;
         $needMenuForItem = true;
+        $dateToday = Carbon::now()->format('Y-m-d');
+        $dateThreeDay = Carbon::now()->addDays(3);
+        $dateWeek = Carbon::now()->addDays(7);
+        $dateAll = Carbon::now()->addDays(30);
+        $queryFilter = 'index';
+        $queryPlan = 'all';
 
         $orderBy  = $request->orderBy;
         $entityItems = Order::query()->with('contact');
@@ -352,7 +360,7 @@ class OrderController extends Controller
             "delivery_price_norm",
             "created_at",
             "updated_at",
-            "ms_id"
+            "ms_id",
         ];
 
         $resColumns = [];
@@ -390,32 +398,51 @@ class OrderController extends Controller
         }
 
         /* Фильтры для отображения */
-
-        if ($request->filter == 'concrete') {
-
-            $entityItems = $entityItems
-                ->whereHas('positions', function ($query) {
-                    $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::CONCRETE)->orWhereIn('building_material', [Product::BLOCK, Product::CONCRETE]);
-                    });
-                });
-        } else if ($request->filter == 'block') {
+        if ($request->filters['material'] == 'concrete') {
 
             $entityItems = $entityItems
                 ->whereHas('positions', function ($query) {
                     $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::BLOCK)->orWhereIn('building_material', [Product::BLOCK, Product::CONCRETE]);
+                        $queries->where('building_material', Product::CONCRETE);
                     });
                 });
+            $material = 'concrete';
+            $queryFilter = 'concrete';
+        } else if ($request->filters['material'] == 'block') {
+
+            $entityItems = $entityItems
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::BLOCK);
+                    });
+                });
+            $material = 'block';
+            $queryFilter = 'block';
         } else {
 
-            $entityItems = $entityItems;
+            $material = 'index';
         }
 
         /* Фильтры для отображения */
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
-                if ($key == 'created_at' || $key == 'updated_at') {
+                if ($key == 'created_at' || $key == 'updated_at' || $key == 'date_plan') {
+                    if ($key == 'date_plan') {
+                        switch ($value['max']) {
+                            case $dateToday:
+                                $queryPlan = 'today';
+                                break;
+                            case $dateThreeDay:
+                                $queryPlan = 'threeday';
+                                break;
+                            case $dateWeek:
+                                $queryPlan = 'week';
+                                break;
+                            case $dateAll:
+                                $queryPlan = 'all';
+                                break;
+                        }
+                    }
                     $entityItems = $entityItems
                         ->where($key, '>=', $value['min'] . ' 00:00:00')
                         ->where($key, '<=', $value['max'] . ' 23:59:59');
@@ -439,6 +466,8 @@ class OrderController extends Controller
         $maxCreated = Order::query()->max('created_at');
         $minUpdated = Order::query()->min('updated_at');
         $maxUpdated = Order::query()->max('updated_at');
+        $minDatePlan = Order::query()->min('date_plan');
+        $maxDatePlan = Order::query()->max('date_plan');
 
         $filters = [
             [
@@ -455,13 +484,20 @@ class OrderController extends Controller
                 'min' => substr($minUpdated, 0, 10),
                 'max' => substr($maxUpdated, 0, 10)
             ],
-            // [
-            //     'type' => 'select',
-            //     'name' => 'material',
-            //     'name_rus' => 'Материал',
-            //     'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
-            //     'checked_value' =>  $material,
-            // ],
+            [
+                'type' => 'date',
+                'name' =>  'date_plan',
+                'name_rus' => 'Плановая дата',
+                'min' => substr($minDatePlan, 0, 10),
+                'max' => substr($maxDatePlan, 0, 10)
+            ],
+            [
+                'type' => 'select',
+                'name' => 'material',
+                'name_rus' => 'Материал',
+                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
+                'checked_value' =>  $material,
+            ],
         ];
 
         return view("order.index", compact(
@@ -478,7 +514,13 @@ class OrderController extends Controller
             'orderBy',
             'filters',
             'needMenuForItem',
-            'selectColumn'
+            'selectColumn',
+            'dateToday',
+            'dateThreeDay',
+            'dateWeek',
+            'dateAll',
+            'queryFilter',
+            'queryPlan'
         ));
     }
 
