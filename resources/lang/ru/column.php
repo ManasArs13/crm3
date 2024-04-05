@@ -120,5 +120,7 @@
    'transport_type' => 'тип транспорта',
    'order_amo' => 'заказ AMO',
    'ms' => 'uuid',
-   'need_from_tc' => 'Срочная потребность'
+   'need_from_tc' => 'Срочная потребность',
+   'positions_count' => "Кол-во продуктов",
+
       ];

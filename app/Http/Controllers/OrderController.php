@@ -34,7 +34,7 @@ class OrderController extends Controller
             "delivery_price",
         ];
 
-        $entityItems = Order::query()->with('contact', 'delivery', 'transport_type')->select($columns);
+        $entityItems = Order::query()->with('contact', 'delivery', 'transport_type')->select($columns)->withCount('positions');
 
         $urlEdit = "order.edit";
         $urlShow = "order.show";
@@ -81,6 +81,7 @@ class OrderController extends Controller
             "comment" => ['name_rus' => trans("column.comment"), 'checked' => true],
             "delivery_id" => ['name_rus' => trans("column.delivery_id"), 'checked' => true],
             "transport_type_id" => ['name_rus' => trans("column.transport_type_id"), 'checked' => true],
+            "positions_count" => ['name_rus' => trans("column.positions_count"), 'checked' => false],
             "delivery_price" => ['name_rus' => trans("column.delivery_price"), 'checked' => true],
             "date_fact" => ['name_rus' => trans("column.date_fact"), 'checked' => false],
             "payed_sum" => ['name_rus' => trans("column.payed_sum"), 'checked' => false],
@@ -341,6 +342,7 @@ class OrderController extends Controller
             "comment",
             "delivery_id",
             "transport_type_id",
+            "positions_count",
             "delivery_price",
             "date_fact",
             "payed_sum",
@@ -390,7 +392,12 @@ class OrderController extends Controller
             $requestColumns = $request->columns;
             $requestColumns[] = "id";
             $columns = $requestColumns;
-            $entityItems = $entityItems->select($requestColumns);
+
+            if (in_array('positions_count', $requestColumns)) {
+                unset($requestColumns[array_search('positions_count', $requestColumns, true)]);
+            }
+
+            $entityItems = $entityItems->select($requestColumns)->withCount('positions');
         }
 
         foreach ($columns as $column) {
