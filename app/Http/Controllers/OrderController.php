@@ -34,7 +34,7 @@ class OrderController extends Controller
             "delivery_price",
         ];
 
-        $entityItems = Order::query()->with('contact')->select($columns);
+        $entityItems = Order::query()->with('contact', 'delivery', 'transport_type')->select($columns);
 
         $urlEdit = "order.edit";
         $urlShow = "order.show";
@@ -328,7 +328,7 @@ class OrderController extends Controller
         $queryPlan = 'all';
 
         $orderBy  = $request->orderBy;
-        $entityItems = Order::query()->with('contact');
+        $entityItems = Order::query()->with('contact', 'delivery', 'transport_type');
 
         $columns = [
             "id",

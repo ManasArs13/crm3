@@ -353,6 +353,10 @@
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
                                                 {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                            @elseif($column == 'delivery_id')
+                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-'}}
+                                            @elseif($column == 'transport_type_id')
+                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-'}}
                                             @elseif($column == 'status_id')
                                                 @switch($entityItem->$column)
                                                     @case(1)
