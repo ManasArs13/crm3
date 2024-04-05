@@ -175,31 +175,33 @@
                     {{-- Date --}}
                     <div class="flex flex-row gap-1">
                         @if ($queryPlan == 'all')
-                            <a href="{{ route($urlFilter). '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' .$dateAll.'&filters%5Bmaterial%5D='.$queryFilter  }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D='.$dateAll.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                         @endif
                         @if ($queryPlan == 'today')
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateToday.'24:59:59'.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateToday.'24:59:59'.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
                         @endif
                         @if ($queryPlan == 'threeday')
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateThreeDay.'&filters%5Bmaterial%5D='.$queryFilter }}"
-                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3 дня</a>
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=' . $queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3
+                                дня</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateThreeDay.'&filters%5Bmaterial%5D='.$queryFilter }}"
-                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3 дня</a>
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=' . $queryFilter }}"
+                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3
+                                дня</a>
                         @endif
                         @if ($queryPlan == 'week')
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '0&filters%5Bdate_plan%5D%5Bmax%5D='.$dateWeek.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '0&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' .$dateToday. '&filters%5Bdate_plan%5D%5Bmax%5D='.$dateWeek.'&filters%5Bmaterial%5D='.$queryFilter }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @endif
                     </div>
@@ -207,27 +209,98 @@
 
                     {{-- Material --}}
                     <div class="flex flex-row gap-1">
-                        @if ($queryFilter == 'index')
-                            <a href="{{ route($urlFilter). '?filters%5Bmaterial%5D=index' }}"
-                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                        @if ($queryPlan == 'all')
+
+                            @if ($queryFilter == 'index')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=index' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=index+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @endif
+                            @if ($queryFilter == 'block')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @endif
+                            @if ($queryFilter == 'concrete')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @endif
+                        @elseif($queryPlan == 'today')
+                            @if ($queryFilter == 'index')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=index' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=index+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @endif
+                            @if ($queryFilter == 'block')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @endif
+                            @if ($queryFilter == 'concrete')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @endif
+                        @elseif($queryPlan == 'threeday')
+                            @if ($queryFilter == 'index')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=index' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=index+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @endif
+                            @if ($queryFilter == 'block')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @endif
+                            @if ($queryFilter == 'concrete')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @endif
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=index+' }}"
-                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @if ($queryFilter == 'index')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=index' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=index+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
+                            @endif
+                            @if ($queryFilter == 'block')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=block+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
+                            @endif
+                            @if ($queryFilter == 'concrete')
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @else
+                                <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=concrete+' }}"
+                                    class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
+                            @endif
+
                         @endif
-                        @if ($queryFilter == 'block')
-                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=block+' }}"
-                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
-                        @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=block+' }}"
-                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
-                        @endif
-                        @if ($queryFilter == 'concrete')
-                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=concrete+' }}"
-                                class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
-                        @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bmaterial%5D=concrete+' }}"
-                                class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
-                        @endif
+
                     </div>
 
                     @if (isset($urlCreate) && $urlCreate != '')

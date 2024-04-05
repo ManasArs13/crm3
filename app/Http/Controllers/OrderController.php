@@ -45,10 +45,10 @@ class OrderController extends Controller
         $needMenuForItem = true;
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
-        $dateToday = Carbon::now();
-        $dateThreeDay = Carbon::now()->addDays(3);
-        $dateWeek = Carbon::now()->addDays(7);
-        $dateAll = Carbon::now()->addDays(30);
+        $dateToday = Carbon::now()->format('Y-m-d');
+        $dateThreeDay = Carbon::now()->addDays(3)->format('Y-m-d');
+        $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
+        $dateAll = Carbon::now()->addDays(30)->format('Y-m-d');
         $queryFilter = 'index';
         $queryPlan = 'index';
 
@@ -321,9 +321,9 @@ class OrderController extends Controller
         $selectColumn = $request->column;
         $needMenuForItem = true;
         $dateToday = Carbon::now()->format('Y-m-d');
-        $dateThreeDay = Carbon::now()->addDays(3);
-        $dateWeek = Carbon::now()->addDays(7);
-        $dateAll = Carbon::now()->addDays(30);
+        $dateThreeDay = Carbon::now()->addDays(3)->format('Y-m-d');
+        $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
+        $dateAll = Carbon::now()->addDays(30)->format('Y-m-d');
         $queryFilter = 'index';
         $queryPlan = 'all';
 
