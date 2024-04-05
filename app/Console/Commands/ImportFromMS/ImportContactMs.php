@@ -14,7 +14,7 @@ class ImportContactMs extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-contact {--date=null}';
+    protected $signature = 'ms:import-contact {--date=all}';
 
     /**
      * Описание консольной команды.
@@ -42,10 +42,10 @@ class ImportContactMs extends Command
 
         if ($this->option('date') == 'null') {
 
-            $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+            $date = Carbon::now()->subWeek();
             $service->createUrl($url_1, $contactMsService, ["updated"=>'>='.$date],'');
             $service->createUrl($url_2, $contactMsService, ["updated"=>'>='.$date],'');
-        } else if ($this->option('date') == 'not') {
+        } else if ($this->option('date') == 'all') {
 
             $service->createUrl($url_1, $contactMsService, [], '');
             $service->createUrl($url_2, $contactMsService, [], '');

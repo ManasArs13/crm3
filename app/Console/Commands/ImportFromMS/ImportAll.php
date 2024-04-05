@@ -48,7 +48,7 @@ class ImportAll extends Command
 
         Artisan::call('ms:import-delivery');
 
-        Artisan::command('ms:import-contact {--date=null}', function () {
+        Artisan::command('ms:import-contact {--date=all}', function () {
             $this->info("ms:import-contact {--date=not}!");
         });
         

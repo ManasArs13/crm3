@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Contact;
 use App\Models\ContactAmo;
+use App\Models\ContactAmoContact;
 use App\Models\ContactMs;
 use App\Models\Option;
 use App\Models\SyncOrdersContacts\ContactMsContactAmo;
@@ -32,7 +34,7 @@ class SyncContactMsAmo extends Command
     public function handle(): void
     {
         $updatedAt = Option::query()->where('code','updated_at_sync_contact')->value('value');
-        $contactMs = ContactMs::query()
+        $contactMs = Contact::query()
             ->groupBy('phone_norm')
             ->havingRaw('COUNT(*) = 1')
             ->whereNotNull('contact_amo_link')
@@ -42,7 +44,7 @@ class SyncContactMsAmo extends Command
             $contactAmoId =(integer) substr($contact->contact_amo_link,strrpos($contact->contact_amo_link,'/')+ 1);
             $contactAmoExist = ContactAmo::query()->where('id',$contactAmoId)->exists();
             if ($contactAmoExist){
-                $contactMsContactAmo = ContactMsContactAmo::query()->firstOrNew([
+                $contactMsContactAmo = ContactAmoContact::query()->firstOrNew([
                     'contact_ms_id'    =>  $contact->id,
                     'contact_amo_id'   =>  $contactAmoId,
                 ]);
