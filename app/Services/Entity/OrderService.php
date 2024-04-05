@@ -73,90 +73,86 @@ class OrderService implements EntityInterface
 
                 $entity->name = $row["name"];
 
-                $contact_bd = Contact::where('ms_id', $row["agent"]["id"])->first();
+                $contactMs = $this->service->actionGetRowsFromJson($row["agent"]['meta']["href"], false);
 
-                if (!$contact_bd) {
-                    $contactMs = $this->service->actionGetRowsFromJson($row["agent"]["id"], false);
+                if (isset($contactMs['balance'])) {
 
-                    if (isset($contactMs['balance'])) {
+                    $entityContact = Contact::firstOrNew(['ms_id' => $contactMs["id"]]);
 
-                        $entityContact = Contact::firstOrNew(['ms_id' => $contactMs["id"]]);
+                    if ($entityContact !== null) {
+                        $entityContact->balance = $contactMs["balance"] / 100;
+                    }
+                } else {
+                    $entityContact = Contact::firstOrNew(['ms_id' => $contactMs['id']]);
 
-                        if ($entityContact !== null) {
-                            $entityContact->balance = $contactMs["balance"] / 100;
-                        }
-                    } else {
-                        $entityContact = Contact::firstOrNew(['ms_id' => $contactMs['id']]);
+                    if ($entityContact->ms_id === null) {
+                        $entityContact->ms_id = $contactMs['id'];
+                    }
 
-                        if ($entityContact->ms_id === null) {
-                            $entityContact->ms_id = $contactMs['id'];
-                        }
+                    $entityContact->name = $contactMs['name'];
 
-                        $entityContact->name = $contactMs['name'];
+                    $phone = null;
+                    $phoneNorm = null;
 
-                        $phone = null;
-                        $phoneNorm = null;
+                    if (isset($contactMs['phone'])) {
+                        $phone = $contactMs["phone"];
+                        $pattern = "/(\+7|8|7)(\s?(\-|\()?\d{3}(\-|\))?\s?\d{3}-?\d{2}-?\d{2})/";
+                        $phones = preg_replace('/[\(,\s,\),\-, \+]/', '', $contactMs["phone"]);
+                        preg_match_all($pattern, $phones, $matches);
+                        if (isset($matches[2]))
+                            $phoneNorm = "+7" . implode('', $matches[2]);
+                    }
 
-                        if (isset($contactMs['phone'])) {
-                            $phone = $contactMs["phone"];
-                            $pattern = "/(\+7|8|7)(\s?(\-|\()?\d{3}(\-|\))?\s?\d{3}-?\d{2}-?\d{2})/";
-                            $phones = preg_replace('/[\(,\s,\),\-, \+]/', '', $contactMs["phone"]);
-                            preg_match_all($pattern, $phones, $matches);
-                            if (isset($matches[2]))
-                                $phoneNorm = "+7" . implode('', $matches[2]);
-                        }
+                    $entityContact->phone = $phone;
+                    $entityContact->phone_norm = $phoneNorm;
 
-                        $entityContact->phone = $phone;
-                        $entityContact->phone_norm = $phoneNorm;
+                    $email = null;
 
-                        $email = null;
+                    if (isset($contactMs['email'])) {
+                        $email = $contactMs["email"];
+                    }
 
-                        if (isset($contactMs['email'])) {
-                            $email = $contactMs["email"];
-                        }
+                    $entityContact->email = $email;
 
-                        $entityContact->email = $email;
+                    $isArchived = 0;
 
-                        $isArchived = 0;
+                    if (isset($contactMs['archived'])) {
+                        $isArchived = $contactMs["archived"];
+                    }
 
-                        if (isset($contactMs['archived'])) {
-                            $isArchived = $contactMs["archived"];
-                        }
+                    $entityContact->is_archived = $isArchived;
 
-                        $entityContact->is_archived = $isArchived;
+                    $amoContact = null;
+                    $amoContactLink = null;
 
-                        $amoContact = null;
-                        $amoContactLink = null;
-
-                        if (isset($contactMs["attributes"])) {
-                            foreach ($contactMs["attributes"] as $attribute) {
-                                switch ($attribute["id"]) {
-                                    case $guidAttrAmoContact:
-                                        $amoContact = $attribute["value"];
-                                        break;
-                                    case $guidAttrAmoContactLink:
-                                        $amoContactLink = $attribute["value"];
-                                        break;
-                                }
+                    if (isset($contactMs["attributes"])) {
+                        foreach ($contactMs["attributes"] as $attribute) {
+                            switch ($attribute["id"]) {
+                                case $guidAttrAmoContact:
+                                    $amoContact = $attribute["value"];
+                                    break;
+                                case $guidAttrAmoContactLink:
+                                    $amoContactLink = $attribute["value"];
+                                    break;
                             }
                         }
-
-                        $entityContact->contact_amo_id = $amoContact;
-                        $entityContact->contact_amo_link = $amoContactLink;
-                        $entityContact->is_exist = 1;
-
-                        if ($contactMs['created']) {
-                            $entityContact->created_at = $contactMs['created'];
-                        }
-
-                        if ($contactMs['updated']) {
-                            $entityContact->updated_at = $contactMs['updated'];
-                        }
                     }
-                    $entityContact->save();
-                }
 
-                $entity->contact_id = $contact_bd ? $contact_bd->id : $entityContact->id;
+                    $entityContact->contact_amo_id = $amoContact;
+                    $entityContact->contact_amo_link = $amoContactLink;
+                    $entityContact->is_exist = 1;
+
+                    if ($contactMs['created']) {
+                        $entityContact->created_at = $contactMs['created'];
+                    }
+
+                    if ($contactMs['updated']) {
+                        $entityContact->updated_at = $contactMs['updated'];
+                    }
+                }
+                $entityContact->save();
+
+                $entity->contact_id = $entityContact->id;
 
                 $status_bd = Status::where('ms_id', $row["state"]["id"])->first();
                 $entity->status_id = $status_bd->id;
