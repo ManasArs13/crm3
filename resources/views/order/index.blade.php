@@ -300,7 +300,6 @@
                             @endif
 
                         @endif
-
                     </div>
 
                     @if (isset($urlCreate) && $urlCreate != '')

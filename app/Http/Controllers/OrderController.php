@@ -50,7 +50,7 @@ class OrderController extends Controller
         $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
         $dateAll = Carbon::now()->addDays(30)->format('Y-m-d');
         $queryFilter = 'index';
-        $queryPlan = 'index';
+        $queryPlan = 'all';
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
