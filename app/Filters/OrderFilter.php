@@ -13,7 +13,7 @@ class OrderFilter
     protected $orderBy;
     protected $paginate;
 
-    public function __construct(Builder $builder, $request, $column = 'id', $orderBy = 'asc', $paginate = 5)
+    public function __construct(Builder $builder, $request, $column = 'id', $orderBy = 'asc', $paginate = 50)
     {
         $this->builder = $builder;
         $this->request = $request;
