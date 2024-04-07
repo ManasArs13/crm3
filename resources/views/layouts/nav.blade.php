@@ -172,6 +172,14 @@
                                     Категории товаров
                                 </x-dropdown-link>
 
+                                <x-dropdown-link :href="route('order_positions.index')">
+                                    Позиции заказов
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('shipment_products.index')">
+                                    Позиции отгрузок
+                                </x-dropdown-link>
+                                
                             </x-slot>
                         </x-dropdown>
                     </div>

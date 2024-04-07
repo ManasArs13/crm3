@@ -32,5 +32,7 @@ return [
     'techchart' => 'Техкарта ',
     'supplies' => 'Приёмки',
     'supply' => 'Приёмка №',
-    'new shipment' => 'Новая отгрузка'
+    'new shipment' => 'Новая отгрузка',
+    'order_positions' => 'Позиции заказов',
+    'shipment_products' => 'Позиции отгрузок',
 ];

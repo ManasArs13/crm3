@@ -2,7 +2,7 @@
 
     @if (isset($entity) && $entity != '')
         <x-slot:title>
-            {{ $entityName }}
+            {{ __('entity.' . $entity) }}
         </x-slot>
     @endif
 
@@ -16,13 +16,13 @@
         @endif
 
         @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
+            <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
         @endif
 
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
-            {{-- header card --}}
+            {{-- header --}}
             <div class="border-b-2 border-neutral-100">
                 <div class="flex flex-row w-full p-3 justify-between">
                     <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
@@ -120,7 +120,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][min]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['minChecked']}}"
+                                                                value="{{ $filter['min'] }}"
                                                                 class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -132,7 +132,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][max]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['maxChecked']}}"
+                                                                value="{{ $filter['max'] }}"
                                                                 class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -175,33 +175,33 @@
                     {{-- Date --}}
                     <div class="flex flex-row gap-1">
                         @if ($queryPlan == 'all')
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                         @endif
                         @if ($queryPlan == 'today')
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
                         @endif
                         @if ($queryPlan == 'threeday')
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3
                                 дня</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3
                                 дня</a>
                         @endif
                         @if ($queryPlan == 'week')
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '0&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '0&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @else
-                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=' . $queryMaterial }}"
+                            <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=' . $queryFilter }}"
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @endif
                     </div>
@@ -211,21 +211,21 @@
                     <div class="flex flex-row gap-1">
                         @if ($queryPlan == 'all')
 
-                            @if ($queryMaterial == 'index')
+                            @if ($queryFilter == 'index')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=index' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=index+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @endif
-                            @if ($queryMaterial == 'block')
+                            @if ($queryFilter == 'block')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @endif
-                            @if ($queryMaterial == 'concrete')
+                            @if ($queryFilter == 'concrete')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=1970-01-01&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateAll . '&filters%5Bmaterial%5D=concrete+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                             @else
@@ -233,21 +233,21 @@
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                             @endif
                         @elseif($queryPlan == 'today')
-                            @if ($queryMaterial == 'index')
+                            @if ($queryFilter == 'index')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=index' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=index+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @endif
-                            @if ($queryMaterial == 'block')
+                            @if ($queryFilter == 'block')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @endif
-                            @if ($queryMaterial == 'concrete')
+                            @if ($queryFilter == 'concrete')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateToday . '&filters%5Bmaterial%5D=concrete+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                             @else
@@ -255,21 +255,21 @@
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                             @endif
                         @elseif($queryPlan == 'threeday')
-                            @if ($queryMaterial == 'index')
+                            @if ($queryFilter == 'index')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=index' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=index+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @endif
-                            @if ($queryMaterial == 'block')
+                            @if ($queryFilter == 'block')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @endif
-                            @if ($queryMaterial == 'concrete')
+                            @if ($queryFilter == 'concrete')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateThreeDay . '&filters%5Bmaterial%5D=concrete+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                             @else
@@ -277,21 +277,21 @@
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                             @endif
                         @else
-                            @if ($queryMaterial == 'index')
+                            @if ($queryFilter == 'index')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=index' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=index+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все</a>
                             @endif
-                            @if ($queryMaterial == 'block')
+                            @if ($queryFilter == 'block')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @else
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=block+' }}"
                                     class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Блок</a>
                             @endif
-                            @if ($queryMaterial == 'concrete')
+                            @if ($queryFilter == 'concrete')
                                 <a href="{{ route($urlFilter) . '?filters%5Bdate_plan%5D%5Bmin%5D=' . $dateToday . '&filters%5Bdate_plan%5D%5Bmax%5D=' . $dateWeek . '&filters%5Bmaterial%5D=concrete+' }}"
                                     class="inline-flex items-center rounded bg-blue-600 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Бетон</a>
                             @else
@@ -313,7 +313,7 @@
                 </div>
             </div>
 
-            {{-- body card --}}
+            {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                 <table class="text-left text-md text-nowrap">
                     <thead>
@@ -339,7 +339,9 @@
                                     </th>
                                 @endif
                             @endforeach
-                            <th></th>
+                            @if (isset($needMenuForItem) && $needMenuForItem)
+                                <th></th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -352,9 +354,9 @@
                                             @if ($column == 'contact_id')
                                                 {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
                                             @elseif($column == 'delivery_id')
-                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-'}}
                                             @elseif($column == 'transport_type_id')
-                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-'}}
                                             @elseif($column == 'status_id')
                                                 @switch($entityItem->$column)
                                                     @case(1)
@@ -435,56 +437,44 @@
                                                 class="text-blue-500 hover:text-blue-600">
                                                 {{ $entityItem->$column }}
                                             </a>
-                                        @elseif($column == 'positions_count')
-                                            @php
-                                                $total_quantity = 0;
-                                            @endphp
-
-                                            @foreach ($entityItem->positions as $position)
-                                                @php
-                                                    $total_quantity += $position->quantity;
-                                                @endphp
-                                            @endforeach
-
-                                            {{ $total_quantity }}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
                                     </td>
                                 @endforeach
 
-                                {{-- Delete --}}
-                                <td class="text-nowrap px-6 py-4">
+                                @if (isset($needMenuForItem) && $needMenuForItem)
+                                    <td class=" text-nowrap px-6 py-4">
+                                        @if (isset($urlDelete) && $urlDelete != '')
+                                            <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
+                                                class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500"
+                                                    href="{{ route($urlDelete, $entityItem->id) }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6 stroke-red-500 hover:stroke-white">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                    </svg>
 
-                                    <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
-                                        class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500"
-                                            href="{{ route($urlDelete, $entityItem->id) }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="w-6 h-6 stroke-red-500 hover:stroke-white">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                            </svg>
-
-                                        </button>
-                                    </form>
-                                </td>
-
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
 
-            {{-- footer card --}}
+            {{-- footer --}}
             <div class="border-t-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
                 {{ $entityItems->appends(request()->query())->links() }}
             </div>
-
         </div>
     </div>
 

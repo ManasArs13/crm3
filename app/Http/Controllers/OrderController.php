@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\OrderFilter;
 use App\Http\Requests\FilterRequest;
+use App\Http\Requests\OrderRequest;
 use App\Models\Contact;
 use App\Models\Delivery;
 use App\Models\Order;
@@ -18,9 +20,31 @@ use Illuminate\Support\Facades\Schema;
 
 class OrderController extends Controller
 {
-    public function index(FilterRequest $request)
+    public function index(OrderRequest $request)
     {
-        $columns = [
+        $urlEdit = "order.edit";
+        $urlShow = "order.show";
+        $urlDelete = "order.destroy";
+        $urlCreate = "order.create";
+        $urlFilter = 'order.index';
+        $entityName = 'Заказы';
+
+        // Orders
+        $builder = Order::query()->with('contact', 'delivery', 'transport_type', 'positions');
+
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $entityItems = (new OrderFilter($builder, $request, $request->column, $request->orderBy))->apply();
+            $selectColumn = $request->column;
+            $orderBy = 'desc';
+        } else {
+            $entityItems = (new OrderFilter($builder, $request))->apply();
+            $selectColumn = null;
+            $orderBy = 'asc';
+        }
+
+
+        // Columns
+        $all_columns = [
             "id",
             "name",
             "date_moment",
@@ -31,85 +55,137 @@ class OrderController extends Controller
             "comment",
             "delivery_id",
             "transport_type_id",
+            "positions_count",
             "delivery_price",
+            "date_fact",
+            "payed_sum",
+            "shipped_sum",
+            "reserved_sum",
+            "weight",
+            "count_pallets",
+            "norm1_price",
+            "norm2_price",
+            "transport_id",
+            "is_demand",
+            "is_made",
+            "status_shipped",
+            "debt",
+            "order_amo_link",
+            "order_amo_id",
+            "delivery_price_norm",
+            "created_at",
+            "updated_at",
+            "ms_id"
         ];
 
-        $entityItems = Order::query()->with('contact', 'delivery', 'transport_type')->select($columns)->withCount('positions');
+        if (isset($request->columns)) {
+            $selected = $request->columns;
+        } else {
+            $selected = [
+                "id",
+                "name",
+                "date_moment",
+                "contact_id",
+                "sum",
+                "date_plan",
+                "status_id",
+                "comment",
+                "positions_count",
+                "delivery_id",
+                "transport_type_id",
+                "delivery_price",
+            ];
+        }
 
-        $urlEdit = "order.edit";
-        $urlShow = "order.show";
-        $urlDelete = "order.destroy";
-        $urlCreate = "order.create";
-        $urlFilter = 'order.filter';
-        $entity = 'orders';
-        $needMenuForItem = true;
-        $orderBy  = $request->orderBy;
-        $selectColumn = $request->column;
+        foreach ($all_columns as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
+        }
+
+        // Filters
+        $minCreated = Order::query()->min('created_at');
+        $minCreatedCheck = ' ';
+        $maxCreated = Order::query()->max('created_at');
+        $maxCreatedCheck = ' ';
+
+        $minUpdated = Order::query()->min('updated_at');
+        $minUpdatedCheck = ' ';
+        $maxUpdated = Order::query()->max('updated_at');
+        $maxUpdatedCheck = ' ';
+
+        $minDatePlan = Order::query()->min('date_plan');
+        $minDatePlanCkeck = ' ';
+        $maxDatePlan = Order::query()->max('date_plan');
+        $maxDatePlanCheck = ' ';
+
         $dateToday = Carbon::now()->format('Y-m-d');
         $dateThreeDay = Carbon::now()->addDays(3)->format('Y-m-d');
         $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
         $dateAll = Carbon::now()->addDays(30)->format('Y-m-d');
-        $queryFilter = 'index';
+
+        $queryMaterial = 'index';
         $queryPlan = 'all';
 
-        /* Сортировка */
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
-            $orderBy = 'desc';
-        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
-            $orderBy = 'asc';
-        } else {
-            $orderBy = 'desc';
-            $entityItems = $entityItems->paginate(50);
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                }
+                if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+                if ($key == 'date_plan') {
+                    if ($value['min']) {
+                        $minDatePlanCkeck = $value['min'];
+                    }
+
+                    if ($value['max']) {
+
+                        $maxCreatedCheck = $value['max'];
+
+                        switch ($value['max']) {
+                            case $dateToday:
+                                $queryPlan = 'today';
+                                break;
+                            case $dateThreeDay:
+                                $queryPlan = 'threeday';
+                                break;
+                            case $dateWeek:
+                                $queryPlan = 'week';
+                                break;
+                            case $dateAll:
+                                $queryPlan = 'all';
+                                break;
+                        }
+                    }
+                }
+
+                if ($key == 'material') {
+                    switch ($value) {
+                        case 'concrete':
+                            $queryMaterial = 'concrete';
+                            break;
+                        case 'block':
+                            $queryMaterial = 'block';
+                            break;
+                    }
+                }
+            }
         }
 
-        $resColumns = [];
-
-        foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-        }
-
-        $resColumnsAll = [
-            "id" => ['name_rus' => trans("column.id"), 'checked' => true],
-            "name" => ['name_rus' => trans("column.name"), 'checked' => true],
-            "date_moment" => ['name_rus' => trans("column.date_moment"), 'checked' => true],
-            "contact_id" => ['name_rus' => trans("column.contact_id"), 'checked' => true],
-            "sum" => ['name_rus' => trans("column.sum"), 'checked' => true],
-            "date_plan" => ['name_rus' => trans("column.date_plan"), 'checked' => true],
-            "status_id" => ['name_rus' => trans("column.status_id"), 'checked' => true],
-            "comment" => ['name_rus' => trans("column.comment"), 'checked' => true],
-            "delivery_id" => ['name_rus' => trans("column.delivery_id"), 'checked' => true],
-            "transport_type_id" => ['name_rus' => trans("column.transport_type_id"), 'checked' => true],
-            "positions_count" => ['name_rus' => trans("column.positions_count"), 'checked' => false],
-            "delivery_price" => ['name_rus' => trans("column.delivery_price"), 'checked' => true],
-            "date_fact" => ['name_rus' => trans("column.date_fact"), 'checked' => false],
-            "payed_sum" => ['name_rus' => trans("column.payed_sum"), 'checked' => false],
-            "shipped_sum" => ['name_rus' => trans("column.shipped_sum"), 'checked' => false],
-            "reserved_sum" => ['name_rus' => trans("column.reserved_sum"), 'checked' => false],
-            "weight" => ['name_rus' => trans("column.weight"), 'checked' => false],
-            "count_pallets" => ['name_rus' => trans("column.count_pallets"), 'checked' => false],
-            "norm1_price" => ['name_rus' => trans("column.norm1_price"), 'checked' => false],
-            "norm2_price" => ['name_rus' => trans("column.norm2_price"), 'checked' => false],
-            "transport_id" => ['name_rus' => trans("column.transport_id"), 'checked' => false],
-            "is_demand" => ['name_rus' => trans("column.is_demand"), 'checked' => false],
-            "is_made" => ['name_rus' => trans("column.is_made"), 'checked' => false],
-            "status_shipped" => ['name_rus' => trans("column.status_shipped"), 'checked' => false],
-            "debt" => ['name_rus' => trans("column.debt"), 'checked' => false],
-            "order_amo_link" => ['name_rus' => trans("column.order_amo_link"), 'checked' => false],
-            "order_amo_id" => ['name_rus' => trans("column.order_amo_id"), 'checked' => false],
-            "delivery_price_norm" => ['name_rus' => trans("column.delivery_price_norm"), 'checked' => false],
-            "created_at" => ['name_rus' => trans("column.created_at"), 'checked' => false],
-            "updated_at" => ['name_rus' => trans("column.updated_at"), 'checked' => false],
-            "ms_id" => ['name_rus' => trans("column.ms_id"), 'checked' => false]
-        ];
-
-        $minCreated = Order::query()->min('created_at');
-        $maxCreated = Order::query()->max('created_at');
-        $minUpdated = Order::query()->min('updated_at');
-        $maxUpdated = Order::query()->max('updated_at');
-        $minDatePlan = Order::query()->min('date_plan');
-        $maxDatePlan = Order::query()->max('date_plan');
 
         $filters = [
             [
@@ -117,41 +193,45 @@ class OrderController extends Controller
                 'name' =>  'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
-                'max' => substr($maxCreated, 0, 10)
+                'minChecked' => $minCreatedCheck,
+                'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck
             ],
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
             ],
             [
                 'type' => 'date',
                 'name' =>  'date_plan',
                 'name_rus' => 'Плановая дата',
                 'min' => substr($minDatePlan, 0, 10),
-                'max' => substr($maxDatePlan, 0, 10)
+                'minChecked' => $minDatePlanCkeck,
+                'max' => substr($maxDatePlan, 0, 10),
+                'maxChecked' => $maxDatePlanCheck
             ],
             [
                 'type' => 'select',
                 'name' => 'material',
                 'name_rus' => 'Материал',
                 'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
-                'checked_value' => 'all',
+                'checked_value' => $queryMaterial,
             ],
         ];
 
         return view("order.index", compact(
             'entityItems',
-            'needMenuForItem',
             "resColumns",
             "resColumnsAll",
             "urlShow",
             "urlDelete",
             "urlEdit",
             "urlCreate",
-            "entity",
             'urlFilter',
             'filters',
             'orderBy',
@@ -160,7 +240,7 @@ class OrderController extends Controller
             'dateThreeDay',
             'dateWeek',
             'dateAll',
-            'queryFilter',
+            'queryMaterial',
             'queryPlan'
         ));
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
@@ -14,12 +15,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipingPriceController;
 use App\Http\Controllers\ShipmentController;
+use App\Http\Controllers\ShipmentProductController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
 use App\Http\Controllers\WelcomeController;
-use App\Models\Contact;
-use App\Models\Shipment;
 use Illuminate\Support\Facades\Route;
 
 
@@ -63,6 +63,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'option' => OptionController::class,
         'shiping_price' => ShipingPriceController::class,
         'category' => CategoryController::class,
+        'order_positions' => OrderPositionController::class,
+        'shipment_products' => ShipmentProductController::class
     ]);
 
     //Доп
@@ -80,6 +82,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/options/filter', [OptionController::class, 'filter'])->name('option.filter');
     Route::get('/shiping_prices/filter', [ShipingPriceController::class, 'filter'])->name('shiping_price.filter');
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
+    Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
+    Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
