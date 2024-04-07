@@ -58,11 +58,11 @@ class OrderFilter
     public function date_plan($value)
     {
         if ($value['min']) {
-            $this->builder->where('updated_at', '>=', $value['min'] . ' 00:00:00');
+            $this->builder->where('date_plan', '>=', $value['min'] . ' 00:00:00');
         }
 
         if ($value['max']) {
-            $this->builder->where('updated_at', '<=', $value['max'] . ' 23:59:59');
+            $this->builder->where('date_plan', '<=', $value['max'] . ' 23:59:59');
         }
     }
 
