@@ -154,7 +154,7 @@ class OrderController extends Controller
 
                     if ($value['max']) {
 
-                        $maxCreatedCheck = $value['max'];
+                        $maxDatePlanCheck = $value['max'];
 
                         switch ($value['max']) {
                             case $dateToday:
