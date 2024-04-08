@@ -5,6 +5,7 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\DeliveryService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportDelivery extends Command
@@ -36,7 +37,8 @@ class ImportDelivery extends Command
     public function handle(Option $option, MoySkladService $service, DeliveryService $deliveryService): void
     {
         $url = Option::query()->where('code', '=', 'ms_delivery_url')->first()?->value;
-        $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;
+    //    $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $date = Carbon::now()->subDays(3);
         $service->createUrl($url,$deliveryService, ["updated"=>'>='.$date], '');
     }
 }

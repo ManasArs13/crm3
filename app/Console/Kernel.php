@@ -53,9 +53,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('ms:import-categories')->everySixHours();
         $schedule->command('ms:import-products')->everySixHours();
         $schedule->command('ms:import-delivery')->everySixHours();
-        $schedule->command('ms:import-contact')->everyTenMinutes();
-        $schedule->command('ms:import-order')->everyTenMinutes();
-        $schedule->command('ms:import-demand')->everyTenMinutes();
+        $schedule->command('ms:import-contact')->everyFiveMinutes();
+        $schedule->command('ms:import-order')->everyFiveMinutes();
+        $schedule->command('ms:import-demand')->everyFiveMinutes();
         $schedule->command('ms:import-supply')->everySixHours();
         $schedule->command('ms:import-residual')->everySixHours();
         $schedule->command('ms:import-tech-chart')->everySixHours();

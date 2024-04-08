@@ -5,6 +5,7 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\SupplyService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportSupply extends Command
@@ -36,18 +37,8 @@ class ImportSupply extends Command
     public function handle(MoySkladService $service, SupplyService $supplyService): void
     {
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/supply';
-
-        if ($this->option('date') == 'null') {
-
-            $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-            $service->createUrl($url, $supplyService, ["updated"=>'>='.$date],'');
-        } else if ($this->option('date') == 'not') {
-
-            $service->createUrl($url, $supplyService, [],'');
-        } else {
-
-            $date = $this->option('date');
-            $service->createUrl($url, $supplyService, ["updated"=>'>='.$date],'');
-        }
+    //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $date = Carbon::now()->subDays(3);
+        $service->createUrl($url, $supplyService, ["updated" => '>=' . $date], '');
     }
 }

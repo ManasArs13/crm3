@@ -5,6 +5,7 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\ProductService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportProducts extends Command
@@ -37,17 +38,8 @@ class ImportProducts extends Command
     {
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/product';
 
-        if ($this->option('date') == 'null') {
-
-            $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-            $service->createUrl($url, $productService, ["updated" => '>=' . $date], "productFolder");
-        } else if ($this->option('date') == 'not') {
-
-            $service->createUrl($url, $productService, [], "productFolder");
-        } else {
-
-            $date = $this->option('date');
-            $service->createUrl($url, $productService, ["updated" => '>=' . $date], "productFolder");
-        }
+        //$date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $date = Carbon::now()->subDays(3);
+        $service->createUrl($url, $productService, ["updated" => '>=' . $date], "productFolder");
     }
 }

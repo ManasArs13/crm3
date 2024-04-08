@@ -5,6 +5,7 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\ProcessingService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportProcessing extends Command
@@ -37,20 +38,9 @@ class ImportProcessing extends Command
     {
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/processing';
 
-        if ($this->option('date') == 'null') {
-
-            $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+           // $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+            $date = Carbon::now()->subDays(3);
             $service->createUrl($url, $processingService, ["updated"=>'>='.$date], '');
 
-        } else if($this->option('date') == 'not') {
-
-            $service->createUrl($url, $processingService);
-
-        } else {
-
-            $date = $this->option('date');
-            $service->createUrl($url, $processingService, ["updated"=>'>='.$date], '');
-
-        }
     }
 }

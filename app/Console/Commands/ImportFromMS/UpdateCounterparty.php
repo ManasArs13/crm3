@@ -5,6 +5,7 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\CounterpartyService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class UpdateCounterparty extends Command
@@ -28,7 +29,8 @@ class UpdateCounterparty extends Command
      */
     public function handle(CounterpartyService $service ,MoySkladService $moySkladService )
     {
-        $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+    //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $date = Carbon::now()->subDays(3);
         $counterpartyUrl='https://api.moysklad.ru/api/remap/1.2/entity/counterparty?&filter='.$moySkladService->getFilter(["updated"=>'>='.$date]);
         $counterparty = $moySkladService->actionGetRowsFromJson($counterpartyUrl);
         $service->updateCounterpartyMs($counterparty);

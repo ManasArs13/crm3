@@ -5,6 +5,7 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\CategoryService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportCategories extends Command
@@ -13,7 +14,7 @@ class ImportCategories extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-categories {--date=null}';
+    protected $signature = 'ms:import-categories';
 
     /**
      * Описание консольной команды.
@@ -36,22 +37,8 @@ class ImportCategories extends Command
     public function handle(Option $option, MoySkladService $service, CategoryService $CategoryService)
     {
         $url = Option::where('code', '=', 'ms_productfolder_url')->first()?->value;
-
-        if ($this->option('date') == 'null') {
-
-            $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-            $service->createUrl($url, $CategoryService, ["updated"=>'>='.$date], '');
-
-        } else if($this->option('date') == 'not') {
-
-            $service->createUrl($url, $CategoryService);
-
-        } else {
-
-            $date = $this->option('date');
-            $service->createUrl($url, $CategoryService, ["updated"=>'>='.$date], '');
-
-        }
-      
+//        $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $date = Carbon::now()->subDays(3);
+        $service->createUrl($url, $CategoryService, ["updated" => '>=' . $date], '');
     }
 }

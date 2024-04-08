@@ -37,7 +37,8 @@ class ImportTransport extends Command
     public function handle(MoySkladService $service, TransportService $transportService)
     {
         $url = Option::where('code', '=', 'ms_transport_url')->first()?->value;
-        $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+    //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $date = Carbon::now()->subDays(3);
         $service->createUrl($url,$transportService, ["updated"=>'>='.$date],'');
     }
 }
