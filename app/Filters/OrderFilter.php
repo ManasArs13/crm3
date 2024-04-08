@@ -9,17 +9,11 @@ class OrderFilter
 {
     protected $builder;
     protected $request;
-    protected $column;
-    protected $orderBy;
-    protected $paginate;
 
-    public function __construct(Builder $builder, $request, $column = 'id', $orderBy = 'asc', $paginate = 50)
+    public function __construct(Builder $builder, $request)
     {
         $this->builder = $builder;
         $this->request = $request;
-        $this->column = $column;
-        $this->orderBy = $orderBy;
-        $this->paginate = $paginate;
     }
 
     public function apply()
@@ -30,7 +24,7 @@ class OrderFilter
             }
         }
 
-        return $this->builder->orderBy($this->column, $this->orderBy)->paginate($this->paginate);
+        return $this->builder;
     }
 
     public function created_at($value)

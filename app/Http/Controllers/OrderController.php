@@ -32,15 +32,29 @@ class OrderController extends Controller
         // Orders
         $builder = Order::query()->with('contact', 'delivery', 'transport_type', 'positions');
 
-        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new OrderFilter($builder, $request, $request->column, $request->orderBy))->apply();
-            $selectColumn = $request->column;
+        if (isset($request->column) && isset($request->orderBy)  && $request->orderBy == 'asc') {
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
-        } else {
-            $entityItems = (new OrderFilter($builder, $request))->apply();
-            $selectColumn = null;
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy)  && $request->orderBy == 'desc') {
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $entityItems = (new OrderFilter($builder, $request))->apply()->paginate(50);
+            $selectColumn = null;
         }
+
+        // if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+        //     $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+        //     $selectColumn = $request->column;
+        //     $orderBy = 'desc';
+        // } else {
+        //     $entityItems = (new OrderFilter($builder, $request))->apply();
+        //     $selectColumn = null;
+        //     $orderBy = 'asc';
+        // }
 
 
         // Columns
@@ -86,6 +100,7 @@ class OrderController extends Controller
                 "name",
                 "date_moment",
                 "contact_id",
+                'status_shipped',
                 "sum",
                 "date_plan",
                 "status_id",

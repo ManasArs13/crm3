@@ -9,7 +9,6 @@ use App\Models\Product;
 use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Transport;
-use App\Models\TransportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
