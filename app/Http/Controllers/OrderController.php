@@ -46,17 +46,6 @@ class OrderController extends Controller
             $selectColumn = null;
         }
 
-        // if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-        //     $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
-        //     $selectColumn = $request->column;
-        //     $orderBy = 'desc';
-        // } else {
-        //     $entityItems = (new OrderFilter($builder, $request))->apply();
-        //     $selectColumn = null;
-        //     $orderBy = 'asc';
-        // }
-
-
         // Columns
         $all_columns = [
             "id",
