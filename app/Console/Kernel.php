@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CkeckContactMs;
+use App\Console\Commands\ImportFromAmo\ImportFromAmo;
 use App\Console\Commands\ImportFromMS\ImportAll;
 use App\Console\Commands\ImportFromMS\ImportCategories;
 use App\Console\Commands\ImportFromMS\ImportColor;
@@ -24,6 +25,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
+        ImportFromAmo::class,
         ImportAll::class,
         ImportCategories::class,
         ImportColor::class,
@@ -45,6 +47,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('ms:import-amo')->hourly();
+        $schedule->command('app:update-contacts-amo')->hourly();
         $schedule->command('ms:import-all')->hourly();
         $schedule->command('ms:import-color')->everySixHours();
         $schedule->command('ms:import-status')->everySixHours();
