@@ -37,9 +37,9 @@ class AppServiceProvider extends ServiceProvider
         Product::observe(ProductObserver::class);
         Contact::observe(ContactMsService::class);
 
-        \URL::forceRootUrl(\Config::get('app.url'));
-        if (str_contains(\Config::get('app.url'), 'https://')) {
-            \URL::forceScheme('https');
-        }
+        // \URL::forceRootUrl(\Config::get('app.url'));
+        // if (str_contains(\Config::get('app.url'), 'https://')) {
+        //     \URL::forceScheme('https');
+        // }
     }
 }
