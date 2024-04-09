@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ShipmentFilter;
 use App\Http\Requests\FilterRequest;
+use App\Http\Requests\ShipmentRequest;
 use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Product;
@@ -15,51 +17,132 @@ use Illuminate\Support\Facades\Schema;
 
 class ShipmentController extends Controller
 {
-    public function index(FilterRequest $request)
+    public function index(ShipmentRequest $request)
     {
-        $entityItems = Shipment::query()->with('order.contact');
-        $columns = Schema::getColumnListing('shipments');
-        $needMenuForItem = true;
         $urlEdit = "shipment.edit";
         $urlShow = "shipment.show";
         $urlDelete = "shipment.destroy";
         $urlCreate = "shipment.create";
-        $urlFilter = 'shipment.filter';
-        $entity = 'shipments';
-        $orderBy  = $request->orderBy;
-        $selectColumn = $request->column;
+        $urlFilter = 'shipment.index';
+        $entityName = 'Отгрузки';
 
-        /* Сортировка */
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+        // Shipments
+        $builder = Shipment::query()->with('order.contact', 'transport', 'transport_type', 'delivery');
+
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
-        } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
+            $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = $entityItems->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
+            $selectColumn = null;
         }
 
-        $resColumns = [];
-        $resColumnsAll = [];
+        // Columns
+        $all_columns = [
+            "id",
+            "name",
+            "description",
+            "shipment_address",
+            "order_id",
+            "counterparty_link",
+            "service_link",
+            "paid_sum",
+            "suma",
+            "status",
+            "delivery_id",
+            "delivery_price",
+            "delivery_price_norm",
+            "delivery_fee",
+            "transport_id",
+            "transport_type_id",
+            "created_at",
+            "updated_at",
+            "weight",
+            "ms_id"
+        ];
 
-        foreach ($columns as $column) {
-            if ($column == 'name') {
+        if (isset($request->columns)) {
+            $selected = $request->columns;
+        } else {
+            $selected = [
+                "id",
+                "name",
+                "shipment_address",
+                "order_id",
+                "description",
+                "service_link",
+                "paid_sum",
+                "suma",
+                "status",
+                "delivery_id",
+                "delivery_price",
+                "delivery_price_norm",
+                "delivery_fee",
+                "transport_id",
+                "transport_type_id",
+                "created_at",
+                "updated_at",
+                "weight",
+            ];
+        }
+
+        foreach ($all_columns as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
                 $resColumns[$column] = trans("column." . $column);
-                $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
-
-                $resColumns['contact_id'] = trans("column." . 'contact_id');
-                //   $resColumnsAll['contact_id'] = ['name_rus' => trans("column." . 'contact_id'), 'checked' => false];
             }
-            $resColumns[$column] = trans("column." . $column);
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
         }
 
+        // Filters
         $minCreated = Shipment::query()->min('created_at');
+        $minCreatedCheck = '';
         $maxCreated = Shipment::query()->max('created_at');
+        $maxCreatedCheck = '';
         $minUpdated = Shipment::query()->min('updated_at');
+        $minUpdatedCheck = '';
         $maxUpdated = Shipment::query()->max('updated_at');
+        $maxUpdatedCheck = '';
+
+        $queryMaterial = 'index';
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                }
+                if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+
+                if ($key == 'material') {
+                    switch ($value) {
+                        case 'concrete':
+                            $queryMaterial = 'concrete';
+                            break;
+                        case 'block':
+                            $queryMaterial = 'block';
+                            break;
+                    }
+                }
+            }
+        }
 
         $filters = [
             [
@@ -67,21 +150,25 @@ class ShipmentController extends Controller
                 'name' =>  'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
-                'max' => substr($maxCreated, 0, 10)
+                'minChecked' => $minCreatedCheck,
+                'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck
             ],
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
             ],
             [
                 'type' => 'select',
                 'name' => 'material',
                 'name_rus' => 'Материал',
-                'values' => [['id' => 0, 'name' => 'Блок'], ['id' => 1, 'name' => 'Бетон']],
-                'checked_value' => 'all',
+                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
+                'checked_value' => $queryMaterial,
             ],
         ];
 
@@ -89,12 +176,11 @@ class ShipmentController extends Controller
             'entityItems',
             "resColumns",
             "resColumnsAll",
-            "needMenuForItem",
             "urlShow",
             "urlDelete",
             "urlEdit",
             "urlCreate",
-            "entity",
+            "entityName",
             'urlFilter',
             "filters",
             'orderBy',
@@ -193,9 +279,9 @@ class ShipmentController extends Controller
     {
         $shipment = new Shipment();
 
-        $shipment->name = 'CRM_' .$request->name;
+        $shipment->name = 'CRM_' . $request->name;
         $shipment->status = $request->status;
-        
+
         $shipment->paid_sum = 0;
         $shipment->suma = 0;
         $shipment->delivery_id = $request->delivery;

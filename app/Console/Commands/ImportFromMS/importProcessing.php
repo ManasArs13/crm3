@@ -38,9 +38,8 @@ class ImportProcessing extends Command
     {
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/processing';
 
-           // $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-            $date = Carbon::now()->subDays(3);
-            $service->createUrl($url, $processingService, ["updated"=>'>='.$date], '');
-
+        // $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $date = Carbon::now()->subDays(3);
+        $service->createUrl($url, $processingService, ["updated" => '>=' . $date], '');
     }
 }

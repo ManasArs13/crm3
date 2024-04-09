@@ -37,8 +37,8 @@ class ImportOrderMs extends Command
     public function handle(Option $option, MoySkladService $service, OrderService $orderService)
     {
         $url = Option::where('code', '=', 'ms_orders_url')->first()?->value;
-    //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
+        //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
         $date = Carbon::now()->subDays(3);
-        $service->createUrl($url, $orderService, ["updated"=>'>='.$date, "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
+        $service->createUrl($url, $orderService, ["updated" => '>=' . $date, "isDeleted" => ["true", "false"]], 'positions.assortment,attributes.value,agent,state');
     }
 }

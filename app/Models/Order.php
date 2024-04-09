@@ -65,11 +65,6 @@ class Order extends Model
         return Carbon::parse($value)->format('d-m-Y H:i:s');
     }
 
-    public function getDateFactAttribute($value)
-    {
-        return Carbon::parse($value)->format('d-m-Y H:i:s');
-    }
-
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i:s');

@@ -16,7 +16,7 @@
         @endif
 
         @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
+            <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
         @endif
 
         <div
@@ -120,7 +120,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][min]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['min'] }}"
+                                                                value="{{ $filter['minChecked'] }}"
                                                                 class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -132,7 +132,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][max]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['max'] }}"
+                                                                value="{{ $filter['maxChecked'] }}"
                                                                 class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -149,12 +149,10 @@
                                                             class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
                                                             , name="filters[{{ $filter['name'] }}]"
                                                             data-offset="false">
-                                                            <option @if ($filter['checked_value'] == 'all') selected @endif
-                                                                value="all">Все</option>
                                                             @foreach ($filter['values'] as $value)
                                                                 <option
-                                                                    @if ($value['id'] == $filter['checked_value']) selected @endif
-                                                                    value="{{ $value['id'] }} ">
+                                                                    @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                                    value="{{ $value['value'] }} ">
                                                                     {{ $value['name'] }}</option>
                                                             @endforeach
                                                         </select>
@@ -219,61 +217,28 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[28rem] overflow-hidden px-6 py-4"
+                                    <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
-                                             {{ $entityItem->order && $entityItem->order->contact  ? $entityItem->order->contact->name : '-' }}
+                                                {{ $entityItem->order && $entityItem->order->contact ? $entityItem->order->contact->name : '-' }}
+                                            @elseif($column == 'order_id')
+                                                <a href="{{ route('order.show', $entityItem->id) }}"
+                                                    class="text-blue-500 hover:text-blue-600">
+                                                    {{ $entityItem->$column }}
+                                                </a>
+                                            @elseif($column == 'delivery_id')
+                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                            @elseif($column == 'transport_id')
+                                                {{ $entityItem->transport ? $entityItem->transport->name : '-' }}
+                                            
+                                            @elseif($column == 'transport_type_id')
+                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
                                             @else
-                                              {{ $entityItem->$column }}
+                                                {{ $entityItem->$column }}
                                             @endif
                                         @elseif($column == 'status')
-                                            @switch($entityItem->$column)
-                                                @case('[DN] Подтвержден')
-                                                    <div id="status" class="border border-green-500 bg-green-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('На брони')
-                                                    <div id="status" class="border border-purple-500 bg-purple-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[C] Отменен')
-                                                    <div id="status" class="border border-red-500 bg-red-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('Думают')
-                                                    <div id="status" class="border border-blue-500 bg-blue-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[DD] Отгружен с долгом')
-                                                    <div id="status" class="border border-orange-500 bg-orange-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[DF] Отгружен и закрыт')
-                                                    <div id="status" class="border border-green-500 bg-green-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @case('[N] Новый')
-                                                    <div id="status" class="border border-yellow-500 bg-yellow-400">
-                                                        <span>{{ $entityItem->$column->name }}</span>
-                                                    </div>
-                                                @break
-
-                                                @default
-                                                    {{ $entityItem->$column }}
-                                            @endswitch
+                                            {{ $entityItem->$column }}
                                         @elseif($column == 'remainder')
                                             @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
                                                 {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
@@ -293,6 +258,11 @@
                                                         d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
                                                     </path>
                                                 </svg>
+                                            </a>
+                                        @elseif($column == 'name' || $column == 'id')
+                                            <a href="{{ route($urlShow, $entityItem->id) }}"
+                                                class="text-blue-500 hover:text-blue-600">
+                                                {{ $entityItem->$column }}
                                             </a>
                                         @else
                                             {{ $entityItem->$column }}

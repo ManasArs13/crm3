@@ -41,7 +41,7 @@ class DemandServices implements EntityInterface
 
         foreach ($rows['rows'] as $row) {
 
-            $urlService = 'https://api.moysklad.ru/app/#demand/edit?id=';
+            $urlService = 'https://online.moysklad.ru/app/#demand/edit?id=';
 
             $entity = Shipment::query()->firstOrNew(['ms_id' => $row["id"]]);
 

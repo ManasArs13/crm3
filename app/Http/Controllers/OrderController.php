@@ -32,17 +32,17 @@ class OrderController extends Controller
         // Orders
         $builder = Order::query()->with('contact', 'delivery', 'transport_type', 'positions');
 
-        if (isset($request->column) && isset($request->orderBy)  && $request->orderBy == 'asc') {
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
             $selectColumn = $request->column;
-        } elseif (isset($request->column) && isset($request->orderBy)  && $request->orderBy == 'desc') {
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new OrderFilter($builder, $request))->apply()->paginate(50);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
             $selectColumn = null;
         }
 
@@ -111,19 +111,19 @@ class OrderController extends Controller
 
         // Filters
         $minCreated = Order::query()->min('created_at');
-        $minCreatedCheck = ' ';
+        $minCreatedCheck = '';
         $maxCreated = Order::query()->max('created_at');
-        $maxCreatedCheck = ' ';
+        $maxCreatedCheck = '';
 
         $minUpdated = Order::query()->min('updated_at');
-        $minUpdatedCheck = ' ';
+        $minUpdatedCheck = '';
         $maxUpdated = Order::query()->max('updated_at');
-        $maxUpdatedCheck = ' ';
+        $maxUpdatedCheck = '';
 
         $minDatePlan = Order::query()->min('date_plan');
-        $minDatePlanCkeck = ' ';
+        $minDatePlanCkeck = '';
         $maxDatePlan = Order::query()->max('date_plan');
-        $maxDatePlanCheck = ' ';
+        $maxDatePlanCheck = '';
 
         $dateToday = Carbon::now()->format('Y-m-d');
         $dateThreeDay = Carbon::now()->addDays(3)->format('Y-m-d');
@@ -189,7 +189,6 @@ class OrderController extends Controller
                 }
             }
         }
-
 
         $filters = [
             [
@@ -393,226 +392,6 @@ class OrderController extends Controller
         $entityItem->delete();
 
         return redirect()->route('order.index');
-    }
-    public function filter(FilterRequest $request)
-    {
-        $urlEdit = "order.edit";
-        $urlShow = "order.show";
-        $urlDelete = "order.destroy";
-        $urlCreate = "order.create";
-        $urlFilter = 'order.filter';
-        $urlReset = 'order.index';
-        $entity = 'orders';
-        $selectColumn = $request->column;
-        $needMenuForItem = true;
-        $dateToday = Carbon::now()->format('Y-m-d');
-        $dateThreeDay = Carbon::now()->addDays(3)->format('Y-m-d');
-        $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
-        $dateAll = Carbon::now()->addDays(30)->format('Y-m-d');
-        $queryFilter = 'index';
-        $queryPlan = 'all';
-
-        $orderBy  = $request->orderBy;
-        $entityItems = Order::query()->with('contact', 'delivery', 'transport_type');
-
-        $columns = [
-            "id",
-            "name",
-            "date_moment",
-            "contact_id",
-            "sum",
-            "date_plan",
-            "status_id",
-            "comment",
-            "delivery_id",
-            "transport_type_id",
-            "positions_count",
-            "delivery_price",
-            "date_fact",
-            "payed_sum",
-            "shipped_sum",
-            "reserved_sum",
-            "weight",
-            "count_pallets",
-            "norm1_price",
-            "norm2_price",
-            "transport_id",
-            "is_demand",
-            "is_made",
-            "status_shipped",
-            "debt",
-            "order_amo_link",
-            "order_amo_id",
-            "delivery_price_norm",
-            "created_at",
-            "updated_at",
-            "ms_id",
-        ];
-
-        $resColumns = [];
-        $resColumnsAll = [];
-
-        /* Колонки для меню */
-        foreach ($columns as $column) {
-            if ($column == 'name') {
-                $resColumnsAll[$column] = [
-                    'name_rus' => trans("column." . $column),
-                    'checked' => in_array($column, $request->columns ? $request->columns : []) ? true : false
-                ];
-
-                $resColumnsAll['contact_id'] = [
-                    'name_rus' => trans("column." . 'contact_id'),
-                    'checked' => in_array('contact_id', $request->columns ? $request->columns : []) ? true : false
-                ];
-            }
-            $resColumnsAll[$column] = [
-                'name_rus' => trans("column." . $column),
-                'checked' => in_array($column, $request->columns ? $request->columns : []) ? true : false
-            ];
-        }
-
-        /* Колонки для отображения */
-        if (isset($request->columns)) {
-            $requestColumns = $request->columns;
-            $requestColumns[] = "id";
-            $columns = $requestColumns;
-
-            if (in_array('positions_count', $requestColumns)) {
-                unset($requestColumns[array_search('positions_count', $requestColumns, true)]);
-            }
-
-            $entityItems = $entityItems->select($requestColumns)->withCount('positions');
-        }
-
-        foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-        }
-
-        /* Фильтры для отображения */
-        if ($request->filters['material'] == 'concrete') {
-
-            $entityItems = $entityItems
-                ->whereHas('positions', function ($query) {
-                    $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::CONCRETE);
-                    });
-                });
-            $material = 'concrete';
-            $queryFilter = 'concrete';
-        } else if ($request->filters['material'] == 'block') {
-
-            $entityItems = $entityItems
-                ->whereHas('positions', function ($query) {
-                    $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::BLOCK);
-                    });
-                });
-            $material = 'block';
-            $queryFilter = 'block';
-        } else {
-
-            $material = 'index';
-        }
-
-        /* Фильтры для отображения */
-        if (isset($request->filters)) {
-            foreach ($request->filters as $key => $value) {
-                if ($key == 'created_at' || $key == 'updated_at' || $key == 'date_plan') {
-                    if ($key == 'date_plan') {
-                        switch ($value['max']) {
-                            case $dateToday:
-                                $queryPlan = 'today';
-                                break;
-                            case $dateThreeDay:
-                                $queryPlan = 'threeday';
-                                break;
-                            case $dateWeek:
-                                $queryPlan = 'week';
-                                break;
-                            case $dateAll:
-                                $queryPlan = 'all';
-                                break;
-                        }
-                    }
-                    $entityItems = $entityItems
-                        ->where($key, '>=', $value['min'] . ' 00:00:00')
-                        ->where($key, '<=', $value['max'] . ' 23:59:59');
-                }
-            }
-        }
-
-        /* Сортировка */
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
-            $orderBy = 'desc';
-        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
-            $orderBy = 'asc';
-        } else {
-            $orderBy = 'desc';
-            $entityItems = $entityItems->paginate(50);
-        }
-
-        $minCreated = Order::query()->min('created_at');
-        $maxCreated = Order::query()->max('created_at');
-        $minUpdated = Order::query()->min('updated_at');
-        $maxUpdated = Order::query()->max('updated_at');
-        $minDatePlan = Order::query()->min('date_plan');
-        $maxDatePlan = Order::query()->max('date_plan');
-
-        $filters = [
-            [
-                'type' => 'date',
-                'name' =>  'created_at',
-                'name_rus' => 'Дата создания',
-                'min' => substr($minCreated, 0, 10),
-                'max' => substr($maxCreated, 0, 10)
-            ],
-            [
-                'type' => 'date',
-                'name' =>  'updated_at',
-                'name_rus' => 'Дата обновления',
-                'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
-            ],
-            [
-                'type' => 'date',
-                'name' =>  'date_plan',
-                'name_rus' => 'Плановая дата',
-                'min' => substr($minDatePlan, 0, 10),
-                'max' => substr($maxDatePlan, 0, 10)
-            ],
-            [
-                'type' => 'select',
-                'name' => 'material',
-                'name_rus' => 'Материал',
-                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
-                'checked_value' =>  $material,
-            ],
-        ];
-
-        return view("order.index", compact(
-            'entityItems',
-            "resColumns",
-            "resColumnsAll",
-            "urlShow",
-            "urlDelete",
-            "urlEdit",
-            "urlCreate",
-            "entity",
-            'urlFilter',
-            'urlReset',
-            'orderBy',
-            'filters',
-            'needMenuForItem',
-            'selectColumn',
-            'dateToday',
-            'dateThreeDay',
-            'dateWeek',
-            'dateAll',
-            'queryFilter',
-            'queryPlan'
-        ));
     }
 
     public function get_api(Request $request)

@@ -319,7 +319,7 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
-                                @if ($key === 'remainder')
+                                @if ($key === 'remainder' || $key == 'positions_count')
                                     <th scope="col" class="px-6 py-4">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
                                     <th scope="col" class="px-6 py-4">
@@ -346,7 +346,7 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[28rem] overflow-hidden px-6 py-4"
+                                    <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
