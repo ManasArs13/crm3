@@ -27,7 +27,7 @@ class ShipmentController extends Controller
         $entityName = 'Отгрузки';
 
         // Shipments
-        $builder = Shipment::query()->with('order.contact', 'transport', 'transport_type', 'delivery');
+        $builder = Shipment::query()->with('order.contact', 'transport', 'transport_type', 'delivery', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
@@ -55,9 +55,10 @@ class ShipmentController extends Controller
             "paid_sum",
             "suma",
             "status",
+            "products_count",
             "delivery_id",
             "delivery_price",
-            "delivery_price_norm",
+   //         "delivery_price_norm",
             "delivery_fee",
             "transport_id",
             "transport_type_id",

@@ -122,6 +122,7 @@
    'ms' => 'uuid',
    'need_from_tc' => 'Срочная потребность',
    'positions_count' => "Кол-во продуктов",
+   'products_count' => 'Кол-во продуктов',
    'shipped' => 'Доставлено',
    'reserve' => 'В резерве',
    'shipment_id' => 'Отгрузка'

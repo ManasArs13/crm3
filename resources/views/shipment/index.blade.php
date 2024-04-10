@@ -231,7 +231,6 @@
                                                 {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
                                             @elseif($column == 'transport_id')
                                                 {{ $entityItem->transport ? $entityItem->transport->name : '-' }}
-                                            
                                             @elseif($column == 'transport_type_id')
                                                 {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
                                             @else
@@ -264,6 +263,18 @@
                                                 class="text-blue-500 hover:text-blue-600">
                                                 {{ $entityItem->$column }}
                                             </a>
+                                        @elseif($column == 'products_count')
+                                            @php
+                                                $total_quantity = 0;
+                                            @endphp
+
+                                            @foreach ($entityItem->products as $position)
+                                                @php
+                                                    $total_quantity += $position->quantity;
+                                                @endphp
+                                            @endforeach
+
+                                            {{ $total_quantity }}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
