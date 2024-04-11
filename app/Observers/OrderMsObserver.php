@@ -15,7 +15,7 @@ class OrderMsObserver
     {
         if ($orderMs->isDirty('status_id')){
 
-            $statusAmoId = StatusAmo::query()->where('status_ms', $orderMs->status_id)->value('id');
+            $statusAmoId = StatusAmo::query()->where('status', $orderMs->status_id)->value('id');
 
             if ($statusAmoId) {
                 $orderMs->orderAmo()->update(['status_amo_id' => $statusAmoId]);
