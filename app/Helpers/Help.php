@@ -9,12 +9,12 @@ use Illuminate\Support\Carbon;
 
 class Help
 {
-    public static function consumption($num, $x = 5)
+    public static function consumption($num)
     {
         $product = Product::query()->where('id', $num)->first();
         $shipments = ShipmentProduct::query()
             ->where('product_id', $product->id)
-            ->whereHas('shipment', function (Builder $query) {
+            ->whereHas('shipments', function (Builder $query) {
                 $query->where('created_at', '>', Carbon::now()->subYear());
             })
             ->get();
