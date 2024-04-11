@@ -7,7 +7,6 @@ use App\Models\Product;
 
 class ProductObserver
 {
-
     /**
      * Handle the Product "updated" event.
      */
