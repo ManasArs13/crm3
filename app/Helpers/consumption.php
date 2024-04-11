@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Helpers;
+
 use App\Models\Product;
 use App\Models\ShipmentProduct;
 use Illuminate\Database\Eloquent\Builder;

@@ -6,7 +6,6 @@ use App\Contracts\EntityInterface;
 use App\Models\Product;
 use App\Models\Supply;
 use App\Models\SupplyPosition;
-use App\Models\SupplyPositions;
 use App\Services\Api\MoySkladService;
 
 class SupplyService implements EntityInterface
