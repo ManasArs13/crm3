@@ -2,9 +2,8 @@
 
 namespace App\Observers;
 
+use App\Helpers\Help;
 use App\Models\Product;
-
-use function App\Helpers\consumption;
 
 class ProductObserver
 {
@@ -16,7 +15,7 @@ class ProductObserver
     {
         if ($product->type == Product::PRODUCTS) {
             Product::query()->where('id', $product->id)->update([
-                'consumption_year' => consumption($product->id),
+                'consumption_year' => Help::consumption($product->id),
             ]);
         } else {
             Product::query()->where('id', $product->id)->update([
