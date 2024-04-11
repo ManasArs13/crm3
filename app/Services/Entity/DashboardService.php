@@ -19,7 +19,7 @@ class DashboardService
     
     public function __construct()
     {
-        $this->currentDate =  Carbon::now()->setTime(0, 0);
+        $this->currentDate = Carbon::now()->setTime(0, 0);
         $this->columns = [
             'contact_id', 'shipped_sum', 'transport_id',
             'sum', 'delivery_id', 'weight', 'date_plan',
@@ -101,7 +101,7 @@ class DashboardService
     public function getOrderMonth($request): JsonResponse
     {
         $arUrl = explode("/", session('_previous.url'));
-        $referer = explode("?", $arUrl[1])[0];
+        $referer = explode("?", $arUrl[3])[0];
         $nextTenDaysEnd = Carbon::now()->addDays(10);
         $orders = [];
         $orders2 = [];
@@ -172,7 +172,7 @@ class DashboardService
                 ->orderBy('date_plan')
                 ->get();
         }
-
+ 
         foreach ($orders as $order) {
             $date = Carbon::parse($order->date_plan)->format('Y-m-d');
 
