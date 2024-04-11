@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ShipmentPositionFilter;
 use App\Http\Requests\FilterRequest;
 use App\Models\ShipmentProduct;
 use Illuminate\Http\Request;
@@ -11,68 +12,106 @@ class ShipmentProductController extends Controller
 {
     public function index(FilterRequest $request)
     {
-        $entityItems = ShipmentProduct::query();
-
-        $needMenuForItem = true;
         $urlEdit = "shipment_products.edit";
         $urlShow = "shipment_products.show";
         $urlDelete = "shipment_products.destroy";
         $urlCreate = "shipment_products.create";
-        $urlFilter = 'shipmentproduct.filter';
+        $urlFilter = 'shipment_products.index';
         $entity = 'shipment_products';
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
 
-        // Колонки
-        $columns = Schema::getColumnListing('shipment_products');
-        $resColumns = [];
-        $resColumnsAll = [];
+        // Shipment-product
+        $builder = ShipmentProduct::query()->with('product');
 
-        /* Сортировка */
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
-        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
+            $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = $entityItems->paginate(50);
+            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
+            $selectColumn = null;
         }
 
-        foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
+        // Колонки
+        $all_columns = Schema::getColumnListing('shipment_products');
+
+        if (isset($request->columns)) {
+            $selected = $request->columns;
+        } else {
+            $selected = $all_columns;
+        }
+
+        foreach ($all_columns as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
         }
 
         /* Фильтры для меню */
         $minCreated = ShipmentProduct::query()->min('created_at');
+        $minCreatedCheck = '';
         $maxCreated = ShipmentProduct::query()->max('created_at');
-        $minUpdated = ShipmentProduct::query()->min('updated_at');
-        $maxUpdated = ShipmentProduct::query()->max('updated_at');
+        $maxCreatedCheck = '';
 
-        $filters = [
+        $minUpdated = ShipmentProduct::query()->min('updated_at');
+        $minUpdatedCheck = '';
+        $maxUpdated = ShipmentProduct::query()->max('updated_at');
+        $maxUpdatedCheck = '';
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                }
+                if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+            }
+        }
+
+         $filters = [
             [
                 'type' => 'date',
                 'name' =>  'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
+                'minChecked' => $minCreatedCheck,
                 'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck
             ],
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
             ],
         ];
 
-        return view("own.index", compact(
+        return view("shipment.position", compact(
             'entityItems',
             "resColumns",
             "resColumnsAll",
-            "needMenuForItem",
             "urlShow",
             "urlDelete",
             "urlEdit",

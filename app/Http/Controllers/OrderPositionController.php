@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\OrderPositionFilter;
 use App\Http\Requests\FilterRequest;
 use App\Models\OrderPosition;
 use Illuminate\Http\Request;
@@ -11,45 +12,80 @@ class OrderPositionController extends Controller
 {
     public function index(FilterRequest $request)
     {
-        $entityItems = OrderPosition::query();
-
-        $needMenuForItem = true;
         $urlEdit = "order_positions.edit";
         $urlShow = "order_positions.show";
         $urlDelete = "order_positions.destroy";
         $urlCreate = "order_positions.create";
-        $urlFilter = 'orderposition.filter';
+        $urlFilter = 'order_positions.index';
         $entity = 'order_positions';
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
 
-        // Колонки
-        $columns = Schema::getColumnListing('order_positions');
-        $resColumns = [];
-        $resColumnsAll = [];
+        // Order-Position
+        $builder = OrderPosition::query()->with('product');
 
-        /* Сортировка */
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
-        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
+            $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = $entityItems->paginate(50);
+            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
+            $selectColumn = null;
         }
 
-        foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
+        // Колонки
+        $all_columns = Schema::getColumnListing('order_positions');
+
+        if (isset($request->columns)) {
+            $selected = $request->columns;
+        } else {
+            $selected = $all_columns;
+        }
+
+        foreach ($all_columns as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
         }
 
         /* Фильтры для меню */
         $minCreated = OrderPosition::query()->min('created_at');
+        $minCreatedCheck = '';
         $maxCreated = OrderPosition::query()->max('created_at');
+        $maxCreatedCheck = '';
+
         $minUpdated = OrderPosition::query()->min('updated_at');
+        $minUpdatedCheck = '';
         $maxUpdated = OrderPosition::query()->max('updated_at');
+        $maxUpdatedCheck = '';
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                }
+                if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+            }
+        }
 
         $filters = [
             [
@@ -57,22 +93,25 @@ class OrderPositionController extends Controller
                 'name' =>  'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
+                'minChecked' => $minCreatedCheck,
                 'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck
             ],
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
             ],
         ];
 
-        return view("own.index", compact(
+        return view("order.position", compact(
             'entityItems',
             "resColumns",
             "resColumnsAll",
-            "needMenuForItem",
             "urlShow",
             "urlDelete",
             "urlEdit",

@@ -262,6 +262,22 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
+        $products_block = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $products_concrete = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+        $products_delivery = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'доставка')
+            ->orderBy('name')
+            ->get();
+
         $transports = TransportType::orderBy('name')->get();
         $date = Carbon::now()->format('Y-m-d');
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
@@ -277,6 +293,9 @@ class OrderController extends Controller
                 'transports',
                 'deliveries',
                 'products',
+                'products_block',
+                'products_concrete',
+                'products_delivery',
                 'date',
                 'dateNow'
             )

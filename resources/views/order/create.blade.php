@@ -188,9 +188,21 @@
                                         class="relative m-0 flex basis-8/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
-                                        @foreach ($products as $product)
-                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                        @endforeach
+                                        <optgroup label="БЕТОН">
+                                            @foreach ($products_block as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="БЛОК">
+                                            @foreach ($products_concrete as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="ДОСТАВКА">
+                                            @foreach ($products_delivery as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
 
                                     </select>
 
@@ -230,10 +242,10 @@
 
 
                             <div class="flex flex-row mb-1 w-full rounded p-2">
-                                <div class="flex basis-10/12">
+                                <div class="flex basis-8/12">
                                     <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий"></textarea>
                                 </div>
-                                <div class="flex flex-col basis-2/12 font-semibold">
+                                <div class="flex flex-col basis-4/12 font-semibold">
                                     <div class="flex justify-between px-6">
                                         <label>Количество:</label>
                                         <span class="" x-text="allCount">
@@ -369,6 +381,11 @@
         </div>
 
     </div>
+    <style>
+        .select2-container--default .select2-results>.select2-results__options {
+            min-height: 24rem;
+        }
+    </style>
     <script>
         $(document).ready(function() {
             //change selectboxes to selectize mode to be searchable

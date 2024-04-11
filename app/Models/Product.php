@@ -15,6 +15,7 @@ class Product extends Model
     public const NOT_SELECTED = "не выбрано";
     public const CONCRETE = "бетон";
     public const BLOCK = "блок";
+    public const DELIVERY = "доставка";
 
     protected $guarded = false;
 

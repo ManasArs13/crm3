@@ -37,8 +37,9 @@ return new class extends Migration
             $table->enum('building_material', [
                 Product::NOT_SELECTED,
                 Product::CONCRETE,
-                Product::BLOCK
-            ]);
+                Product::BLOCK,
+                Product::DELIVERY
+            ])->default(Product::DELIVERY);
             $table->integer('residual')->nullable();
             $table->integer('release')->nullable();
             $table->string('sort')->nullable();
