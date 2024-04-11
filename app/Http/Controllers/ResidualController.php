@@ -224,7 +224,7 @@ class ResidualController extends Controller
         $column = $request->column;
 
         $products = TechProcess::with('tech_chart')
-            ->whereDate('moment', '>=', Carbon::now()->setTime(0, 0)->subDays(6));
+            ->whereDate('moment', '>=', Carbon::now()->subDays(5));
 
         /* Сортировка */
         if (isset($request->orderBy) && $request->orderBy == 'asc') {
