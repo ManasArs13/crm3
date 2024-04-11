@@ -11,25 +11,19 @@ class Help
 {
     public static function consumption($num, $x = 5)
     {
-        if (!function_exists('consumption')) {
-
-            function consumption($id)
-            {
-                $product = Product::query()->where('id', $id)->first();
-                $shipments = ShipmentProduct::query()
-                    ->where('product_id', $product->id)
-                    ->whereHas('shipment', function (Builder $query) {
-                        $query->where('created_at', '>', Carbon::now()->subYear());
-                    })
-                    ->get();
-                $sumYear = 0;
-                if ($shipments) {
-                    foreach ($shipments as $shipment) {
-                        $sumYear +=  $shipment->quantity;
-                    }
-                }
-                return  $sumYear;
+        $product = Product::query()->where('id', $num)->first();
+        $shipments = ShipmentProduct::query()
+            ->where('product_id', $product->id)
+            ->whereHas('shipment', function (Builder $query) {
+                $query->where('created_at', '>', Carbon::now()->subYear());
+            })
+            ->get();
+        $sumYear = 0;
+        if ($shipments) {
+            foreach ($shipments as $shipment) {
+                $sumYear +=  $shipment->quantity;
             }
         }
+        return  $sumYear;
     }
 }
