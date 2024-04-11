@@ -48,9 +48,9 @@
                             <td class="break-all max-w-32 overflow-hidden px-6 py-4">
                                 {{ $supply->id }}
                             </td>
-                            <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-[24rem] overflow-x-auto px-6 py-4 text-blue-600">
                                 @if ($supply->contact)
-                                    <a href="{{ route('contact.show', ['contact_m' => $supply->contact->id]) }}">
+                                    <a href="{{ route('contact.show', ['contact' => $supply->contact->id]) }}">
                                         {{ $supply->contact->name }}
                                     </a>
                                 @else
@@ -97,7 +97,7 @@
 
             {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-left text-sm font-light text-nowrap">
+                <table class="text-left font-light text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             <th scope="col" class="px-6 py-4">
@@ -117,10 +117,12 @@
                     <tbody>
                         @foreach ($supply->products as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-32 overflow-hidden px-6 py-4">
-                                    {{ $product->pivot->id }}
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-blue-600">
+                                    <a href="{{ route('product.show', ['product' => $product->id]) }}">
+                                        {{ $product->pivot->id }}
+                                    </a>
                                 </td>
-                                <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-blue-600">
                                     <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                         {{ $product->name }}
                                     </a>

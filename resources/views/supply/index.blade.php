@@ -78,13 +78,15 @@
                                         {{ $supply->id }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-4">
-                                    {{ $supply->name }}
+                                <td class="px-6 py-4 text-blue-600">
+                                    <a href="{{ route('supplies.show', ['supply' => $supply->id]) }}">
+                                        {{ $supply->name }}
+                                    </a>
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $supply->moment }}
                                 </td>
-                                <td>
+                                <td class="text-blue-600">
                                     @if($supply->contact)
                                      <a href="{{ route('contact.show', ['contact' => $supply->contact->id]) }}">
                                         {{ $supply->contact->name }}
@@ -102,7 +104,7 @@
                                 <td class="px-6 py-4">
                                     {{ $supply->incoming_date }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 break-all max-w-[24rem] overflow-auto">
                                     {{ $supply->description }}
                                 </td>
                             </tr>

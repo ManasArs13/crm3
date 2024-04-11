@@ -74,8 +74,10 @@
                     <tbody>
                         @foreach ($supply_products as $product)
                             <tr class="border-b-2">
-                                <td class="px-6 py-4">
-                                    {{ $product->id }}
+                                <td class="px-6 py-4 text-blue-600">
+                                    <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
+                                        {{ $product->id }}
+                                    </a>
                                 </td>
                                 <td class="px-6 py-4 text-blue-600">
                                     @if ($product->supply)
@@ -86,7 +88,7 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-blue-600">
                                     @if ($product->products)
                                         <a href="{{ route('product.show', ['product' => $product->product_id]) }}">
                                             {{ $product->products->name }}
