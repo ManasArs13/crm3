@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("name",190)->nullable();
             $table->foreignId("contact_id")->nullable()->index()->constrained("contacts");
             $table->dateTime("moment")->nullable();
-            $table->string('description', 500)->nullable();
+            $table->text('description')->nullable();
             $table->decimal("sum", 10, 2)->default(0.0);
             $table->string("incoming_number", 190)->nullable();
             $table->dateTime("incoming_date")->nullable();
