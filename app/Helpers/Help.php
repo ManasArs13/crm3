@@ -14,7 +14,7 @@ class Help
         $product = Product::query()->where('id', $num)->first();
         $shipments = ShipmentProduct::query()
             ->where('product_id', $product->id)
-            ->whereHas('shipments', function (Builder $query) {
+            ->whereHas('shipment', function (Builder $query) {
                 $query->where('created_at', '>', Carbon::now()->subYear());
             })
             ->get();
