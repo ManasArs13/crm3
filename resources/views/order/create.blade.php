@@ -161,7 +161,7 @@
                             <h4 class="text-left font-semibold text-lg my-3">Товары</h4>
 
                             <div class="flex flex-row mb-1 w-full bg-gray-100 rounded">
-                                <div class="flex basis-8/12 justify-center text-gray-700">
+                                <div class="flex basis-6/12 justify-center text-gray-700">
                                     наименование
                                 </div>
                                 <div class="flex basis-1/12 justify-center text-gray-700">
@@ -170,10 +170,10 @@
                                 <div class="flex basis-1/12 justify-center text-gray-700">
                                     цена
                                 </div>
-                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                <div class="flex basis-2/12 justify-center text-gray-700">
                                     вес
                                 </div>
-                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                <div class="flex basis-2/12 justify-center text-gray-700">
                                     сумма
                                 </div>
                                 <div class="w-6 mx-2">
@@ -185,7 +185,7 @@
 
                                     <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
                                         x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
-                                        class="relative m-0 flex basis-8/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        class="relative m-0 flex basis-6/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
                                         <optgroup label="БЕТОН">
@@ -215,10 +215,10 @@
                                         class="flex basis-1/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
                                     <span x-text="row.weight_kg"
-                                        class="flex basis-1/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
+                                        class="flex basis-2/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
                                     <span x-text="row.sum"
-                                        class="flex basis-1/12 rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
+                                        class="flex basis-2/12 overflow-hidden rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
 
                                     <button @click="removeRow(row)" type="button"
