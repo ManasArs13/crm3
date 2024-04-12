@@ -63,7 +63,7 @@ class OrderAmoService implements EntityInterface
                         $comment = $commentField->getValues()[0]->getValue();
                     }
                 }
-                $entity->order_ms_id = $msOrder;
+                $entity->order_id = $msOrder;
                 $entity->order_link_ms = $msOrderLink;
                 $entity->is_exist = 1;
                 $entity->comment = $comment;

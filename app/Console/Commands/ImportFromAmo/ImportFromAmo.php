@@ -13,7 +13,7 @@ class ImportFromAmo extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-amo';
+    protected $signature = 'amo:import-amo';
 
     /**
      * Описание консольной команды.
