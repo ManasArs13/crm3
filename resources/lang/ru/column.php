@@ -21,7 +21,7 @@
    "status_amo_id"=>"Статус амо",
    "status_shipped"=>"Отгружено",
    "order_id"=>"Заказ МС",
-   "order_link_ms"=>"Ссылка на заказ мс",
+   "order_link"=>"Ссылка на заказ мс",
    "order_amo_id"=>"Заказ амо",
    "order_amo_link"=>"Ссылка на заказ aмо",
    "status_id"=>"Статус",

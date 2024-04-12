@@ -64,7 +64,7 @@ class OrderAmoService implements EntityInterface
                     }
                 }
                 $entity->order_id = $msOrder;
-                $entity->order_link_ms = $msOrderLink;
+                $entity->order_link = $msOrderLink;
                 $entity->is_exist = 1;
                 $entity->comment = $comment;
                 $entity->updated_at = Carbon::now();
