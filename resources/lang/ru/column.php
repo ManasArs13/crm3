@@ -113,7 +113,7 @@
    'to_sale'  => 'К продаже',
    'is_archived' => 'В архиве',
    'budget' => 'Бюджет',
-   'status_ms' => 'Статус мс',
+   'status' => 'Статус мс',
    'contact' => "контакт",
    'transport' => 'транспорт',
    'delivery' => 'доставка',

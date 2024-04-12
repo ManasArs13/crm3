@@ -20,7 +20,7 @@ return [
     "orders"=>"Заказы",
     'new order' => 'Новый заказ',
     "order"=> "Заказ",
-    "status_ms"=>"Статусы МС",
+    "status"=>"Статусы МС",
     "status_amos"=>"Статусы Амо",
     "transports"=>"Транспорт",
     'shipments'=>'Отгрузки',

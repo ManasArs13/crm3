@@ -16,14 +16,14 @@ class OrderAmoObserver
     {
          $orderMs= $orderAmo->orderMs;
 
-        $statusMsId = StatusAmo::query()->where('id',$orderAmo->status_amo_id)->value('status_ms');
+        $statusMsId = StatusAmo::query()->where('id',$orderAmo->status_amo_id)->value('status');
         if (
             $orderAmo->isDirty('status_amo_id')
             && $orderAmo->status_amo_id !== $statusMsId
         ){
             Order::query()->where('id',$orderAmo->contact_amo_id);
             if ($statusMsId && $orderMs ) {
-                $orderMs->update(['status_ms_id' => $statusMsId]);
+                $orderMs->update(['status_id' => $statusMsId]);
             }
         }
     }

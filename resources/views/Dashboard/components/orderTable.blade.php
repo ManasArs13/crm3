@@ -119,7 +119,7 @@
                                 if (columnName.match(/_id$/)) {
                                     const fieldName = columnName.replace(/_id$/, '');
                                     if (order[fieldName] && columnName ===
-                                        'status_ms_id') {
+                                        'status_id') {
                                         const statusDiv = document.createElement('div');
                                         statusDiv.id = 'status';
                                         statusDiv.style.border = 'solid';

@@ -257,8 +257,8 @@ class OrderService implements EntityInterface
         $orders = Order::query()
             ->where('date_plan', '!=', null)
             ->whereDate('date_plan', '<=', Carbon::now()->addDays($reserve_period))
-            ->where('status_ms_id', 'c3308ff8-b57a-11ec-0a80-03c60005472c')
-            ->orWhere('status_ms_id', '2ff7dd14-5b1e-11ea-0a80-012400161237')
+            ->where('status_id', 'c3308ff8-b57a-11ec-0a80-03c60005472c')
+            ->orWhere('status_id', '2ff7dd14-5b1e-11ea-0a80-012400161237')
             ->whereHas('positions', function (Builder $query) {
             })->with('positions')->get();
 
