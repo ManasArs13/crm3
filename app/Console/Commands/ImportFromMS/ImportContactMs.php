@@ -40,9 +40,8 @@ class ImportContactMs extends Command
         $url_1 = Option::where('code', '=', 'ms_counterparty_url')->first()?->value;
         $url_2 = Option::where('code', '=', 'ms_counterparty_report_url')->first()?->value;
 
-        $date = Carbon::now()->subDays(2);
+        $date = Carbon::now()->subDays(3);
         $service->createUrl($url_1, $contactMsService, ["updated" => '>=' . $date], '');
         $service->createUrl($url_2, $contactMsService, ["updated" => '>=' . $date], '');
-        info('ContactMs - success');
     }
 }

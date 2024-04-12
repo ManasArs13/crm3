@@ -31,8 +31,7 @@ class ImportDemand extends Command
     {
         $url = Option::query()->where('code', '=', 'ms_url_demand')->first()?->value;
      //   $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $date = Carbon::now()->subDays(2);
+        $date = Carbon::now()->subDays(3);
         $service->createUrl($url,$demandServices, ["updated"=>'>='.$date, "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
-        info('Demand - success');
     }
 }
