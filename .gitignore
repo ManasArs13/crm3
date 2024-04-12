@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+token_amocrm_widget.json
 .env
 .env.backup
 .env.production
