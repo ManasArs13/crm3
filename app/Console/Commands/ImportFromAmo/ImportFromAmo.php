@@ -38,8 +38,8 @@ class ImportFromAmo extends Command
         $amoService->getProducts();
         $amoService->getContacts();
         $amoService->getLeadsWithContacts();
-        Option::query()
-           ->where('code',AmoService::LAST_DATE_CODE)
-           ->update(['value'=>Carbon::now()]);
+        // Option::query()
+        //    ->where('code',AmoService::LAST_DATE_CODE)
+        //    ->update(['value'=>Carbon::now()]);
     }
 }

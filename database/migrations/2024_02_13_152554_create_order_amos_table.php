@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("name",190);
             $table->foreignId("status_amo_id")->nullable()->index()->constrained("status_amos");
             $table->foreignId("contact_amo_id")->nullable()->index()->constrained("contact_amos");
+            $table->foreignId("contact_amo2_id")->nullable()->index()->constrained("contact_amos");
             $table->integer("price")->unsigned()->nullable();
             $table->string("comment")->nullable();
             $table->boolean("is_exist")->default(0);

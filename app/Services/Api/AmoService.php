@@ -240,7 +240,7 @@ class AmoService
                 $this->contactAmoService->import([$contacts]);
                 $i++;
             }
-            echo $i;
+         //   echo $i;
         } catch (AmoCRMApiNoContentException $exception) {
             Log::error(__METHOD__ . ' getContacts:' . $exception->getMessage());
         }
