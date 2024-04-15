@@ -43,7 +43,7 @@ class SyncContactMsAmo extends Command
             $contactAmoExist = ContactAmo::query()->where('id',$contactAmoId)->exists();
             if ($contactAmoExist){
                 $contactMsContactAmo = ContactAmoContact::query()->firstOrNew([
-                    'contact_ms_id'    =>  $contact->id,
+                    'contact_id'    =>  $contact->id,
                     'contact_amo_id'   =>  $contactAmoId,
                 ]);
                     $contactMsContactAmo->contact_ms_id = $contact->id;
