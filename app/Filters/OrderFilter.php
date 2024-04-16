@@ -24,6 +24,10 @@ class OrderFilter
             }
         }
 
+        if ($this->request->status) {
+            $this->builder->whereIn('status_id', $this->request->status);
+        }
+
         return $this->builder;
     }
 

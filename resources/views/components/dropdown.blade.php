@@ -21,6 +21,9 @@ switch ($width) {
     case '64':
         $width = 'w-[64rem]';
         break;
+    case '17':
+        $width = 'w-[17rem]';
+        break;
 }
 @endphp
 

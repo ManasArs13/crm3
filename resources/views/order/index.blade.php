@@ -103,7 +103,6 @@
 
                                 <x-slot name="content">
                                     <div class="w-100 p-4">
-
                                         @foreach ($filters as $filter)
                                             @if ($filter['type'] == 'date' || $filter['type'] == 'number')
                                                 <div class="flex flex-row gap-1 w-100">
@@ -120,7 +119,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][min]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['minChecked']}}"
+                                                                value="{{ $filter['minChecked'] }}"
                                                                 class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -132,7 +131,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][max]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['maxChecked']}}"
+                                                                value="{{ $filter['maxChecked'] }}"
                                                                 class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -147,8 +146,7 @@
                                                     <div class="basis-4/5">
                                                         <select
                                                             class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
-                                                            , name="filters[{{ $filter['name'] }}]"
-                                                            data-offset="false">
+                                                            name="filters[{{ $filter['name'] }}]">
                                                             @foreach ($filter['values'] as $value)
                                                                 <option
                                                                     @if ($value['value'] == $filter['checked_value']) selected @endif
@@ -156,6 +154,28 @@
                                                                     {{ $value['name'] }}</option>
                                                             @endforeach
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            @elseif($filter['type'] == 'checkbox')
+                                                <div class="flex flex-row gap-1 w-100">
+                                                    <div class="basis-1/5">
+                                                        <label>
+                                                            {{ $filter['name_rus'] }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="basis-4/5 flex flex-wrap">
+                                                        @foreach ($filter['values'] as $value)
+                                                            <div class="basis-1/3 text-left">
+                                                                <input name="{{ $filter['name'] }}[]"
+                                                                    @if ($value['checked'] == true) checked=checked @endif
+                                                                    class="border border-solid border-neutral-300 rounded"
+                                                                    type="checkbox" value="{{ $value['value'] }}" />
+                                                                <label
+                                                                    class="inline-block ps-[0.15rem] hover:cursor-pointer">
+                                                                    {{ $value['name'] }}
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
                                                     </div>
                                                 </div>
                                             @endif
@@ -205,7 +225,6 @@
                                 class="inline-flex items-center rounded bg-blue-300 px-3 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
                         @endif
                     </div>
-
 
                     {{-- Material --}}
                     <div class="flex flex-row gap-1">
@@ -300,6 +319,59 @@
                             @endif
 
                         @endif
+                    </div>
+
+                    {{-- Status --}}
+                    <div class="flex flex-row gap-1">
+                        <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
+                            <div>
+                                <x-dropdown align="left" width="17" outside='false'>
+                                    <x-slot name="trigger">
+                                        <button type="button"
+                                            class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-1 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
+                                            СТАТУС
+                                            <div class="ms-1 mt-1">
+                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    </x-slot>
+    
+                                    <x-slot name="content">
+                                        <div class="p-4">
+                                            @foreach ($filters as $filter)
+                                                @if ($filter['type'] == 'checkbox')
+                                                    <div class="flex flex-col gap-1 w-100">
+                                                            @foreach ($filter['values'] as $value)
+                                                                <div class="basis-full text-left">
+                                                                    <input name="{{ $filter['name'] }}[]"
+                                                                        @if ($value['checked'] == true) checked=checked @endif
+                                                                        class="border border-solid border-neutral-300 rounded"
+                                                                        type="checkbox" value="{{ $value['value'] }}" />
+                                                                    <label
+                                                                        class="inline-block ps-[0.15rem] hover:cursor-pointer">
+                                                                        {{ $value['name'] }}
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </x-slot>
+                                </x-dropdown>
+                            </div>
+                            <div>
+                                <button type="submit"
+                                    class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                    применить
+                                </button>
+                            </div>
+                        </form>
                     </div>
 
                     @if (isset($urlCreate) && $urlCreate != '')

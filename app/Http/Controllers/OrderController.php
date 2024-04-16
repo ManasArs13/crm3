@@ -28,6 +28,7 @@ class OrderController extends Controller
         $urlCreate = "order.create";
         $urlFilter = 'order.index';
         $entityName = 'Заказы';
+        dump($request->getUri());
 
         // Orders
         $builder = Order::query()->with('contact', 'delivery', 'transport_type', 'positions');
@@ -130,6 +131,24 @@ class OrderController extends Controller
         $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
         $dateAll = Carbon::now()->addDays(30)->format('Y-m-d');
 
+        $statuses = [
+            ['value' => 1, 'name' => '[N] Новый', 'checked' => true],
+            ['value' => 2, 'name' => 'Думают', 'checked' => true],
+            ['value' => 3, 'name' => '[DN] Подтвержден', 'checked' => true],
+            ['value' => 4, 'name' => 'На брони', 'checked' => true],
+            ['value' => 5, 'name' => '[DD] Отгружен с долгом', 'checked' => true],
+            ['value' => 6, 'name' => '[DF] Отгружен и закрыт', 'checked' => true],
+            ['value' => 7, 'name' => '[C] Отменен', 'checked' => true],
+        ];
+
+        if (isset($request->status)) {
+            foreach ($statuses as $key => $status) {
+                if (!in_array($status['value'], $request->status)) {
+                    $statuses[$key]['checked'] = false;
+                }
+            }
+        }
+
         $queryMaterial = 'index';
         $queryPlan = 'all';
 
@@ -142,16 +161,14 @@ class OrderController extends Controller
                     if ($value['min']) {
                         $minCreatedCheck = $value['min'];
                     }
-                }
-                if ($key == 'updated_at') {
+                } else if ($key == 'updated_at') {
                     if ($value['max']) {
                         $maxUpdatedCheck = $value['max'];
                     }
                     if ($value['min']) {
                         $minUpdatedCheck = $value['min'];
                     }
-                }
-                if ($key == 'date_plan') {
+                } else if ($key == 'date_plan') {
                     if ($value['min']) {
                         $minDatePlanCkeck = $value['min'];
                     }
@@ -175,9 +192,7 @@ class OrderController extends Controller
                                 break;
                         }
                     }
-                }
-
-                if ($key == 'material') {
+                } else if ($key == 'material') {
                     switch ($value) {
                         case 'concrete':
                             $queryMaterial = 'concrete';
@@ -224,6 +239,13 @@ class OrderController extends Controller
                 'name_rus' => 'Материал',
                 'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
                 'checked_value' => $queryMaterial,
+            ],
+            [
+                'type' => 'checkbox',
+                'name' => 'status',
+                'name_rus' => 'Статус',
+                'values' => $statuses,
+            //    'checked_value' => $queryMaterial,
             ],
         ];
 
