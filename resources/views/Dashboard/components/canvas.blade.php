@@ -19,45 +19,70 @@
         }
 
         window.addEventListener("DOMContentLoaded",async function () {
-            let count = [] ;
-            let count2 =[];
+            
+            let sum  = [];
+            let orders_count = [];
+            let positions_count = [];
+            let labels = [];
+
             await fetch('/month-orders')
                 .then((response) => response.json())
                 .then((data) => {
-                    for (let item in data.entityItems) {
-                        count.push(data.entityItems[item]);
+                    console.log(data)
+
+                    for (let item in data.sum) {
+                        sum.push(data.sum[item]);
                     }
-                    for (let item in data.orders) {
-                        count2.push(data.orders[item])
+
+                    for (let item in data.orders_count) {
+                        orders_count.push(data.orders_count[item])
                     }
+
+                    for (let item in data.positions_count) {
+                        positions_count.push(data.positions_count[item])
+                    }
+
+                    for(let item in data.labels) {
+                        labels.push(data.labels[item])
+                    }
+                    
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
                 });
+
             let ctx = document.getElementById("orderChart");
             let myChart;
 
             if (myChart) {
                 myChart.destroy();
             }
+
             myChart = new Chart(ctx, {
                 type: "line",
                 data: {
-                    labels: getDay(),
+                    labels: labels,
                     datasets: [
                         {
                             label: "Сумма заказов",
-                            data: count,
+                            data: sum,
                             backgroundColor: "rgb(145,202,246)",
-                            borderColor: "rgb(36,135,217)",
-                            borderWidth:4,
+                            borderColor: "rgb(145,202,246)",
+                            borderWidth: 4,
                         },
                         {
                             label: "Кол-во заказов",
-                            data: count2,
+                            data: orders_count,
                             backgroundColor: "rgb(236,112,112)",
-                            borderColor: "rgb(192,37,37)",
-                            borderWidth:4,
+                            borderColor:  "rgb(236,112,112)",
+                            borderWidth: 4,
+                        },
+                        {
+                            label: "Кол-во продуктов",
+                            data: positions_count,
+                            backgroundColor: "rgb(255, 205, 86)",
+                            borderColor:  "rgb(255, 205, 86)",
+                            borderWidth: 4,
                         }
                     ],
                 },

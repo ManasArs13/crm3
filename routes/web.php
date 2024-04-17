@@ -47,6 +47,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
 
     Route::get('/fetch-orders', [DashboardController::class, 'fetchOrders'])->name('filter.orders');
+
+    // Route::get('/today-orders', [DashboardController::class, 'gettodayOrders'])->name('today.orders');
+    // Route::get('/tomorrow-orders', [DashboardController::class, 'gettomorrowOrders'])->name('tomorrow.orders');
+    // Route::get('/three-days-orders', [DashboardController::class, 'getthreeDaysOrders'])->name('threeDays.orders');
+    // Route::get('/ten-days-orders', [DashboardController::class, 'gettenDaysOrders'])->name('tenDays.orders');
+
     Route::get('/month-orders', [DashboardController::class, 'getOrderMonth'])->name('month.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
 

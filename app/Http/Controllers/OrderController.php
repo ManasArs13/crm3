@@ -28,7 +28,7 @@ class OrderController extends Controller
         $urlCreate = "order.create";
         $urlFilter = 'order.index';
         $entityName = 'Заказы';
-        dump($request->getUri());
+  //      dump($request->getUri());
 
         // Orders
         $builder = Order::query()->with('contact', 'delivery', 'transport_type', 'positions');
