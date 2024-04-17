@@ -340,25 +340,25 @@
                                             </div>
                                         </button>
                                     </x-slot>
-    
+
                                     <x-slot name="content">
                                         <div class="p-4">
                                             @foreach ($filters as $filter)
                                                 @if ($filter['type'] == 'checkbox')
                                                     <div class="flex flex-col gap-1 w-100">
-                                                            @foreach ($filter['values'] as $value)
-                                                                <div class="basis-full text-left">
-                                                                    <input name="{{ $filter['name'] }}[]"
-                                                                        @if ($value['checked'] == true) checked=checked @endif
-                                                                        class="border border-solid border-neutral-300 rounded"
-                                                                        type="checkbox" value="{{ $value['value'] }}" />
-                                                                    <label
-                                                                        class="inline-block ps-[0.15rem] hover:cursor-pointer">
-                                                                        {{ $value['name'] }}
-                                                                    </label>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
+                                                        @foreach ($filter['values'] as $value)
+                                                            <div class="basis-full text-left">
+                                                                <input name="{{ $filter['name'] }}[]"
+                                                                    @if ($value['checked'] == true) checked=checked @endif
+                                                                    class="border border-solid border-neutral-300 rounded"
+                                                                    type="checkbox" value="{{ $value['value'] }}" />
+                                                                <label
+                                                                    class="inline-block ps-[0.15rem] hover:cursor-pointer">
+                                                                    {{ $value['name'] }}
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
                                                 @endif
                                             @endforeach
                                         </div>
@@ -415,7 +415,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalSum = 0;
+                            $totalCount = 0;
+                        @endphp
                         @foreach ($entityItems as $entityItem)
+
+                        @php
+                            $totalSum += $entityItem->sum;
+                        @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
@@ -515,6 +523,7 @@
                                             @foreach ($entityItem->positions as $position)
                                                 @php
                                                     $total_quantity += $position->quantity;
+                                                    $totalCount += $position->quantity
                                                 @endphp
                                             @endforeach
 
@@ -548,6 +557,16 @@
 
                             </tr>
                         @endforeach
+                        <tr class="border-b-2 bg-gray-100">
+                            <td class="w-1/2 px-6 py-4" colspan="4">
+                            </td>
+                            <td class="w-1/2 px-6 py-4" colspan="1">
+                                Общая сумма: {{ $totalSum}}
+                            </td>
+                            <td class="w-1/2 overflow-auto px-6 py-4" colspan="3">
+                                Общее кол-во: {{ $totalCount}}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
