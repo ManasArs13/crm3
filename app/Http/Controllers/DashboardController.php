@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Services\Entity\DashboardService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +22,7 @@ class DashboardController extends Controller
      */
     public function dashboard(Request $request): View
     {
-       return $this->service->dashboard($request);
+        return $this->service->dashboard($request);
     }
 
     /**
@@ -60,7 +61,12 @@ class DashboardController extends Controller
     public function getOrderMonth(Request $request): JsonResponse
     {
         $arUrl = explode("/", session('_previous.url'));
-        $filter = explode("?", $arUrl[3])[1];
+
+        if (count(explode("?", $arUrl[3])) > 1) {
+            $filter = explode("?", $arUrl[3])[1];
+        } else {
+            return $this->service->gettodayOrders($request);
+        }
 
         if ($filter == 'filter=tomorrow') {
             return $this->service->gettomorrowOrders($request);
@@ -73,9 +79,9 @@ class DashboardController extends Controller
         }
     }
 
-    public function buildingsMaterialDashboard(Request $request):View
+    public function buildingsMaterialDashboard(Request $request): View
     {
-      return  $this->service->buildingsMaterialDashboard($request);
+        return  $this->service->buildingsMaterialDashboard($request);
     }
 
     /**

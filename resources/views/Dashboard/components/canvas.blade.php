@@ -28,8 +28,6 @@
             await fetch('/month-orders')
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data)
-
                     for (let item in data.sum) {
                         sum.push(data.sum[item]);
                     }

@@ -208,6 +208,7 @@ class DashboardService
     {
         $arUrl = explode("/", session('_previous.url'));
         $referer = explode("?", $arUrl[3])[0];
+
         $today = Carbon::now()->format('d-m-Y');
         $to = Carbon::now()->format('d-m-Y');
 
@@ -350,7 +351,7 @@ class DashboardService
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today. ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
@@ -408,7 +409,7 @@ class DashboardService
         $referer = explode("?", $arUrl[3])[0];
         $today = Carbon::now()->addDay()->format('d-m-Y');
         $to = Carbon::now()->addDay()->format('d-m-Y');
-    
+
         $sum = [];
         $positions_count = [];
         $orders_count = [];
@@ -548,7 +549,7 @@ class DashboardService
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today. ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
