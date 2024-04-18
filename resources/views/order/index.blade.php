@@ -329,7 +329,7 @@
                                     <x-slot name="trigger">
                                         <button type="button"
                                             class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-1 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
-                                            СТАТУС
+                                            статус
                                             <div class="ms-1 mt-1">
                                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20">
@@ -420,10 +420,9 @@
                             $totalCount = 0;
                         @endphp
                         @foreach ($entityItems as $entityItem)
-
-                        @php
-                            $totalSum += $entityItem->sum;
-                        @endphp
+                            @php
+                                $totalSum += $entityItem->sum;
+                            @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
@@ -523,7 +522,7 @@
                                             @foreach ($entityItem->positions as $position)
                                                 @php
                                                     $total_quantity += $position->quantity;
-                                                    $totalCount += $position->quantity
+                                                    $totalCount += $position->quantity;
                                                 @endphp
                                             @endforeach
 
@@ -558,14 +557,20 @@
                             </tr>
                         @endforeach
                         <tr class="border-b-2 bg-gray-100">
-                            <td class="w-1/2 px-6 py-4" colspan="4">
-                            </td>
-                            <td class="w-1/2 px-6 py-4" colspan="1">
-                                Общая сумма: {{ $totalSum}}
-                            </td>
-                            <td class="w-1/2 overflow-auto px-6 py-4" colspan="3">
-                                Общее кол-во: {{ $totalCount}}
-                            </td>
+                            @foreach ($resColumns as $column => $title)
+                                @if ($column == 'sum')
+                                    <td class="px-6 py-4">
+                                        {{ $totalSum }}
+                                    </td>
+                                @elseif($column == 'positions_count')
+                                    <td class="overflow-auto px-6 py-4">
+                                        {{ $totalCount }}
+                                    </td>
+                                @else
+                                    <td>
+                                    </td>
+                                @endif
+                            @endforeach
                         </tr>
                     </tbody>
                 </table>
