@@ -28,7 +28,6 @@ class OrderController extends Controller
         $urlCreate = "order.create";
         $urlFilter = 'order.index';
         $entityName = 'Заказы';
-  //      dump($request->getUri());
 
         // Orders
         $builder = Order::query()->with('contact', 'delivery', 'transport_type', 'positions');
@@ -245,7 +244,7 @@ class OrderController extends Controller
                 'name' => 'status',
                 'name_rus' => 'Статус',
                 'values' => $statuses,
-            //    'checked_value' => $queryMaterial,
+                //    'checked_value' => $queryMaterial,
             ],
         ];
 
@@ -397,16 +396,60 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->route("order.index")->with('succes', 'Заказ №' . $order->id . ' добавлен');
+        return redirect()->route("order.index")->with('success', 'Заказ №' . $order->id . ' добавлен');
     }
 
     public function show(string $id)
     {
-        $entityItem = Order::findOrFail($id);
-        $columns = Schema::getColumnListing('orders');
-        $entity = 'order';
+        $entityItem = Order::with('positions', 'status', 'contact', 'transport')->find($id);
+        $entity = 'Заказ №';
+        $action = "order.update";
+        $newContact = 'contact.store';
 
-        return view("own.show", compact('entityItem', 'columns', 'entity'));
+        $statuses = Status::all();
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+        $deliveries = Delivery::orderBy('name')->get();
+        $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $products_block = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $products_concrete = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+        $products_delivery = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'доставка')
+            ->orderBy('name')
+            ->get();
+
+        $transports = TransportType::orderBy('name')->get();
+        $date = Carbon::now()->format('Y-m-d');
+        $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+
+        return view("order.show", compact(
+            'entityItem',
+            'entity',
+            'action',
+            'newContact',
+            'statuses',
+            'contacts',
+            'transports',
+            'deliveries',
+            'products',
+            'products_block',
+            'products_concrete',
+            'products_delivery',
+            'date',
+            'dateNow'
+        ));
     }
 
     public function edit(string $id)
@@ -421,10 +464,55 @@ class OrderController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $entityItem = Order::find($id);
-        $entityItem->fill($request->post())->save();
+        $order = Order::find($id);
 
-        return redirect()->route('order.index');
+        if(!$order) {
+            return redirect()->route('order.index')->with('warning', 'Заказ ' . $id .  ' не найден!');
+        }
+
+        $order->name = $request->name;
+        $order->status_id = $request->status;
+        $order->contact_id = $request->contact;
+        $order->delivery_id = $request->delivery;
+        $order->transport_type_id = $request->transport_type;
+        $order->date_plan = $request->date;
+        $order->date_moment = $request->date_created;
+
+        if ($request->comment) {
+            $order->comment = $request->comment;
+        }
+
+        $sum = 0;
+        $weight = 0;
+
+        $order->positions()->delete();
+
+        // Add Order position
+        foreach ($request->products as $product) {
+
+            $position = new OrderPosition();
+
+            $product_bd = Product::find($product['product']);
+            $position->product_id = $product_bd->id;
+            $position->order_id = $order->id;
+            $position->quantity = $product['count'];
+            $position->price = $product_bd->price;
+            $position->weight_kg = $product_bd->price * $product['count'];
+            $position->shipped = 0;
+            $position->reserve = 0;
+
+            $position->save();
+
+            $sum += $position->price;
+            $weight += $position->weight_kg;
+        }
+
+        $order->sum = $sum;
+        $order->weight = $weight;
+
+        $order->update();
+
+        return redirect()->route("order.show", ['order' => $order->id])->with('success', 'Заказ №' . $order->id . ' обновлён');
     }
 
     public function destroy(string $id)

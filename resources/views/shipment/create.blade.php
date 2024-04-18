@@ -267,10 +267,11 @@
                                             }));
                                             this.allWeight = Math.round(this.rows.map(item => item.weight)
                                                 .reduce((prev, curr) => prev + curr, 0) * 100) / 100;
-
                                             this.allCount = this.rows.map(item => item.count).reduce((prev,
                                                     curr) =>
                                                 prev +
+                                                curr, 0);
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
                                          },
