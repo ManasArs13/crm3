@@ -14,7 +14,7 @@ class ImportOrderMs extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-order';
+    protected $signature = 'ms:import-order {--all}';
 
     /**
      * Описание консольной команды.
@@ -38,7 +38,9 @@ class ImportOrderMs extends Command
     {
         $url = Option::where('code', '=', 'ms_orders_url')->first()?->value;
         //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $date = Carbon::now()->subDays(3);
+        $all = $this->option('all');
+        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
+        
         $service->createUrl($url, $orderService, ["updated" => '>=' . $date, "isDeleted" => ["true", "false"]], 'positions.assortment,attributes.value,agent,state');
     }
 }

@@ -14,7 +14,7 @@ class ImportDelivery extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-delivery';
+    protected $signature = 'ms:import-delivery {--all}';
 
     /**
      * Описание консольной команды.
@@ -37,8 +37,10 @@ class ImportDelivery extends Command
     public function handle(Option $option, MoySkladService $service, DeliveryService $deliveryService): void
     {
         $url = Option::query()->where('code', '=', 'ms_delivery_url')->first()?->value;
-    //    $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $date = Carbon::now()->subDays(3);
-        $service->createUrl($url,$deliveryService, ["updated"=>'>='.$date], '');
+        //    $date = Option::query()->where('code', '=', 'ms_date_begin_change')->first()?->value;
+        $all = $this->option('all');
+        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
+        
+        $service->createUrl($url, $deliveryService, ["updated" => '>=' . $date], '');
     }
 }

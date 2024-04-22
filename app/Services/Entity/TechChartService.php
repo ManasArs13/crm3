@@ -89,7 +89,7 @@ class TechChartService implements EntityInterface
                     $entity_material->quantity = $material['quantity'];
 
                     $product_ms = $this->service->actionGetRowsFromJson($material['assortment']['meta']['href'], false);
-                    $product_bd = Product::where('ms_id', $product_ms['id'])->first();
+                    $product_bd = Product::where('ms_id', $product_ms ? $product_ms['id'] : null)->first();
 
                     if ($product_bd) {
                         $entity_material->product_id = $product_bd['id'];

@@ -1,28 +1,15 @@
 <div class="border-t-2 p-5">
     <div class="chart-container" style="height:40vh;">
-        <canvas  id="orderChart" ></canvas>
+        <canvas  id="orderChart"></canvas>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        function getDay() {
-            let currentDate = new Date();
-            let futureDate = new Date();
-            futureDate.setDate(currentDate.getDate() + 10);
-            let days = [];
-
-            while (currentDate <= futureDate) {
-                days.push(currentDate.getDate());
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
-
-            return days;
-        }
-
         window.addEventListener("DOMContentLoaded",async function () {
             
             let sum  = [];
             let orders_count = [];
             let positions_count = [];
+            let shipments_count = [];
             let labels = [];
 
             await fetch('/month-orders')
@@ -40,8 +27,12 @@
                         positions_count.push(data.positions_count[item])
                     }
 
-                    for(let item in data.labels) {
+                    for (let item in data.labels) {
                         labels.push(data.labels[item])
+                    }
+
+                    for (let item in data.shipments_count) {
+                        shipments_count.push(data.shipments_count[item])
                     }
                     
                 })
@@ -80,6 +71,13 @@
                             data: positions_count,
                             backgroundColor: "rgb(255, 205, 86)",
                             borderColor:  "rgb(255, 205, 86)",
+                            borderWidth: 4,
+                        },
+                        {
+                            label: "Кол-во отгружено",
+                            data: shipments_count,
+                            backgroundColor: "rgb(134 239 172)",
+                            borderColor:  "rgb(134 239 172)",
                             borderWidth: 4,
                         }
                     ],

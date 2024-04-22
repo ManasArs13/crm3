@@ -35,34 +35,23 @@ class ImportAll extends Command
     {
         Artisan::call('ms:import-color');
         Artisan::call('ms:import-status');
-        
         Artisan::call('ms:import-transport-type');
-        Artisan::call('ms:import-transport');
+        Artisan::call('ms:import-transport --all');
 
-        Artisan::command('ms:import-categories {--date=null}', function () {
-            $this->info("ms:import-categories {--date=not}!");
-        });
-        Artisan::command('ms:import-products {--date=null}', function () {
-            $this->info("ms:import-products {--date=not}!");
-        });
+        Artisan::call('ms:import-categories --all');
+        Artisan::call('ms:import-products --all');
+        Artisan::call('ms:import-delivery --all');
+        Artisan::call('ms:import-contact --all');
+       
+        Artisan::call('ms:import-order --all');
+        Artisan::call('ms:import-demand --all');
 
-        Artisan::call('ms:import-delivery');
-
-        Artisan::command('ms:import-contact {--date=all}', function () {
-            $this->info("ms:import-contact {--date=not}!");
-        });
-        
-        Artisan::call('ms:import-order');
-        Artisan::call('ms:import-demand');
-
-        Artisan::command('ms:import-supply {--date=null}', function () {
-            $this->info("ms:import-supply {--date=not}!");
-        });
+        Artisan::call('ms:import-supply --all');
 
         Artisan::call('ms:import-residual');
 
         Artisan::call('ms:import-tech-chart');
-        Artisan::call('ms:import-processing');
+        Artisan::call('ms:import-processing --all');
         
     }
 }

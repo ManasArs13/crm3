@@ -15,7 +15,7 @@ class ImportDemand extends Command
      *
      * @var string
      */
-    protected $signature = 'ms:import-demand {all?}';
+    protected $signature = 'ms:import-demand {--all}';
 
     /**
      * The console command description.
@@ -29,10 +29,10 @@ class ImportDemand extends Command
      */
     public function handle(DemandServices $demandServices, MoySkladService $service)
     {
-        $all = $this->argument('all');
+        $all = $this->option('all');
         $url = Option::query()->where('code', '=', 'ms_url_demand')->first()?->value;
 
-        $date = $all ? Carbon::now()->subDays(3) : Carbon::now()->subYears(2);
+        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
         $service->createUrl($url,$demandServices, ["updated"=>'>='.$date, "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
     }
 }

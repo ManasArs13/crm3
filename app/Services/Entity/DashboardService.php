@@ -214,6 +214,7 @@ class DashboardService
 
         $sum = [];
         $positions_count = [];
+        $shipments_count = [];
         $orders_count = [];
         $labels = [
             '08',

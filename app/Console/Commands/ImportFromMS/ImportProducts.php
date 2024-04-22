@@ -14,7 +14,7 @@ class ImportProducts extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-products {--date=null}';
+    protected $signature = 'ms:import-products {--all}';
 
     /**
      * Описание консольной команды.
@@ -39,7 +39,9 @@ class ImportProducts extends Command
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/product';
 
         //$date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $date = Carbon::now()->subDays(3);
+        $all = $this->option('all');
+        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
+        
         $service->createUrl($url, $productService, ["updated" => '>=' . $date], "productFolder");
     }
 }

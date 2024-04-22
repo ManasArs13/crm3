@@ -14,7 +14,7 @@ class ImportContactMs extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-contact';
+    protected $signature = 'ms:import-contact {--all}';
 
     /**
      * Описание консольной команды.
@@ -40,7 +40,9 @@ class ImportContactMs extends Command
         $url_1 = Option::where('code', '=', 'ms_counterparty_url')->first()?->value;
         $url_2 = Option::where('code', '=', 'ms_counterparty_report_url')->first()?->value;
 
-        $date = Carbon::now()->subDays(3);
+        $all = $this->option('all');
+        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
+
         $service->createUrl($url_1, $contactMsService, ["updated" => '>=' . $date], '');
         $service->createUrl($url_2, $contactMsService, ["updated" => '>=' . $date], '');
     }

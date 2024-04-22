@@ -14,7 +14,7 @@ class ImportCategories extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-categories';
+    protected $signature = 'ms:import-categories {--all}';
 
     /**
      * Описание консольной команды.
@@ -37,8 +37,9 @@ class ImportCategories extends Command
     public function handle(Option $option, MoySkladService $service, CategoryService $CategoryService)
     {
         $url = Option::where('code', '=', 'ms_productfolder_url')->first()?->value;
+        $all = $this->option('all');
 //        $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $date = Carbon::now()->subDays(3);
+        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
         $service->createUrl($url, $CategoryService, ["updated" => '>=' . $date], '');
     }
 }
