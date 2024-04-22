@@ -208,11 +208,18 @@
                                     </th>
                                 @endif
                             @endforeach
-                                <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalSum = 0;
+                            $totalCount = 0;
+                        @endphp
                         @foreach ($entityItems as $entityItem)
+                            @php
+                                $totalSum += $entityItem->suma;
+                            @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
@@ -269,6 +276,7 @@
                                             @foreach ($entityItem->products as $position)
                                                 @php
                                                     $total_quantity += $position->quantity;
+                                                    $totalCount += $position->quantity;
                                                 @endphp
                                             @endforeach
 
@@ -302,6 +310,22 @@
 
                             </tr>
                         @endforeach
+                        <tr class="border-b-2 bg-gray-100">
+                            @foreach ($resColumns as $column => $title)
+                                @if ($column == 'suma')
+                                    <td class="px-6 py-4">
+                                        {{ $totalSum }}
+                                    </td>
+                                @elseif($column == 'products_count')
+                                    <td class="overflow-auto px-6 py-4">
+                                        {{ $totalCount }}
+                                    </td>
+                                @else
+                                    <td>
+                                    </td>
+                                @endif
+                            @endforeach
+                        </tr>
                     </tbody>
                 </table>
             </div>
