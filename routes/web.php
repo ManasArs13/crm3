@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
@@ -112,6 +113,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
     Route::get('/processing/products', [ProcessingController::class, 'products'])->name('processings.products');
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
+
+    // Калькулятор
+    Route::get('/calculator_block', [CalculatorController::class, 'block'])->name('calculator.block');
+    Route::get('/calculator_concrete', [CalculatorController::class, 'concrete'])->name('calculator.concrete');
 });
 
 require __DIR__ . '/auth.php';

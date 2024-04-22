@@ -1,0 +1,376 @@
+* {
+	margin        : 0;
+	padding       : 0;
+	border        : 0;
+	font-size     : 100%;
+	vertical-align: baseline;
+	background    : transparent;
+	box-sizing    : border-box;
+	font-family   : 'Arial', sans-serif;
+
+}
+
+*::before,
+*::after {
+	-webkit-box-sizing: border-box;
+	box-sizing        : border-box;
+}
+
+.df {
+	display  : -webkit-flex;
+	display  : -moz-flex;
+	display  : -ms-flex;
+	display  : -o-flex;
+	display  : flex;
+	flex-wrap: wrap;
+}
+
+.CEB {
+	max-width: 1200px;
+	width    : 96%;
+	margin   : 20px auto;
+}
+
+
+.CEB__text1 {
+	font-size: 32px;
+}
+
+.CEB__text2 {
+	font-size: 18px;
+}
+
+
+.CEB__left {
+	flex: 0 0 40%;
+}
+
+.CEB__right {
+	flex       : 0 0 57%;
+	margin-left: auto;
+
+}
+
+
+.CEB__row {
+	margin          : 12px 0;
+	background-color: #ffffff;
+	padding         : 12px;
+	border-radius   : 12px;
+}
+
+.labelCustomRadio {
+	display: flex;
+
+	flex-wrap  : wrap;
+	align-items: center;
+	position   : relative;
+
+	flex                     : 0 0 230px;
+	/* min-height            : 80px; */
+
+	border-radius         : 5px;
+	background-color      : #33baff;
+	/* border             : solid 1px transparent; */
+
+	/* justify-content: space-between; */
+	padding   : 0 0px;
+	transition: 0.2s;
+	z-index   : 25;
+}
+
+.labelCustomRadio {
+	margin-top: 12px;
+}
+
+.labelCustomRadio:hover {}
+
+.labelCustomRadio.active {}
+
+.labelCustomRadio:hover {
+	/* box-shadow: 0 0 10px 2px #77777796; */
+	cursor          : pointer;
+	transition      : 0.2s;
+	background-color: #198dc8;
+}
+
+
+.labelCustomRadio .labelCustomRadio__input {
+	opacity : 0;
+	position: absolute;
+	z-index : -1;
+	left    : 7px;
+}
+
+.labelCustomRadio .labelCustomRadio__psevdo {
+	flex         : 0 0 20px;
+	margin       : 0 0px;
+	position     : relative;
+	z-index      : 15;
+	display      : inline-block;
+	width        : 20px;
+	height       : 20px;
+	background   : #fff;
+	border       : solid 2px #989898;
+	border-radius: 50%;
+	transition   : 0.2s;
+}
+
+.labelCustomRadio .labelCustomRadio__input:checked+.labelCustomRadio__psevdo {
+	background: #fff;
+	border    : solid 2px #ffd450;
+	transition: 0.2s;
+}
+
+.labelCustomRadio .labelCustomRadio__input:checked+.labelCustomRadio__psevdo::before {
+	content      : '';
+	position     : absolute;
+	left         : 3px;
+	top          : 3px;
+	background   : #ffd450;
+	width        : 10px;
+	height       : 10px;
+	border-radius: 50%;
+	transition   : 0.2s;
+}
+
+.labelCustomRadio .labelCustomRadio__psevdo_border {
+	/* border             : solid 1px #ecf1f7; */
+	position           : absolute;
+	width              : calc(100% + 2px);
+	height             : calc(100% + 2px);
+	z-index            : 5;
+	left               : -1px;
+	top                : -1px;
+	transition         : 0.2s;
+	border-radius      : 5px;
+	/* background-color: #ecf1f7; */
+}
+
+.labelCustomRadio .labelCustomRadio__input:hover~.labelCustomRadio__psevdo_border {
+	transition            : 0.2s;
+	/* background-color   : #e4ebf3; */
+	/* border             : solid 2px #62ba0f; */
+}
+
+
+.labelCustomRadio .labelCustomRadio__input:checked~.labelCustomRadio__psevdo_border {
+	/* border             : solid 2px #62ba0f; */
+	transition   : 0.2s;
+	/* box-shadow: 0 0 2px 2px #62ba0f; */
+	background-color: #198dc8;
+}
+
+.labelCustomRadio .labelCustomRadio__text2 {
+	font-size         : 18px;
+	flex              : 1 0 100%;
+	color             : rgb(255, 255, 255);
+	position          : relative;
+	z-index           : 11;
+	/* min-height     : 50px; */
+	display           : flex;
+	justify-content   : center;
+	align-items       : center;
+	text-align        : center;
+	padding           : 8px 8px;
+	font-weight       : 400;
+	letter-spacing    : 1px;
+}
+
+.labelCustomRadio .labelCustomRadio__input:hover~.labelCustomRadio__text2,
+.labelCustomRadio:hover>.labelCustomRadio__text2 {
+	transition: 0.2s;
+	color     : rgb(255, 255, 255);
+}
+
+.labelCustomRadio .labelCustomRadio__input:checked~.labelCustomRadio__text2 {
+	color     : #fff;
+	transition: 0.2s;
+}
+
+.CEB__wrapSlider {
+	flex      : 1 0 100%;
+	max-width : 100%;
+	margin-top: 12px;
+}
+
+.CEBQuestionW__wrap-answer-input-rande {
+	flex              : 0 0 100%;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+	box-shadow        : 0 1px 1px rgba(0, 0, 0, .05);
+	width             : calc(99% - 0px);
+	margin-left       : 2px
+}
+
+.CEBQuestionW__input-range {
+	width: 100%
+}
+
+.CEBQuestionW__slider {
+	margin          : 10px 0 0;
+	margin-bottom   : 12px;
+	cursor          : pointer;
+	height          : 4px;
+	color           : #fff;
+	border-radius   : 100px;
+	position        : relative;
+	z-index         : 50;
+	text-align      : left;
+	background-color: #ecf1f7
+}
+
+.CEBQuestionW__slider span {
+	font-weight     : 400;
+	color           : #454545;
+	top             : -7px;
+	margin-left     : -.6em;
+	position        : absolute;
+	z-index         : 2;
+	width           : 18px;
+	height          : 18px;
+	cursor          : pointer;
+	-ms-touch-action: none;
+	touch-action    : none;
+	border-radius   : 100%;
+	background-color: #33baff;
+	outline         : none;
+	transition      : background .2s
+}
+
+.CEBQuestionW__slider span:hover,
+.CEBQuestionW__slider span.ui-state-active {
+	background: #198dc8;
+	outline   : none;
+	transition: background .2s
+}
+
+.ui-slider-handle:after {
+	content         : '';
+	display         : inline-block;
+	width           : 10px;
+	height          : 10px;
+	position        : absolute;
+	top             : 50%;
+	left            : 50%;
+	margin-top      : -5px;
+	margin-left     : -5px;
+	background-color: #fff;
+	border-radius   : 50%
+}
+
+.CEBQuestionW__slider .ui-slider-range {
+	background   : #198dc8;
+	height       : 100%;
+	border-radius: 100px
+}
+
+.CEBQuestionW__input-rande-text {
+	font-size  : 24px;
+	color      : rgba(0, 0, 0, .8);
+	font-weight: 400
+}
+
+.CEB__wrapData {
+	display        : flex;
+	justify-content: space-between
+}
+
+.CEB__Data {
+	font-size  : 13px;
+	color      : #333;
+	position   : relative;
+	margin-left: 0;
+	flex       : 0 0 20px;
+	text-align : center
+}
+
+.CEB__Data:after {
+	content         : "";
+	content         : none;
+	position        : absolute;
+	z-index         : 20;
+	width           : 2px;
+	height          : 10px;
+	top             : -13px;
+	background-color: #ecf1f7
+}
+
+.CEB__Data:first-child:after {
+	left: calc(50% + 0px)
+}
+
+.CEB__Data:not(:first-child):after {
+	left: calc(50% + 13px)
+}
+
+.CEB__table {
+	width          : 100%;
+	margin-top     : 20px;
+	border         : 1px solid #dddddd;
+	border-collapse: collapse;
+}
+
+.CEB__table td {
+	border    : 1px solid #dddddd;
+	padding   : 8px 5px;
+	font-size : 18px;
+	text-align: center;
+
+}
+
+.CEB__table tr:first-child td {
+	background-color: #e0e0e0;
+	font-size       : 18px;
+	font-weight     : 700;
+	white-space     : pre;
+}
+
+.CEB__table tr:last-child td {
+	font-size  : 20px;
+	font-weight: 700;
+}
+
+.CEB__select_color {
+	padding      : 3px 12px;
+	border-radius: 4px;
+	cursor       : pointer;
+}
+
+@media only screen and (max-width : 1199px) {
+
+	.CEB {
+		max-width: 700px;
+	}
+
+
+	.CEB__left {
+		flex: 0 0 100%;
+	}
+
+	.CEB__right {
+		flex       : 0 0 100%;
+		margin-left: 0;
+		overflow-x : scroll;
+	}
+
+	.CEB__wrapTable {
+		overflow-x: scroll;
+
+	}
+
+
+}
+
+@media only screen and (max-width : 991px) {}
+
+@media only screen and (max-width : 767px) {}
+
+@media only screen and (max-width : 575px) {}
+
+@media only screen and (max-width : 480px) {}
+
+@media only screen and (max-width : 375px) {}
+
+* {
+	outline: solid red 0px;
+}
