@@ -27,9 +27,11 @@ return new class extends Migration
                 Shipment::NOT_PAID,
                 Shipment::PAID,
                 'В долг',
-                'В долг знакомые'
+                'В долг знакомые',
+                'На руках',
             ])->nullable();
-            $table->foreignId("delivery_id")->nullable()->index()->constrained("deliveries");
+            $table->foreignId("delivery_id")->nullable()->references('id')->on("deliveries");
+            $table->foreignId("contact_id")->nullable()->references('id')->on("contacts");
             $table->integer('delivery_price')->nullable();
             $table->integer('delivery_price_norm')->nullable();
             $table->integer('delivery_fee')->nullable();

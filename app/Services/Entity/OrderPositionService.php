@@ -20,10 +20,11 @@ class OrderPositionService
         $count = 0;
         $guids = [];
         $isDemand = true;
+        $rows = isset($data['rows']) ? $data['rows'] : $data;
 
         $roundPallet = $this->options::where('code', '=', "round_number")->first()?->value;
 
-        foreach ($data['rows'] as $row) {
+        foreach ($rows as $row) {
             $entity = OrderPosition::firstOrNew(['ms_id' => $row["id"]]);
             $product = Product::where('ms_id','=',$row["assortment"]["id"])->first();
 
@@ -55,13 +56,13 @@ class OrderPositionService
                 $entity->count_pallets = $this->roundNumber($countsPallets, $roundPallet);
                 $entity->save();
 
-            }else{
+            } else {
                 ++$count;
             }
 
             $guids[] = $entity->id;
         }
-        if ($count == count($data['rows'])) {
+        if ($count == count($rows)) {
             return ["needDelete" => 1, "isDemand" => $isDemand];
         } else {
             if (count($guids) > 0) {

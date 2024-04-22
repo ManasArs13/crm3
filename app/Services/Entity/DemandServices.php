@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Services\Api\MoySkladService;
 use Illuminate\Support\Arr;
 use App\Helpers\Math;
+use App\Models\Contact;
 use App\Models\Order;
 use App\Models\ShipingPrice;
 use App\Models\Shipment;
@@ -20,11 +21,16 @@ class DemandServices implements EntityInterface
 {
     private Option $options;
 
+    public OrderService $orderService;
     public MoySkladService $service;
-    public function __construct(Option $options, MoySkladService $service)
+    public ContactMsService $contactMsService;
+
+    public function __construct(Option $options, MoySkladService $service, OrderService $orderService, ContactMsService $contactMsService)
     {
         $this->service = $service;
         $this->options = $options;
+        $this->orderService = $orderService;
+        $this->contactMsService = $contactMsService;
     }
 
     /**
@@ -57,20 +63,49 @@ class DemandServices implements EntityInterface
                 $vehicleType = null;
                 $deliveryFee = null;
                 $shipmentWeight = 0.0;
+                $state = null;
+                $order_db = null;
+                $contact_db = null;
+                $counterpartyLink = null;
 
-                $orderId = isset($row['customerOrder']) ? $this->getGuidFromUrl($row['customerOrder']['meta']['href']) : null;
+                if (isset($row['customerOrder'])) {
+                    $orderId = $this->getGuidFromUrl($row['customerOrder']['meta']['href']);
+                    $order_db = Order::query()->where('ms_id', $orderId)->first();
+                }
+
+                if (isset($row['agent'])) {
+                    $agentId = $this->getGuidFromUrl($row['agent']['meta']['href']);
+                    $contact_db = Contact::query()->where('ms_id', $agentId)->first();
+
+                    if ($contact_db) {
+                        $entity->contact_id = $contact_db->id;
+                    } else {
+                        $row = $this->service->actionGetRowsFromJson($row['agent']['meta']['href'], false);
+                        $this->contactMsService->importOne($row);
+
+                        $contact_db = Contact::query()->where('ms_id', $agentId)->first();
+                      }
+
+                    $counterpartyLink = 'https://online.moysklad.ru/app/#company/edit?id=' . $agentId;
+                }
+
+                if (isset($row['state'])) {
+                    $state = $this->service->actionGetRowsFromJson($row['state']['meta']['href'], false)['name'];
+                }
+
+                $entity->order_id = $order_db ? $order_db->id : null;
+                $entity->contact_id = $contact_db ? $contact_db->id : null;
+                $entity->counterparty_link = $counterpartyLink;
+
+                $entity->status = $state;
                 $entity->ms_id = $row['id'];
                 $entity->name = $row['name'];
                 $entity->description = !empty($row['description']) ? $row['description'] : null;
                 $entity->shipment_address = $row['shipmentAddress'] ?? null;
 
-                $order_db = Order::query()->where('ms_id', $orderId)->first();
-                $entity->order_id = $order_db ? $order_db->id : null;
-
-                $entity->counterparty_link = $row['agent']['meta']['uuidHref'];
                 $entity->service_link = $urlService . $row['id'];
-                $entity->paid_sum = $row['payedSum'] / 100;
-                $entity->status = isset($row['state']) ? $row['state']['name'] : null;
+                $entity->paid_sum = isset($row['payedSum']) ? $row['payedSum'] / 100 : 0;
+               
                 $entity->created_at = $row['moment'];
                 $entity->suma = Math::rounding_up_to($row['sum'] / 100, 500);
                 $entity->updated_at = $row['updated'];

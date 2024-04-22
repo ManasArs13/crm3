@@ -466,7 +466,7 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
 
-        if(!$order) {
+        if (!$order) {
             return redirect()->route('order.index')->with('warning', 'Заказ ' . $id .  ' не найден!');
         }
 
@@ -517,10 +517,20 @@ class OrderController extends Controller
 
     public function destroy(string $id)
     {
-        $entityItem = Order::find($id);
-        $entityItem->delete();
+        $order = Order::with('shipments')->find($id);
+        $order->positions()->delete();
 
-        return redirect()->route('order.index');
+        //dd($order->shipments());
+        if ($order->shipments()) {
+            foreach($order->shipments() as $shipment) {
+                $shipment->order_id = null;
+                $shipment->update();
+            }
+        }
+
+        $order->delete();
+
+        return redirect()->route('order.index')->with('success', 'Заказ удалён');
     }
 
     public function get_api(Request $request)

@@ -51,7 +51,7 @@ class Shipment extends Model
 
     public function contact()
     {
-        return $this->hasManyThrough(Contact::class, Order::class,  'contact_id','order_id', 'id', 'id');
+        return $this->hasOne(Contact::class, 'id', 'contact_id');
     }
 
     public function getCreatedAtAttribute($value)
