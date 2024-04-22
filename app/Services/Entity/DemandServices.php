@@ -105,11 +105,15 @@ class DemandServices implements EntityInterface
 
                 $entity->service_link = $urlService . $row['id'];
                 $entity->paid_sum = isset($row['payedSum']) ? $row['payedSum'] / 100 : 0;
-               
-                $entity->created_at = $row['moment'];
-                $entity->suma = Math::rounding_up_to($row['sum'] / 100, 500);
-                $entity->updated_at = $row['updated'];
+                $entity->suma = isset($row['sum']) ? Math::rounding_up_to($row['sum'] / 100, 500) : 0;
 
+                if (isset($row['moment'])) {
+                    $entity->created_at = $row['moment'];
+                }
+
+                if (isset($row['updated'])) {
+                    $entity->updated_at = $row['updated'];
+                }
 
                 if (isset($row["attributes"])) {
                     foreach ($row["attributes"] as $attribute) {
