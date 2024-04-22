@@ -226,7 +226,7 @@
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
-                                                {{ $entityItem->order && $entityItem->order->contact ? $entityItem->order->contact->name : '-' }}
+                                                {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
                                             @elseif($column == 'order_id')
                                                 <a href="{{ route('order.show', $entityItem->id) }}"
                                                     class="text-blue-500 hover:text-blue-600">
