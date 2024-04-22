@@ -50,7 +50,7 @@ class OrderPositionService
                 $entity->reserve = $reserve;
                 $entity->order_id = $order;
                 $entity->product_id = $product->id;
-                $entity->weight_kg = $row["quantity"] * $product->weight_kg;
+                $entity->weight_kg = round($row["quantity"] * $product->weight_kg, 1);
 
                 $countsPallets = ($product->count_pallets!=0) ? $row["quantity"]/$product->count_pallets : 0;
                 $entity->count_pallets = $this->roundNumber($countsPallets, $roundPallet);

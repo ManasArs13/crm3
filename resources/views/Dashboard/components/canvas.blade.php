@@ -9,7 +9,7 @@
             let sum  = [];
             let orders_count = [];
             let positions_count = [];
-            let shipments_count = [];
+            let shipped_count = [];
             let labels = [];
 
             await fetch('/month-orders')
@@ -31,8 +31,8 @@
                         labels.push(data.labels[item])
                     }
 
-                    for (let item in data.shipments_count) {
-                        shipments_count.push(data.shipments_count[item])
+                    for (let item in data.shipped_count) {
+                        shipped_count.push(data.shipped_count[item])
                     }
                     
                 })
@@ -75,7 +75,7 @@
                         },
                         {
                             label: "Кол-во отгружено",
-                            data: shipments_count,
+                            data: shipped_count,
                             backgroundColor: "rgb(134 239 172)",
                             borderColor:  "rgb(134 239 172)",
                             borderWidth: 4,
