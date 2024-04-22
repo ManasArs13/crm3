@@ -21,7 +21,7 @@ class CalculatorController extends Controller
                                 ->whereNot('ms_id', '8caf01fa-34f2-11ee-0a80-139c002ba64a')
                                 ->whereNot('ms_id', 'c518da75-a146-11ec-0a80-0da500133bca')
                                 ->get();
-        $shippingPrices = ShipingPrice::select('disctance', 'tonnage', 'price', 'transport_type_id')->get();
+        $shippingPrices = ShipingPrice::select('distance', 'tonnage', 'price', 'transport_type_id')->get();
 
         $dekor_gray = Product::query()->select('price')->where('name', '=', 'Декор (серый)')->first()?->price;
         $dekor_color = Product::query()->select('price')->where('name', '=', 'Декор (красный)')->first()?->price;
