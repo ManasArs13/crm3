@@ -168,8 +168,6 @@
             let vehicleType = $('#vehicleType').val();
             let ratio = 1;
             $('#resultAll').text(0);
-console.log(shippingPrices)
-            //function setResult;
 
             let resultParams = {
                 "block12": {
