@@ -6,6 +6,29 @@
         </x-slot>
     @endif
 
+    <x-slot:head>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+
+                let buttons = document.querySelectorAll(".buttonForOpen")
+                for (var i = 0; i < buttons.length; i++) {
+                    let attrib = buttons[i].getAttribute("data-id")
+                    function cl (attr) {
+                        let positions = document.querySelectorAll(".position_column_" + attr);
+                        for (var i = 0; i < positions.length; i++) {
+                            console.log(positions[i].style.display)
+                            if (positions[i].style.display === 'none') {
+                                positions[i].style.display = ''
+                            } else {
+                                positions[i].style.display = 'none'
+                            }
+                        }
+                    }
+                    buttons[i].addEventListener("click", cl.bind(null, attrib));
+                }
+            });
+        </script>
+    </x-slot>
 
     <div class="w-11/12 mx-auto py-8">
 
@@ -396,6 +419,7 @@
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
+                            <th scope="col" class="px-6 py-4"></th>
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder' || $key == 'positions_count')
                                     <th scope="col" class="px-6 py-4">{{ $column }}</th>
@@ -429,7 +453,13 @@
                             @php
                                 $totalSum += $entityItem->sum;
                             @endphp
+
                             <tr class="border-b-2">
+
+                                <td class="text-nowrap px-6 py-4">
+                                    <button class="buttonForOpen" data-id="{!! $entityItem->id !!}">&#9660;</button>
+                                </td>
+
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
@@ -561,6 +591,73 @@
                                 </td>
 
                             </tr>
+
+                            <tr class="border-b-2 bg-gray-100 position_column_{!! $entityItem->id !!}" style="display: none">
+                                <td class="text-nowrap px-6 py-4">
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    №
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    продукт
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    количество
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    отгружено
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    зарезервировано
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    цена
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    кол-во палет
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    вес, кг
+                                </td>
+                                <td class="text-nowrap px-6 py-4">
+                                    ms_id
+                                </td>
+                            </tr>
+                            
+                            @foreach ($entityItem->positions as $position)
+                                <tr  style="display: none"
+                                    @if ($position->shipped >= $position->quantity) class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}" @else class="border-b-2 bg-red-200 position_column_{!! $entityItem->id !!}" @endif>
+                                    <td class="text-nowrap px-6 py-4">
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->product->name }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->quantity }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->shipped }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->reserve }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->price }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->count_pallets }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->weight_kg }}
+                                    </td>
+                                    <td class="text-nowrap px-6 py-4">
+                                        {{ $position->ms_id }}
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endforeach
                         <tr class="border-b-2 bg-gray-100">
                             @foreach ($resColumns as $column => $title)
@@ -589,5 +686,7 @@
 
         </div>
     </div>
+
+
 
 </x-app-layout>
