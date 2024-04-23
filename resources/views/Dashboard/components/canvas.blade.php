@@ -54,6 +54,7 @@
                     datasets: [
                         {
                             label: "Сумма заказов",
+                            hidden: true,
                             data: sum,
                             backgroundColor: "rgb(145,202,246)",
                             borderColor: "rgb(145,202,246)",
@@ -62,6 +63,7 @@
                         {
                             label: "Кол-во заказов",
                             data: orders_count,
+                            hidden: true,
                             backgroundColor: "rgb(236,112,112)",
                             borderColor:  "rgb(236,112,112)",
                             borderWidth: 4,

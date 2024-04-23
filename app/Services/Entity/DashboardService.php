@@ -5,6 +5,7 @@ namespace App\Services\Entity;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Shipment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -238,12 +239,23 @@ class DashboardService
             ->where('date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
             ->where('date_plan', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
 
+        $shipments = Shipment::select('id', 'created_at')->with('products')
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+            ->where('created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
+
         if ($referer == 'dashboard') {
 
             $orders = $orders->get();
+            $shipments = $shipments->get();
         } else if ($referer == 'dashboard-2') {
 
             $orders = $orders->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
                 $query->whereHas('product', function ($queries) {
                     $queries->where('building_material', Product::BLOCK);
                 });
@@ -255,39 +267,45 @@ class DashboardService
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })->get();
         }
 
         $sum[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 09:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 10:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 11:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 12:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 13:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 14:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 15:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 16:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 17:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 18:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 19:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 20:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 21:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 22:00:00', $to . ' 23:59:59'])->sum('sum');
 
         $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 09:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 10:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 11:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 12:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 13:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 14:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 15:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 16:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 17:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 18:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 19:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 20:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 21:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 22:00:00', $to . ' 23:59:59'])->count('positions_count');
 
         $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
             $sum = 0;
@@ -296,98 +314,98 @@ class DashboardService
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 09:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 10:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 11:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 12:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 13:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 14:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 15:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 16:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 17:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 18:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 19:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 20:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 21:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 22:00:00', $to . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
@@ -395,108 +413,108 @@ class DashboardService
             return $sum;
         });
 
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 09:00:00', $to . ' 09:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 10:00:00', $to . ' 10:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 11:00:00', $to . ' 11:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 12:00:00', $to . ' 12:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 13:00:00', $to . ' 13:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 14:00:00', $to . ' 14:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 15:00:00', $to . ' 15:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 16:00:00', $to . ' 16:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 17:00:00', $to . ' 17:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 18:00:00', $to . ' 18:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 19:00:00', $to . ' 19:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 20:00:00', $to . ' 20:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 21:00:00', $to . ' 21:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 22:00:00', $to . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
@@ -544,12 +562,23 @@ class DashboardService
             ->where('date_plan', '>=', Carbon::now()->addDay()->format('Y-m-d') . ' 00:00:00')
             ->where('date_plan', '<=', Carbon::now()->addDay()->format('Y-m-d') . ' 23:59:59');
 
+        $shipments = Shipment::select('id', 'created_at')->with('products')
+            ->where('created_at', '>=', Carbon::now()->addDay()->format('Y-m-d') . ' 00:00:00')
+            ->where('created_at', '<=', Carbon::now()->addDay()->format('Y-m-d') . ' 23:59:59');
+
         if ($referer == 'dashboard') {
 
             $orders = $orders->get();
+            $shipments = $shipments->get();
         } else if ($referer == 'dashboard-2') {
 
             $orders = $orders->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
                 $query->whereHas('product', function ($queries) {
                     $queries->where('building_material', Product::BLOCK);
                 });
@@ -561,39 +590,45 @@ class DashboardService
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })->get();
         }
 
         $sum[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 09:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 10:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 11:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 12:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 13:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 14:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 15:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 16:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 17:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 18:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 19:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 20:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 21:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [$today . ' 22:00:00', $to . ' 23:59:59'])->sum('sum');
 
         $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 09:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 10:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 11:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 12:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 13:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 14:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 15:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 16:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 17:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 18:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 19:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 20:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 21:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 22:00:00', $to . ' 23:59:59'])->count('positions_count');
 
         $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
             $sum = 0;
@@ -602,98 +637,98 @@ class DashboardService
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 09:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 10:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 11:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 12:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 13:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 14:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 15:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 16:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 17:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 18:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 19:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 20:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 21:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 22:00:00', $to . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
@@ -701,108 +736,108 @@ class DashboardService
             return $sum;
         });
 
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 08:00:00', $to . ' 09:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 09:00:00', $to . ' 09:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 09:00:00', $to . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 10:00:00', $to . ' 10:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 10:00:00', $to . ' 11:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 11:00:00', $to . ' 11:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 11:00:00', $to . ' 12:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 12:00:00', $to . ' 12:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 12:00:00', $to . ' 13:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 13:00:00', $to . ' 13:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 13:00:00', $to . ' 14:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 14:00:00', $to . ' 14:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 14:00:00', $to . ' 15:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 15:00:00', $to . ' 15:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 15:00:00', $to . ' 16:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 16:00:00', $to . ' 16:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 16:00:00', $to . ' 17:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 17:00:00', $to . ' 17:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 17:00:00', $to . ' 18:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 18:00:00', $to . ' 18:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 18:00:00', $to . ' 19:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 19:00:00', $to . ' 19:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 19:00:00', $to . ' 20:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 20:00:00', $to . ' 20:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 20:00:00', $to . ' 21:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 21:00:00', $to . ' 21:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 21:00:00', $to . ' 23:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 22:00:00', $to . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
@@ -833,13 +868,23 @@ class DashboardService
             ->where('date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
             ->where('date_plan', '<=', Carbon::now()->addDays(3)->format('Y-m-d') . ' 23:59:59')
             ->orderBy('date_plan');
+        $shipments = Shipment::select('id', 'created_at')->with('products')
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+            ->where('created_at', '<=', Carbon::now()->addDays(3)->format('Y-m-d') . ' 23:59:59');
 
         if ($referer == 'dashboard') {
 
             $orders = $orders->get();
+            $shipments = $shipments->get();
         } else if ($referer == 'dashboard-2') {
 
             $orders = $orders->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
                 $query->whereHas('product', function ($queries) {
                     $queries->where('building_material', Product::BLOCK);
                 });
@@ -851,40 +896,46 @@ class DashboardService
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })->get();
         }
 
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 08:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
 
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m') . ' 08:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays()->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
 
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 08:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
@@ -892,31 +943,31 @@ class DashboardService
             return $sum;
         });
 
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 08:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay(1)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $product) {
+                $sum += $product->quantity;
             }
             return $sum;
         });
@@ -945,15 +996,25 @@ class DashboardService
 
         $orders = Order::select('id', 'sum', 'date_plan')->withCount('positions')->with('positions')
             ->where('date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
-            ->where('date_plan', '<=', Carbon::now()->addDays(3)->format('Y-m-d') . ' 23:59:59')
+            ->where('date_plan', '<=', Carbon::now()->addDays(7)->format('Y-m-d') . ' 23:59:59')
             ->orderBy('date_plan');
+        $shipments = Shipment::select('id', 'created_at')->with('products')
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+            ->where('created_at', '<=', Carbon::now()->addDays(7)->format('Y-m-d') . ' 23:59:59');
 
         if ($referer == 'dashboard') {
 
             $orders = $orders->get();
+            $shipments = $shipments->get();
         } else if ($referer == 'dashboard-2') {
 
             $orders = $orders->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
                 $query->whereHas('product', function ($queries) {
                     $queries->where('building_material', Product::BLOCK);
                 });
@@ -965,76 +1026,82 @@ class DashboardService
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })->get();
+
+            $shipments = $shipments->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })->get();
         }
 
-        $sum[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 08:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 08:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 09:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 10:59:59'])->sum('sum');
-        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(8)->format('d-m-Y') . ' 10:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
+        $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
 
-        $orders_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m') . ' 08:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(8)->format('d-m-Y') . ' 10:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
 
-        $positions_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 08:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(8)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
@@ -1042,59 +1109,59 @@ class DashboardService
             return $sum;
         });
 
-        $shipped_count[] = $orders->whereBetween('date_plan', [$today . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 08:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 08:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(4)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(5)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(5)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(6)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(6)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
-        $shipped_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 09:00:00', Carbon::now()->addDays(8)->format('d-m-Y') . ' 10:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDays(7)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(7)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
-            foreach ($items->positions as $position) {
-                $sum += $position->shipped;
+            foreach ($items->products as $position) {
+                $sum += $position->quantity;
             }
             return $sum;
         });
