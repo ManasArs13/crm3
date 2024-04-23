@@ -12,19 +12,23 @@
 
                 let buttons = document.querySelectorAll(".buttonForOpen")
                 for (var i = 0; i < buttons.length; i++) {
-                    let attrib = buttons[i].getAttribute("data-id")
-                    function cl (attr) {
-                        let positions = document.querySelectorAll(".position_column_" + attr);
+                    let attrib = buttons[i].getAttribute("data-id");
+                    let but = buttons[i];
+
+                    function cl(attr, b) {
+                        let positions = document.querySelectorAll(".position_column_" + attr, b);
                         for (var i = 0; i < positions.length; i++) {
                             console.log(positions[i].style.display)
                             if (positions[i].style.display === 'none') {
                                 positions[i].style.display = ''
+                                b.textContent = '-'
                             } else {
                                 positions[i].style.display = 'none'
+                                b.textContent = '+'
                             }
                         }
                     }
-                    buttons[i].addEventListener("click", cl.bind(null, attrib));
+                    buttons[i].addEventListener("click", cl.bind(null, attrib, but));
                 }
             });
         </script>
@@ -75,19 +79,19 @@
                                 <x-slot name="content">
                                     <div class="grid grid-cols-3 w-100 p-4 gap-1">
                                         <div class="flex basis-1/3">
-                                            <label>
+                                            <p>
                                                 <input type="checkbox" id="change_all">
                                                 Выбрать все
-                                            </label>
+                                            </p>
                                         </div>
                                         @foreach ($resColumnsAll as $key => $column)
                                             <div class="flex basis-1/3">
-                                                <label>
+                                                <p>
                                                     <input name="columns[]" class="columns_all" type="checkbox"
                                                         value="{{ $key }}"
                                                         @if ($column['checked'] == true) checked @endif>
                                                     {{ $column['name_rus'] }}
-                                                </label>
+                                                </p>
                                             </div>
                                         @endforeach
                                     </div>
@@ -136,9 +140,9 @@
                                             @if ($filter['type'] == 'date' || $filter['type'] == 'number')
                                                 <div class="flex flex-row gap-1 w-100">
                                                     <div class="basis-1/5">
-                                                        <label>
+                                                        <p>
                                                             {{ $filter['name_rus'] }}
-                                                        </label>
+                                                        </p>
                                                     </div>
                                                     <div class="basis-2/5">
                                                         <div class="relative mb-4 flex flex-wrap items-stretch">
@@ -168,9 +172,9 @@
                                             @elseif ($filter['type'] == 'select')
                                                 <div class="flex flex-row gap-1 w-100">
                                                     <div class="basis-1/5">
-                                                        <label>
+                                                        <p>
                                                             {{ $filter['name_rus'] }}
-                                                        </label>
+                                                        </p>
                                                     </div>
                                                     <div class="basis-4/5">
                                                         <select
@@ -188,9 +192,9 @@
                                             @elseif($filter['type'] == 'checkbox')
                                                 <div class="flex flex-row gap-1 w-100">
                                                     <div class="basis-1/5">
-                                                        <label>
+                                                        <p>
                                                             {{ $filter['name_rus'] }}
-                                                        </label>
+                                                        </p>
                                                     </div>
                                                     <div class="basis-4/5 flex flex-wrap">
                                                         @foreach ($filter['values'] as $value)
@@ -199,10 +203,10 @@
                                                                     @if ($value['checked'] == true) checked=checked @endif
                                                                     class="border border-solid border-neutral-300 rounded"
                                                                     type="checkbox" value="{{ $value['value'] }}" />
-                                                                <label
+                                                                <p
                                                                     class="inline-block ps-[0.15rem] hover:cursor-pointer">
                                                                     {{ $value['name'] }}
-                                                                </label>
+                                                                </p>
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -381,10 +385,10 @@
                                                                     @if ($value['checked'] == true) checked=checked @endif
                                                                     class="border border-solid border-neutral-300 rounded"
                                                                     type="checkbox" value="{{ $value['value'] }}" />
-                                                                <label
+                                                                <p
                                                                     class="inline-block ps-[0.15rem] hover:cursor-pointer">
                                                                     {{ $value['name'] }}
-                                                                </label>
+                                                                </p>
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -455,10 +459,14 @@
                             @endphp
 
                             <tr class="border-b-2">
-
+                                @if(count($entityItem->shipments) > 0)
                                 <td class="text-nowrap px-6 py-4">
-                                    <button class="buttonForOpen" data-id="{!! $entityItem->id !!}">&#9660;</button>
+                                    <button class="buttonForOpen text-normal font-bold" data-id="{!! $entityItem->id !!}">+</button>
                                 </td>
+                                @else
+                                <td class="text-nowrap px-6 py-4">
+                                </td>
+                                @endif
 
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
@@ -592,74 +600,93 @@
 
                             </tr>
 
-                            <tr class="border-b-2 bg-gray-100 position_column_{!! $entityItem->id !!}" style="display: none">
-                                <td class="text-nowrap px-6 py-4">
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    №
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    продукт
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    количество
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    отгружено
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    зарезервировано
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    цена
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    кол-во палет
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    вес, кг
-                                </td>
-                                <td class="text-nowrap px-6 py-4">
-                                    ms_id
-                                </td>
-                            </tr>
-                            
-                            @foreach ($entityItem->positions as $position)
-                                <tr  style="display: none"
-                                    @if ($position->shipped >= $position->quantity) class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}" @else class="border-b-2 bg-red-200 position_column_{!! $entityItem->id !!}" @endif>
-                                    <td class="text-nowrap px-6 py-4">
-                                    </td>
+                            @foreach ($entityItem->shipments as $shipment)
+                                <tr style="display: none"
+                                    class="border-b-2 bg-gray-100 position_column_{!! $entityItem->id !!}">
                                     <td class="text-nowrap px-6 py-4">
                                         {{ $loop->iteration }}
                                     </td>
+                                    @foreach ($resColumns as $column => $title)
+                                        <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
+                                            @if ($shipment->$column) title="{{ $shipment->$column }}" @endif>
+                                            @if (preg_match('/_id\z/u', $column))
+                                                @if ($column == 'contact_id')
+                                                @elseif($column == 'order_id')
+                                                    <a href="{{ route('order.show', $shipment->id) }}"
+                                                        class="text-blue-500 hover:text-blue-600">
+                                                        {{ $shipment->order->name }}
+                                                    </a>
+                                                @elseif($column == 'delivery_id')
+                                                    {{ $shipment->delivery ? $shipment->delivery->name : '-' }}
+                                                @elseif($column == 'transport_id')
+                                                    {{ $shipment->transport ? $shipment->transport->name : '-' }}
+                                                @elseif($column == 'transport_type_id')
+                                                    {{ $shipment->transport_type ? $shipment->transport_type->name : '-' }}
+                                                @elseif($column == 'status_id')
+                                                    {{ $shipment->status }}
+                                                @else
+                                                    {{ $shipment->$column }}
+                                                @endif
+                                            @elseif($column == 'remainder')
+                                                @if ($shipment->residual_norm !== 0 && $shipment->residual_norm !== null && $shipment->type !== 'не выбрано')
+                                                    {{ round(($shipment->residual / $shipment->residual_norm) * 100) }}
+                                                    %
+                                                @else
+                                                    {{ null }}
+                                                @endif
+                                            @elseif(preg_match('/_link/u', $column) && $shipment->$column !== null && $shipment->$column !== '')
+                                                <a href="{{ $shipment->$column }}" target="_blank">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="currentColor"
+                                                        class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                        </path>
+                                                        <path fill-rule="evenodd"
+                                                            d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            @elseif($column == 'id')
+                                                <a href="{{ route('shipment.show', $shipment->id) }}"
+                                                    class="text-blue-500 hover:text-blue-600">
+                                                    {{ $shipment->id }}
+                                                </a>
+                                            @elseif($column == 'date_moment' || $column == 'date_plan')
+                                                {{ $shipment->created_at }}
+                                            @elseif($column == 'name')
+                                                <a href="{{ route('shipment.show', $shipment->id) }}"
+                                                    class="text-blue-500 hover:text-blue-600">
+                                                    {{ $shipment->name }}
+                                                </a>
+                                            @elseif($column == 'comment')
+                                                {{ $shipment->description }}
+                                                @elseif($column == 'positions_count')
+                                                @php
+                                                    $total_quantity_shipment = 0;
+                                                @endphp
+    
+                                                @foreach ($shipment->products as $position)
+                                                    @php
+                                                        $total_quantity_shipment += $position->quantity;
+                                                    @endphp
+                                                @endforeach
+    
+                                                {{ $total_quantity_shipment }}
+                                            
+                                            @else
+                                                {{ $shipment->$column }}
+                                            @endif
+                                        </td>
+                                    @endforeach
                                     <td class="text-nowrap px-6 py-4">
-                                        {{ $position->product->name }}
-                                    </td>
-                                    <td class="text-nowrap px-6 py-4">
-                                        {{ $position->quantity }}
-                                    </td>
-                                    <td class="text-nowrap px-6 py-4">
-                                        {{ $position->shipped }}
-                                    </td>
-                                    <td class="text-nowrap px-6 py-4">
-                                        {{ $position->reserve }}
-                                    </td>
-                                    <td class="text-nowrap px-6 py-4">
-                                        {{ $position->price }}
-                                    </td>
-                                    <td class="text-nowrap px-6 py-4">
-                                        {{ $position->count_pallets }}
-                                    </td>
-                                    <td class="text-nowrap px-6 py-4">
-                                        {{ $position->weight_kg }}
-                                    </td>
-                                    <td class="text-nowrap px-6 py-4">
-                                        {{ $position->ms_id }}
                                     </td>
                                 </tr>
                             @endforeach
                         @endforeach
                         <tr class="border-b-2 bg-gray-100">
+                            <td>
+                            </td>
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'sum')
                                     <td class="px-6 py-4">
