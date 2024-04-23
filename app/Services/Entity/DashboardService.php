@@ -413,7 +413,7 @@ class DashboardService
             return $sum;
         });
 
-        $shipped_count[] = $shipments->whereBetween('date_plan', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [$today . ' 00:00:00', $to . ' 08:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->products as $product) {
                 $sum += $product->quantity;
@@ -910,32 +910,32 @@ class DashboardService
         $sum[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum('sum');
 
         $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m') . ' 23:59:59'])->count('positions_count');
-        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays()->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
+        $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
         $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
         $orders_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->count('positions_count');
 
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->format('d-m-Y') . ' 00:00:00', Carbon::now()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(2)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(2)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
             }
             return $sum;
         });
-        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(4)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
+        $positions_count[] = $orders->whereBetween('date_plan', [Carbon::now()->addDays(3)->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDays(3)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->positions as $position) {
                 $sum += $position->quantity;
@@ -950,7 +950,7 @@ class DashboardService
             }
             return $sum;
         });
-        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay(1)->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
+        $shipped_count[] = $shipments->whereBetween('created_at', [Carbon::now()->addDay()->format('d-m-Y') . ' 00:00:00', Carbon::now()->addDay()->format('d-m-Y') . ' 23:59:59'])->sum(function ($items) {
             $sum = 0;
             foreach ($items->products as $product) {
                 $sum += $product->quantity;
