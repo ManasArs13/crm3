@@ -16,6 +16,7 @@ use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Transport;
 use App\Models\TransportType;
+use Carbon\Carbon;
 
 class DemandServices implements EntityInterface
 {
@@ -84,7 +85,7 @@ class DemandServices implements EntityInterface
                         $this->contactMsService->importOne($row);
 
                         $contact_db = Contact::query()->where('ms_id', $agentId)->first();
-                      }
+                    }
 
                     $counterpartyLink = 'https://online.moysklad.ru/app/#company/edit?id=' . $agentId;
                 }
@@ -107,13 +108,8 @@ class DemandServices implements EntityInterface
                 $entity->paid_sum = isset($row['payedSum']) ? $row['payedSum'] / 100 : 0;
                 $entity->suma = isset($row['sum']) ? Math::rounding_up_to($row['sum'] / 100, 500) : 0;
 
-                if (isset($row['moment'])) {
-                    $entity->created_at = $row['moment'];
-                }
-
-                if (isset($row['updated'])) {
-                    $entity->updated_at = $row['updated'];
-                }
+                $entity->created_at = isset($row['moment']) ? $row['moment'] : Carbon::now();
+                $entity->updated_at = isset($row['updated']) ? $row['updated'] : Carbon::now();
 
                 if (isset($row["attributes"])) {
                     foreach ($row["attributes"] as $attribute) {
