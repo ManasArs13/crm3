@@ -212,6 +212,11 @@
                                                 <option value="{{ $product->id }}">{{ $product->name }}</option>
                                             @endforeach
                                         </optgroup>
+                                        <optgroup label="ДРУГОЕ">
+                                            @foreach ($products_another as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
 
                                     </select>
 
