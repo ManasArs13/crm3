@@ -298,6 +298,11 @@ class OrderController extends Controller
             ->where('building_material', 'доставка')
             ->orderBy('name')
             ->get();
+        $products_another = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('category_id', 16)
+            ->orderBy('name')
+            ->get();
 
         $transports = TransportType::orderBy('name')->get();
         $date = Carbon::now()->format('Y-m-d');
@@ -317,6 +322,7 @@ class OrderController extends Controller
                 'products_block',
                 'products_concrete',
                 'products_delivery',
+                'products_another',
                 'date',
                 'dateNow'
             )
@@ -429,6 +435,11 @@ class OrderController extends Controller
             ->where('building_material', 'доставка')
             ->orderBy('name')
             ->get();
+        $products_another = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('category_id', 16)
+            ->orderBy('name')
+            ->get();
 
         $transports = TransportType::orderBy('name')->get();
         $date = Carbon::now()->format('Y-m-d');
@@ -447,6 +458,7 @@ class OrderController extends Controller
             'products_block',
             'products_concrete',
             'products_delivery',
+            'products_another',
             'date',
             'dateNow'
         ));
@@ -522,7 +534,7 @@ class OrderController extends Controller
 
         //dd($order->shipments());
         if ($order->shipments()) {
-            foreach($order->shipments() as $shipment) {
+            foreach ($order->shipments() as $shipment) {
                 $shipment->order_id = null;
                 $shipment->update();
             }
