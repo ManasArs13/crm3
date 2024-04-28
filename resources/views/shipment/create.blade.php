@@ -103,12 +103,10 @@
                                         Статус</span>
                                     <select name="status" required
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        <option value="" selected disabled>не выбрано</option>
-                                        @foreach ($statuses as $shipment)
-                                            <option class="bg-white" value="{{ $shipment->status }}">
-                                                {{ $shipment->status }}
-                                            </option>
-                                        @endforeach
+                                        <option class="bg-white" value="Не оплачен" selected>Не оплачен</option>
+                                        <option class="bg-white" value="Оплачен">Оплачен</option>
+                                        <option class="bg-white" value="В долг знакомые">В долг знакомые</option>
+                                        <option class="bg-white" value="На руках">На руках</option>
                                     </select>
                                 </div>
                             </div>

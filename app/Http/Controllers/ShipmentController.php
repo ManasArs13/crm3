@@ -199,7 +199,6 @@ class ShipmentController extends Controller
         $deliveries = Delivery::orderBy('name')->get();
         $transports = Transport::orderBy('name')->get();
         $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
-        $statuses = Shipment::select('status')->groupBy('status')->OrderBy('status')->get();
         $date = Carbon::now()->format('Y-m-d');
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
 
@@ -250,7 +249,6 @@ class ShipmentController extends Controller
             'entity',
             'deliveries',
             'transports',
-            'statuses',
             'contacts',
             'date',
             'dateNow',
@@ -284,7 +282,6 @@ class ShipmentController extends Controller
         $deliveries = Delivery::orderBy('name')->get();
         $transports = Transport::orderBy('name')->get();
         $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
-        $statuses = Shipment::select('status')->groupBy('status')->OrderBy('status')->get();
         $date = Carbon::now()->format('Y-m-d');
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
 
@@ -328,7 +325,6 @@ class ShipmentController extends Controller
             'deliveries',
             'transports',
             'contacts',
-            'statuses',
             'date',
             'dateNow',
             'order',

@@ -73,11 +73,10 @@
                                         <option selected class="bg-white" value="{{ $entityItem->status }}">
                                             {{ $entityItem->status }}
                                         </option>
-                                        @foreach ($statuses as $shipment)
-                                            <option class="bg-white" value="{{ $shipment->status }}">
-                                                {{ $shipment->status }}
-                                            </option>
-                                        @endforeach
+                                        <option value="Не оплачен" selected>Не оплачен</option>
+                                        <option value="Оплачен" selected>Оплачен</option>
+                                        <option class="bg-white" value="В долг знакомые">В долг знакомые</option>
+                                        <option value="На руках" selected>На руках</option>
                                     </select>
                                 </div>
                             </div>
