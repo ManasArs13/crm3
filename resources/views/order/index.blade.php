@@ -602,7 +602,7 @@
 
                             @foreach ($entityItem->shipments as $shipment)
                                 <tr style="display: none"
-                                    class="border-b-2 bg-gray-100 position_column_{!! $entityItem->id !!}">
+                                    class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}">
                                     <td class="text-nowrap px-6 py-4">
                                         {{ $loop->iteration }}
                                     </td>

@@ -154,8 +154,12 @@ class OrderService implements EntityInterface
 
                 $entity->contact_id = $entityContact->id;
 
-                $status_bd = Status::where('ms_id', $row["state"]["id"])->first();
-                $entity->status_id = $status_bd->id;
+                if(isset($row['state'])) {
+                    $status_bd = Status::where('ms_id', $this->getGuidFromUrl($row['state']['meta']['href']))->first();
+                    $entity->status_id = $status_bd->id;
+                } else {
+                    $entity->status_id = null;
+                }              
 
                 $entity->date_plan = $datePlan;
                 $entity->date_moment = $dateCreated;
