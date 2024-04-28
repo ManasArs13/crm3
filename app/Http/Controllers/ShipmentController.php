@@ -47,6 +47,7 @@ class ShipmentController extends Controller
         $all_columns = [
             "id",
             "name",
+            "created_at",
             "shipment_address",
             "order_id",
             "counterparty_link",
@@ -63,7 +64,6 @@ class ShipmentController extends Controller
             "delivery_fee",
             "transport_id",
             "transport_type_id",
-            "created_at",
             "updated_at",
             "weight",
             "ms_id"
@@ -75,6 +75,7 @@ class ShipmentController extends Controller
             $selected = [
                 "id",
                 "name",
+                "created_at",
                 "counterparty_link",
                 "contact_id",
                 "suma",
@@ -87,8 +88,8 @@ class ShipmentController extends Controller
                 //         "delivery_price_norm",
                 "delivery_fee",
                 "delivery_id",
-                "transport_id",
                 "transport_type_id",
+                "transport_id",
             ];
         }
 

@@ -85,7 +85,6 @@ class OrderController extends Controller
             $selected = [
                 "id",
                 "name",
-                "date_moment",
                 "contact_id",
                 'status_shipped',
                 "sum",
