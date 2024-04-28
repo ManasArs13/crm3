@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\ShipmentFilter;
 use App\Http\Requests\FilterRequest;
 use App\Http\Requests\ShipmentRequest;
+use App\Models\Contact;
 use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Product;
@@ -13,7 +14,6 @@ use App\Models\ShipmentProduct;
 use App\Models\Transport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 
 class ShipmentController extends Controller
 {
@@ -27,7 +27,7 @@ class ShipmentController extends Controller
         $entityName = 'Отгрузки';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'contact:id,name','transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
@@ -198,10 +198,37 @@ class ShipmentController extends Controller
 
         $deliveries = Delivery::orderBy('name')->get();
         $transports = Transport::orderBy('name')->get();
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+        $statuses = Shipment::select('status')->groupBy('status')->OrderBy('status')->get();
         $date = Carbon::now()->format('Y-m-d');
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+
         $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
             ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $products_block = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+
+        $products_concrete = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+        $products_delivery = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'доставка')
+            ->orderBy('name')
+            ->get();
+
+        $products_another = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('category_id', 16)
             ->orderBy('name')
             ->get();
 
@@ -223,10 +250,16 @@ class ShipmentController extends Controller
             'entity',
             'deliveries',
             'transports',
+            'statuses',
+            'contacts',
             'date',
             'dateNow',
             'order',
             'products',
+            'products_block',
+            'products_concrete',
+            'products_delivery',
+            'products_another',
             'positions'
         ));
     }
@@ -237,7 +270,7 @@ class ShipmentController extends Controller
             return response()->redirectToRoute('shipment.create');
         }
 
-        $order = Order::select('id', 'name')->with('positions')->find($request->order_id);
+        $order = Order::with('positions', 'contact', 'delivery:id,name')->find($request->order_id);
 
         if ($order == null) {
             return response()->redirectToRoute('shipment.create');
@@ -250,10 +283,37 @@ class ShipmentController extends Controller
 
         $deliveries = Delivery::orderBy('name')->get();
         $transports = Transport::orderBy('name')->get();
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+        $statuses = Shipment::select('status')->groupBy('status')->OrderBy('status')->get();
         $date = Carbon::now()->format('Y-m-d');
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+
         $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
             ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $products_block = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+
+        $products_concrete = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+        $products_delivery = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'доставка')
+            ->orderBy('name')
+            ->get();
+
+        $products_another = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('category_id', 16)
             ->orderBy('name')
             ->get();
 
@@ -267,10 +327,16 @@ class ShipmentController extends Controller
             'entity',
             'deliveries',
             'transports',
+            'contacts',
+            'statuses',
             'date',
             'dateNow',
             'order',
             'products',
+            'products_block',
+            'products_concrete',
+            'products_delivery',
+            'products_another',
             'positions'
         ));
     }
@@ -287,14 +353,15 @@ class ShipmentController extends Controller
         $shipment->delivery_id = $request->delivery;
         $shipment->transport_id = $request->transport;
         $shipment->weight = $request->weight;
+        $shipment->contact_id = $request->contact;
 
         if ($request->order_id) {
             $shipment->order_id = $request->order_id;
         }
 
-        if ($request->transport_type_id) {
-            $shipment->tranport_type_id = $request->tranport_type;
-        }
+        // if ($request->transport_type_id) {
+        //     $shipment->tranport_type_id = $request->transport_type;
+        // }
 
         if ($request->comment) {
             $shipment->description = $request->comment;
@@ -307,17 +374,21 @@ class ShipmentController extends Controller
         $shipment->save();
 
         // Add shipment position
-        foreach ($request->products as $product) {
+        if ($request->products) {
+            foreach ($request->products as $product) {
+                if (isset($product['product'])) {
 
-            $position = new ShipmentProduct();
+                    $position = new ShipmentProduct();
 
-            $product_bd = Product::find($product['product']);
+                    $product_bd = Product::find($product['product']);
 
-            $position->product_id = $product_bd->id;
-            $position->shipment_id = $shipment->id;
-            $position->quantity = $product['count'];
+                    $position->product_id = $product_bd->id;
+                    $position->shipment_id = $shipment->id;
+                    $position->quantity = $product['count'];
 
-            $position->save();
+                    $position->save();
+                }
+            }
         }
 
         return redirect()->route("shipment.index")->with('succes', 'Отгрузка №' . $shipment->id . ' добавлена');
@@ -325,28 +396,131 @@ class ShipmentController extends Controller
 
     public function show(string $id)
     {
-        $entityItem = Shipment::findOrFail($id);
-        $columns = Schema::getColumnListing('shipments');
-
-        return view("own.show", compact('entityItem', 'columns'));
-    }
-
-    public function edit(string $id)
-    {
-        $entityItem = Shipment::find($id);
-        $columns = Schema::getColumnListing('shipments');
-        $entity = 'shipments';
+        $entityItem = Shipment::with('order', 'contact', 'delivery', 'transport', 'transport_type', 'products')->find($id);
+        $entity = 'Заказ №';
         $action = "shipment.update";
+        $positions = $entityItem->products;
+        $searchOrders = "api.get.order";
 
-        return view("own.edit", compact('entityItem', 'columns', 'action', 'entity'));
+        $deliveries = Delivery::orderBy('name')->get();
+        $transports = Transport::orderBy('name')->get();
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+        $statuses = Shipment::select('status')->groupBy('status')->OrderBy('status')->get();
+
+        $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $products_block = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+
+        $products_concrete = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+        $products_delivery = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'доставка')
+            ->orderBy('name')
+            ->get();
+
+        $products_another = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('category_id', 16)
+            ->orderBy('name')
+            ->get();
+
+        return view("shipment.show", compact(
+            'entityItem',
+            'entity',
+            'searchOrders',
+            'action',
+            'transports',
+            'deliveries',
+            'contacts',
+            'products',
+            'products_block',
+            'products_concrete',
+            'products_delivery',
+            'products_another',
+            'positions',
+            'statuses',
+        ));
     }
+
+    // public function edit(string $id)
+    // {
+    //     $entityItem = Shipment::find($id);
+    //     $columns = Schema::getColumnListing('shipments');
+    //     $entity = 'shipments';
+    //     $action = "shipment.update";
+
+    //     return view("own.edit", compact('entityItem', 'columns', 'action', 'entity'));
+    // }
 
     public function update(Request $request, string $id)
     {
-        $entityItem = Shipment::find($id);
-        $entityItem->fill($request->post())->save();
+        $shipment = Shipment::find($id);
 
-        return redirect()->route('shipments.index');
+        if (!$shipment) {
+            return redirect()->route('order.index')->with('warning', 'Отгрузка ' . $id .  ' не найдена!');
+        }
+
+        $shipment->name = $request->name;
+        $shipment->status = $request->status;
+
+        $shipment->paid_sum = 0;
+        $shipment->suma = 0;
+        $shipment->delivery_id = $request->delivery;
+        $shipment->transport_id = $request->transport;
+        $shipment->weight = $request->weight;
+        $shipment->contact_id = $request->contact;
+
+        if ($request->order_id) {
+            $shipment->order_id = $request->order_id;
+        }
+
+        // if ($request->transport_type_id) {
+        //     $shipment->tranport_type_id = $request->tranport_type;
+        // }
+
+        if ($request->comment) {
+            $shipment->description = $request->comment;
+        }
+
+        if ($request->address) {
+            $shipment->shipment_address = $request->address;
+        }
+
+        $shipment->update();
+
+        $shipment->products()->delete();
+
+        // Add shipment position
+        if ($request->products) {
+            foreach ($request->products as $product) {
+                if (isset($product['product'])) {
+
+                    $position = new ShipmentProduct();
+
+                    $product_bd = Product::find($product['product']);
+
+                    $position->product_id = $product_bd->id;
+                    $position->shipment_id = $shipment->id;
+                    $position->quantity = $product['count'];
+
+                    $position->save();
+                }
+            }
+        }
+
+        return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' обновлена');
     }
 
     public function destroy(string $id)

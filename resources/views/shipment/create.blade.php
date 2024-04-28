@@ -86,30 +86,51 @@
 
                         {{-- Shipment --}}
                         <div class="w-full mb-2 flex flex-row gap-3">
-                            <div class="flex flex-row basis-2/3">
+                            <div class="flex flex-row basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Отгрузка №</span>
                                     <input type="number" name="name" min="79999"
                                         value="{{ strtotime($dateNow) }}" required
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
-                            <div class="basis-1/3">
+                            <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
                                         class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Статус</span>
                                     <select name="status" required
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        <option class="bg-white" value="Назначен">Назначен</option>
-                                        <option class="bg-white" value="Не оплачен">Не оплачен</option>
-                                        <option class="bg-white" value="Оплачен">Оплачен</option>
-                                        <option class="bg-white" value="В долг">В долг</option>
+                                        <option value="" selected disabled>не выбрано</option>
+                                        @foreach ($statuses as $shipment)
+                                            <option class="bg-white" value="{{ $shipment->status }}">
+                                                {{ $shipment->status }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
+                        </div>
+
+                        {{-- Contacts --}}
+                        <div class="flex flex-row mb-3 w-full">
+                            <span
+                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                Контрагент</span>
+                            <select name="contact" required style="width:39%" class="select2">
+                                @if ($order)
+                                    <option value="{{ $order->contact_id }}" selected>{{ $order->contact->name }}
+                                    </option>
+                                @else
+                                    <option value="" selected disabled>не выбрано</option>
+                                @endif
+
+                                @foreach ($contacts as $contact)
+                                    <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         {{-- Delivery --}}
@@ -119,7 +140,7 @@
                                     <span
                                         class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Транспорт</span>
-                                    <select name="transport_type" required
+                                    <select name="transport" required
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         <option value="" selected disabled>не выбрано</option>
                                         @foreach ($transports as $transport)
@@ -134,7 +155,12 @@
                                         class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Доставка</span>
                                     <select name="delivery" required class="select2" style="width: 100%">
-                                        <option value="" selected disabled>не выбрано</option>
+                                        @if ($order)
+                                            <option value="{{ $order->delivery_id }}" selected>
+                                                {{ $order->delivery->name }}</option>
+                                        @else
+                                            <option value="" selected disabled>не выбрано</option>
+                                        @endif
                                         @foreach ($deliveries as $delivery)
                                             <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
                                         @endforeach
@@ -180,13 +206,30 @@
                                 <div class="flex flex-row mb-1 w-full">
 
                                     <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
-                                        x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
+                                        required x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
                                         class="relative m-0 flex basis-8/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
-                                        @foreach ($products as $product)
-                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                        @endforeach
+                                        <optgroup label="БЕТОН">
+                                            @foreach ($products_block as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="БЛОК">
+                                            @foreach ($products_concrete as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="ДОСТАВКА">
+                                            @foreach ($products_delivery as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="ДРУГОЕ">
+                                            @foreach ($products_another as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </optgroup>
 
                                     </select>
 
@@ -253,14 +296,17 @@
 
                                         let row_i = 0;
 
-                                        if (positions.length > 1) {
+                                        if (positions.length > 0) {
                                             this.rows = positions.map(pos => ({
                                                 id: row_i++,
                                                 product: pos.product_id,
                                                 count: pos.quantity,
                                                 residual: 0,
-                                                weight_kg: ents.find(x => x.id == pos.product_id) && ents.find(x => x.id == pos.product_id).weight_kg ? ents.find(x => x.id == pos.product_id).weight_kg : 0,
-                                                weight: ents.find(x => x.id == pos.product_id) && ents.find(x => x.id == pos.product_id).weight_kg ? Math.round(
+                                                weight_kg: ents.find(x => x.id == pos.product_id) && ents.find(
+                                                    x => x.id == pos.product_id).weight_kg ? ents.find(x =>
+                                                    x.id == pos.product_id).weight_kg : 0,
+                                                weight: ents.find(x => x.id == pos.product_id) && ents.find(x =>
+                                                    x.id == pos.product_id).weight_kg ? Math.round(
                                                     ents.find(x => x.id == pos.product_id)
                                                     .weight_kg * pos.quantity * 100) / 100 : 0,
                                                 price: pos.price,
@@ -274,7 +320,7 @@
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
-                                         },
+                                    },
                                     entities: [],
                                     rows: [{
                                         id: 0,
@@ -316,7 +362,7 @@
                                     },
 
                                     addNewRow() {
-                                          this.rows.push({
+                                        this.rows.push({
                                             id: this.rows.length,
                                             product: '',
                                             count: 0,

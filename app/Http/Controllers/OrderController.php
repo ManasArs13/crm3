@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Filters\OrderFilter;
-use App\Http\Requests\FilterRequest;
 use App\Http\Requests\OrderRequest;
 use App\Models\Contact;
 use App\Models\Delivery;
@@ -16,7 +15,6 @@ use App\Models\Status;
 use App\Models\TransportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 
 class OrderController extends Controller
 {
@@ -339,6 +337,8 @@ class OrderController extends Controller
         $order->transport_type_id = $request->transport_type;
         $order->date_plan = $request->date . ' ' . $request->time;
         $order->date_moment = $request->date_created;
+        $order->sum = 0;
+        $order->weight = 0;
 
         if ($request->comment) {
             $order->comment = $request->comment;
@@ -346,34 +346,37 @@ class OrderController extends Controller
 
         $order->save();
 
-        $sum = 0;
-        $weight = 0;
-
         // Add Order position
-        foreach ($request->products as $product) {
+        if ($request->products) {
 
-            $position = new OrderPosition();
+            $sum = 0;
+            $weight = 0;
 
-            $product_bd = Product::find($product['product']);
-            $position->product_id = $product_bd->id;
-            $position->order_id = $order->id;
-            $position->quantity = $product['count'];
-            $position->price = $product_bd->price;
-            $position->weight_kg = $product_bd->price * $product['count'];
-            $position->shipped = 0;
-            $position->reserve = 0;
+            foreach ($request->products as $product) {
+                if (isset($product['product'])) {
+                    $position = new OrderPosition();
 
-            $position->save();
+                    $product_bd = Product::find($product['product']);
+                    $position->product_id = $product_bd->id;
+                    $position->order_id = $order->id;
+                    $position->quantity = $product['count'];
+                    $position->price = $product_bd->price;
+                    $position->weight_kg = $product_bd->price * $product['count'];
+                    $position->shipped = 0;
+                    $position->reserve = 0;
 
-            $sum += $position->price;
-            $weight += $position->weight_kg;
+                    $position->save();
+
+                    $sum += $position->price;
+                    $weight += $position->weight_kg;
+                }
+            }
+
+            $order->sum = $sum;
+            $order->weight = $weight;
+
+            $order->update();
         }
-
-        $order->sum = $sum;
-        $order->weight = $weight;
-
-        $order->update();
-
 
         // Add shipment
         if ($request->shipment_need) {
@@ -389,16 +392,19 @@ class OrderController extends Controller
 
             $shipment->save();
 
-            foreach ($request->products as $product) {
+            if ($request->products) {
+                foreach ($request->products as $product) {
+                    if (isset($product['product'])) {
+                        $shipmentproduct = new ShipmentProduct();
 
-                $shipmentproduct = new ShipmentProduct();
+                        $product_bd = Product::find($product['product']);
+                        $shipmentproduct->product_id = $product_bd->id;
+                        $shipmentproduct->shipment_id = $shipment->id;
+                        $shipmentproduct->quantity = $product['count'];
 
-                $product_bd = Product::find($product['product']);
-                $shipmentproduct->product_id = $product_bd->id;
-                $shipmentproduct->shipment_id = $shipment->id;
-                $shipmentproduct->quantity = $product['count'];
-
-                $shipmentproduct->save();
+                        $shipmentproduct->save();
+                    }
+                }
             }
         }
 
@@ -466,12 +472,6 @@ class OrderController extends Controller
 
     public function edit(string $id)
     {
-        $entityItem = Order::find($id);
-        $columns = Schema::getColumnListing('orders');
-        $entity = 'order';
-        $action = "order.update";
-
-        return view("own.edit", compact('entityItem', 'columns', 'action', 'entity'));
     }
 
     public function update(Request $request, string $id)
@@ -500,23 +500,26 @@ class OrderController extends Controller
         $order->positions()->delete();
 
         // Add Order position
-        foreach ($request->products as $product) {
+        if ($request->products) {
+            foreach ($request->products as $product) {
+                if (isset($product['product'])) {
+                    $position = new OrderPosition();
 
-            $position = new OrderPosition();
+                    $product_bd = Product::find($product['product']);
+                    $position->product_id = $product_bd->id;
+                    $position->order_id = $order->id;
+                    $position->quantity = $product['count'];
+                    $position->price = $product_bd->price;
+                    $position->weight_kg = $product_bd->price * $product['count'];
+                    $position->shipped = 0;
+                    $position->reserve = 0;
 
-            $product_bd = Product::find($product['product']);
-            $position->product_id = $product_bd->id;
-            $position->order_id = $order->id;
-            $position->quantity = $product['count'];
-            $position->price = $product_bd->price;
-            $position->weight_kg = $product_bd->price * $product['count'];
-            $position->shipped = 0;
-            $position->reserve = 0;
+                    $position->save();
 
-            $position->save();
-
-            $sum += $position->price;
-            $weight += $position->weight_kg;
+                    $sum += $position->price;
+                    $weight += $position->weight_kg;
+                }
+            }
         }
 
         $order->sum = $sum;
