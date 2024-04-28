@@ -174,16 +174,19 @@
                             <h4 class="text-left font-semibold text-lg my-3">Товары</h4>
 
                             <div class="flex flex-row mb-1 w-full bg-gray-100 rounded">
-                                <div class="flex basis-6/12 justify-center text-gray-700">
+                                <div class="flex basis-[44%] justify-center text-gray-700">
                                     наименование
                                 </div>
-                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                <div class="flex basis-[20%] justify-center text-gray-700">
                                     кол-во
+                                </div>
+                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                    отг-но
                                 </div>
                                 <div class="flex basis-1/12 justify-center text-gray-700">
                                     цена
                                 </div>
-                                <div class="flex basis-2/12 justify-center text-gray-700">
+                                <div class="flex basis-1/12 justify-center text-gray-700">
                                     вес
                                 </div>
                                 <div class="flex basis-2/12 justify-center text-gray-700">
@@ -229,11 +232,14 @@
                                         class="relative m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
                                         placeholder="количество" />
 
+                                    <span x-text="row.shipped"
+                                        class="flex basis-1/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
+                                    </span>
                                     <span x-text="row.price"
                                         class="flex basis-1/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
                                     <span x-text="row.weight_kg"
-                                        class="flex basis-2/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
+                                        class="flex basis-1/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
                                     <span x-text="row.sum"
                                         class="flex basis-2/12 overflow-hidden rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
@@ -298,6 +304,7 @@
                                                 id: row_i++,
                                                 product: pos.product_id,
                                                 count: pos.quantity,
+                                                shipped: pos.shipped,
                                                 residual: ents.find(x => x.id == pos.product_id) && ents.find(
                                                     x => x.id == pos.product_id).residual,
                                                 weight_kg: ents.find(x => x.id == pos.product_id) && ents.find(
@@ -325,6 +332,7 @@
                                         id: 0,
                                         product: '',
                                         count: 0,
+                                        shipped: 0,
                                         residual: 0,
                                         weight_kg: 0,
                                         weight: 0,
@@ -362,6 +370,7 @@
                                             id: this.rows.length,
                                             product: '',
                                             count: 0,
+                                            shipped: 0,
                                             weight_kg: 0,
                                             weight: 0,
                                             price: 0,
