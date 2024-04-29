@@ -73,7 +73,7 @@ class OrderController extends Controller
             "is_made",
             // "status_shipped",
             "debt",
-            "order_link",
+            "ms_link",
             "order_amo_id",
             "delivery_price_norm",
             "created_at",
@@ -95,7 +95,7 @@ class OrderController extends Controller
                 "positions_count",
                 "residual_count",
                 "delivery_id",
-                "order_link",
+                "ms_link",
             ];
         }
 

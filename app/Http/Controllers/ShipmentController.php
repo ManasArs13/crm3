@@ -66,6 +66,7 @@ class ShipmentController extends Controller
             "transport_type_id",
             "updated_at",
             "weight",
+            'ms_link',
             "ms_id"
         ];
 
@@ -87,6 +88,7 @@ class ShipmentController extends Controller
                 "delivery_id",
                 "transport_type_id",
                 "transport_id",
+                'ms_link',
             ];
         }
 
