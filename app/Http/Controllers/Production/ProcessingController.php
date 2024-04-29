@@ -15,7 +15,7 @@ class ProcessingController extends Controller
         $needMenuForItem = true;
         $entity = 'processings';
 
-        $processings = TechProcess::with('tech_chart')->orderBy('moment', 'desc')->paginate(100);
+        $processings = TechProcess::with('tech_chart', 'products')->orderBy('moment', 'desc')->paginate(100);
 
         return view('production.processing.index', compact("needMenuForItem", "entity", 'processings'));
     }

@@ -22,38 +22,38 @@
                         <div>
                             @if (url()->current() == route('processings.index'))
                                 <a href="{{ route('processings.index') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                Общая таблица</a>
+                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    Общая таблица</a>
                             @else
                                 <a href="{{ route('processings.index') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                Общая таблица</a>
+                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    Общая таблица</a>
                             @endif
                         </div>
                         <div>
                             @if (url()->current() == route('processings.products'))
                                 <a href="{{ route('processings.products') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                Связь (продукты)</a>
+                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    Связь (продукты)</a>
                             @else
                                 <a href="{{ route('processings.products') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                Связь (продукты)</a>
+                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    Связь (продукты)</a>
                             @endif
                         </div>
                         <div>
                             @if (url()->current() == route('processings.materials'))
                                 <a href="{{ route('processings.materials') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                Связь (материалы)</a>
+                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    Связь (материалы)</a>
                             @else
                                 <a href="{{ route('processings.materials') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                Связь (материалы)</a>
+                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                    Связь (материалы)</a>
                             @endif
                         </div>
                     </div>
-                </div>              
+                </div>
             </div>
 
             {{-- body --}}
@@ -62,71 +62,87 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.id")}}
+                                {{ __('column.id') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.name")}}
+                                {{ __('column.name') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.date_plan")}}
+                                {{ __('column.date_plan') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.tech_chart")}}
+                                {{ __('column.tech_chart') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.quantity")}}
+                                {{ __('column.quantity') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.hours")}}
+                                {{ __('column.sum') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.cycles")}}
+                                {{ __('column.hours') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.defective")}}
+                                {{ __('column.cycles') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{__("column.description")}}
+                                {{ __('column.defective') }}
+                            </th>
+                            <th scope="col" class="px-6 py-4">
+                                {{ __('column.description') }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($processings as $processing)
-                        <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                <a href="{{ route('processings.show', ['processing' => $processing->id]) }}" class="text-blue-500 hover:text-blue-600">
-                                    {{ $processing->id}}
-                                </a>
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                {{ $processing->name}}
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                {{ $processing->moment}}
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                @if($processing->tech_chart)
-                                {{ $processing->tech_chart->name}}
-                                @else
-                                {{ __('column.no')}}
-                                @endif
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                {{ $processing->quantity}}
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                {{ $processing->hours}}
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                {{ $processing->cycles}}
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                {{ $processing->defective}}
-                            </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                {{ $processing->description}}
-                            </td>
-                        </tr>
+                        @foreach ($processings as $processing)
+                            @php
+                                $totalSum = 0;
+                            @endphp
+
+                            <tr class="border-b-2">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    <a href="{{ route('processings.show', ['processing' => $processing->id]) }}"
+                                        class="text-blue-500 hover:text-blue-600">
+                                        {{ $processing->id }}
+                                    </a>
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $processing->name }}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $processing->moment }}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    @if ($processing->tech_chart)
+                                        {{ $processing->tech_chart->name }}
+                                    @else
+                                        {{ __('column.no') }}
+                                    @endif
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $processing->quantity }}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    @foreach ($processing->products as $product)
+                                            @php
+                                                $totalSum += $product->pivot->quantity * $product->price;
+                                            @endphp
+                                    @endforeach
+                                    {{ $totalSum }}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $processing->hours }}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $processing->cycles }}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $processing->defective }}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $processing->description }}
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

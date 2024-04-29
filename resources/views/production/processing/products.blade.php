@@ -74,13 +74,13 @@
                                 {{ __('column.quantity') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
+                                {{ __('column.sum') }}
+                            </th>
+                            <th scope="col" class="px-6 py-4">
                                 {{ __('column.quantity_norm') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
                                 {{ __('column.created_at') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.updated_at') }}
                             </th>
                         </tr>
                     </thead>
@@ -110,6 +110,9 @@
                                     {{ $product->quantity }}
                                 </td>
                                 <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    {{ $product->quantity * $product->product->price}}
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
                                     @if ($product->quantity_norm)
                                         {{ $product->quantity_norm }}
                                     @else
@@ -118,9 +121,6 @@
                                 </td>
                                 <td class="break-all max-w-96 overflow-hidden px-6 py-4">
                                     {{ $product->created_at }}
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                    {{ $product->updated_at }}
                                 </td>
                             </tr>
                         @endforeach
