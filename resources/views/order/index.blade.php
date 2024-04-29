@@ -585,7 +585,7 @@
                                             {{ $total_shipped_count }}
                                         @elseif($column == 'residual_count')
                                             {{ $total_quantity - $total_shipped_count }}
-                                        @elseif($column == 'order_ms_link' && $entityItem->ms_id)
+                                        @elseif($column == 'order_link' && $entityItem->ms_id)
                                             <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
                                                 target="_blank">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
