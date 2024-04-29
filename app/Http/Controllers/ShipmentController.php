@@ -394,7 +394,7 @@ class ShipmentController extends Controller
     public function show(string $id)
     {
         $entityItem = Shipment::with('order', 'contact', 'delivery', 'transport', 'transport_type', 'products')->find($id);
-        $entity = 'Заказ №';
+        $entity = 'Отгрузка №';
         $action = "shipment.update";
         $positions = $entityItem->products;
         $searchOrders = "api.get.order";

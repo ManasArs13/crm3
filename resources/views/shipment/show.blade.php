@@ -174,10 +174,10 @@
                             <h4 class="text-left font-semibold text-lg my-3">Товары</h4>
 
                             <div class="flex flex-row mb-1 w-full bg-gray-100 rounded">
-                                <div class="flex basis-8/12 justify-center text-gray-700">
+                                <div class="flex basis-6/12 justify-center text-gray-700">
                                     наименование
                                 </div>
-                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                <div class="flex basis-2/12 justify-center text-gray-700">
                                     кол-во
                                 </div>
                                 <div class="flex basis-2/12 justify-center text-gray-700">
