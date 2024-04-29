@@ -452,7 +452,9 @@
                         @php
                             $totalSum = 0;
                             $totalCount = 0;
+                            $totalShipped = 0;
                         @endphp
+                        
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalSum += $entityItem->sum;
@@ -474,6 +476,7 @@
                                 @foreach ($shipment->products as $position)
                                     @php
                                         $total_shipped_count += $position->quantity;
+                                        $totalShipped += $position->quantity;
                                     @endphp
                                 @endforeach
                             @endforeach
@@ -584,7 +587,7 @@
                                         @elseif($column == 'shipped_count')
                                             {{ $total_shipped_count }}
                                         @elseif($column == 'residual_count')
-                                            {{ $total_quantity - $total_shipped_count }}
+                                            {{ $total_quantity - $total_shipped_count >= 0 ? $total_quantity - $total_shipped_count : 0 }}
                                         @elseif($column == 'order_link' && $entityItem->ms_id)
                                             <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
                                                 target="_blank">
@@ -711,6 +714,7 @@
                                 </tr>
                             @endforeach
                         @endforeach
+
                         <tr class="border-b-2 bg-gray-100">
                             <td>
                             </td>
@@ -722,6 +726,14 @@
                                 @elseif($column == 'positions_count')
                                     <td class="overflow-auto px-3 py-4">
                                         {{ $totalCount }}
+                                    </td>
+                                @elseif($column == 'shipped_count')
+                                    <td class="overflow-auto px-3 py-4">
+                                        {{ $totalShipped }}
+                                    </td>
+                                @elseif($column == 'residual_count')
+                                    <td class="overflow-auto px-3 py-4">
+                                        {{ $totalCount - $totalShipped }}
                                     </td>
                                 @else
                                     <td>
