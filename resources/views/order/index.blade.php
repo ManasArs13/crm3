@@ -410,7 +410,7 @@
                     @if (isset($urlCreate) && $urlCreate != '')
                         <div class="flex px-3 text-center font-bold">
                             <a href="{{ route($urlCreate) }}"
-                                class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                class="inline-flex items-center rounded bg-green-400 px-3 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
                                 {{ __('label.create') }}
                             </a>
                         </div>
@@ -423,12 +423,12 @@
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-4"></th>
+                            <th scope="col" class="px-3 py-4"></th>
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder' || $key == 'positions_count')
-                                    <th scope="col" class="px-6 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-3 py-4">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-3 py-4">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -436,7 +436,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-3 py-4">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -460,16 +460,16 @@
 
                             <tr class="border-b-2">
                                 @if(count($entityItem->shipments) > 0)
-                                <td class="text-nowrap px-6 py-4">
+                                <td class="text-nowrap px-3 py-4">
                                     <button class="buttonForOpen text-normal font-bold" data-id="{!! $entityItem->id !!}">+</button>
                                 </td>
                                 @else
-                                <td class="text-nowrap px-6 py-4">
+                                <td class="text-nowrap px-3 py-4">
                                 </td>
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
+                                    <td class="break-all max-w-[20rem] overflow-auto px-3 py-4"
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
@@ -561,6 +561,7 @@
                                         @elseif($column == 'positions_count')
                                             @php
                                                 $total_quantity = 0;
+                                                $total_shipped_count = 0;
                                             @endphp
 
                                             @foreach ($entityItem->positions as $position)
@@ -570,7 +571,19 @@
                                                 @endphp
                                             @endforeach
 
-                                            {{ $total_quantity }}
+                                            @foreach ($entityItem->shipments as $shipment)
+                                                @foreach ($shipment->products as $position)
+                                                    @php
+                                                        $total_shipped_count += $position->quantity;
+                                                    @endphp
+                                                @endforeach
+                                            @endforeach
+
+                                            {{ $total_quantity }} / {{$total_shipped_count }} / {{ $total_quantity - $total_shipped_count }}
+                                        @elseif($column == 'shipped_count')
+                                      
+                                        @elseif($column == 'residual_count')
+
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
@@ -578,7 +591,7 @@
                                 @endforeach
 
                                 {{-- Delete --}}
-                                <td class="text-nowrap px-6 py-4">
+                                <td class="text-nowrap px-3 py-4">
 
                                     <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
                                         class="inline">
@@ -603,11 +616,11 @@
                             @foreach ($entityItem->shipments as $shipment)
                                 <tr style="display: none"
                                     class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}">
-                                    <td class="text-nowrap px-6 py-4">
+                                    <td class="text-nowrap px-3 py-4">
                                         {{ $loop->iteration }}
                                     </td>
                                     @foreach ($resColumns as $column => $title)
-                                        <td class="break-all max-w-[28rem] overflow-auto px-6 py-4"
+                                        <td class="break-all max-w-[28rem] overflow-auto px-3 py-4"
                                             @if ($shipment->$column) title="{{ $shipment->$column }}" @endif>
                                             @if (preg_match('/_id\z/u', $column))
                                                 @if ($column == 'contact_id')
@@ -661,7 +674,7 @@
                                                 </a>
                                             @elseif($column == 'comment')
                                                 {{ $shipment->description }}
-                                                @elseif($column == 'positions_count')
+                                            @elseif($column == 'positions_count')
                                                 @php
                                                     $total_quantity_shipment = 0;
                                                 @endphp
@@ -679,7 +692,7 @@
                                             @endif
                                         </td>
                                     @endforeach
-                                    <td class="text-nowrap px-6 py-4">
+                                    <td class="text-nowrap px-3 py-4">
                                     </td>
                                 </tr>
                             @endforeach
@@ -689,11 +702,11 @@
                             </td>
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'sum')
-                                    <td class="px-6 py-4">
+                                    <td class="px-3 py-4">
                                         {{ $totalSum }}
                                     </td>
                                 @elseif($column == 'positions_count')
-                                    <td class="overflow-auto px-6 py-4">
+                                    <td class="overflow-auto px-3 py-4">
                                         {{ $totalCount }}
                                     </td>
                                 @else
@@ -707,7 +720,7 @@
             </div>
 
             {{-- footer card --}}
-            <div class="border-t-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
+            <div class="border-t-2 border-neutral-100 px-3 py-3 dark:border-neutral-600 dark:text-neutral-50">
                 {{ $entityItems->appends(request()->query())->links() }}
             </div>
 

@@ -123,8 +123,10 @@
    'order_amo' => 'заказ AMO',
    'ms' => 'uuid',
    'need_from_tc' => 'Срочная потребность',
-   'positions_count' => "Кол-во продуктов",
-   'products_count' => 'Кол-во продуктов',
+   'positions_count' => "Всего/Отг-но/Остаток",
+   'shipped_count' => "Отг-но",
+   'residual_count' => 'Остаток',
+   'products_count' => 'Кол-во',
    'shipped' => 'Доставлено',
    'reserve' => 'В резерве',
    'shipment_id' => 'Отгрузка'

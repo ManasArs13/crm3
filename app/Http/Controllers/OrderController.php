@@ -69,7 +69,7 @@ class OrderController extends Controller
             "transport_id",
             "is_demand",
             "is_made",
-            "status_shipped",
+            // "status_shipped",
             "debt",
             "order_amo_link",
             "order_amo_id",
@@ -84,7 +84,6 @@ class OrderController extends Controller
         } else {
             $selected = [
                 "id",
-                "name",
                 "contact_id",
                 'status_shipped',
                 "sum",
@@ -92,9 +91,9 @@ class OrderController extends Controller
                 "status_id",
                 "comment",
                 "positions_count",
+                "shipped_count",
+                "residual_count",
                 "delivery_id",
-                "transport_type_id",
-                "delivery_price",
             ];
         }
 
