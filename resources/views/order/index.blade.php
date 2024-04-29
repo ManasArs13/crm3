@@ -458,14 +458,35 @@
                                 $totalSum += $entityItem->sum;
                             @endphp
 
+                            @php
+                                $total_quantity = 0;
+                                $total_shipped_count = 0;
+                            @endphp
+
+                            @foreach ($entityItem->positions as $position)
+                                @php
+                                    $total_quantity += $position->quantity;
+                                    $totalCount += $position->quantity;
+                                @endphp
+                            @endforeach
+
+                            @foreach ($entityItem->shipments as $shipment)
+                                @foreach ($shipment->products as $position)
+                                    @php
+                                        $total_shipped_count += $position->quantity;
+                                    @endphp
+                                @endforeach
+                            @endforeach
+
                             <tr class="border-b-2">
-                                @if(count($entityItem->shipments) > 0)
-                                <td class="text-nowrap px-3 py-4">
-                                    <button class="buttonForOpen text-normal font-bold" data-id="{!! $entityItem->id !!}">+</button>
-                                </td>
+                                @if (count($entityItem->shipments) > 0)
+                                    <td class="text-nowrap px-3 py-4">
+                                        <button class="buttonForOpen text-normal font-bold"
+                                            data-id="{!! $entityItem->id !!}">+</button>
+                                    </td>
                                 @else
-                                <td class="text-nowrap px-3 py-4">
-                                </td>
+                                    <td class="text-nowrap px-3 py-4">
+                                    </td>
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
@@ -559,31 +580,25 @@
                                                 {{ $entityItem->$column }}
                                             </a>
                                         @elseif($column == 'positions_count')
-                                            @php
-                                                $total_quantity = 0;
-                                                $total_shipped_count = 0;
-                                            @endphp
-
-                                            @foreach ($entityItem->positions as $position)
-                                                @php
-                                                    $total_quantity += $position->quantity;
-                                                    $totalCount += $position->quantity;
-                                                @endphp
-                                            @endforeach
-
-                                            @foreach ($entityItem->shipments as $shipment)
-                                                @foreach ($shipment->products as $position)
-                                                    @php
-                                                        $total_shipped_count += $position->quantity;
-                                                    @endphp
-                                                @endforeach
-                                            @endforeach
-
-                                            {{ $total_quantity }} / {{$total_shipped_count }} / {{ $total_quantity - $total_shipped_count }}
+                                            {{ $total_quantity }}
                                         @elseif($column == 'shipped_count')
-                                      
+                                            {{ $total_shipped_count }}
                                         @elseif($column == 'residual_count')
-
+                                            {{ $total_quantity - $total_shipped_count }}
+                                        @elseif($column == 'order_ms_link' && $entityItem->ms_id)
+                                            <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                                target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                    viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                    </path>
+                                                    <path fill-rule="evenodd"
+                                                        d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                    </path>
+                                                </svg>
+                                            </a>
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
@@ -678,15 +693,14 @@
                                                 @php
                                                     $total_quantity_shipment = 0;
                                                 @endphp
-    
+
                                                 @foreach ($shipment->products as $position)
                                                     @php
                                                         $total_quantity_shipment += $position->quantity;
                                                     @endphp
                                                 @endforeach
-    
+
                                                 {{ $total_quantity_shipment }}
-                                            
                                             @else
                                                 {{ $shipment->$column }}
                                             @endif

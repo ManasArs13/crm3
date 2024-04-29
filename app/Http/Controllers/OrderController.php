@@ -53,6 +53,8 @@ class OrderController extends Controller
             "sum",
             "date_plan",
             "positions_count",
+            "shipped_count",
+            "residual_count",
             "status_id",
             "comment",
             "delivery_id",
@@ -71,7 +73,7 @@ class OrderController extends Controller
             "is_made",
             // "status_shipped",
             "debt",
-            "order_amo_link",
+            "order_link",
             "order_amo_id",
             "delivery_price_norm",
             "created_at",
@@ -91,9 +93,9 @@ class OrderController extends Controller
                 "status_id",
                 "comment",
                 "positions_count",
-                "shipped_count",
                 "residual_count",
                 "delivery_id",
+                "order_link",
             ];
         }
 
