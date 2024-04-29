@@ -85,7 +85,7 @@ class OrderController extends Controller
             $selected = $request->columns;
         } else {
             $selected = [
-                "id",
+                "name",
                 "contact_id",
                 'status_shipped',
                 "sum",

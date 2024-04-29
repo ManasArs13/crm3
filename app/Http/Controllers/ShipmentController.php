@@ -39,7 +39,7 @@ class ShipmentController extends Controller
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
             $selectColumn = null;
         }
 
@@ -48,19 +48,19 @@ class ShipmentController extends Controller
             "id",
             "name",
             "created_at",
-            "shipment_address",
-            "order_id",
-            "counterparty_link",
             "contact_id",
-            "service_link",
-            "description",
-            "paid_sum",
             "suma",
             "status",
             "products_count",
             "delivery_id",
+            "order_id",
+            "counterparty_link",
+            "service_link",
+            "description",
+            "paid_sum",
+            "shipment_address",
             "delivery_price",
-            //         "delivery_price_norm",
+            "delivery_price_norm",
             "delivery_fee",
             "transport_id",
             "transport_type_id",
@@ -73,7 +73,6 @@ class ShipmentController extends Controller
             $selected = $request->columns;
         } else {
             $selected = [
-                "id",
                 "name",
                 "created_at",
                 "counterparty_link",
@@ -81,11 +80,9 @@ class ShipmentController extends Controller
                 "suma",
                 "status",
                 "products_count",
-                "shipment_address",
                 "description",
                 "delivery_id",
                 "delivery_price",
-                //         "delivery_price_norm",
                 "delivery_fee",
                 "delivery_id",
                 "transport_type_id",
