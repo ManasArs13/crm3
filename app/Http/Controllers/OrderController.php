@@ -40,7 +40,7 @@ class OrderController extends Controller
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
             $selectColumn = null;
         }
 
