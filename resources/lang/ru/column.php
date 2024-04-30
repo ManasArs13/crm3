@@ -129,6 +129,8 @@
    'products_count' => 'Кол-во',
    'shipped' => 'Доставлено',
    'reserve' => 'В резерве',
-   'shipment_id' => 'Отгрузка'
+   'shipment_id' => 'Отгрузка',
+   'incoming' => 'Приход',
+   'outgoing' => 'Расход'
 
       ];

@@ -2,13 +2,13 @@
 
     @if (isset($entity) && $entity != '')
         <x-slot:title>
-            {{ __('entity.' . $entity) }}
+            {{ $entity }}
         </x-slot>
     @endif
 
     <div class="w-11/12 mx-auto py-8">
         @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
+            <h3 class="text-4xl font-bold mb-6">{{ $entity }}</h3>
         @endif
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
@@ -18,27 +18,25 @@
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex flex-row gap-1">
                         <div>
-                            @if (url()->current() == route('supplies.index'))
-                                <a href="{{ route('supplies.index') }}"
-                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая
-                                    таблица</a>
+                            @if (url()->current() == route('outgoings.index'))
+                                <a href="{{ route('outgoings.index') }}"
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
                             @else
-                                <a href="{{ route('supplies.index') }}"
-                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая
-                                    таблица</a>
+                                <a href="{{ route('outgoings.index') }}"
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
                             @endif
                         </div>
                         <div>
-                            @if (url()->current() == route('supplies.products'))
-                                <a href="{{ route('supplies.products') }}"
-                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
+                            @if (url()->current() == route('outgoings.products'))
+                                <a href="{{ route('outgoings.products') }}"
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
                             @else
-                                <a href="{{ route('supplies.products') }}"
-                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
+                                <a href="{{ route('outgoings.products') }}"
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
                             @endif
                         </div>
                     </div>
-                </div>
+                </div>              
             </div>
 
             {{-- body --}}
@@ -50,7 +48,7 @@
                                 {{ __('column.id') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{ __('column.supply') }}
+                                {{ __('column.outgoing') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
                                 {{ __('column.product_id') }}
@@ -70,7 +68,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($supply_products as $product)
+                        @foreach ($outgoing_products as $product)
                             <tr class="border-b-2">
                                 <td class="px-6 py-4 text-blue-600">
                                     <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
@@ -78,9 +76,9 @@
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 text-blue-600">
-                                    @if ($product->supply)
-                                        <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
-                                            {{ $product->supply->name }}
+                                    @if ($product->outgoing)
+                                        <a href="{{ route('outgoing.show', ['outgoing' => $product->outgoing_id]) }}">
+                                            {{ $product->outgoing_id }}
                                         </a>
                                     @else
                                         {{ __('column.no') }}
@@ -115,7 +113,7 @@
 
             {{-- footer --}}
             <div class="border-t-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
-                {{ $supply_products->appends(request()->query())->links() }}
+                {{ $outgoing_products->appends(request()->query())->links() }}
             </div>
 
         </div>

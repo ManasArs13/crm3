@@ -6,6 +6,8 @@ use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\Goods\IncomingController;
+use App\Http\Controllers\Goods\OutgoingController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderPositionController;
@@ -99,6 +101,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'index', 'show'
     ]);
     Route::get('/supply/products', [SupplyController::class, 'products'])->name('supplies.products');
+
+    // Приход
+    Route::resource('incomings', IncomingController::class)->only([
+        'index', 'show'
+    ]);
+    Route::get('/incoming/products', [IncomingController::class, 'products'])->name('incomings.products');
+
+    // Расход
+    Route::resource('outgoings', OutgoingController::class)->only([
+        'index', 'show'
+    ]);
+    Route::get('/outgoing/products', [OutgoingController::class, 'products'])->name('outgoings.products');
 
     // Техкарты
     Route::resource('techcharts', TechChartController::class)->only([
