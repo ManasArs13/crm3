@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->on('products')->onDelete('cascade')->cascadeOnUpdate();
             $table->unsignedDecimal('quantity', 8, 1);
             $table->decimal("price", 10, 2)->default(0.0);
+            $table->decimal("sum", 10, 2)->default(0.0);
         });
     }
 

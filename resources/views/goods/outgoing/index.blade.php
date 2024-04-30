@@ -20,10 +20,10 @@
                         <div>
                             @if (url()->current() == route('outgoings.index'))
                                 <a href="{{ route('outgoings.index') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Расход</a>
                             @else
                                 <a href="{{ route('outgoings.index') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Расход</a>
                             @endif
                         </div>
                         <div>
@@ -54,9 +54,6 @@
                                 {{ __('column.updated_at') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{ __('column.date_fact') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
                                 {{ __('column.contact_id') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
@@ -80,9 +77,6 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $outgoing->updated_at }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $outgoing->moment }}
                                 </td>
                                 <td class="text-blue-600">
                                     @if($outgoing->contact)

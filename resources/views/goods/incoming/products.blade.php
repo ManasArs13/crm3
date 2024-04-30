@@ -20,10 +20,10 @@
                         <div>
                             @if (url()->current() == route('incomings.index'))
                                 <a href="{{ route('incomings.index') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
+                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Приход</a>
                             @else
                                 <a href="{{ route('incomings.index') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
+                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Приход</a>
                             @endif
                         </div>
                         <div>
@@ -59,6 +59,9 @@
                             <th scope="col" class="px-6 py-4">
                                 {{ __('column.price') }}
                             </th>
+                            <td class="px-6 py-4">
+                                {{ __('column.sum') }}
+                            </td>
                             <th scope="col" class="px-6 py-4">
                                 {{ __('column.created_at') }}
                             </th>
@@ -98,6 +101,9 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $product->price }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $product->sum }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $product->created_at }}
