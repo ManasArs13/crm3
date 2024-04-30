@@ -3,56 +3,140 @@
 namespace App\Http\Controllers\Goods;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OutgoingRequest;
 use App\Models\Outgoing;
-use App\Http\Requests\StoreOutgoingRequest;
-use App\Http\Requests\UpdateOutgoingRequest;
+use App\Models\Contact;
+use App\Models\OutgoingProduct;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OutgoingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $entity = 'Расход';
+        $entityCreate = 'outgoings.create';
 
         $outgoings = Outgoing::orderByDesc('id')->paginate(50);
 
-        return view('goods.outgoing.index', compact("entity", 'outgoings'));
+        return view('goods.outgoing.index', compact(
+            "entity",
+            'outgoings',
+            'entityCreate'
+        ));
     }
 
     public function products(Request $request)
     {
         $entity = 'Расход';
+        $entityCreate = 'outgoings.create';
 
-        $outgoing_products = Outgoing::with('outgoing', 'products')->orderByDesc('id')->paginate(100);
+        $outgoing_products = OutgoingProduct::with('outgoing', 'products')->orderByDesc('id')->paginate(100);
 
-        return view('goods.outgoing.products', compact("entity", 'outgoing_products'));
+        return view('goods.outgoing.products', compact("entity", 'outgoing_products', 'entityCreate'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $entity = 'Новый расход';
+        $action = "outgoings.store";
+
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+
+        $products = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->orWhere('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $materials_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $materials_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+        $products_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $products_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'goods.outgoing.create',
+            compact(
+                'action',
+                'entity',
+                'contacts',
+                'products',
+                'materials_block',
+                'materials_concrete',
+                'products_block',
+                'products_concrete',
+            )
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreOutgoingRequest $request)
+    public function store(OutgoingRequest $request)
     {
-        //
+        $outgoing = new Outgoing();
+
+        $outgoing->contact_id = $request->contact_id;
+
+        if (isset($request->description)) {
+            $outgoing->description = $request->description;
+        }
+
+        $sum = 0;
+        $outgoing->sum = $sum;
+
+        $outgoing->save();
+
+        // Add Order position
+        if ($request->products) {
+
+            foreach ($request->products as $product) {
+                if (isset($product['product'])) {
+
+                    $outgoingProduct = new OutgoingProduct();
+
+                    $product_bd = Product::select('id', 'price')->find($product['product']);
+                    
+                    $outgoingProduct->outgoing_id = $outgoing->id;
+                    $outgoingProduct->product_id = $product_bd->id;
+                    $outgoingProduct->quantity = $product['count'];
+
+                    $outgoingProduct->price = $product_bd->price;
+                    $outgoingProduct->sum = $product_bd->price * $product['count'];
+                    $sum +=  $product_bd->price * $product['count'];
+
+                    $outgoingProduct->save();
+                }
+            }
+        }
+
+        $outgoing->sum = $sum;
+
+        $outgoing->update();
+
+        return redirect()->route('outgoings.index')->with('succes', 'Приход' . $outgoing->id . ' добавлен');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Outgoing $outgoing)
+    public function show($outgoing)
     {
-        //
+        $entity = 'Расход';
+
+        $outgoing = Outgoing::with('contact', 'products')->find($outgoing);
+
+        return view('goods.outgoing.show', compact("entity", 'outgoing'));
     }
 
     /**
@@ -66,7 +150,7 @@ class OutgoingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOutgoingRequest $request, Outgoing $outgoing)
+    public function update(OutgoingRequest $request, Outgoing $outgoing)
     {
         //
     }

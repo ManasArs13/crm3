@@ -36,6 +36,12 @@
                             @endif
                         </div>
                     </div>
+                    <div class="flex px-3 text-center font-bold">
+                        <a href="{{ route($entityCreate) }}"
+                            class="inline-flex items-center rounded bg-green-400 px-3 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                            {{ __('label.create') }}
+                        </a>
+                    </div>
                 </div>              
             </div>
 
@@ -74,13 +80,13 @@
                         @foreach ($outgoing_products as $product)
                             <tr class="border-b-2">
                                 <td class="px-6 py-4 text-blue-600">
-                                    <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
+                                    <a href="{{ route('outgoings.show', ['outgoing' => $product->outgoing_id]) }}">
                                         {{ $product->id }}
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 text-blue-600">
                                     @if ($product->outgoing)
-                                        <a href="{{ route('outgoing.show', ['outgoing' => $product->outgoing_id]) }}">
+                                        <a href="{{ route('outgoings.show', ['outgoing' => $product->outgoing_id]) }}">
                                             {{ $product->outgoing_id }}
                                         </a>
                                     @else

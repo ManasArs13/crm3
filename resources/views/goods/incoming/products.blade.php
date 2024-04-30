@@ -36,6 +36,12 @@
                             @endif
                         </div>
                     </div>
+                    <div class="flex px-3 text-center font-bold">
+                        <a href="{{ route($entityCreate) }}"
+                            class="inline-flex items-center rounded bg-green-400 px-3 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                            {{ __('label.create') }}
+                        </a>
+                    </div>
                 </div>              
             </div>
 

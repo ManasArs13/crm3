@@ -29,10 +29,11 @@ class IncomingController extends Controller
     public function products(Request $request)
     {
         $entity = 'Приход';
+        $entityCreate = 'incomings.create';
 
         $incoming_products = IncomingProduct::with('incoming', 'products')->orderByDesc('id')->paginate(100);
 
-        return view('goods.incoming.products', compact("entity", 'incoming_products'));
+        return view('goods.incoming.products', compact("entity", 'incoming_products', 'entityCreate'));
     }
 
     public function create()
@@ -44,9 +45,20 @@ class IncomingController extends Controller
 
         $products = Product::select('id', 'name', 'price', 'weight_kg')
             ->where('type', Product::MATERIAL)
+            ->orWhere('type', Product::PRODUCTS)
             ->orderBy('name')
             ->get();
 
+        $materials_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $materials_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
         $products_block = Product::select('id', 'name', 'price', 'weight_kg')
             ->where('type', Product::MATERIAL)
             ->where('building_material', 'бетон')
@@ -65,6 +77,8 @@ class IncomingController extends Controller
                 'entity',
                 'contacts',
                 'products',
+                'materials_block',
+                'materials_concrete',
                 'products_block',
                 'products_concrete',
             )
@@ -92,19 +106,19 @@ class IncomingController extends Controller
             foreach ($request->products as $product) {
                 if (isset($product['product'])) {
 
-                    $incominhProduct = new IncomingProduct();
+                    $incomingProduct = new IncomingProduct();
 
                     $product_bd = Product::select('id', 'price')->find($product['product']);
                     
-                    $incominhProduct->incoming_id = $incoming->id;
-                    $incominhProduct->product_id = $product_bd->id;
-                    $incominhProduct->quantity = $product['count'];
+                    $incomingProduct->incoming_id = $incoming->id;
+                    $incomingProduct->product_id = $product_bd->id;
+                    $incomingProduct->quantity = $product['count'];
 
-                    $incominhProduct->price = $product_bd->price;
-                    $incominhProduct->sum = $product_bd->price * $request->quantity;
-                    $sum +=  $product_bd->price * $request->quantity;
+                    $incomingProduct->price = $product_bd->price;
+                    $incomingProduct->sum = $product_bd->price * $product['count'];
+                    $sum +=  $product_bd->price * $product['count'];
 
-                    $incominhProduct->save();
+                    $incomingProduct->save();
                 }
             }
         }
@@ -116,9 +130,6 @@ class IncomingController extends Controller
         return redirect()->route('incomings.index')->with('succes', 'Приход' . $incoming->id . ' добавлен');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($incoming)
     {
         $entity = 'Приход';
