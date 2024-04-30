@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Goods;
 use App\Http\Controllers\Controller;
 use App\Models\Incoming;
 use App\Http\Requests\IncomingRequest;
+use App\Models\Contact;
 use App\Models\IncomingProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -14,18 +15,14 @@ class IncomingController extends Controller
     public function index()
     {
         $entity = 'Приход';
-        $searchContacts = 'api.get.contact';
-        $searchProducts = 'api.get.product';
-        $incomingCreate = 'incomings.store';
+        $entityCreate = 'incomings.create';
 
         $incomings = Incoming::orderByDesc('id')->paginate(50);
 
         return view('goods.incoming.index', compact(
             "entity",
             'incomings',
-            'searchContacts',
-            'searchProducts',
-            'incomingCreate'
+            'entityCreate'
         ));
     }
 
@@ -38,12 +35,40 @@ class IncomingController extends Controller
         return view('goods.incoming.products', compact("entity", 'incoming_products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $entity = 'Новый приход';
+        $action = "incomings.store";
+
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+
+        $products = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->orderBy('name')
+            ->get();
+
+        $products_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $products_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'goods.incoming.create',
+            compact(
+                'action',
+                'entity',
+                'contacts',
+                'products',
+                'products_block',
+                'products_concrete',
+            )
+        );
     }
 
     public function store(IncomingRequest $request)
@@ -61,21 +86,27 @@ class IncomingController extends Controller
 
         $incoming->save();
 
-        if (isset($request->product_id)) {
+        // Add Order position
+        if ($request->products) {
 
-            $incominhProduct = new IncomingProduct();
+            foreach ($request->products as $product) {
+                if (isset($product['product'])) {
 
-            $incominhProduct->incoming_id = $incoming->id;
-            $incominhProduct->product_id = $request->product_id;
-            $incominhProduct->quantity = $request->quantity;
+                    $incominhProduct = new IncomingProduct();
 
-            $product_price = Product::select('price')->where('id', $request->product_id)->first()->price;
+                    $product_bd = Product::select('id', 'price')->find($product['product']);
+                    
+                    $incominhProduct->incoming_id = $incoming->id;
+                    $incominhProduct->product_id = $product_bd->id;
+                    $incominhProduct->quantity = $product['count'];
 
-            $incominhProduct->price = $product_price;
-            $incominhProduct->sum = $product_price * $request->quantity;
-            $sum += $product_price * $request->quantity;
+                    $incominhProduct->price = $product_bd->price;
+                    $incominhProduct->sum = $product_bd->price * $request->quantity;
+                    $sum +=  $product_bd->price * $request->quantity;
 
-            $incominhProduct->save();
+                    $incominhProduct->save();
+                }
+            }
         }
 
         $incoming->sum = $sum;
@@ -88,9 +119,13 @@ class IncomingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Incoming $incoming)
+    public function show($incoming)
     {
-        //
+        $entity = 'Приход';
+
+        $incoming = Incoming::with('contact', 'products')->find($incoming);
+
+        return view('goods.incoming.show', compact("entity", 'incoming'));
     }
 
     /**

@@ -2,13 +2,13 @@
 
     @if (isset($entity) && $entity != '')
         <x-slot:title>
-            {{ __('entity.' . $entity) }} {{ $supply->name }}
+            {{ $entity }} №{{ $incoming->id }}
         </x-slot>
     @endif
 
     <div class="w-11/12 mx-auto py-8">
         @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }} {{ $supply->name }}</h3>
+            <h3 class="text-4xl font-bold mb-6">{{ $entity }} №{{ $incoming->id }}</h3>
         @endif
 
         <div
@@ -17,7 +17,7 @@
             {{-- header --}}
             <div class="border-b-2 border-neutral-100">
                 <div class="flex flex-row w-full p-3 justify-between">
-                    <h5> от {{ $supply->moment }}</h5>
+                    <h5> от {{ $incoming->created_at }}</h5>
                 </div>
             </div>
 
@@ -36,42 +36,36 @@
                                 {{ __('column.sum') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                                {{ __('column.incoming_number') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.incoming_date') }}
+                                {{ __('column.updated_at') }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="border-b-2">
                             <td class="break-all max-w-32 overflow-hidden px-6 py-4">
-                                {{ $supply->id }}
+                                {{ $incoming->id }}
                             </td>
                             <td class="break-all max-w-[24rem] overflow-x-auto px-6 py-4 text-blue-600">
-                                @if ($supply->contact)
-                                    <a href="{{ route('contact.show', ['contact' => $supply->contact->id]) }}">
-                                        {{ $supply->contact->name }}
+                                @if ($incoming->contact)
+                                    <a href="{{ route('contact.show', ['contact' => $incoming->contact->id]) }}">
+                                        {{ $incoming->contact->name }}
                                     </a>
                                 @else
                                     {{ __('column.no') }}
                                 @endif
                             </td>
                             <td class="break-all max-w-32 overflow-hidden px-6 py-4">
-                                {{ $supply->sum }}
+                                {{ $incoming->sum }}
                             </td>
                             <td class="break-all max-w-32 overflow-hidden px-6 py-4">
-                                {{ $supply->incoming_number }}
-                            </td>
-                            <td class="break-all max-w-32 overflow-hidden px-6 py-4">
-                                {{ $supply->incoming_date }}
+                                {{ $incoming->updated_at }}
                             </td>
                         </tr>
                         <tr class="overflow-hidden px-6 py-4">
                             <td colspan="6" class="overflow-hidden px-6 py-4">
                                 {{ __('column.description') }} :
-                                @if ($supply->description)
-                                    {{ $supply->description }}
+                                @if ($incoming->description)
+                                    {{ $incoming->description }}
                                 @else
                                     {{ __('column.no') }}
                                 @endif
@@ -112,10 +106,13 @@
                             <th scope="col" class="px-6 py-4">
                                 {{ __('column.price') }}
                             </th>
+                            <th scope="col" class="px-6 py-4">
+                                {{ __('column.sum') }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($supply->products as $product)
+                        @foreach ($incoming->products as $product)
                             <tr class="border-b-2">
                                 <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-blue-600">
                                     <a href="{{ route('product.show', ['product' => $product->id]) }}">
@@ -132,6 +129,9 @@
                                 </td>
                                 <td class="break-all max-w-32 overflow-hidden px-6 py-4">
                                     {{ $product->pivot->price }}
+                                </td>
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                                    {{ $product->pivot->sum }}
                                 </td>
                             </tr>
                         @endforeach

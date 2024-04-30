@@ -22,7 +22,7 @@ class Outgoing extends Model
     {
         return 
             $this->belongsToMany(Product::class, 'outgoing_products', 'outgoing_id', 'product_id')
-                 ->withPivot('id', 'quantity', 'price');
+                 ->withPivot('id', 'quantity', 'price', 'sum');
     }
 
     public function getCreatedAtAttribute($value)

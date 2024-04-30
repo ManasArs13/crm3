@@ -43,10 +43,10 @@
                         </div>
                     </div>
                     <div class="flex px-3 text-center font-bold">
-                        <button type="button" id="button-modal"
+                        <a href="{{ route($entityCreate) }}"
                             class="inline-flex items-center rounded bg-green-400 px-3 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
                             {{ __('label.create') }}
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -116,131 +116,6 @@
                 {{ $incomings->appends(request()->query())->links() }}
             </div>
 
-            {{-- Modal create --}}
-            <div class="hidden absolute top-[10%] border-2 border-black w-full bg-gray-200 text-center p-5 mx-auto z-50 rounded-md shadow-lg"
-                id="contact-modal">
-                <div class="absolute top-5 right-5 cursor-pointer" id="close-modal">закрыть</div>
-                <h4 class="text-3xl max-w-7xl mx-auto font-bold mb-6">Добавить приход</h4>
-                <form action="{{ route($incomingCreate) }}" method="post" id="newIncoming">
-                    @csrf
-                    @method('post')
-                    <div class="flex flex-row w-full px-1">
-                        {{-- Contacts --}}
-                        <div class="flex flex-row mb-3 w-full">
-                            <span
-                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Контрагент</span>
-                            <select name="contact_id" required class="js-data-contact-ajax" style="width: 100%"
-                                class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                <option value="" selected="selected">не выбрано
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full px-1">
-                        {{-- Products --}}
-                        <div class="flex flex-row mb-3 w-full">
-                            <span
-                                class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Продукт</span>
-                            <select name="product_id" required class="js-data-product-ajax" style="width: 90%"
-                                class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                <option value="" selected="selected">не выбрано
-                                </option>
-                            </select>
-                            <input type="number" name="quantity" min="0" required
-                                class="ml-3 flex basis-[3%] rounded border border-solid bg-white px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-
-                        </div>
-                        <div class="flex basis-full">
-                            <textarea name="description" class="w-full rounded border-neutral-200" placeholder="Комментарий"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-row w-full px-1 my-2">
-                        <button type="submit"
-                            class="w-full p-1 bg-green-500 hover:bg-green-400 text-white hover:text-gray-700 rounded font-semibold uppercase">добавить</button>
-                    </div>
-                </form>
-            </div>
 
         </div>
-
-        <script>
-            $(document).ready(function() {
-                //change selectboxes to selectize mode to be searchable
-                $(".select2").select2();
-                $('.js-data-contact-ajax').select2({
-                    ajax: {
-                        url: `{{ route($searchContacts) }}`,
-                        data: function(params) {
-
-                            var queryParameters = {
-                                term: params.term
-                            }
-                            return queryParameters;
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: $.map(data, function(item) {
-                                    if (item.name && item.phone) {
-                                        return {
-                                            text: item.id + ' / ' + item.name + ' (' + item.phone +
-                                                ')',
-                                            id: item.id,
-                                        }
-                                    }
-                                })
-                            };
-                        }
-                    },
-                });
-                $('.js-data-product-ajax').select2({
-                    ajax: {
-                        url: `{{ route($searchProducts) }}`,
-                        data: function(params) {
-
-                            var queryParameters = {
-                                term: params.term
-                            }
-                            return queryParameters;
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: $.map(data, function(item) {
-                                    if (item.name) {
-                                        return {
-                                            text: item.name + ' (' + item.price + ' руб.)',
-                                            id: item.id,
-                                        }
-                                    }
-                                })
-                            };
-                        }
-                    },
-                });
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-
-                var modal = document.getElementById("contact-modal");
-                var btn = document.getElementById("button-modal");
-                var close = document.getElementById('close-modal');
-
-                btn.onclick = function() {
-                    modal.style.display = "block";
-                }
-
-                close.onclick = function() {
-                    modal.style.display = "none";
-                }
-
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
-            });
-        </script>
-
 </x-app-layout>
