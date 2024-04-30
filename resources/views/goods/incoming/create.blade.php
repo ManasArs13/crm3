@@ -34,22 +34,6 @@
 
                     <div class="min-h-6 px-5 pt-5 pb-3">
 
-                        {{-- Contacts --}}
-                        <div class="flex flex-row mb-3 w-full">
-                            <span
-                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Контрагент</span>
-                            <select name="contact" style="width:100%" class="select2">
-                                <option value="" selected disabled>не выбрано</option>
-                                @foreach ($contacts as $contact)
-                                    <option value="{{ $contact->id }}">{{ $contact->name }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-                        <hr class="w-full">
-
                         {{-- Products --}}
                         <div x-data="products">
                             <h4 class="text-left font-semibold text-lg my-3">Товары</h4>
