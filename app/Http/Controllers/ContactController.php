@@ -242,4 +242,16 @@ class ContactController extends Controller
             'selectColumn'
         ));
     }
+
+    public function get_api(Request $request)
+    {
+        $contacts = Contact::query()
+            ->where('name', 'LIKE', '%' . $request->query('term') . '%')
+            ->orWhere('id', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orWhere('phone', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orWhere('email', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orderByDesc('id')->take(10)->get();
+
+        return response()->json($contacts);
+    }
 }

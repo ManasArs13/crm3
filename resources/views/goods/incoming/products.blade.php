@@ -74,13 +74,13 @@
                         @foreach ($incoming_products as $product)
                             <tr class="border-b-2">
                                 <td class="px-6 py-4 text-blue-600">
-                                    <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
+                                    <a href="{{ route('incomings.show', ['incoming' => $product->incoming_id]) }}">
                                         {{ $product->id }}
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 text-blue-600">
                                     @if ($product->incoming)
-                                        <a href="{{ route('incoming.show', ['incoming' => $product->incoming_id]) }}">
+                                        <a href="{{ route('incomings.show', ['incoming' => $product->incoming_id]) }}">
                                             {{ $product->incoming_id }}
                                         </a>
                                     @else

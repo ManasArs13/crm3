@@ -13,7 +13,7 @@ class IncomingProduct extends Model
 
     protected $table = 'incoming_products';
 
-    public function supply()
+    public function incoming()
     {
         return $this->belongsTo(Supply::class, 'incoming_id');
     }

@@ -355,4 +355,15 @@ class ProductController extends Controller
             'selectColumn'
          ));
     }
+
+    public function get_api(Request $request)
+    {
+        $products = Product::query()
+            ->where('price', '<>',0)
+            ->where('name', 'LIKE', '%' . $request->query('term') . '%')
+            ->orWhere('id', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orderByDesc('id')->take(10)->get();
+
+        return response()->json($products);
+    }
 }
