@@ -131,6 +131,9 @@
    'reserve' => 'В резерве',
    'shipment_id' => 'Отгрузка',
    'incoming' => 'Приход',
-   'outgoing' => 'Расход'
+   'outgoing' => 'Расход',
+   "moment" => "Фактическая дата",
+   'tech_chart_id' => 'Техкарта',
+   'processing_id' => "Техпроцесс"
 
       ];
