@@ -248,6 +248,7 @@
                     <tbody>
                         @php
                             $totalQuantity = 0;
+                            $totalSum = 0;
                             $totalHours = 0;
                             $totalCycles = 0;
                             $totalDefective = 0;
@@ -256,6 +257,7 @@
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalQuantity += $entityItem->quantity;
+                                $totalSum += $entityItem->sum;
                                 $totalHours += $entityItem->hours;
                                 $totalCycles += $entityItem->cycles;
                                 $totalDefective += $entityItem->defective;
@@ -340,13 +342,14 @@
                                         {{ $product->pivot->quantity }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="4">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                        {{ $product->pivot->sum }}
+                                    </td>
+
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="3">
                                         {{ $entityItem->ms_id }}
                                     </td>
 
-
-                                    <td class="text-nowrap px-3 py-4">
-                                    </td>
                                 </tr>
                             @endforeach
 
@@ -377,13 +380,14 @@
                                         {{ $product->pivot->quantity }}
                                     </td>
 
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                        {{ $product->pivot->sum }}
+                                    </td>
+
                                     <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="4">
                                         {{ $entityItem->ms_id }}
                                     </td>
 
-
-                                    <td class="text-nowrap px-3 py-4">
-                                    </td>
                                 </tr>
                             @endforeach
                         @endforeach
@@ -407,6 +411,10 @@
                                 @elseif($column == 'defective')
                                     <td class="overflow-auto px-3 py-4">
                                         {{ $totalDefective }}
+                                    </td>
+                                @elseif($column == 'sum')
+                                    <td class="overflow-auto px-3 py-4">
+                                        {{ $totalSum }}
                                     </td>
                                 @else
                                     <td>

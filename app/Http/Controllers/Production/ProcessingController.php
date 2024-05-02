@@ -45,6 +45,7 @@ class ProcessingController extends Controller
             "description",
             "tech_chart_id",
             "quantity",
+            "sum",
             "hours",
             "cycles",
             "defective",
@@ -61,6 +62,7 @@ class ProcessingController extends Controller
                 "description",
                 "tech_chart_id",
                 "quantity",
+                "sum",
                 "hours",
                 "cycles",
                 "defective",
@@ -218,6 +220,7 @@ class ProcessingController extends Controller
             "processing_id",
             "product_id",
             "quantity",
+            "sum",
             "created_at",
             "updated_at",
             "ms_id"
@@ -231,6 +234,7 @@ class ProcessingController extends Controller
                 "processing_id",
                 "product_id",
                 "quantity",
+                "sum",
                 "created_at",
                 "updated_at",
                 "ms_id"
