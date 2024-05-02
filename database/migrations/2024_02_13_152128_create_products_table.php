@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string("name", 190);
             $table->integer("price")->default(0);
+            $table->integer("balance")->default(0)->unsigned();
             $table->decimal("weight_kg", 8, 1)->default(0.0);
             $table->integer("count_pallets", false, true)->default(0);
             $table->foreignId("category_id")->nullable()->index()->constrained("categories");

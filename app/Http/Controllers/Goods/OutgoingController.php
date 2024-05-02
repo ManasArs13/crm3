@@ -9,6 +9,8 @@ use App\Models\Contact;
 use App\Models\OutgoingProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class OutgoingController extends Controller
 {
@@ -87,47 +89,56 @@ class OutgoingController extends Controller
 
     public function store(OutgoingRequest $request)
     {
-        $outgoing = new Outgoing();
+        try {
+            $outgoing = new Outgoing();
 
-        $outgoing->contact_id = $request->contact_id;
+            $outgoing->contact_id = $request->contact_id;
 
-        if (isset($request->description)) {
-            $outgoing->description = $request->description;
-        }
+            if (isset($request->description)) {
+                $outgoing->description = $request->description;
+            }
 
-        $sum = 0;
-        $outgoing->sum = $sum;
+            $sum = 0;
+            $outgoing->sum = $sum;
 
-        $outgoing->save();
+            $outgoing->save();
 
-        // Add Order position
-        if ($request->products) {
+            // Add Order position
+            if ($request->products) {
 
-            foreach ($request->products as $product) {
-                if (isset($product['product'])) {
+                foreach ($request->products as $product) {
+                    if (isset($product['product'])) {
 
-                    $outgoingProduct = new OutgoingProduct();
+                        $outgoingProduct = new OutgoingProduct();
 
-                    $product_bd = Product::select('id', 'price')->find($product['product']);
-                    
-                    $outgoingProduct->outgoing_id = $outgoing->id;
-                    $outgoingProduct->product_id = $product_bd->id;
-                    $outgoingProduct->quantity = $product['count'];
+                        $product_bd = Product::select('id', 'price', 'balance')->find($product['product']);
 
-                    $outgoingProduct->price = $product_bd->price;
-                    $outgoingProduct->sum = $product_bd->price * $product['count'];
-                    $sum +=  $product_bd->price * $product['count'];
+                        $outgoingProduct->outgoing_id = $outgoing->id;
+                        $outgoingProduct->product_id = $product_bd->id;
+                        $outgoingProduct->quantity = $product['count'];
 
-                    $outgoingProduct->save();
+                        $outgoingProduct->price = $product_bd->price;
+                        $outgoingProduct->sum = $product_bd->price * $product['count'];
+                        
+                        $sum +=  $product_bd->price * $product['count'];
+                        $outgoing->sum = $sum;
+
+                        $product_bd->balance -= $product['count'];                      
+
+                        DB::transaction(function () use ($outgoingProduct, $product_bd, $outgoing) {
+                            $outgoing->update();
+                            $product_bd->update();
+                            $outgoingProduct->save();
+                        });
+                    }
                 }
             }
+
+            return redirect()->route('outgoings.index')->with('succes', 'Приход' . $outgoing->id . ' добавлен');
+            
+        } catch (Throwable $e) {
+            return redirect()->route('outgoings.index')->with('danger', 'Ошибка');
         }
-
-        $outgoing->sum = $sum;
-
-        $outgoing->update();
-
-        return redirect()->route('outgoings.index')->with('succes', 'Приход' . $outgoing->id . ' добавлен');
     }
 
     public function show($outgoing)

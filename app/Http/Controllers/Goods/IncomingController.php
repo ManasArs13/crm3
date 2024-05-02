@@ -9,6 +9,8 @@ use App\Models\Contact;
 use App\Models\IncomingProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class IncomingController extends Controller
 {
@@ -87,47 +89,60 @@ class IncomingController extends Controller
 
     public function store(IncomingRequest $request)
     {
-        $incoming = new Incoming();
+        try {
+            $incoming = new Incoming();
 
-        $incoming->contact_id = $request->contact_id;
+            $incoming->contact_id = $request->contact_id;
 
-        if (isset($request->description)) {
-            $incoming->description = $request->description;
-        }
+            if (isset($request->description)) {
+                $incoming->description = $request->description;
+            }
 
-        $sum = 0;
-        $incoming->sum = $sum;
+            $sum = 0;
+            $incoming->sum = $sum;
 
-        $incoming->save();
+            $incoming->save();
 
-        // Add Order position
-        if ($request->products) {
+            // Add Order position
+            if ($request->products) {
 
-            foreach ($request->products as $product) {
-                if (isset($product['product'])) {
+                foreach ($request->products as $product) {
+                    if (isset($product['product'])) {
 
-                    $incomingProduct = new IncomingProduct();
+                        $incomingProduct = new IncomingProduct();
 
-                    $product_bd = Product::select('id', 'price')->find($product['product']);
-                    
-                    $incomingProduct->incoming_id = $incoming->id;
-                    $incomingProduct->product_id = $product_bd->id;
-                    $incomingProduct->quantity = $product['count'];
+                        $product_bd = Product::select('id', 'price', 'balance')->find($product['product']);
 
-                    $incomingProduct->price = $product_bd->price;
-                    $incomingProduct->sum = $product_bd->price * $product['count'];
-                    $sum +=  $product_bd->price * $product['count'];
+                        $incomingProduct->incoming_id = $incoming->id;
+                        $incomingProduct->product_id = $product_bd->id;
+                        $incomingProduct->quantity = $product['count'];
 
-                    $incomingProduct->save();
+                        $incomingProduct->price = $product_bd->price;
+                        $incomingProduct->sum = $product_bd->price * $product['count'];
+                        
+                        $sum +=  $product_bd->price * $product['count'];
+                        $incoming->sum = $sum;
+
+                        $product_bd->balance += $product['count'];
+                        
+                        DB::transaction(function () use ($incomingProduct, $product_bd, $incoming) {
+                            $incoming->update();
+                            $product_bd->update();
+                            $incomingProduct->save();
+                        });
+                    }
                 }
             }
+
+            $incoming->sum = $sum;
+
+            $incoming->update();
+
+            return redirect()->route('incomings.index')->with('succes', 'Приход' . $incoming->id . ' добавлен');
+            
+        } catch (Throwable $e) {
+            return redirect()->route('incomings.index')->with('danger', 'Ошибка');
         }
-
-        $incoming->sum = $sum;
-
-        $incoming->update();
-
-        return redirect()->route('incomings.index')->with('succes', 'Приход' . $incoming->id . ' добавлен');
     }
 
     public function show($incoming)
