@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->foreignId('tech_chart_id')->on('tech_carts')->nullable();
             $table->decimal('quantity', 8, 1)->nullable();
+            $table->decimal("sum", 10, 1)->default(0.0);
             $table->unsignedInteger('hours')->nullable();
             $table->unsignedInteger('cycles')->nullable();
             $table->unsignedInteger('defective')->nullable();  

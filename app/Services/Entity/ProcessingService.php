@@ -68,6 +68,8 @@ class ProcessingService implements EntityInterface
 
             $entity->save();
 
+            $totalSum = 0;
+
             if (isset($row["products"])) {
                 $products = $this->service->actionGetRowsFromJson($row['products']['meta']['href']);
 
@@ -81,15 +83,23 @@ class ProcessingService implements EntityInterface
                     $entity_product->processing_id = $entity->id;
 
                     $product_ms = $this->service->actionGetRowsFromJson($product['assortment']['meta']['href'], false);
-                    $product_bd = Product::where('ms_id', $product_ms['id'])->first();
+                    $product_bd = Product::select('id', 'price')->where('ms_id', $product_ms['id'])->first();
 
                     if ($product_bd) {
+                        $sum = $product_bd->price * $product['quantity'];
+
                         $entity_product->product_id = $product_bd['id'];
                         $entity_product->quantity = $product['quantity'];
+                        $entity_product->sum = $sum;
                         $entity_product->save();
+
+                        $totalSum += $sum;
                     }
                 }
             }
+
+            $entity->sum = $totalSum;
+            $entity->update();
 
             if (isset($row["materials"])) {
                 $materials = $this->service->actionGetRowsFromJson($row['materials']['meta']['href']);
@@ -106,10 +116,13 @@ class ProcessingService implements EntityInterface
                     $entity_material->quantity = $material['quantity'];
 
                     $product_ms = $this->service->actionGetRowsFromJson($material['assortment']['meta']['href'], false);
-                    $product_bd = Product::where('ms_id', $product_ms['id'])->first();
+                    $product_bd = Product::select('id', 'price')->where('ms_id', $product_ms['id'])->first();
 
                     if ($product_bd) {
+                        $sum = $product_bd->price * $product['quantity'];
+
                         $entity_material->product_id = $product_bd['id'];
+                        $entity_material->sum = $sum;
 
                         if (isset($row["processingPlan"])) {
                             $techart_material = TechChartMaterial::where('tech_chart_id', '=', $techchart_bd['id'])
