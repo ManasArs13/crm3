@@ -346,7 +346,7 @@
                                         {{ $product->pivot->sum }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="3">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="4">
                                         {{ $entityItem->ms_id }}
                                     </td>
 
