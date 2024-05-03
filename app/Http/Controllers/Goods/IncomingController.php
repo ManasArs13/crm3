@@ -19,7 +19,7 @@ class IncomingController extends Controller
         $entityCreate = 'incomings.create';
         $urlDelete = "incomings.destroy";
 
-        $incomings = Incoming::orderByDesc('id')->paginate(50);
+        $incomings = Incoming::with('products')->orderByDesc('id')->paginate(50);
 
         return view('goods.incoming.index', compact(
             "entity",

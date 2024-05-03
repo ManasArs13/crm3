@@ -19,7 +19,7 @@ class OutgoingController extends Controller
         $entityCreate = 'outgoings.create';
         $urlDelete = "outgoings.destroy";
 
-        $outgoings = Outgoing::orderByDesc('id')->paginate(50);
+        $outgoings = Outgoing::with('products')->orderByDesc('id')->paginate(50);
 
         return view('goods.outgoing.index', compact(
             "entity",
