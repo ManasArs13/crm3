@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId("contact_id")->nullable()->constrained("contacts");
             $table->text('description')->nullable();
-            $table->decimal("sum", 10, 2)->default(0.0);
+            $table->decimal("summa", 10, 2)->default(0.0);
         });
     }
 

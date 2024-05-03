@@ -136,7 +136,7 @@ class OutgoingController extends Controller
 
             return redirect()->route('outgoings.index')->with('success', 'Расход ' . $outgoing->id . ' добавлен');
         } catch (Throwable $e) {
-            return redirect()->route('outgoings.index')->with('danger', 'Ошибка');
+            return redirect()->route('outgoings.index')->with('danger', $e->getMessage());
         }
     }
 
@@ -248,7 +248,7 @@ class OutgoingController extends Controller
 
             return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('success', 'Расход обновлён');
         } catch (Throwable $e) {
-            return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('danger', 'Ошибка');
+            return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('danger', $e->getMessage());
         }
     }
 
@@ -280,7 +280,7 @@ class OutgoingController extends Controller
 
             return redirect()->route('outgoings.index')->with('success', 'Расход успешно удалён');
         } catch (Throwable $e) {
-            return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('danger', 'Ошибка');
+            return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('danger', $e->getMessage());
         }
     }
 }
