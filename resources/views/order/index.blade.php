@@ -616,8 +616,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500"
-                                            href="{{ route($urlDelete, $entityItem->id) }}">
+                                            class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                 class="w-6 h-6 stroke-red-500 hover:stroke-white">

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Goods;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OutgoingRequest;
 use App\Models\Outgoing;
-use App\Models\Contact;
 use App\Models\OutgoingProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -18,13 +17,15 @@ class OutgoingController extends Controller
     {
         $entity = 'Расход';
         $entityCreate = 'outgoings.create';
+        $urlDelete = "outgoings.destroy";
 
         $outgoings = Outgoing::orderByDesc('id')->paginate(50);
 
         return view('goods.outgoing.index', compact(
             "entity",
             'outgoings',
-            'entityCreate'
+            'entityCreate',
+            'urlDelete'
         ));
     }
 
@@ -42,8 +43,6 @@ class OutgoingController extends Controller
     {
         $entity = 'Новый расход';
         $action = "outgoings.store";
-
-        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
 
         $products = Product::select('id', 'name', 'price', 'weight_kg')
             ->where('type', Product::MATERIAL)
@@ -77,7 +76,6 @@ class OutgoingController extends Controller
             compact(
                 'action',
                 'entity',
-                'contacts',
                 'products',
                 'materials_block',
                 'materials_concrete',
@@ -98,13 +96,13 @@ class OutgoingController extends Controller
                 $outgoing->description = $request->description;
             }
 
-            $sum = 0;
-            $outgoing->sum = $sum;
-
-            $outgoing->save();
-
             // Add Order position
             if ($request->products) {
+
+                $summa = 0;
+                $outgoing->summa = $summa;
+
+                $outgoing->save();
 
                 foreach ($request->products as $product) {
                     if (isset($product['product'])) {
@@ -118,12 +116,126 @@ class OutgoingController extends Controller
                         $outgoingProduct->quantity = $product['count'];
 
                         $outgoingProduct->price = $product_bd->price;
-                        $outgoingProduct->sum = $product_bd->price * $product['count'];
-                        
-                        $sum +=  $product_bd->price * $product['count'];
-                        $outgoing->sum = $sum;
+                        $outgoingProduct->summa = $product_bd->price * $product['count'];
 
-                        $product_bd->balance -= $product['count'];                      
+                        $summa +=  $product_bd->price * $product['count'];
+                        $outgoing->summa = $summa;
+
+                        $product_bd->balance -= $product['count'];
+
+                        DB::transaction(function () use ($outgoingProduct, $product_bd, $outgoing) {
+                            $outgoing->update();
+                            $product_bd->update();
+                            $outgoingProduct->save();
+                        });
+                    }
+                }
+            } else {
+                return redirect()->route('outgoings.index')->with('danger', 'Вы не добавили продукты');
+            }
+
+            return redirect()->route('outgoings.index')->with('success', 'Расход ' . $outgoing->id . ' добавлен');
+        } catch (Throwable $e) {
+            return redirect()->route('outgoings.index')->with('danger', 'Ошибка');
+        }
+    }
+
+    public function show($outgoing)
+    {
+        $entity = 'Расход';
+        $action = 'outgoings.update';
+
+        $outgoing = Outgoing::with('contact', 'products')->find($outgoing);
+
+        $products = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->orWhere('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $materials_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $materials_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+        $products_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $products_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+
+        return view('goods.outgoing.show', compact(
+            "entity",
+            'outgoing',
+            'action',
+            'products',
+            'materials_block',
+            'materials_concrete',
+            'products_block',
+            'products_concrete',
+        ));
+    }
+
+    public function update(OutgoingRequest $request, $outgoing)
+    {
+        try {
+            $outgoing = Outgoing::with('contact', 'products')->find($outgoing);
+
+            if (isset($request->description)) {
+                $outgoing->description = $request->description;
+            }
+
+            $outgoing->update();
+
+            $outgoing_summa = $outgoing->summa;
+
+            //Delete products in bd
+            foreach ($outgoing->products as $product) {
+
+                $product->balance += $product->pivot->quantity;
+                
+                $outgoing_summa -=  $product->pivot->summa;
+
+                DB::transaction(function () use ($product, $outgoing, $outgoing_summa) {
+                    $product->update();
+                    $product->pivot->delete();
+                    $outgoing->update(['sum' => $outgoing_summa]);
+                });
+            }
+
+            if ($request->products) {
+
+                $summa = 0;
+
+                foreach ($request->products as $product) {
+                    if (isset($product['product'])) {
+
+                        $outgoingProduct = new OutgoingProduct();
+
+                        $product_bd = Product::select('id', 'price', 'balance')->find($product['product']);
+
+                        $outgoingProduct->outgoing_id = $outgoing->id;
+                        $outgoingProduct->product_id = $product_bd->id;
+                        $outgoingProduct->quantity = $product['count'];
+
+                        $outgoingProduct->price = $product_bd->price;
+                        $outgoingProduct->summa = $product_bd->price * $product['count'];
+
+                        $summa +=  $product_bd->price * $product['count'];
+                        $outgoing->summa = $summa;
+
+                        $product_bd->balance -= $product['count'];
 
                         DB::transaction(function () use ($outgoingProduct, $product_bd, $outgoing) {
                             $outgoing->update();
@@ -134,43 +246,41 @@ class OutgoingController extends Controller
                 }
             }
 
-            return redirect()->route('outgoings.index')->with('succes', 'Приход' . $outgoing->id . ' добавлен');
-            
+            return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('success', 'Расход обновлён');
         } catch (Throwable $e) {
-            return redirect()->route('outgoings.index')->with('danger', 'Ошибка');
+            return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('danger', 'Ошибка');
         }
     }
 
-    public function show($outgoing)
+    public function destroy($outgoing)
     {
-        $entity = 'Расход';
+        try {
+            $outgoing = Outgoing::with('contact', 'products')->find($outgoing);
 
-        $outgoing = Outgoing::with('contact', 'products')->find($outgoing);
+            $outgoing_summa = $outgoing->summa;
 
-        return view('goods.outgoing.show', compact("entity", 'outgoing'));
-    }
+            //Delete products in bd
+            if ($outgoing->products) {
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Outgoing $outgoing)
-    {
-        //
-    }
+                //Delete products in bd
+                foreach ($outgoing->products as $product) {
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(OutgoingRequest $request, Outgoing $outgoing)
-    {
-        //
-    }
+                    $product->balance = $product->balance + $product->pivot->quantity;
+                    $outgoing_summa -=  $product->pivot->summa;
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Outgoing $outgoing)
-    {
-        //
+                    DB::transaction(function () use ($product, $outgoing, $outgoing_summa) {
+                        $product->update();
+                        $product->pivot->delete();
+                        $outgoing->update(['sum' => $outgoing_summa]);
+                    });
+                }
+            }
+
+            $outgoing->delete();
+
+            return redirect()->route('outgoings.index')->with('success', 'Расход успешно удалён');
+        } catch (Throwable $e) {
+            return redirect()->route('outgoings.show', ['outgoing' => $outgoing->id])->with('danger', 'Ошибка');
+        }
     }
 }

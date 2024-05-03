@@ -104,13 +104,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Приход
     Route::resource('incomings', IncomingController::class)->only([
-        'index', 'show', 'store', 'create'
+        'index', 'show', 'store', 'create', 'update', 'destroy'
     ]);
     Route::get('/incoming/products', [IncomingController::class, 'products'])->name('incomings.products');
 
     // Расход
     Route::resource('outgoings', OutgoingController::class)->only([
-        'index', 'show', 'store', 'create'
+        'index', 'show', 'store', 'create', 'update', 'destroy'
     ]);
     Route::get('/outgoing/products', [OutgoingController::class, 'products'])->name('outgoings.products');
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Goods;
 use App\Http\Controllers\Controller;
 use App\Models\Incoming;
 use App\Http\Requests\IncomingRequest;
-use App\Models\Contact;
 use App\Models\IncomingProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -18,13 +17,15 @@ class IncomingController extends Controller
     {
         $entity = 'Приход';
         $entityCreate = 'incomings.create';
+        $urlDelete = "incomings.destroy";
 
         $incomings = Incoming::orderByDesc('id')->paginate(50);
 
         return view('goods.incoming.index', compact(
             "entity",
             'incomings',
-            'entityCreate'
+            'entityCreate',
+            'urlDelete'
         ));
     }
 
@@ -42,8 +43,6 @@ class IncomingController extends Controller
     {
         $entity = 'Новый приход';
         $action = "incomings.store";
-
-        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
 
         $products = Product::select('id', 'name', 'price', 'weight_kg')
             ->where('type', Product::MATERIAL)
@@ -77,7 +76,6 @@ class IncomingController extends Controller
             compact(
                 'action',
                 'entity',
-                'contacts',
                 'products',
                 'materials_block',
                 'materials_concrete',
@@ -98,13 +96,12 @@ class IncomingController extends Controller
                 $incoming->description = $request->description;
             }
 
-            $sum = 0;
-            $incoming->sum = $sum;
-
-            $incoming->save();
-
             // Add Order position
             if ($request->products) {
+
+                $summa = 0;
+                $incoming->summa = $summa;
+                $incoming->save();
 
                 foreach ($request->products as $product) {
                     if (isset($product['product'])) {
@@ -118,13 +115,127 @@ class IncomingController extends Controller
                         $incomingProduct->quantity = $product['count'];
 
                         $incomingProduct->price = $product_bd->price;
-                        $incomingProduct->sum = $product_bd->price * $product['count'];
-                        
-                        $sum +=  $product_bd->price * $product['count'];
-                        $incoming->sum = $sum;
+                        $incomingProduct->summa = $product_bd->price * $product['count'];
+
+                        $summa +=  $product_bd->price * $product['count'];
+                        $incoming->summa = $summa;
 
                         $product_bd->balance += $product['count'];
-                        
+
+                        DB::transaction(function () use ($incomingProduct, $product_bd, $incoming) {
+                            $incoming->update();
+                            $product_bd->update();
+                            $incomingProduct->save();
+                        });
+                    }
+                }
+            } else {
+                return redirect()->route('incomings.index')->with('danger', 'Вы не добавили продукты');
+            }
+
+            return redirect()->route('incomings.index')->with('success', 'Приход ' . $incoming->id . ' добавлен');
+        } catch (Throwable $e) {
+            return redirect()->route('incomings.index')->with('danger', 'Ошибка');
+        }
+    }
+
+    public function show($incoming)
+    {
+        $entity = 'Приход';
+        $action = 'incomings.update';
+
+        $incoming = Incoming::with('contact', 'products')->find($incoming);
+
+        $products = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->orWhere('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $materials_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $materials_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+        $products_block = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+        $products_concrete = Product::select('id', 'name', 'price', 'weight_kg')
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+
+        return view('goods.incoming.show', compact(
+            "entity",
+            'incoming',
+            'action',
+            'products',
+            'materials_block',
+            'materials_concrete',
+            'products_block',
+            'products_concrete',
+        ));
+    }
+
+    public function update(IncomingRequest $request, $incoming)
+    {
+        try {
+            $incoming = Incoming::with('contact', 'products')->find($incoming);
+
+            if (isset($request->description)) {
+                $incoming->description = $request->description;
+            }
+
+            $incoming->update();
+
+            $incoming_summa = $incoming->summa;
+
+            //Delete products in bd
+            foreach ($incoming->products as $product) {
+
+                $product->balance -= $product->pivot->quantity;
+                
+                $incoming_summa -=  $product->pivot->summa;
+
+                DB::transaction(function () use ($product, $incoming, $incoming_summa) {
+                    $product->update();
+                    $product->pivot->delete();
+                    $incoming->update(['summa' => $incoming_summa]);
+                });
+            }
+
+            if ($request->products) {
+
+                $summa = 0;
+
+                foreach ($request->products as $product) {
+                    if (isset($product['product'])) {
+
+                        $incomingProduct = new IncomingProduct();
+
+                        $product_bd = Product::select('id', 'price', 'balance')->find($product['product']);
+
+                        $incomingProduct->incoming_id = $incoming->id;
+                        $incomingProduct->product_id = $product_bd->id;
+                        $incomingProduct->quantity = $product['count'];
+
+                        $incomingProduct->price = $product_bd->price;
+                        $incomingProduct->summa = $product_bd->price * $product['count'];
+
+                        $summa +=  $product_bd->price * $product['count'];
+                        $incoming->summa = $summa;
+
+                        $product_bd->balance += $product['count'];
+
                         DB::transaction(function () use ($incomingProduct, $product_bd, $incoming) {
                             $incoming->update();
                             $product_bd->update();
@@ -134,47 +245,43 @@ class IncomingController extends Controller
                 }
             }
 
-            $incoming->sum = $sum;
-
-            $incoming->update();
-
-            return redirect()->route('incomings.index')->with('succes', 'Приход' . $incoming->id . ' добавлен');
-            
+            return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('success', 'Приход обновлён');
         } catch (Throwable $e) {
-            return redirect()->route('incomings.index')->with('danger', 'Ошибка');
+            return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('danger', 'Ошибка');
         }
     }
 
-    public function show($incoming)
+    public function destroy($incoming)
     {
-        $entity = 'Приход';
+        try {
+            $incoming = Incoming::with('contact', 'products')->find($incoming);
 
-        $incoming = Incoming::with('contact', 'products')->find($incoming);
+            $incoming_quantity = $incoming->quantity;
+            $incoming_summa = $incoming->summa;
 
-        return view('goods.incoming.show', compact("entity", 'incoming'));
-    }
+            //Delete products in bd
+            if ($incoming->products) {
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Incoming $incoming)
-    {
-        //
-    }
+                //Delete products in bd
+                foreach ($incoming->products as $product) {
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(IncomingRequest $request, Incoming $incoming)
-    {
-        //
-    }
+                    $product->balance = $product->balance - $product->pivot->quantity;
+                    $incoming_quantity -= $product->pivot->quantity;
+                    $incoming_summa -=  $product->pivot->summa;
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Incoming $incoming)
-    {
-        //
+                    DB::transaction(function () use ($product, $incoming, $incoming_quantity, $incoming_summa) {
+                        $product->update();
+                        $product->pivot->delete();
+                        $incoming->update(['quantity' => $incoming_quantity, 'sum' => $incoming_summa]);
+                    });
+                }
+            }
+
+            $incoming->delete();
+
+            return redirect()->route('incomings.index')->with('success', 'Приход успешно удалён');
+        } catch (Throwable $e) {
+            return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('danger', 'Ошибка');
+        }
     }
 }

@@ -21,7 +21,7 @@ class Incoming extends Model
     {
         return 
             $this->belongsToMany(Product::class, 'incoming_products', 'incoming_id', 'product_id')
-                 ->withPivot('id', 'quantity', 'price', 'sum');
+                 ->withPivot('id', 'quantity', 'price', 'summa');
     }
 
     public function getCreatedAtAttribute($value)

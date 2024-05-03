@@ -1,11 +1,5 @@
 <x-app-layout>
 
-    <x-slot:head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-    </x-slot>
-
     @if (isset($entity) && $entity != '')
         <x-slot:title>
             {{ $entity }}
@@ -15,9 +9,15 @@
 
     <div class="w-11/12 max-w-7xl mx-auto py-8">
 
-        @if (session('succes'))
+        @if (session('success'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
-                {{ session('succes') }}
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('danger'))
+            <div class="w-full mb-4 items-center rounded-lg text-lg bg-red-200 px-6 py-5 text-red-700 ">
+                {{ session('danger') }}
             </div>
         @endif
 
@@ -87,7 +87,7 @@
 
                                     </select>
 
-                                    <input x-model.number="row.count" x-init="$watch('row', (row) => changeProduct(row.product, row.id))" min="0"
+                                    <input x-model.number="row.count" x-init="$watch('row', (row) => changeProduct(row.product, row.id))" min="1"
                                         type="number" x-bind:name="`products[${row.id}][count]`" required
                                         class="relative m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
                                         placeholder="количество" />
@@ -216,12 +216,5 @@
             </div>
         </div>
 
-
     </div>
-    <script>
-        $(document).ready(function() {
-            //change selectboxes to selectize mode to be searchable
-            $(".select2").select2();
-        });
-    </script>
 </x-app-layout>

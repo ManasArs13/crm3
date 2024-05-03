@@ -7,6 +7,19 @@
     @endif
 
     <div class="w-11/12 mx-auto py-8">
+
+        @if (session('success'))
+            <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('danger'))
+            <div class="w-full mb-4 items-center rounded-lg text-lg bg-red-200 px-6 py-5 text-red-700 ">
+                {{ session('danger') }}
+            </div>
+        @endif
+        
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ $entity }}</h3>
         @endif
@@ -109,7 +122,7 @@
                                     {{ $product->price }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $product->sum }}
+                                    {{ $product->summa }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $product->created_at }}
