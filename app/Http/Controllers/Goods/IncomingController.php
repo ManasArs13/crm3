@@ -135,7 +135,7 @@ class IncomingController extends Controller
 
             return redirect()->route('incomings.index')->with('success', 'Приход ' . $incoming->id . ' добавлен');
         } catch (Throwable $e) {
-            return redirect()->route('incomings.index')->with('danger', 'Ошибка');
+            return redirect()->route('incomings.index')->with('danger', $e->getMessage());
         }
     }
 
@@ -247,7 +247,7 @@ class IncomingController extends Controller
 
             return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('success', 'Приход обновлён');
         } catch (Throwable $e) {
-            return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('danger', 'Ошибка');
+            return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('danger', $e->getMessage());
         }
     }
 
@@ -281,7 +281,7 @@ class IncomingController extends Controller
 
             return redirect()->route('incomings.index')->with('success', 'Приход успешно удалён');
         } catch (Throwable $e) {
-            return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('danger', 'Ошибка');
+            return redirect()->route('incomings.show', ['incoming' => $incoming->id])->with('danger', $e->getMessage());
         }
     }
 }
