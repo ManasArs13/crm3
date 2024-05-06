@@ -5,28 +5,28 @@
                 <div class="flex gap-2">
                     <div class="">
                         @if (request()->routeIs('dashboard'))
-                            <a href="{{ route('dashboard') }}"
+                            <a href="{{ route('dashboard', ['date_plan' => $date]) }}"
                                 class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
                         @else
-                            <a href="{{ route('dashboard') }}"
+                            <a href="{{ route('dashboard', ['date_plan' => $date]) }}"
                                 class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
                         @endif
                     </div>
                     <div>
                         @if (request()->routeIs('dashboard-2'))
-                            <a href="{{ route('dashboard-2') }}"
+                            <a href="{{ route('dashboard-2', ['date_plan' => $date]) }}"
                                 class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
                         @else
-                            <a href="{{ route('dashboard-2') }}"
+                            <a href="{{ route('dashboard-2', ['date_plan' => $date]) }}"
                                 class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
                         @endif
                     </div>
                     <div>
                         @if (request()->routeIs('dashboard-3'))
-                            <a href="{{ route('dashboard-3') }}"
+                            <a href="{{ route('dashboard-3', ['date_plan' => $date]) }}"
                                 class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
                         @else
-                            <a href="{{ route('dashboard-3') }}"
+                            <a href="{{ route('dashboard-3', ['date_plan' => $date]) }}"
                                 class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
                         @endif
                     </div>

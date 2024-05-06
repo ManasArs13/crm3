@@ -423,12 +423,12 @@
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-3 py-4"></th>
+                            <th scope="col" class="px-2 py-4"></th>
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder' || $key == 'positions_count')
-                                    <th scope="col" class="px-3 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-2 py-4">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-3 py-4">
+                                    <th scope="col" class="px-2 py-4">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -436,7 +436,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-3 py-4">
+                                    <th scope="col" class="px-2 py-4">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -483,17 +483,17 @@
 
                             <tr class="border-b-2">
                                 @if (count($entityItem->shipments) > 0)
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-2 py-4">
                                         <button class="buttonForOpen text-normal font-bold"
                                             data-id="{!! $entityItem->id !!}">+</button>
                                     </td>
                                 @else
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-2 py-4">
                                     </td>
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[20rem] overflow-auto px-3 py-4"
+                                    <td class="break-all max-w-[15rem] text-right overflow-auto px-2 py-4"
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
@@ -609,7 +609,7 @@
                                 @endforeach
 
                                 {{-- Delete --}}
-                                <td class="text-nowrap px-3 py-4">
+                                <td class="text-nowrap px-2 py-4">
 
                                     <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
                                         class="inline">
@@ -637,7 +637,7 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     @foreach ($resColumns as $column => $title)
-                                        <td class="break-all max-w-[28rem] overflow-auto px-3 py-4"
+                                        <td class="break-all max-w-[15rem] overflow-auto px-2 py-4"
                                             @if ($shipment->$column) title="{{ $shipment->$column }}" @endif>
                                             @if (preg_match('/_id\z/u', $column))
                                                 @if ($column == 'contact_id')
@@ -719,19 +719,19 @@
                             </td>
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'sum')
-                                    <td class="px-3 py-4">
+                                    <td class="px-2 py-4">
                                         {{ $totalSum }}
                                     </td>
                                 @elseif($column == 'positions_count')
-                                    <td class="overflow-auto px-3 py-4">
+                                    <td class="overflow-auto px-2 py-4">
                                         {{ $totalCount }}
                                     </td>
                                 @elseif($column == 'shipped_count')
-                                    <td class="overflow-auto px-3 py-4">
+                                    <td class="overflow-auto px-2 py-4">
                                         {{ $totalShipped }}
                                     </td>
                                 @elseif($column == 'residual_count')
-                                    <td class="overflow-auto px-3 py-4">
+                                    <td class="overflow-auto px-2 py-4">
                                         {{ $totalCount - $totalShipped }}
                                     </td>
                                 @else
