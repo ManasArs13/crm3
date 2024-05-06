@@ -82,7 +82,11 @@
                                     </svg>
                                 </a>
                             @elseif($column !== 'weight')
-                                <p title="{{ $entityItem->$column }}">{{ $entityItem->$column }}</p>
+                                @if($column == 'date_plan')
+                                    <p title="{{ $entityItem->$column }}">{{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}</p>
+                                @else
+                                    <p title="{{ $entityItem->$column }}">{{ $entityItem->$column }}</p>
+                                @endif
                             @endif
                         </td>
                     @endforeach
