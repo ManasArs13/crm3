@@ -57,21 +57,21 @@ class Order extends Model
 
     public function getDatePlanAttribute($value)
     {
-        return Carbon::parse($value)->format('d-m-Y H:i:s');
+        return Carbon::parse($value)->format('d-m-Y H:i');
     }
 
     public function getDateMomentAttribute($value)
     {
-        return Carbon::parse($value)->format('d-m-Y H:i:s');
+        return Carbon::parse($value)->format('d-m-Y H:i');
     }
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d-m-Y H:i:s');
+        return Carbon::parse($value)->format('d-m-Y H:i');
     }
 
     public function getUpdatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d-m-Y H:i:s');
+        return Carbon::parse($value)->format('d-m-Y H:i');
     }
 }
