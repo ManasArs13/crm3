@@ -50,7 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
 
     Route::get('/fetch-orders', [DashboardController::class, 'fetchOrders'])->name('filter.orders');
-    Route::get('/month-orders', [DashboardController::class, 'getOrderMonth'])->name('month.orders');
+    //Route::get('/month-orders', [DashboardController::class, 'getOrderMonth'])->name('month.orders');
+    Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
 
     Route::resources([

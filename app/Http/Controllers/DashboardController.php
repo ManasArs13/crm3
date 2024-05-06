@@ -36,7 +36,7 @@ class DashboardController extends Controller
 
     public function gettodayOrders(Request $request): JsonResponse
     {
-        return $this->service->gettodayOrders($request);
+        return $this->service->gettodayOrders($request, null);
     }
 
     public function gettomorrowOrders(Request $request): JsonResponse
@@ -63,20 +63,38 @@ class DashboardController extends Controller
         $arUrl = explode("/", session('_previous.url'));
 
         if (count(explode("?", $arUrl[3])) > 1) {
-            $filter = explode("?", $arUrl[3])[1];
+            $date_plan = explode("?", $arUrl[3])[1];
         } else {
-            return $this->service->gettodayOrders($request);
+            $date_plan = null;
         }
 
-        if ($filter == 'filter=tomorrow') {
-            return $this->service->gettomorrowOrders($request);
-        } else if ($filter == 'filter=three-day') {
-            return $this->service->getthreeDaysOrders($request);
-        } else if ($filter == 'filter=week') {
-            return $this->service->getWeek($request);
+        return $this->service->gettodayOrders($request, $date_plan);
+        // if ($filter == 'filter=tomorrow') {
+        //     return $this->service->gettomorrowOrders($request);
+        // } else if ($filter == 'filter=three-day') {
+        //     return $this->service->getthreeDaysOrders($request);
+        // } else if ($filter == 'filter=week') {
+        //     return $this->service->getWeek($request);
+        // } else {
+        //     return $this->service->gettodayOrders($request);
+        // }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getOrders(Request $request, $date): JsonResponse
+    {
+        $arUrl = explode("/", session('_previous.url'));
+
+        if (count(explode("?", $arUrl[3])) > 1) {
+            $date_plan = $date;
         } else {
-            return $this->service->gettodayOrders($request);
+            $date_plan = null;
         }
+
+        return $this->service->gettodayOrders($request, $date_plan);
     }
 
     public function buildingsMaterialDashboard(Request $request): View

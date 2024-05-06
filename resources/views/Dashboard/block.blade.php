@@ -3,46 +3,7 @@
         <div class="flex flex-col basis-3/4 bg-white rounded-md shadow overflow-x-auto">
             <div class="flex flex-row w-full p-3 justify-between">
                 <div class="flex gap-2">
-                    <div>
-                        @if (request()->filter == 'now' || request()->filter == null)
-                            <a href="{{ route('dashboard-2', ['filter' => 'now']) }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
-                        @else
-                            <a href="{{ route('dashboard-2', ['filter' => 'now']) }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Сегодня</a>
-                        @endif
-                    </div>
-                    <div>
-                        @if (request()->filter == 'tomorrow')
-                            <a href="{{ route('dashboard-2', ['filter' => 'tomorrow']) }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Завтра</a>
-                        @else
-                            <a href="{{ route('dashboard-2', ['filter' => 'tomorrow']) }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Завтра</a>
-                        @endif
-                    </div>
-                    <div>
-                        @if (request()->filter == 'three-day')
-                            <a href="{{ route('dashboard-2', ['filter' => 'three-day']) }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3
-                                дня</a>
-                        @else
-                            <a href="{{ route('dashboard-2', ['filter' => 'three-day']) }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">3
-                                дня</a>
-                        @endif
-                    </div>
-                    <div>
-                        @if (request()->filter == 'week')
-                            <a href="{{ route('dashboard-2', ['filter' => 'week']) }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
-                        @else
-                            <a href="{{ route('dashboard-2', ['filter' => 'week']) }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Неделя</a>
-                        @endif
-                    </div>
-
-                    <div class="ml-10">
+                    <div class="">
                         @if (request()->routeIs('dashboard'))
                             <a href="{{ route('dashboard') }}"
                                 class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
@@ -71,10 +32,12 @@
                     </div>
                 </div>
                 <div class="flex px-3 text-center font-bold">
-                    {{ \Illuminate\Support\Carbon::now()->format('Y-m-d') }}
+                    <a href="{{ route('dashboard-2', ['date_plan' => $datePrev ]) }}" class="mx-2 text-lg">&#9668;</a>
+                    <p class="mx-2 text-lg">{{ $date }}</p>
+                    <a href="{{ route('dashboard-2', ['date_plan' => $dateNext ]) }}" class="mx-2 text-lg">&#9658;</a>
                 </div>
             </div>
-            @include('Dashboard.components.canvas')
+            @include('Dashboard.components.canvas', ['date' => $date])
             <div class="block border-t-2 py-5 overflow-x-scroll">
                 @include('Dashboard.components.orderTable', ['filter' => 'block'])
             </div>

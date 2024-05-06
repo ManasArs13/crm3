@@ -12,7 +12,7 @@
             let shipped_count = [];
             let labels = [];
 
-            await fetch('/month-orders')
+            await fetch('/get-orders/{!! $date !!}')
                 .then((response) => response.json())
                 .then((data) => {
                     for (let item in data.sum) {
