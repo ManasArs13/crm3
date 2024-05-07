@@ -39,7 +39,7 @@
             </div>
             @include('Dashboard.components.canvas', ['date' => $date])
             <div class="block border-t-2 py-5 overflow-x-scroll">
-                @include('Dashboard.components.orderTable', ['filter' => 'concrete'])
+                @include('Dashboard.components.orderTable')
             </div>
         </div>
         <div class="flex flex-col gap-4 basis-1/4">

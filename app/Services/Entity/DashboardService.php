@@ -23,9 +23,17 @@ class DashboardService
     {
         $this->currentDate = Carbon::now()->setTime(0, 0);
         $this->columns = [
-            'contact_id', 'shipped_sum', 'transport_id',
-            'sum', 'delivery_id', 'weight', 'date_plan',
-            'status_id', 'payed_sum',  'comment'
+            "name",
+            "contact_id",
+            'status_shipped',
+            "sum",
+            "date_plan",
+            "status_id",
+            "comment",
+            "positions_count",
+            "residual_count",
+            "delivery_id",
+            "ms_link",
         ];
     }
 
@@ -35,7 +43,8 @@ class DashboardService
      */
     public function dashboard($request): View
     {
-        // $entityItems = $this->filterOrder($request, null);
+        $urlShow = "order.show";
+
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
         } else {
@@ -63,11 +72,8 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
-        uasort($resColumns, function ($a, $b) {
-            return ($a > $b);
-        });
-
         return view('Dashboard.index', compact(
+            'urlShow',
             'entityItems',
             "resColumns",
             "entity",
@@ -75,7 +81,7 @@ class DashboardService
             'materials',
             'dateNext',
             'datePrev',
-            'date'
+            'date',
         ));
     }
 
@@ -269,12 +275,10 @@ class DashboardService
         ];
 
         $orders = Order::select('id', 'sum', 'date_plan')->withCount('positions')->with('positions')
-            ->where('date_plan', '>=', $date . ' 00:00:00')
-            ->where('date_plan', '<=', $date . ' 23:59:59');
+            ->whereDate('date_plan', $date);
 
         $shipments = Shipment::select('id', 'created_at')->with('products')
-            ->where('created_at', '>=', $date . ' 00:00:00')
-            ->where('created_at', '<=', $date . ' 23:59:59');
+            ->where('created_at', $date);
 
         if ($referer == 'dashboard') {
 
@@ -1230,6 +1234,8 @@ class DashboardService
      */
     private function getBlockOrder($request): View
     {
+        $urlShow = "order.show";
+
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
         } else {
@@ -1278,6 +1284,7 @@ class DashboardService
         }
 
         return view('Dashboard.block', compact(
+            'urlShow',
             'entityItems',
             "resColumns",
             "entity",
@@ -1296,7 +1303,7 @@ class DashboardService
      */
     private function getConcreteOrder($request): View
     {
-        // $entityItems = $this->filterOrder($request, Product::CONCRETE);
+        $urlShow = "order.show";
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
@@ -1329,11 +1336,8 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
-        uasort($resColumns, function ($a, $b) {
-            return ($a > $b);
-        });
-
         return view('Dashboard.concrete', compact(
+            'urlShow',
             'entityItems',
             "resColumns",
             "entity",
