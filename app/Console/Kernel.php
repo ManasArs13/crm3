@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:update-contacts-amo')->hourly();
         $schedule->command('app:sync-contact-ms-amo')->hourly();
 
-        $schedule->command('ms:import-all')->daily();
+    //    $schedule->command('ms:import-all')->daily();
         $schedule->command('ms:import-color')->everySixHours();
         $schedule->command('ms:import-status')->everySixHours();
         $schedule->command('ms:import-transport-type')->everySixHours();
