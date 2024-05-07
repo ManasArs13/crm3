@@ -40,7 +40,7 @@ return new class extends Migration
                 Product::CONCRETE,
                 Product::BLOCK,
                 Product::DELIVERY
-            ])->default(Product::DELIVERY);
+            ])->default(Product::NOT_SELECTED);
             $table->integer('residual')->nullable();
             $table->integer('release')->nullable();
             $table->string('sort')->nullable();
