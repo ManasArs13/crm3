@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Services\Entity\OrderService;
 use Illuminate\Console\Command;
 
-class CkeckContactMs extends Command
+class CkeckContactsMs extends Command
 {
     /**
      * The name and signature of the console command.

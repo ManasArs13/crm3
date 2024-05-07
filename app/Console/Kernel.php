@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\CkeckContactMs;
+use App\Console\Commands\CkeckContactsMs;
 use App\Console\Commands\ImportFromAmo\ImportFromAmo;
 use App\Console\Commands\ImportFromMS\ImportAll;
 use App\Console\Commands\ImportFromMS\ImportCategories;
@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
         ImportTechChart::class,
         ImportTransportType::class,
         ImportTransport::class,
-        CkeckContactMs::class
+        CkeckContactsMs::class
     ];
 
     protected function schedule(Schedule $schedule): void
