@@ -74,7 +74,6 @@ class DashboardService
             ->get()
             ->sortBy('sort');
 
-        dd($materials);
         $products = Product::query()->where('type', Product::PRODUCTS)->get()->sortByDesc('sort');
         $entity = 'orders';
         $resColumns = [];
