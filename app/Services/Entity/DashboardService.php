@@ -63,7 +63,18 @@ class DashboardService
             ->get();
         $this->loadRelations($entityItems);
 
-        $materials = Product::query()->where('type', Product::MATERIAL)->get()->sortBy('sort');
+        $materials = Product::query()->where('type', Product::MATERIAL)
+            //->whereHas('tech_charts', function($query1) use ($date) {
+                // $query1->whereHas('products', function($query2) use ($date) {
+                //     $query2->whereHas('orders', function($query3) use ($date) {
+                //         $query3->whereDate('date_plan', $date);
+                //     });
+                // });
+            //})
+            ->get()
+            ->sortBy('sort');
+
+        dd($materials);
         $products = Product::query()->where('type', Product::PRODUCTS)->get()->sortByDesc('sort');
         $entity = 'orders';
         $resColumns = [];

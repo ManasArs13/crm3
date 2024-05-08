@@ -52,20 +52,20 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:sync-contact-ms-amo')->hourly();
 
     //    $schedule->command('ms:import-all')->daily();
-        // $schedule->command('ms:import-color')->everySixHours();
-        // $schedule->command('ms:import-status')->everySixHours();
-        // $schedule->command('ms:import-transport-type')->everySixHours();
-        // $schedule->command('ms:import-transport')->everySixHours();
-        // $schedule->command('ms:import-categories')->everySixHours();
-        // $schedule->command('ms:import-products')->everySixHours();
-        // $schedule->command('ms:import-delivery')->everySixHours();
-        // $schedule->command('ms:import-contact')->everyTenMinutes();
-        // $schedule->command('ms:import-order')->everyTenMinutes();
-        // $schedule->command('ms:import-demand')->everyTenMinutes();
-        // $schedule->command('ms:import-supply')->everySixHours();
-        // $schedule->command('ms:import-residual')->everyTenMinutes();
-        // $schedule->command('ms:import-tech-chart')->hourly();
-        // $schedule->command('ms:import-processing')->hourly();
+        $schedule->command('ms:import-color')->everySixHours();
+        $schedule->command('ms:import-status')->everySixHours();
+        $schedule->command('ms:import-transport-type')->everySixHours();
+        $schedule->command('ms:import-transport')->everySixHours();
+        $schedule->command('ms:import-categories')->everySixHours();
+        $schedule->command('ms:import-products')->everySixHours();
+        $schedule->command('ms:import-delivery')->everySixHours();
+        $schedule->command('ms:import-contact')->everyTenMinutes();
+        $schedule->command('ms:import-order')->everyTenMinutes();
+        $schedule->command('ms:import-demand')->everyTenMinutes();
+        $schedule->command('ms:import-supply')->everySixHours();
+        $schedule->command('ms:import-residual')->dailyAt('23:45');
+        $schedule->command('ms:import-tech-chart')->hourly();
+        $schedule->command('ms:import-processing')->hourly();
 
     }
 

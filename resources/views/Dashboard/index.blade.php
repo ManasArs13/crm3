@@ -59,19 +59,14 @@
                     <tbody>
                         @foreach ($materials as $material)
                             <tr class="border-b-2">
-                                <td class="m-2 justify-content-beetwen">
+                                <td class="m-2" colspan="4">
                                     {{ $material->name }}
                                 </td>
-                                <td>
-                                    @if ($material->residual_norm !== 0 && $material->residual_norm !== null && $material->type !== 'не выбрано')
-                                        <div
-                                            @if (round(($material->residual / $material->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($material->residual / $material->residual_norm) * 100) > 30 &&
-                                                    round(($material->residual / $material->residual_norm) * 100) <= 70) class="bg-yellow-300 rounded-sm p-1 h-6 flex justify-center items-center" @else class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center" @endif>
-                                            {{ round(($material->residual / $material->residual_norm) * 100) }}%
-                                        </div>
-                                    @else
-                                        {{ null }}
-                                    @endif
+                                <td class="m-2 text-right" colspan="1">
+                                    {{ $material->residual }}
+                                </td>
+                                <td class="m-2 text-right" colspan="1">
+                                    -
                                 </td>
                             </tr>
                         @endforeach

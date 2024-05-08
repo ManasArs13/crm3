@@ -29,6 +29,16 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(OrderPosition::class);
+    }
+
+    public function tech_charts()
+    {
+        return $this->hasMany(TechChart::class);
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
