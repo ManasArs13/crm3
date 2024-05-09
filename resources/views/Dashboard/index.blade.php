@@ -68,6 +68,9 @@
                                 <td class="m-2 text-right" colspan="1">
                                     -
                                 </td>
+                                <td class="m-2 text-right" colspan="1">
+                                    {{ $material->rashod }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

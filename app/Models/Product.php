@@ -34,9 +34,22 @@ class Product extends Model
         return $this->hasMany(OrderPosition::class);
     }
 
+    // public function tech_charts()
+    // {
+    //     return $this->hasMany(TechChart::class);
+    // // }
+
+    // public function products()
+    // {
+    //     return 
+    //         $this->belongsToMany(Product::class, 'tech_chart_products', 'tech_chart_id', 'product_id')
+    //              ->withPivot('id', 'quantity');
+    // }
+
     public function tech_charts()
     {
-        return $this->hasMany(TechChart::class);
+        return 
+            $this->belongsToMany(TechChart::class, 'tech_chart_materials');
     }
 
     public function getCreatedAtAttribute($value)

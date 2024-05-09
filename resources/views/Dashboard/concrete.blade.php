@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="flex flex-col lg:flex-row flex-nowrap gap-3 w-11/12 mx-auto py-10">
-        <div class="flex flex-col basis-3/4 bg-white rounded-md shadow overflow-x-auto">
+        <div class="flex flex-col basis-3/5 bg-white rounded-md shadow overflow-x-auto">
             <div class="flex flex-row w-full p-3 justify-between">
                 <div class="flex gap-2">
                     <div class="">
@@ -42,38 +42,40 @@
                 @include('Dashboard.components.orderTable')
             </div>
         </div>
-        <div class="flex flex-col gap-4 basis-1/4">
+        <div class="flex flex-col gap-4 basis-2/5">
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
+
                 <table>
+                    <caption class="text-lg font-semibold">Материалы</caption>
                     <thead>
-                        <tr>
-                            <th class="justify-content-center items-center mb-2">
-                                <span class="text-lg font-semibold">БЕТОН</span>
-                            </th>
+                        <tr class="font-light">
+                            <th colspan="4" class="font-light"></th>
+                            <th class="font-normal border-l-2">Начало</th>
+                            <th class="font-normal border-x-2">Приход</th>
+                            <th class="font-normal border-r-2">Расход</th>
+                            <th class="font-normal">Конец</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($concretes as $concrete)
-                            @if (
-                                $concrete->residual_norm !== 0 &&
-                                    $concrete->residual_norm !== null &&
-                                    $concrete->building_material !== 'не выбрано')
-                                <tr class="border-b-2">
-                                    <td class="m-2 justify-content-beetwen">
-                                        {{ $concrete->name }}
-                                    </td>
-                                    <td>
-                                        <span>
-                                            <div class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center">
-                                                {{ round(($concrete->residual / $concrete->residual_norm) * 100) }}%
-                                            </div>
-                                        </span>
-                                    </td>
-                                </tr>
-                            @endif
+                        @foreach ($materials as $material)
+                            <tr class="border-b-2">
+                                <td class="m-2" colspan="4">
+                                    {{ $material->name }}
+                                </td>
+                                <td class="m-2 text-right" colspan="1">
+                                    {{ $material->residual }}
+                                </td>
+                                <td class="m-2 text-right" colspan="1">
+                                    -
+                                </td>
+                                <td class="m-2 text-right" colspan="1">
+                                    {{ $material->rashod }}
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>

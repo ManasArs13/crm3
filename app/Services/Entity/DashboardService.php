@@ -5,7 +5,10 @@ namespace App\Services\Entity;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\OrderPosition;
 use App\Models\Shipment;
+use App\Models\TechChart;
+use App\Models\TechChartProduct;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
@@ -64,15 +67,33 @@ class DashboardService
         $this->loadRelations($entityItems);
 
         $materials = Product::query()->where('type', Product::MATERIAL)
-            //->whereHas('tech_charts', function($query1) use ($date) {
-                // $query1->whereHas('products', function($query2) use ($date) {
-                //     $query2->whereHas('orders', function($query3) use ($date) {
-                //         $query3->whereDate('date_plan', $date);
-                //     });
-                // });
-            //})
             ->get()
             ->sortBy('sort');
+
+        foreach ($entityItems as $entityItem) {
+            $order_positions = OrderPosition::where('order_id', $entityItem->id)->get();
+
+            foreach ($order_positions as $order_position) {
+
+                $x = $order_position->quantity;
+
+                $techChartProducts = TechChartProduct::where('product_id', $order_position->product_id)->get();
+                foreach ($techChartProducts as $techChartProduct) {
+                    $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                    foreach ($techCharts as $techChart) {
+                        foreach ($techChart->materials as $material) {
+                            if ($materials->find($material->id)) {
+                                if (isset($materials->find($material->id)->rashod)) {
+                                    $materials->find($material->id)->setAttribute('rashod', $materials->find($material->id)->rashod + ($material->pivot->quantity * $x));
+                                } else {
+                                    $materials->find($material->id)->setAttribute('rashod', $material->pivot->quantity * $x);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         $products = Product::query()->where('type', Product::PRODUCTS)->get()->sortByDesc('sort');
         $entity = 'orders';
@@ -1338,7 +1359,37 @@ class DashboardService
             ->get();
         $this->loadRelations($entityItems);
 
-        $concretes = Product::query()->where('building_material', Product::CONCRETE)->get()->sortBy('sort');
+        $materials = Product::query()
+            ->where('type', Product::MATERIAL)
+            ->where('building_material', Product::CONCRETE)
+            ->get()
+            ->sortBy('sort');
+
+        foreach ($entityItems as $entityItem) {
+            $order_positions = OrderPosition::where('order_id', $entityItem->id)->get();
+
+            foreach ($order_positions as $order_position) {
+
+                $x = $order_position->quantity;
+
+                $techChartProducts = TechChartProduct::where('product_id', $order_position->product_id)->get();
+                foreach ($techChartProducts as $techChartProduct) {
+                    $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                    foreach ($techCharts as $techChart) {
+                        foreach ($techChart->materials as $material) {
+                            if ($materials->find($material->id)) {
+                                if (isset($materials->find($material->id)->rashod)) {
+                                    $materials->find($material->id)->setAttribute('rashod', $materials->find($material->id)->rashod + ($material->pivot->quantity * $x));
+                                } else {
+                                    $materials->find($material->id)->setAttribute('rashod', $material->pivot->quantity * $x);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         $entity = 'orders';
 
         $resColumns = [];
@@ -1351,7 +1402,7 @@ class DashboardService
             'entityItems',
             "resColumns",
             "entity",
-            'concretes',
+            'materials',
             'dateNext',
             'datePrev',
             'date'
