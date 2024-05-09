@@ -84,9 +84,9 @@ class DashboardService
                         foreach ($techChart->materials as $material) {
                             if ($materials->find($material->id)) {
                                 if (isset($materials->find($material->id)->rashod)) {
-                                    $materials->find($material->id)->setAttribute('rashod', $materials->find($material->id)->rashod + ($material->pivot->quantity * $x));
+                                    $materials->find($material->id)->setAttribute('rashod', round($materials->find($material->id)->rashod + ($material->pivot->quantity * $x) , 2));
                                 } else {
-                                    $materials->find($material->id)->setAttribute('rashod', $material->pivot->quantity * $x);
+                                    $materials->find($material->id)->setAttribute('rashod', round($material->pivot->quantity * $x, 2));
                                 }
                             }
                         }
@@ -1379,9 +1379,9 @@ class DashboardService
                         foreach ($techChart->materials as $material) {
                             if ($materials->find($material->id)) {
                                 if (isset($materials->find($material->id)->rashod)) {
-                                    $materials->find($material->id)->setAttribute('rashod', $materials->find($material->id)->rashod + ($material->pivot->quantity * $x));
+                                    $materials->find($material->id)->setAttribute('rashod', round($materials->find($material->id)->rashod + ($material->pivot->quantity * $x) , 2));
                                 } else {
-                                    $materials->find($material->id)->setAttribute('rashod', $material->pivot->quantity * $x);
+                                    $materials->find($material->id)->setAttribute('rashod', round($material->pivot->quantity * $x, 2));
                                 }
                             }
                         }
