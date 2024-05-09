@@ -71,10 +71,14 @@
                                 <td class="m-2 text-right" colspan="1">
                                     {{ $material->rashod ? $material->rashod : 0 }}
                                 </td>
+                                <td class="m-2 text-right" colspan="1">
+                                    {{ $material->residual -  ($material->rashod ? $material->rashod : 0) }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
                 <table>

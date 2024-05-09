@@ -1275,8 +1275,7 @@ class DashboardService
         $datePrev = $date1->modify('-1 day')->format('Y-m-d');
         $dateNext = $date2->modify('+1 day')->format('Y-m-d');
 
-        //    $entityItems = $this->filterOrder($request, Product::BLOCK);
-        $entityItems = Order::query()
+        $entityItems = Order::query()->with('positions')
             ->whereDate('date_plan', $date)
             ->whereHas('positions', function ($query) {
                 $query->whereHas('product', function ($queries) {
@@ -1291,9 +1290,34 @@ class DashboardService
         $blocksProducts = Product::query()
             ->where('type', Product::PRODUCTS)
             ->where('building_material', Product::BLOCK)->get()->sortBy('sort');
-        $blocksMaterials = Product::query()
+
+        $materials = Product::query()
             ->where('type', Product::MATERIAL)
-            ->where('building_material', Product::BLOCK)->get()->sortBy('sort');
+            ->where('building_material', Product::BLOCK)
+            ->get()
+            ->sortBy('sort');
+
+        foreach ($entityItems as $entityItem) {
+            foreach ($entityItem->positions as $order_position) {
+                $x = $order_position->quantity;
+                $techChartProducts = TechChartProduct::where('product_id', $order_position->product_id)->get();
+                foreach ($techChartProducts as $techChartProduct) {
+                    $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                    foreach ($techCharts as $techChart) {
+                        foreach ($techChart->materials as $material) {
+                            if ($materials->find($material->id)) {
+                                if (isset($materials->find($material->id)->rashod)) {
+                                    $materials->find($material->id)->setAttribute('rashod', round($materials->find($material->id)->rashod + ($material->pivot->quantity * $x), 2));
+                                } else {
+                                    $materials->find($material->id)->setAttribute('rashod', round($material->pivot->quantity * $x, 2));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         $entity = 'orders';
 
         foreach ($categories as $category) {
@@ -1315,7 +1339,7 @@ class DashboardService
             'entityItems',
             "resColumns",
             "entity",
-            'blocksMaterials',
+            'materials',
             'blocksProducts',
             'categories',
             'dateNext',

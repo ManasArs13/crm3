@@ -71,6 +71,9 @@
                                 <td class="m-2 text-right" colspan="1">
                                     {{ $material->rashod ? $material->rashod : 0 }}
                                 </td>
+                                <td class="m-2 text-right" colspan="1">
+                                    {{ $material->residual -  ($material->rashod ? $material->rashod : 0) }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
