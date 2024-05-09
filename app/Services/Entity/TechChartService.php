@@ -21,7 +21,6 @@ class TechChartService implements EntityInterface
     public function import(array $rows)
     {
         foreach ($rows["rows"] as $row) {
-            usleep(60000);
             $entity = TechChart::firstOrNew(['ms_id' => $row['id']]);
 
             if ($entity->ms_id === null) {
@@ -50,7 +49,6 @@ class TechChartService implements EntityInterface
 
 
             if (isset($row["products"])) {
-                usleep(60000);
                 $products = $this->service->actionGetRowsFromJson($row['products']['meta']['href']);
 
                 foreach ($products as $product) {
@@ -75,7 +73,6 @@ class TechChartService implements EntityInterface
             }
 
             if (isset($row["materials"])) {
-                usleep(60000);
                 $materials = $this->service->actionGetRowsFromJson($row['materials']['meta']['href']);
 
                 foreach ($materials as $material) {

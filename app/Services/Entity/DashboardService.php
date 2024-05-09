@@ -1348,7 +1348,7 @@ class DashboardService
         $datePrev = $date1->modify('-1 day')->format('Y-m-d');
         $dateNext = $date2->modify('+1 day')->format('Y-m-d');
 
-        $entityItems = Order::query()
+        $entityItems = Order::query()->with('positions')
             ->whereDate('date_plan', $date)
             ->whereHas('positions', function ($query) {
                 $query->whereHas('product', function ($queries) {
@@ -1358,7 +1358,7 @@ class DashboardService
             ->orderBy('date_plan')
             ->get();
         $this->loadRelations($entityItems);
-
+//dump($entityItems[0]->positions);
         $materials = Product::query()
             ->where('type', Product::MATERIAL)
             ->where('building_material', Product::CONCRETE)
@@ -1366,13 +1366,11 @@ class DashboardService
             ->sortBy('sort');
 
         foreach ($entityItems as $entityItem) {
-            $order_positions = OrderPosition::where('order_id', $entityItem->id)->get();
-
-            foreach ($order_positions as $order_position) {
-
+            foreach ($entityItem->positions as $order_position) {
                 $x = $order_position->quantity;
-
+                dump($x);
                 $techChartProducts = TechChartProduct::where('product_id', $order_position->product_id)->get();
+                dump($techChartProducts);
                 foreach ($techChartProducts as $techChartProduct) {
                     $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
                     foreach ($techCharts as $techChart) {
