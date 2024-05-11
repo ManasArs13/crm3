@@ -72,8 +72,9 @@ class DashboardService
 
         foreach ($entityItems as $entityItem) {
             foreach ($entityItem->positions as $order_position) {
+                dump($order_position);
                 $x = $order_position->quantity;
-                $techChartProducts = TechChartProduct::where('product_id', $order_position->product_id)->get();
+                $techChartProducts = TechChartProduct::select('id')->where('product_id', $order_position->product_id)->get();
                 foreach ($techChartProducts as $techChartProduct) {
                     $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
                     foreach ($techCharts as $techChart) {
@@ -1300,7 +1301,7 @@ class DashboardService
         foreach ($entityItems as $entityItem) {
             foreach ($entityItem->positions as $order_position) {
                 $x = $order_position->quantity;
-                $techChartProducts = TechChartProduct::where('product_id', $order_position->product_id)->get();
+                $techChartProducts = TechChartProduct::select('id')->where('product_id', $order_position->product_id)->get();
                 foreach ($techChartProducts as $techChartProduct) {
                     $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
                     foreach ($techCharts as $techChart) {
