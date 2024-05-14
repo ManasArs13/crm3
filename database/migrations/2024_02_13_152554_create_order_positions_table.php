@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer("price")->unsigned()->default(0);
 
             $table->integer("count_pallets")->unsigned()->default(0)->nullable();
-            $table->unsignedDecimal("weight_kg", 8, 1)->unsigned()->nullable();
+            $table->unsignedDecimal("weight_kg", 10, 1)->unsigned()->nullable();
 
             $table->timestamps();
             $table->char('ms_id', 36)->nullable();

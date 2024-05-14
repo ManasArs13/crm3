@@ -13,7 +13,7 @@ class OptionController extends Controller
     {
         $entityItems = Option::query()->paginate(50);
         $columns = Schema::getColumnListing('options');
-        
+
         $needMenuForItem = true;
         $urlEdit = "option.edit";
         $urlShow = "option.show";

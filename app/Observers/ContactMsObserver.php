@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Artisan;
 
-class ContactObserver
+class ContactMsObserver
 {
     /**
      * Handle the ContactMs "created" event.
