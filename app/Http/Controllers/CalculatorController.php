@@ -14,7 +14,7 @@ class CalculatorController extends Controller
     {
         $deliveries = Delivery::select('id', 'ms_id', 'name', 'distance')
                                 ->whereNot('ms_id', '28803b00-5c8f-11ea-0a80-02ed000b1ce1')
-                                ->orderBy('distance', 'asc')
+                                ->orderBy('name', 'asc')
                                 ->get();
         $vehicleTypes = TransportType::select('id', 'ms_id', 'name')
                                 ->whereNot('ms_id', '5c2ad6bd-3dcf-11ee-0a80-105c001170bb')
