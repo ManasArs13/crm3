@@ -63,12 +63,65 @@ class DashboardService
             'transport_type'
         )
             ->whereDate('date_plan', $date)
+            ->whereIn('status_id', [3, 4, 5, 6])
             ->orderBy('date_plan')
             ->get();
 
         $materials = Product::query()->where('type', Product::MATERIAL)
             ->get()
             ->sortBy('sort');
+
+        if ($date > date('Y-m-d')) {
+
+            $orders = Order::query()->with('positions')
+                ->whereBetween('date_plan', [date('Y-m-d') . ' 00:00:00', $date . ' 00:00:00'])
+                ->whereIn('status_id', [3, 4, 5, 6])
+                ->get();
+
+            foreach ($orders as $entityItem) {
+                foreach ($entityItem->positions as $order_position) {
+                    $techChartProduct = TechChartProduct::select('id', 'tech_chart_id')->where('product_id', $order_position->product_id)->First();
+                    if ($techChartProduct) {
+                        $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                        foreach ($techCharts as $techChart) {
+                            foreach ($techChart->materials as $material) {
+                                if ($materials->find($material->id)) {
+                                    if (isset($materials->find($material->id)->residual)) {
+                                        $materials->find($material->id)->setAttribute('residual', round($materials->find($material->id)->residual - ($material->pivot->quantity * $order_position->quantity), 2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if ($date < date('Y-m-d')) {
+
+            $orders = Order::query()->with('positions')
+                ->whereBetween('date_plan', [$date . ' 00:00:00', date('Y-m-d') . ' 00:00:00'])
+                ->whereIn('status_id', [3, 4, 5, 6])
+                ->get();
+
+            foreach ($orders as $entityItem) {
+                foreach ($entityItem->positions as $order_position) {
+                    $techChartProduct = TechChartProduct::select('id', 'tech_chart_id')->where('product_id', $order_position->product_id)->First();
+                    if ($techChartProduct) {
+                        $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                        foreach ($techCharts as $techChart) {
+                            foreach ($techChart->materials as $material) {
+                                if ($materials->find($material->id)) {
+                                    if (isset($materials->find($material->id)->residual)) {
+                                        $materials->find($material->id)->setAttribute('residual', round($materials->find($material->id)->residual + ($material->pivot->quantity * $order_position->quantity), 2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            $orders = $entityItems;
+        }
 
         foreach ($entityItems as $entityItem) {
             foreach ($entityItem->positions as $order_position) {
@@ -147,7 +200,9 @@ class DashboardService
             '22'
         ];
 
-        $orders = Order::select('id', 'sum', 'date_plan')->withCount('positions')->with('positions')
+        $orders = Order::select('id', 'sum', 'date_plan')->withCount('positions')
+            ->with('positions')
+            ->whereIn('status_id', [3, 4, 5, 6])
             ->whereDate('date_plan', $date);
 
         $shipments = Shipment::select('id', 'created_at')->with('products')
@@ -511,6 +566,7 @@ class DashboardService
                     $queries->where('building_material', Product::BLOCK);
                 });
             })
+            ->whereIn('status_id', [3, 4, 5, 6])
             ->orderBy('date_plan')
             ->get();
 
@@ -524,6 +580,68 @@ class DashboardService
             ->where('building_material', Product::BLOCK)
             ->get()
             ->sortBy('sort');
+
+        if ($date > date('Y-m-d')) {
+
+            $orders = Order::query()->with('positions')
+                ->whereBetween('date_plan', [date('Y-m-d') . ' 00:00:00', $date . ' 00:00:00'])
+                ->whereIn('status_id', [3, 4, 5, 6])
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::BLOCK);
+                    });
+                })
+                ->get();
+
+            foreach ($orders as $entityItem) {
+                foreach ($entityItem->positions as $order_position) {
+                    $techChartProduct = TechChartProduct::select('id', 'tech_chart_id')->where('product_id', $order_position->product_id)->First();
+                    if ($techChartProduct) {
+                        $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                        foreach ($techCharts as $techChart) {
+                            foreach ($techChart->materials as $material) {
+                                if ($materials->find($material->id)) {
+                                    if (isset($materials->find($material->id)->residual)) {
+                                        $materials->find($material->id)->setAttribute('residual', round($materials->find($material->id)->residual - ($material->pivot->quantity * $order_position->quantity), 2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if ($date < date('Y-m-d')) {
+
+            $orders = Order::query()->with('positions')
+                ->whereBetween('date_plan', [$date . ' 00:00:00', date('Y-m-d') . ' 00:00:00'])
+                ->whereIn('status_id', [3, 4, 5, 6])
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::BLOCK);
+                    });
+                })
+                ->get();
+
+            foreach ($orders as $entityItem) {
+                foreach ($entityItem->positions as $order_position) {
+                    $techChartProduct = TechChartProduct::select('id', 'tech_chart_id')->where('product_id', $order_position->product_id)->First();
+                    if ($techChartProduct) {
+                        $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                        foreach ($techCharts as $techChart) {
+                            foreach ($techChart->materials as $material) {
+                                if ($materials->find($material->id)) {
+                                    if (isset($materials->find($material->id)->residual)) {
+                                        $materials->find($material->id)->setAttribute('residual', round($materials->find($material->id)->residual + ($material->pivot->quantity * $order_position->quantity), 2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            $orders = $entityItems;
+        }
 
         foreach ($entityItems as $entityItem) {
             foreach ($entityItem->positions as $order_position) {
@@ -605,6 +723,7 @@ class DashboardService
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })
+            ->whereIn('status_id', [3, 4, 5, 6])
             ->orderBy('date_plan')
             ->get();
 
@@ -613,6 +732,68 @@ class DashboardService
             ->where('building_material', Product::CONCRETE)
             ->get()
             ->sortBy('sort');
+
+        if ($date > date('Y-m-d')) {
+
+            $orders = Order::query()->with('positions')
+                ->whereBetween('date_plan', [date('Y-m-d') . ' 00:00:00', $date . ' 00:00:00'])
+                ->whereIn('status_id', [3, 4, 5, 6])
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::CONCRETE);
+                    });
+                })
+                ->get();
+
+            foreach ($orders as $entityItem) {
+                foreach ($entityItem->positions as $order_position) {
+                    $techChartProduct = TechChartProduct::select('id', 'tech_chart_id')->where('product_id', $order_position->product_id)->First();
+                    if ($techChartProduct) {
+                        $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                        foreach ($techCharts as $techChart) {
+                            foreach ($techChart->materials as $material) {
+                                if ($materials->find($material->id)) {
+                                    if (isset($materials->find($material->id)->residual)) {
+                                        $materials->find($material->id)->setAttribute('residual', round($materials->find($material->id)->residual - ($material->pivot->quantity * $order_position->quantity), 2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if ($date < date('Y-m-d')) {
+
+            $orders = Order::query()->with('positions')
+                ->whereBetween('date_plan', [$date . ' 00:00:00', date('Y-m-d') . ' 00:00:00'])
+                ->whereIn('status_id', [3, 4, 5, 6])
+                ->whereHas('positions', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::CONCRETE);
+                    });
+                })
+                ->get();
+
+            foreach ($orders as $entityItem) {
+                foreach ($entityItem->positions as $order_position) {
+                    $techChartProduct = TechChartProduct::select('id', 'tech_chart_id')->where('product_id', $order_position->product_id)->First();
+                    if ($techChartProduct) {
+                        $techCharts = TechChart::with('materials')->where('id', $techChartProduct->tech_chart_id)->get();
+                        foreach ($techCharts as $techChart) {
+                            foreach ($techChart->materials as $material) {
+                                if ($materials->find($material->id)) {
+                                    if (isset($materials->find($material->id)->residual)) {
+                                        $materials->find($material->id)->setAttribute('residual', round($materials->find($material->id)->residual + ($material->pivot->quantity * $order_position->quantity), 2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            $orders = $entityItems;
+        }
 
         foreach ($entityItems as $entityItem) {
             foreach ($entityItem->positions as $order_position) {
