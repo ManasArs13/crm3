@@ -516,7 +516,7 @@ class DashboardService
         }
 
         return response()->json([
-            'sum' => $shipments,
+            'sum' => $sum,
             'orders_count' => $orders_count,
             'positions_count' => $positions_count,
             'shipped_count' => $shipped_count,
