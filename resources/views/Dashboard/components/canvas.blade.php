@@ -1,5 +1,5 @@
 <div class="border-t-2 p-5">
-    <div class="chart-container" style="height:40vh;">
+    <div class="chart-container" style="height:20vh;">
         <canvas  id="orderChart"></canvas>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
