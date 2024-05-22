@@ -5,11 +5,13 @@ namespace App\Services\Entity;
 use App\Contracts\EntityInterface;
 use App\Models\Option;
 use App\Models\Product;
+use App\Models\Color;
 use App\Models\Category;
 use App\Models\TechChartMaterial;
 use App\Models\TechChartProduct;
 use App\Services\Api\MoySkladService;
 use Illuminate\Support\Arr;
+
 
 class ProductService implements EntityInterface
 {
@@ -50,14 +52,24 @@ class ProductService implements EntityInterface
 
             if (isset($row["attributes"])) {
                 foreach ($row["attributes"] as $attr) {
+
                     if ($attr["id"] == $countPalletsGuid) {
                         $entity->count_pallets = $attr["value"];
-                        break;
+                        continue;
                     }
 
                     if ($attr["id"] == $colorGuid) {
-                        $entity->color =  $this->getGuidFromUrl($attr["value"]["meta"]["href"]);
-                        break;
+                        $msId = $this->getGuidFromUrl($attr["value"]["meta"]["href"]);
+                        $entityColor = Color::firstOrNew(['ms_id' => $msId]);
+
+                        if ($entityColor->id === null) {
+                            $entityColor->ms_id = $msId;
+                            $entityColor->name = $attr["value"]["name"];
+                            $entityColor->save();
+                        }
+
+                        $entity->color_id = $entityColor->id;
+                        continue;
                     }
                 }
             }
