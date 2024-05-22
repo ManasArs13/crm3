@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\Goods\IncomingController;
 use App\Http\Controllers\Goods\OutgoingController;
+use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderPositionController;
@@ -48,6 +49,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
+
+    // Operator windows
+    Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
+    Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
 
     Route::resources([
         'order' => OrderController::class,

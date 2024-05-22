@@ -20,7 +20,6 @@
                         Главная
                     </x-nav-link>
 
-
                     <x-nav-link :href="route('order.index')" :active="request()->routeIs('order.*')">
                         Заказы
                     </x-nav-link>
@@ -28,20 +27,72 @@
                     <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*')">
                         Отгрузки
                     </x-nav-link>
-
-                    
-
+                  
                     <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
                         Остатки
                     </x-nav-link>
 
-                    <x-nav-link :href="route('product.index', ['type' => 'products'])" :active="request()->routeIs('product.*') && request()->type == 'products'">
-                        Товары
-                    </x-nav-link>
+                    {{-- Окно оператора--}}
+                    <div class="hidden md:flex md:items-center md:ms-1">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>Оператор</div>
 
-                    <x-nav-link :href="route('product.index', ['type' => 'materials'])" :active="request()->routeIs('product.*') && request()->type == 'materials'">
-                        Материалы
-                    </x-nav-link>
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('operator.orders')">
+                                    Заказы
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('operator.shipments')">
+                                    Доставки
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+                    {{-- Товары--}}
+                    <div class="hidden md:flex md:items-center md:ms-1">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>Товары</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('product.index', ['type' => 'products'])">
+                                    Товары
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('product.index', ['type' => 'materials'])">
+                                    Материалы
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
 
                     {{-- Приход - расход --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
