@@ -34,9 +34,6 @@ Route::get('/blocks_products', [WelcomeController::class, 'blocksProducts'])->na
 Route::get('/concretes_materials', [WelcomeController::class, 'concretesMaterials'])->name('welcome.concretesMaterials');
 Route::get('/paint', [WelcomeController::class, 'paint'])->name('welcome.paint');
 Route::get('/processing', [WelcomeController::class, 'processing'])->name('welcome.processing');
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -49,8 +46,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard-2', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-2');
     Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
 
-    Route::get('/fetch-orders', [DashboardController::class, 'fetchOrders'])->name('filter.orders');
-    //Route::get('/month-orders', [DashboardController::class, 'getOrderMonth'])->name('month.orders');
     Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
 
