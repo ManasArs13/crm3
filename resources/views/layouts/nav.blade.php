@@ -57,7 +57,7 @@
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('operator.shipments')">
-                                    Доставки
+                                    Отгрузки
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
