@@ -82,7 +82,7 @@ class OperatorController extends Controller
             } else {
                 $selected = [
                     "contact_id",
-                    "date_plan",
+                  //  "date_plan",
                     "status_id",
                     "positions_count",
                     "residual_count",
