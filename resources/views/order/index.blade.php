@@ -603,7 +603,7 @@
                                                 </svg>
                                             </a>
                                         @elseif($column == 'sostav')
-                                            @if ($entityItem->positions[0] && isset($entityItem->positions[0]->product))
+                                            @if (isset($entityItem->positions[0]) && isset($entityItem->positions[0]->product))
                                                 {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->name : '-' }}
                                             @else
                                                 -
