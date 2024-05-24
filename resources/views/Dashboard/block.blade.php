@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="flex flex-col lg:flex-row flex-nowrap gap-3 w-11/12 mx-auto py-10">
-        <div class="flex flex-col basis-3/5 bg-white rounded-md shadow overflow-x-auto">
+        <div class="flex flex-col basis-3/4 bg-white rounded-md shadow overflow-x-auto">
             <div class="flex flex-row w-full p-3 justify-between">
                 <div class="flex gap-2">
                     <div class="">
@@ -42,7 +42,7 @@
                 @include('Dashboard.components.orderTable')
             </div>
         </div>
-        <div class="flex flex-col gap-4 basis-2/5">
+        <div class="flex flex-col gap-4 basis-1/4">
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
                 <table>
                     <caption class="text-lg font-semibold">Материалы</caption>
