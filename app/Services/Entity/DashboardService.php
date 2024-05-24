@@ -26,7 +26,6 @@ class DashboardService
         $this->columns = [
             "name",
             "contact_id",
-            'status_shipped',
             "sum",
             "date_plan",
             "status_id",
