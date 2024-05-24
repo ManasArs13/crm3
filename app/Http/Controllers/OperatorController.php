@@ -17,18 +17,17 @@ use Illuminate\Support\Facades\Schema;
 class OperatorController extends Controller
 {
     public function orders(OrderRequest $request)
-    {
-        {
+    { {
             $urlEdit = "order.edit";
             $urlShow = "order.show";
             $urlDelete = "order.destroy";
             $urlCreate = "order.create";
             $urlFilter = 'order.index';
             $entityName = 'Заказы';
-    
+
             // Orders
             $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions:order_id,id,quantity', 'transport:id,name');
-    
+
             if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
                 $entityItems = (new OrderFilter($builder, $request))->apply()->whereDate('date_plan', Carbon::now()->format('Y-m-d'))->orderBy($request->column)->paginate(50);
                 $orderBy = 'desc';
@@ -42,7 +41,7 @@ class OperatorController extends Controller
                 $entityItems = (new OrderFilter($builder, $request))->apply()->whereDate('date_plan', Carbon::now()->format('Y-m-d'))->orderByDesc('id')->paginate(50);
                 $selectColumn = null;
             }
-    
+
             // Columns
             $all_columns = [
                 "id",
@@ -79,7 +78,7 @@ class OperatorController extends Controller
                 "updated_at",
                 "ms_id"
             ];
-    
+
             if (isset($request->columns)) {
                 $selected = $request->columns;
             } else {
@@ -93,36 +92,36 @@ class OperatorController extends Controller
                     "transport_id",
                 ];
             }
-    
+
             foreach ($all_columns as $column) {
                 $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
-    
+
                 if (in_array($column, $selected)) {
                     $resColumns[$column] = trans("column." . $column);
                 }
             }
-    
+
             // Filters
             $minCreated = Order::query()->min('created_at');
             $minCreatedCheck = '';
             $maxCreated = Order::query()->max('created_at');
             $maxCreatedCheck = '';
-    
+
             $minUpdated = Order::query()->min('updated_at');
             $minUpdatedCheck = '';
             $maxUpdated = Order::query()->max('updated_at');
             $maxUpdatedCheck = '';
-    
+
             $minDatePlan = Order::query()->min('date_plan');
             $minDatePlanCkeck = '';
             $maxDatePlan = Order::query()->max('date_plan');
             $maxDatePlanCheck = '';
-    
+
             $dateToday = Carbon::now()->format('Y-m-d');
             $dateThreeDay = Carbon::now()->addDays(3)->format('Y-m-d');
             $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
             $dateAll = Carbon::now()->addDays(30)->format('Y-m-d');
-    
+
             $statuses = [
                 ['value' => 1, 'name' => '[N] Новый', 'checked' => true],
                 ['value' => 2, 'name' => 'Думают', 'checked' => true],
@@ -132,7 +131,7 @@ class OperatorController extends Controller
                 ['value' => 6, 'name' => '[DF] Отгружен и закрыт', 'checked' => true],
                 ['value' => 7, 'name' => '[C] Отменен', 'checked' => true],
             ];
-    
+
             if (isset($request->status)) {
                 foreach ($statuses as $key => $status) {
                     if (!in_array($status['value'], $request->status)) {
@@ -140,10 +139,10 @@ class OperatorController extends Controller
                     }
                 }
             }
-    
+
             $queryMaterial = 'index';
             $queryPlan = 'all';
-    
+
             if (isset($request->filters)) {
                 foreach ($request->filters as $key => $value) {
                     if ($key == 'created_at') {
@@ -164,11 +163,11 @@ class OperatorController extends Controller
                         if ($value['min']) {
                             $minDatePlanCkeck = $value['min'];
                         }
-    
+
                         if ($value['max']) {
-    
+
                             $maxDatePlanCheck = $value['max'];
-    
+
                             switch ($value['max']) {
                                 case $dateToday:
                                     $queryPlan = 'today';
@@ -196,7 +195,7 @@ class OperatorController extends Controller
                     }
                 }
             }
-    
+
             $filters = [
                 [
                     'type' => 'select',
@@ -213,7 +212,7 @@ class OperatorController extends Controller
                     //    'checked_value' => $queryMaterial,
                 ],
             ];
-    
+
             return view("operator.orders", compact(
                 'entityItems',
                 "resColumns",
@@ -221,7 +220,7 @@ class OperatorController extends Controller
                 "urlShow",
                 "urlDelete",
                 "urlEdit",
-             //   "urlCreate",
+                //   "urlCreate",
                 'urlFilter',
                 'filters',
                 'orderBy',
@@ -293,21 +292,20 @@ class OperatorController extends Controller
             $selected = $request->columns;
         } else {
             $selected = [
-                "name",
+                //   "name",
                 "created_at",
-                "counterparty_link",
+                //     "counterparty_link",
                 "contact_id",
-                "suma",
-                "status",
+                //    "suma",
+                //  "status",
                 "products_count",
-                "description",
+                //   "description",
+                //    "delivery_price",
+                //    "delivery_fee",
                 "delivery_id",
-                "delivery_price",
-                "delivery_fee",
-                "delivery_id",
-                "transport_type_id",
+                //    "transport_type_id",
                 "transport_id",
-                'ms_link',
+                //    'ms_link',
             ];
         }
 

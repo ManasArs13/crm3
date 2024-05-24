@@ -295,6 +295,8 @@
                                                     </path>
                                                 </svg>
                                             </a>
+                                        @elseif($column == 'created_at')
+                                            {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
