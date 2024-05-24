@@ -363,24 +363,6 @@ class OperatorController extends Controller
 
         $filters = [
             [
-                'type' => 'date',
-                'name' =>  'created_at',
-                'name_rus' => 'Дата создания',
-                'min' => substr($minCreated, 0, 10),
-                'minChecked' => $minCreatedCheck,
-                'max' => substr($maxCreated, 0, 10),
-                'maxChecked' => $maxCreatedCheck
-            ],
-            [
-                'type' => 'date',
-                'name' =>  'updated_at',
-                'name_rus' => 'Дата обновления',
-                'min' => substr($minUpdated, 0, 10),
-                'minChecked' => $minUpdatedCheck,
-                'max' => substr($maxUpdated, 0, 10),
-                'maxChecked' => $maxUpdatedCheck
-            ],
-            [
                 'type' => 'select',
                 'name' => 'material',
                 'name_rus' => 'Материал',
