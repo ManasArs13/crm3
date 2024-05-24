@@ -271,7 +271,7 @@
                             $totalCount = 0;
                             $totalShipped = 0;
                         @endphp
-                        
+
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalSum += $entityItem->sum;
@@ -290,7 +290,7 @@
                             @endforeach
 
                             <tr class="border-b-2">
- 
+
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[15rem] text-right overflow-auto px-2 py-4"
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
@@ -301,7 +301,6 @@
                                                 {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
                                             @elseif($column == 'transport_id')
                                                 {{ $entityItem->transport ? $entityItem->transport->name : '-' }}
-                                           
                                             @elseif($column == 'transport_type_id')
                                                 {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
                                             @elseif($column == 'status_id')
@@ -404,13 +403,14 @@
                                                     </path>
                                                 </svg>
                                             </a>
+                                        @elseif($column == 'date_plan')
+                                            {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
                                     </td>
                                 @endforeach
                             </tr>
-
                         @endforeach
 
                         <tr class="border-b-2 bg-gray-100">
