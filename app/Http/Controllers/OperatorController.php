@@ -55,6 +55,7 @@ class OperatorController extends Controller
             "name",
             "date_moment",
             "contact_id",
+            'sostav',
             "sum",
             "date_plan",
             "positions_count",
@@ -83,8 +84,7 @@ class OperatorController extends Controller
             "delivery_price_norm",
             "created_at",
             "updated_at",
-            "ms_id",
-            'sostav'
+            "ms_id"
         ];
 
         if (isset($request->columns)) {
@@ -281,6 +281,7 @@ class OperatorController extends Controller
             "name",
             "created_at",
             "contact_id",
+            'sostav',
             "suma",
             "status",
             "products_count",
