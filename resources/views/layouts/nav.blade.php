@@ -27,12 +27,12 @@
                     <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*')">
                         Отгрузки
                     </x-nav-link>
-                  
+
                     <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
                         Остатки
                     </x-nav-link>
 
-                    {{-- Окно оператора--}}
+                    {{-- Окно оператора --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -63,7 +63,7 @@
                         </x-dropdown>
                     </div>
 
-                    {{-- Товары--}}
+                    {{-- Товары --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -121,8 +121,8 @@
                                 <x-dropdown-link :href="route('outgoings.index')">
                                     Расход
                                 </x-dropdown-link>
-                                
-                                <x-dropdown-link  :href="route('supplies.index')">
+
+                                <x-dropdown-link :href="route('supplies.index')">
                                     Приёмки
                                 </x-dropdown-link>
                             </x-slot>
@@ -292,7 +292,7 @@
                                 <x-dropdown-link :href="route('shipment_products.index')">
                                     Позиции отгрузок
                                 </x-dropdown-link>
-                                
+
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -360,41 +360,142 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden">
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('dashboard') }}">Главная</a>
+            </div>
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('dashboard-2') }}">Блок</a>
+            </div>
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('dashboard-3') }}">Бетон</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('order.index') }}">Заказы</a>
+            </div>
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('shipment.index') }}">Отгрузки</a>
+            </div>
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('residual.index') }}">Остатки</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('operator.orders') }}">Оператор (Заказы)</a>
+            </div>
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('operator.shipments') }}">Оператор (Отгрузки)</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('product.index', ['type' => 'products']) }}">Товары</a>
+            </div>
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('product.index', ['type' => 'materials']) }}">Материалы</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('incomings.index') }}">Приход</a>
+            </div>
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('outgoings.index') }}">Расход</a>
+            </div>
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('supplies.index') }}">Приёмки</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('contact.index') }}">Контакты</a>
+            </div>
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('contactAmo.index') }}">Контакты АМО</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('techcharts.index') }}">Техкарты</a>
+            </div>
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('processings.index') }}">Техоперции</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('transport.index') }}">Транспорт</a>
+            </div>
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('transportType.index') }}">Виды ТС</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-row border-b border-gray-200">
+            <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('calculator.block') }}">Калькулятор</a>
+            </div>
+        </div>
+
+        <div class="py-1 px-2 flex flex-col border-b border-gray-200">
+            <div class="flex flex-row my-1">
+                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                    <a href="{{ route('delivery.index') }}">Доставка</a>
+                </div>
+                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                    <a href="{{ route('shiping_price.index') }}">Прайс (доставка)</a>
+                </div>
+                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                    <a href="{{ route('category.index') }}">Категории товаров</a>
+                </div>
+            </div>
+            <div class="flex flex-row">
+                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                    <a href="{{ route('order_positions.index') }}">Позиции заказов</a>
+                </div>
+                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
+                    <a href="{{ route('shipment_products.index') }}">Позиции отгрузок</a>
+                </div>
+            </div>
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+
+            <div class="py-1 px-2 flex flex-col border-b border-gray-200">
+                <div class="flex flex-row">
+                    <div class="basis-1/2  text-center mx-1 rounded-sm">
+                        <a href="{{ route('option.index') }}">Опции</a>
+                    </div>
+                    <div class="basis-1/2 text-center mx-1 rounded-sm">
+                        <a href="{{ route('profile.edit') }}">Профиль</a>
+                    </div>
+                </div>
+
+                <div class="basis-full text-center mx-auto rounded-sm">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
             </div>
 
-            <div class="mt-3 space-y-1">
-
-                <x-dropdown-link :href="route('option.index')">
-                    Опции
-                </x-dropdown-link>
-
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
         </div>
     </div>
 </nav>
