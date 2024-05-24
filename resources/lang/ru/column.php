@@ -134,6 +134,7 @@
    'outgoing' => 'Расход',
    "moment" => "Фактическая дата",
    'tech_chart_id' => 'Техкарта',
-   'processing_id' => "Техпроцесс"
+   'processing_id' => "Техпроцесс",
+   'sostav' => 'Состав',
 
       ];

@@ -296,6 +296,8 @@
                                             </a>
                                         @elseif($column == 'created_at')
                                             {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                                        @elseif($column == 'sostav')
+                                            {{ $entityItem->products[0]->product->name }}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif

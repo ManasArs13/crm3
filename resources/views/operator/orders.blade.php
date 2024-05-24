@@ -405,6 +405,8 @@
                                             </a>
                                         @elseif($column == 'date_plan')
                                             {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                                        @elseif($column == 'sostav')
+                                            {{ $entityItem->positions[0]->product->name}}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
