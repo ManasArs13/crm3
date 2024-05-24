@@ -454,7 +454,7 @@
                             $totalCount = 0;
                             $totalShipped = 0;
                         @endphp
-                        
+
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalSum += $entityItem->sum;
@@ -602,6 +602,12 @@
                                                     </path>
                                                 </svg>
                                             </a>
+                                        @elseif($column == 'sostav')
+                                            @if ($entityItem->positions[0] && isset($entityItem->positions[0]->product))
+                                                {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->name : '-' }}
+                                            @else
+                                                -
+                                            @endif
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif

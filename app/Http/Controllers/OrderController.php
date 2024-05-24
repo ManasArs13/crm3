@@ -28,7 +28,7 @@ class OrderController extends Controller
         $entityName = 'Заказы';
 
         // Orders
-        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions:order_id,id,quantity', 'shipments');
+        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
@@ -50,6 +50,7 @@ class OrderController extends Controller
             "name",
             "date_moment",
             "contact_id",
+            "sostav",
             "sum",
             "date_plan",
             "positions_count",
@@ -87,6 +88,7 @@ class OrderController extends Controller
             $selected = [
                 "name",
                 "contact_id",
+                "sostav",
                 'status_shipped',
                 "sum",
                 "date_plan",

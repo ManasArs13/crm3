@@ -26,6 +26,7 @@ class DashboardService
         $this->columns = [
             "name",
             "contact_id",
+            "sostav",
             "sum",
             "date_plan",
             "status_id",

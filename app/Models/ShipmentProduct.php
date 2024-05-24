@@ -23,7 +23,7 @@ class ShipmentProduct extends Model
      */
     public function shipment()
     {
-        return $this->belongsTo(Shipment::class);
+        return $this->hasOne(Shipment::class, 'id', 'shipment_id');
     }
 
     public function product()
