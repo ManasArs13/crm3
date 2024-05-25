@@ -26,12 +26,14 @@ class CounterpartyMsService
                 $msCounterparty["id"]=\Arr::exists($counterparty[0],"id")?$counterparty[0]["id"]:null;
             }
         }
+        $array=$msCounterparty;
+        unset($array["id"]);
 
 
         if (!isset($msCounterparty["id"]) || $msCounterparty["id"]==null) {
-            return $this->moySkladService->actionPostRowsFromJson($urlCounterparty, $msCounterparty);
+            return $this->moySkladService->actionPostRowsFromJson($urlCounterparty, $array);
         }else{
-            return $this->moySkladService->actionPutRowsFromJson($urlCounterparty.$msCounterparty["id"], $msCounterparty);
+            return $this->moySkladService->actionPutRowsFromJson($urlCounterparty.$msCounterparty["id"], $array);
         }
     }
 }

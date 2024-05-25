@@ -185,16 +185,8 @@ class MoySkladService
 
             $statusCode = $response->getStatusCode();
 
-
             if ($statusCode == 200) {
-
-                $content = json_decode($response->getBody()->getContents());
-                $array = ["isGood" => true, "id" => $content->id];
-
-                if (isset($content->name)) {
-                    $array["name"] = $content->name;
-                }
-                return $array;
+                return json_decode($response->getBody()->getContents());
             } else {
                 return ["isGood" => false, "errors" => $response->getContent(false)];
             }

@@ -15,9 +15,11 @@ class CalculatorController extends Controller
     {
         try {
             $array = $request->post();
+            if ($array["deliveryPlannedMoment"]!=null)
+                $array["deliveryPlannedMoment"]=$array["deliveryPlannedMoment"]." 00:00:00.000";
             $result = $orderMsService->updateOrderMs($array);
 
-            return new Response($result["name"], 200);
+            return new Response("Order #".$result->name, 200);
         } catch (\Exception $exception) {
             return new Response($exception->getMessage()."-^-".$exception->getCode()."-^-".$exception->getLine()."-^-".$exception->getFile(), 500);
         }

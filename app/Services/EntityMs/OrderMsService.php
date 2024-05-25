@@ -42,23 +42,26 @@ class OrderMsService
         if (isset($msOrder["positions"])) {
             $array["positions"] = [];
             foreach ($msOrder["positions"] as $position) {
-                $array["positions"][] = [
-                    "quantity" => (float)$position["quantity"],
-                    "price" => (float)$position["price"] * 100,
-                    "assortment" => [
-                        "meta" => [
-                            "href" => $urlProduct . $position["product_id"],
-                            "type" => "product",
-                            "mediaType" => "application/json"
+                if ($position["quantity"]!=0){
+                    $array["positions"][] = [
+                        "quantity" => (float)$position["quantity"],
+                        "price" => (float)$position["price"] * 100,
+                        "assortment" => [
+                            "meta" => [
+                                "href" => $urlProduct . $position["product_id"],
+                                "type" => "product",
+                                "mediaType" => "application/json"
+                            ]
                         ]
-                    ]
-                ];
+                    ];
+                }
             }
         }
 
         if (isset($msOrder["description"])){
             $array["description"]=$msOrder["description"];
         }
+
 
         if (isset($msOrder["deliveryPlannedMoment"])){
             $array["deliveryPlannedMoment"]=$msOrder["deliveryPlannedMoment"];
