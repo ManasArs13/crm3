@@ -174,7 +174,7 @@ $(document).ready(function(){
             $("#message").text(data);
           },
           error: function(response) {
-            $("#message").text(response.trace);
+            $("#message").text(response.responseText);
           }
         });
     });
