@@ -1,9 +1,12 @@
+import Inputmask from "inputmask";
+
 $(document).ready(function(){
+    Inputmask({"mask": "+79999999999"}).mask(".phone");
 
     $("body").on("change", ".CMR__change_js", function() {
         let quantity=$(this).val();
         let group=$(this).data("id");
-        let select=$('[name="category['+group+'][product]"]');
+        let select=$('[name="positions['+group+'][product_id]"]');
         let price=select.find('option:selected').data("price");
         let weight=select.find('option:selected').data("weight");
 
@@ -15,15 +18,15 @@ $(document).ready(function(){
     $("body").on("change", ".CEB__select_color_js", function() {
         let select=$(this);
         let group=$(this).data("id");
-        let quantity=$('[name="category['+group+'][number]"]').val();
+        let quantity=$('[name="positions['+group+'][quantity]"]').val();
 
         let price=select.find('option:selected').data("price");
         let weight=select.find('option:selected').data("weight");
 
+        $("#price_client_"+group).text(price);
+        $('[name="positions['+group+'][price]"]').val(price);
         $("#weight_total_"+group).text(weight*quantity);
         $("#price_total_"+group).text(price*quantity);
-
-
 
         calculation();
     });
@@ -42,6 +45,7 @@ $(document).ready(function(){
 
         $("#weight_total").text(weigth_total);
         $("#price_total").text(price_total);
+        calcDelivery();
     };
 
 
@@ -160,7 +164,20 @@ $(document).ready(function(){
         }
     }; //end function
 
-
+    $('#form').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+          url: "api/order_ms/create",
+          type: "POST",
+          data: $('#form').serialize(),
+          success: function(data) {
+            $("#message").text(data);
+          },
+          error: function(response) {
+            $("#message").text(response.trace);
+          }
+        });
+    });
 
 
 

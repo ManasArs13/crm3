@@ -159,7 +159,7 @@ class MoySkladService
             $statusCode = $response->getStatusCode();
 
             if ($statusCode == 200) {
-                return true;
+                return json_decode($response->getBody()->getContents());
             } else {
                 return false;
             }

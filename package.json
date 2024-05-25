@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@alpinejs/mask": "^3.13.7",
-        "chart.js": "^4.4.1"
+        "chart.js": "^4.4.1",
+        "inputmask": "^5.0.8"
     }
 }

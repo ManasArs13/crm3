@@ -45,22 +45,6 @@ class CalculatorController extends Controller
             ];
         }
 
-
-        // $dekor_gray = Product::query()->select('price')->where('name', '=', 'Декор (серый)')->first()?->price;
-        // $dekor_color = Product::query()->select('price')->where('name', '=', 'Декор (красный)')->first()?->price;
-
-        // $parapet_gray = Product::query()->select('price')->where('name', '=', 'Парапет 390*190*60 (серый)')->first()?->price;
-        // $parapet_color = Product::query()->select('price')->where('name', '=', 'Парапет 390*190*60 (красный)')->first()?->price;
-
-        // $cap_gray = Product::query()->select('price')->where('name', '=', 'Крышка на колонну 390*390*60 (серая)')->first()?->price;
-        // $cap_color = Product::query()->select('price')->where('name', '=', 'Крышка на колонну 390*390*60 (красная)')->first()?->price;
-
-        // $column_gray = Product::query()->select('price')->where('name', '=', 'Колонна 280*190*280 (серая)')->first()?->price;
-        // $column_color = Product::query()->select('price')->where('name', '=', 'Колонна 280*190*280 (красная)')->first()?->price;
-
-        // $block12_gray = Product::query()->select('price')->where('name', '=', 'Заборный блок  120*190*390 (серый)')->first()?->price;
-        // $block12_color = Product::query()->select('price')->where('name', '=', 'Заборный блок 120*190*390 (красный)')->first()?->price;
-
         return view(
             "calculator.block",
             compact(
