@@ -85,10 +85,10 @@
                     <tbody>
                         @foreach ($tech_chart_materials as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->id }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     <a class="text-blue-700 hover:text-blue-500"
                                     href="{{ route('techcharts.show', ['techchart' => $product->tech_chart_id]) }}">
                                         {{ $product->tech_chart_id }}
@@ -98,14 +98,14 @@
                                     <a href="{{ route('product.show', ['product' => $product->product_id]) }}">
                                         {{ $product->product_id }}
                                     </a>
-                                </td class="break-all max-w-96 overflow-hidden px-6 py-4">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                </td>
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->quantity }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->created_at }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->updated_at }}
                                 </td>
                             </tr>

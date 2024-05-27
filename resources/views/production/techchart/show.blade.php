@@ -40,13 +40,13 @@
                     </thead>
                     <tbody>
                         <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $tech_chart->id }}
                             </td>
                             <td class="break-all max-w-96 overflow-hidden px-6 py-4">
                                 {{ $tech_chart->name }}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $tech_chart->cost }}
                             </td>
                         </tr>
@@ -96,7 +96,7 @@
                     <tbody>
                         @foreach ($tech_chart->products as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->id }}
                                 </td>
                                 <td class="break-all max-w-96 overflow-hidden px-6 py-4">
@@ -105,7 +105,7 @@
                                         {{ $product->name }}
                                     </a>
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->quantity }}
                                 </td>
                             </tr>
@@ -145,7 +145,7 @@
                     <tbody>
                         @foreach ($tech_chart->materials as $product)
                         <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $product->pivot->id }}
                             </td>
                             <td class="break-all max-w-96 overflow-hidden px-6 py-4">
@@ -154,7 +154,7 @@
                                     {{ $product->name }}
                                 </a>
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $product->pivot->quantity }}
                             </td>
                         </tr>

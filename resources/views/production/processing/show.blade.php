@@ -49,10 +49,10 @@
                     </thead>
                     <tbody>
                         <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $processing->id }}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 @if ($processing->tech_chart)
                                     <a class="text-blue-700 hover:text-blue-500"
                                         href="{{ route('techcharts.show', ['techchart' => $processing->tech_chart->id]) }}">
@@ -62,16 +62,16 @@
                                     {{ __('column.no') }}
                                 @endif
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $processing->quantity }}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $processing->hours }}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $processing->cycles }}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                 {{ $processing->defective }}
                             </td>
                         </tr>
@@ -124,10 +124,10 @@
                     <tbody>
                         @foreach ($processing->products as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->id }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     <a class="text-blue-700 hover:text-blue-500"
                                     href="{{ route('product.show', ['product' => $product->id]) }}">
                                         {{ $product->id }}
@@ -136,7 +136,7 @@
                                 <td class="break-all max-w-96 overflow-hidden px-6 py-4">
                                     {{ $product->name }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->quantity }}
                                 </td>
                             </tr>
@@ -179,10 +179,10 @@
                     <tbody>
                         @foreach ($processing->materials as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->id }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     <a class="text-blue-700 hover:text-blue-500" 
                                     href="{{ route('product.show', ['product' => $product->id]) }}">
                                         {{ $product->id }}
@@ -191,7 +191,7 @@
                                 <td class="break-all max-w-96 overflow-hidden px-6 py-4">
                                     {{ $product->name }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->quantity }}
                                 </td>
                             </tr>

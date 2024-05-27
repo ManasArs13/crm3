@@ -73,7 +73,7 @@
                     <tbody>
                         @foreach ($supplies as $supply)
                             <tr class="border-b-2">
-                                <td class="px-6 py-4 text-blue-600">
+                                <td class="px-6 py-4 text-blue-600 text-right">
                                     <a href="{{ route('supplies.show', ['supply' => $supply->id]) }}">
                                         {{ $supply->id }}
                                     </a>
@@ -83,7 +83,7 @@
                                         {{ $supply->name }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $supply->moment }}
                                 </td>
                                 <td class="text-blue-600">
@@ -95,13 +95,13 @@
                                      {{ __('column.no') }}
                                      @endif
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $supply->sum }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $supply->incoming_number }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $supply->incoming_date }}
                                 </td>
                                 <td class="px-6 py-4 break-all max-w-[24rem] overflow-auto">

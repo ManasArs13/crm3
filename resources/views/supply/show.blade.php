@@ -45,7 +45,7 @@
                     </thead>
                     <tbody>
                         <tr class="border-b-2">
-                            <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
                                 {{ $supply->id }}
                             </td>
                             <td class="break-all max-w-[24rem] overflow-x-auto px-6 py-4 text-blue-600">
@@ -57,13 +57,13 @@
                                     {{ __('column.no') }}
                                 @endif
                             </td>
-                            <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
                                 {{ $supply->sum }}
                             </td>
-                            <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
                                 {{ $supply->incoming_number }}
                             </td>
-                            <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
                                 {{ $supply->incoming_date }}
                             </td>
                         </tr>
@@ -127,10 +127,10 @@
                                         {{ $product->name }}
                                     </a>
                                 </td>
-                                <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->quantity }}
                                 </td>
-                                <td class="break-all max-w-32 overflow-hidden px-6 py-4">
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
                                     {{ $product->pivot->price }}
                                 </td>
                             </tr>
