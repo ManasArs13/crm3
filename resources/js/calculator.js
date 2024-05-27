@@ -3,12 +3,21 @@ import Inputmask from "inputmask";
 $(document).ready(function(){
     Inputmask({"mask": "+79999999999"}).mask(".phone");
 
-    $("body").on("change", ".CMR__change_js", function() {
+    $("body").on("change", ".change_js", function() {
         let quantity=$(this).val();
         let group=$(this).data("id");
+        let isColor=$(this).data("color");
+        let price=0;
+        let weight=0;
         let select=$('[name="positions['+group+'][product_id]"]');
-        let price=select.find('option:selected').data("price");
-        let weight=select.find('option:selected').data("weight");
+
+        if (isColor){
+            price=select.find('option:selected').data("price");
+            weight=select.find('option:selected').data("weight");
+        }else{
+            price=select.data("price");
+            weight=select.data("weight");
+        }
 
         $("#weight_total_"+group).text(weight*quantity);
         $("#price_total_"+group).text(price*quantity);
@@ -45,6 +54,14 @@ $(document).ready(function(){
 
         $("#weight_total").text(weigth_total);
         $("#price_total").text(price_total);
+
+
+        $(".CEB__select_color_js").each(function() {
+            $(this).css({
+                "backgroundColor": $(this).find("option:selected").attr("data-codecolor"),
+                "color": $(this).find("option:selected").attr("data-codecolortext"),
+            });
+        });
         calcDelivery();
     };
 
@@ -164,12 +181,12 @@ $(document).ready(function(){
         }
     }; //end function
 
-    $('#form').submit(function(e){
+    $('.form').submit(function(e){
         e.preventDefault();
         $.ajax({
           url: "api/order_ms/create",
           type: "POST",
-          data: $('#form').serialize(),
+          data: $(this).serialize(),
           success: function(data) {
             $("#message").text(data);
           },
@@ -179,7 +196,9 @@ $(document).ready(function(){
         });
     });
 
-
-
+    $("body").on("click", ".tab-link", function(){
+        $(".tab-link.active").removeClass("active");
+        $(this).addClass("active");
+    });
 
 });

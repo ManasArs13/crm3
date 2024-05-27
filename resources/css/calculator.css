@@ -27,7 +27,7 @@
 
 .CEB {
 	max-width: 1200px;
-	width    : 96%;
+	width    : 100%;
 	margin   : 20px auto;
 }
 
@@ -334,6 +334,37 @@
 	padding      : 3px 12px;
 	border-radius: 4px;
 	cursor       : pointer;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+}
+
+.tabs .tab-link {
+    display: block;
+    background: #33baff;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.tabs .tab-link:hover{
+    background-color: #198dc8;
+}
+
+.tab-link.active{
+    background-color: #198dc8;
+}
+
+.tab-content{
+    display:none;
+}
+
+.tab-content:target {
+    display: block;
 }
 
 @media only screen and (max-width : 1199px) {

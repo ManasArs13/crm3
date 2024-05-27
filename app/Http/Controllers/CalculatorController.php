@@ -37,8 +37,45 @@ class CalculatorController extends Controller
         $block12_gray = Product::query()->where('name', '=', 'Заборный блок  120*190*390 (серый)')->first()?->price;
         $block12_color = Product::query()->where('name', '=', 'Заборный блок 120*190*390 (красный)')->first()?->price;
 
+
+        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orderBy("name","asc")->get();
+        $betonProducts =  Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->Where("category_id","4a3126bc-262d-11ee-0a80-011a00246492")->orderBy("name","asc")->get();
+
+        $productsByGroup=[];
+        $productsByBeton=[];
+
+        foreach($products as $product){
+            if ($product->ms_id=="a656eb95-be75-11ee-0a80-15e100320243"){
+                $product->category_id=$product->category_id."_1";
+                $product->category->name=$product->name;
+            }
+
+            $productsByGroup[$product->category_id]["name"] = $product->category->name;
+            $productsByGroup[$product->category_id]["id"] = $product->category_id;
+
+            if ($product->color!=null){
+                $productsByGroup[$product->category_id]["colors"][] = [
+                        "id" => $product->color_id,
+                        "hex"=>$product->color->hex,
+                        "name"=>$product->color->name,
+                        "font_color"=>$product->color->font_color,
+                        "price" => $product->price,
+                        "product" => $product->ms_id,
+                        "weight" => ceil($product->weight_kg)
+                ];
+            }
+        }
+
+        foreach($betonProducts as $product){
+            $productsByBeton[$product->id]["name"] = $product->name;
+            $productsByBeton[$product->id]["id"] = $product->id;
+            $productsByBeton[$product->id]["price"] = $product->price;
+            $productsByBeton[$product->id]["weight"] = ceil($product->weight_kg);
+            $productsByBeton[$product->id]["product"] = $product->ms_id;
+        }
+
         return view(
-            "calculator.block",
+            "calculator.calculator",
             compact(
                 "needMenuForItem",
                 "entity",
@@ -54,7 +91,9 @@ class CalculatorController extends Controller
                 "block12_color",
                 'deliveries',
                 'vehicleTypes',
-                'shippingPrices'
+                'shippingPrices',
+                'productsByGroup',
+                'productsByBeton'
             )
         );
     }
@@ -74,22 +113,30 @@ class CalculatorController extends Controller
                                 ->get();
 
         $shippingPrices = ShipingPrice::select('distance', 'tonnage', 'price', 'transport_type_id')->get();
-        $products = Product::select("id", "ms_id", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orderBy("name","asc")->get();
+        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orWhere("ms_id","a656eb95-be75-11ee-0a80-15e100320243")->orderBy("name","asc")->get();
 
         $productsByGroup=[];
 
         foreach($products as $product){
+            if ($product->ms_id=="a656eb95-be75-11ee-0a80-15e100320243"){
+                $product->category_id=$product->category_id."_1";
+                $product->category->name=$product->name;
+            }
+
             $productsByGroup[$product->category_id]["name"] = $product->category->name;
             $productsByGroup[$product->category_id]["id"] = $product->category_id;
-            $productsByGroup[$product->category_id]["colors"][] = [
-                "id" => $product->color_id,
-                "name" => $product->color->name,
-                "hex"=>$product->color->hex,
-                "font_color"=>$product->color->font_color,
-                "price" => $product->price,
-                "product" => $product->ms_id,
-                "weight" => ceil($product->weight_kg)
-            ];
+
+            if ($product->color!=null){
+                $productsByGroup[$product->category_id]["colors"][] = [
+                        "id" => $product->color_id,
+                        "hex"=>$product->color->hex,
+                        "name"=>$product->color->name,
+                        "font_color"=>$product->color->font_color,
+                        "price" => $product->price,
+                        "product" => $product->ms_id,
+                        "weight" => ceil($product->weight_kg)
+                ];
+            }
         }
 
         return view(

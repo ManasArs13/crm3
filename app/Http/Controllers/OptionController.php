@@ -118,7 +118,7 @@ class OptionController extends Controller
         $resColumnsAll = [];
 
           /* Колонки для меню */
-          foreach ($columns as $column) {
+        foreach ($columns as $column) {
             $resColumnsAll[$column] = [
                 'name_rus' => trans("column." . $column),
                 'checked' => in_array($column, $request->columns ? $request->columns : []) ? true : false
