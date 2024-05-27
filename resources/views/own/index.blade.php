@@ -220,6 +220,10 @@
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[28rem] overflow-hidden px-6 py-4"
+                                        @if (is_int($entityItem->$column) ||
+                                                $column == 'weight_kg' ||
+                                                $column == 'category_id' ||
+                                                preg_match('/_id\z/u', $column)) style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
