@@ -190,25 +190,25 @@
                                 <tbody>
                                     @foreach ($products as $techchart)
                                         <tr class="border-b-2">
-                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                                 <a href="{{ route('techcharts.show', ['techchart' => $techchart->id]) }}"
                                                     class="text-blue-500 hover:text-blue-600">
                                                     {{ $techchart->id }}
                                                 </a>
                                             </td>
-                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                                 {{ $techchart->name }}
                                             </td>
-                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                                 {{ $techchart->moment }}
                                             </td>
-                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                                 {{ $techchart->created_at }}
                                             </td>
-                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                                 {{ $techchart->updated_at }}
                                             </td>
-                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                                 {{ $techchart->cost }}
                                             </td>
                                             <td class="break-all max-w-96 overflow-hidden px-6 py-4">
