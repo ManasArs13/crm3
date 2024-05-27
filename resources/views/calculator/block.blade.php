@@ -10,6 +10,7 @@
     </x-slot>
 
     <div class="CEB w-11/12 max-w-7xl mx-auto py-4 pb-10" id="CEB">
+    <a href="{{route("calculator.concrete")}}">Блоки</a>
         <div class="CEB__wrapContent df">
             <div class="CEB__left">
                 <div class="CEB__row">
@@ -168,6 +169,8 @@
             let vehicleType = $('#vehicleType').val();
             let ratio = 1;
             $('#resultAll').text(0);
+console.log(shippingPrices)
+            //function setResult;
 
             let resultParams = {
                 "block12": {
@@ -228,10 +231,10 @@
             let columnHeight = 140; // Высота колоны
             let numberType = ""; // номер типа забора
 
-            // let lengthWalls = 0; // 	"Длина стен общая за вычетом длины колонны"	
-            // let lengthColumns = 0; // "Длина колонн общая кол-во колонн умноженная на 0,28 (длина колонны)"	
-            // let rowsBlocks = 0; // "Рядов блоков в длину по 40 см длина общая без колон деленная на 0,4 +округл"	
-            // let verticalRows = 0; // "вертикальных рядов блока  20 см зависит от высоты забора "	
+            // let lengthWalls = 0; // 	"Длина стен общая за вычетом длины колонны"
+            // let lengthColumns = 0; // "Длина колонн общая кол-во колонн умноженная на 0,28 (длина колонны)"
+            // let rowsBlocks = 0; // "Рядов блоков в длину по 40 см длина общая без колон деленная на 0,4 +округл"
+            // let verticalRows = 0; // "вертикальных рядов блока  20 см зависит от высоты забора "
 
             let weight_zakaz = 0; // вес заказа
             let total_zakaz = 0; // всего за заказ

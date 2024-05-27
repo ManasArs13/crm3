@@ -18,6 +18,8 @@ class ColorService implements EntityInterface
             }
 
             $entity->name = $row['name'];
+            $entity->hex = (\Arr::exists($row, 'code') && trim($row["code"]) != '') ? $row['code'] : 000000;
+            $entity->font_color = (\Arr::exists($row, 'description') && trim($row["description"]) != '') ? $row['description'] : 000000;
 
             $entity->save();
         }
