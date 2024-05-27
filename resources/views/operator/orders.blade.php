@@ -293,6 +293,20 @@
 
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[15rem] text-right overflow-auto px-2 py-4"
+                                        @if (
+                                            (is_int($entityItem->$column) ||
+                                                $column == 'payed_sum' ||
+                                                $column == 'sum' ||
+                                                $column == 'positions_count' ||
+                                                $column == 'residual_count' ||
+                                                $column == 'shipped_count' ||
+                                                $column == 'shipped_sum' ||
+                                                $column == 'reserved_sum' ||
+                                                $column == 'weight' ||
+                                                $column == 'date_plan' ||
+                                                $column == 'debt') &&
+                                                !preg_match('/_id\z/u', $column) &&
+                                                $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
@@ -406,7 +420,7 @@
                                         @elseif($column == 'date_plan')
                                             {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
                                         @elseif($column == 'sostav')
-                                            {{ $entityItem->positions[0]->product->name}}
+                                            {{ $entityItem->positions[0]->product->name }}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif
