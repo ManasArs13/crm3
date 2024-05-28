@@ -18,15 +18,15 @@
         </div>
 
         <div class="tab-content" id="content-1">
-            @include("calculator.fence");
+            @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence));
         </div>
 
         <div class="tab-content" id="content-2">
-            @include("calculator.block");
+            @include("calculator.block", array("left_menu"=>false));
         </div>
 
         <div class="tab-content" id="content-3">
-            @include("calculator.block", array('productsByGroup' => $productsByBeton));
+            @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton));
         </div>
     </div>
 </x-app-layout>

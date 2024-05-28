@@ -51,7 +51,6 @@
 
 }
 
-
 .CEB__row {
 	margin          : 12px 0;
 	background-color: #ffffff;
@@ -365,6 +364,10 @@
 
 .tab-content:target {
     display: block;
+}
+
+input[type="number"]{
+    width: 80px;
 }
 
 @media only screen and (max-width : 1199px) {
