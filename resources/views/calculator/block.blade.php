@@ -123,7 +123,7 @@
             @else
                 <div class="CEB">
             @endif
-                <form class="form {{($left_menu)?'formCalc':''}}">
+                <form class="{{$form}}">
                     @csrf
                     <div class="CEB__row">
                         <div class="CEB__text2">Результат</div>

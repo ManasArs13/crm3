@@ -21,7 +21,7 @@ class CalculatorController extends Controller
                     ->whereNot('ms_id', 'c518da75-a146-11ec-0a80-0da500133bca')
                     ->orderBy('name', 'asc')
                     ->get();
-                    
+
         $shippingPrices = json_encode(ShipingPrice::get());
 
         $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orderBy("name","asc")->get();
@@ -79,58 +79,6 @@ class CalculatorController extends Controller
                 'shippingPrices',
                 'productsByGroup',
                 'productsByBeton'
-            )
-        );
-    }
-
-    public function concrete()
-    {
-        $deliveries = Delivery::select('id', 'ms_id', 'name', 'distance')
-                                ->whereNot('ms_id', '28803b00-5c8f-11ea-0a80-02ed000b1ce1')
-                                ->orderBy('name', 'asc')
-                                ->get();
-
-        $vehicleTypes = TransportType::select('id', 'ms_id', 'name')
-                                ->whereNot('ms_id', '5c2ad6bd-3dcf-11ee-0a80-105c001170bb')
-                                ->whereNot('ms_id', '8caf01fa-34f2-11ee-0a80-139c002ba64a')
-                                ->whereNot('ms_id', 'c518da75-a146-11ec-0a80-0da500133bca')
-                                ->orderBy('name', 'asc')
-                                ->get();
-
-        $shippingPrices = ShipingPrice::select('distance', 'tonnage', 'price', 'transport_type_id')->get();
-        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orWhere("ms_id","a656eb95-be75-11ee-0a80-15e100320243")->orderBy("name","asc")->get();
-
-        $productsByGroup=[];
-
-        foreach($products as $product){
-            if ($product->ms_id=="a656eb95-be75-11ee-0a80-15e100320243"){
-                $product->category_id=$product->category_id."_1";
-                $product->category->name=$product->name;
-            }
-
-            $productsByGroup[$product->category_id]["name"] = $product->category->name;
-            $productsByGroup[$product->category_id]["id"] = $product->category_id;
-
-            if ($product->color!=null){
-                $productsByGroup[$product->category_id]["colors"][] = [
-                        "id" => $product->color_id,
-                        "hex"=>$product->color->hex,
-                        "name"=>$product->color->name,
-                        "font_color"=>$product->color->font_color,
-                        "price" => $product->price,
-                        "product" => $product->ms_id,
-                        "weight" => ceil($product->weight_kg)
-                ];
-            }
-        }
-
-        return view(
-            "calculator.concrete",
-            compact(
-                'productsByGroup',
-                'deliveries',
-                'vehicleTypes',
-                'shippingPrices'
             )
         );
     }

@@ -8,7 +8,7 @@
         </select>
         <select name="attributes[vehicle_type][id]" class="change_delivery" style="border: 1px solid gray;padding: 4px;width:40%;" id="vehicleType">
             @foreach ($vehicleTypes as $type)
-            <option value="{{ $type->ms_id }}" style="margin: 4px;">{{ $type->name }}</option>
+            <option data-type='{{$type->id}}'  value="{{ $type->ms_id }}" style="margin: 4px;">{{ $type->name }}</option>
             @endforeach
         </select>
     </div>

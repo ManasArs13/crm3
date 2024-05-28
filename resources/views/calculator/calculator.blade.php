@@ -18,16 +18,19 @@
         </div>
 
         <div class="tab-content" id="content-1">
-            @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence));
+            @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence, 'form'=>"calcFence"))
         </div>
 
         <div class="tab-content" id="content-2">
-            @include("calculator.block", array("left_menu"=>false));
+            @include("calculator.block", array("left_menu"=>false, 'form'=>'calcBlock'))
         </div>
 
         <div class="tab-content" id="content-3">
-            @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton));
+            @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton'))
         </div>
     </div>
 </x-app-layout>
+<script>
+  let shippingPrices= {!! $shippingPrices !!};
+</script>
 
