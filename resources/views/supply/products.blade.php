@@ -72,12 +72,12 @@
                     <tbody>
                         @foreach ($supply_products as $product)
                             <tr class="border-b-2">
-                                <td class="px-6 py-4 text-blue-600">
+                                <td class="px-6 py-4 text-blue-600 text-right">
                                     <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
                                         {{ $product->id }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-4 text-blue-600">
+                                <td class="px-6 py-4 text-blue-600 text-right">
                                     @if ($product->supply)
                                         <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
                                             {{ $product->supply->name }}
@@ -95,16 +95,16 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $product->quantity }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $product->price }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $product->created_at }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $product->updated_at }}
                                 </td>
                             </tr>

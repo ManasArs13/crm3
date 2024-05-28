@@ -125,15 +125,15 @@
                                     <td class="text-nowrap px-3 py-4">
                                     </td>
                                 @endif
-                                <td class="px-6 py-4 text-blue-600">
+                                <td class="px-6 py-4 text-blue-600 text-right">
                                     <a href="{{ route('outgoings.show', ['outgoing' => $outgoing->id]) }}">
                                         {{ $outgoing->id }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $outgoing->created_at }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-right">
                                     {{ $outgoing->updated_at }}
                                 </td>
                                 <td class="text-blue-600">

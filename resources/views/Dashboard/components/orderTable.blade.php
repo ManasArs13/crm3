@@ -183,6 +183,20 @@
                         </td>
                         @foreach ($resColumns as $column => $title)
                             <td class="break-all max-w-[15rem] overflow-auto px-2 py-4"
+                                @if (
+                                    (is_int($shipment->$column) ||
+                                        $column == 'payed_sum' ||
+                                        $column !== 'status' ||
+                                        $column !== 'description' ||
+                                        $column == 'positions_count' ||
+                                        $column == 'residual_count' ||
+                                        $column == 'shipped_count' ||
+                                        $column == 'shipped_sum' ||
+                                        $column == 'reserved_sum' ||
+                                        $column == 'weight' ||
+                                        $column == 'debt') &&
+                                        !preg_match('/_id\z/u', $column) &&
+                                        $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
                                 @if ($shipment->$column) title="{{ $shipment->$column }}" @endif>
                                 @if (preg_match('/_id\z/u', $column))
                                     @if ($column == 'contact_id')

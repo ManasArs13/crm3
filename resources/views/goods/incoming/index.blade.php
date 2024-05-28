@@ -125,15 +125,15 @@
                                     <td class="text-nowrap px-3 py-4">
                                     </td>
                                 @endif
-                                <td class="text-blue-600 break-all max-w-[20rem] overflow-auto px-3 py-4">
+                                <td class="text-blue-600 break-all max-w-[20rem] overflow-auto px-3 py-4 text-right">
                                     <a href="{{ route('incomings.show', ['incoming' => $incoming->id]) }}">
                                         {{ $incoming->id }}
                                     </a>
                                 </td>
-                                <td class="break-all max-w-[20rem] overflow-auto px-3 py-4">
+                                <td class="break-all max-w-[20rem] overflow-auto px-3 py-4 text-right">
                                     {{ $incoming->created_at }}
                                 </td>
-                                <td class="break-all max-w-[20rem] overflow-auto px-3 py-4">
+                                <td class="break-all max-w-[20rem] overflow-auto px-3 py-4 text-right">
                                     {{ $incoming->updated_at }}
                                 </td>
                                 <td class="text-blue-600 break-all max-w-[20rem] overflow-auto px-3 py-4">
@@ -148,7 +148,7 @@
                                 <td class="break-all max-w-[20rem] overflow-auto px-3 py-4">
                                     {{ $incoming->description }}
                                 </td>
-                                <td class="break-all max-w-[20rem] overflow-auto px-3 py-4">
+                                <td class="break-all max-w-[20rem] overflow-auto px-3 py-4 text-right">
                                     {{ $incoming->summa }}
                                 </td>
 

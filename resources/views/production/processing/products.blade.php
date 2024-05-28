@@ -258,6 +258,13 @@
 
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[20rem] overflow-auto px-3 py-4"
+                                    @if ((is_int($entityItem->$column) ||
+                                            $column == 'processing_id' ||
+                                            $column == 'quantity' ||
+                                            $column == 'sum' ||
+                                            $column == 'created_at' ||
+                                            $column == 'updated_at') &&
+                                            !preg_match('/_id\z/u', $column)) style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                                         @if ($column == 'name' || $column == 'id')
@@ -291,7 +298,7 @@
                         <tr class="border-b-2 bg-gray-100">
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'quantity')
-                                    <td class="px-3 py-4">
+                                    <td class="px-3 py-4 text-right">
                                         {{ $totalQuantity }}
                                     </td>
                                 @else

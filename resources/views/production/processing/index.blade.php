@@ -276,6 +276,13 @@
 
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[20rem] overflow-auto px-3 py-4"
+                                    @if ((is_int($entityItem->$column) ||
+                                            $column == 'quantity' ||
+                                            $column == 'sum' ||
+                                            $column == 'moment' ||
+                                            $column == 'created_at') &&
+                                            !preg_match('/_id\z/u', $column) &&
+                                            $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                                         @if ($column == 'name' || $column == 'id')
@@ -324,7 +331,7 @@
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
                                         <a href="{{ route('processings.show', $entityItem->id) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->id }}
@@ -338,11 +345,11 @@
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->quantity }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->sum }}
                                     </td>
 
@@ -362,7 +369,7 @@
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
                                         <a href="{{ route('processings.show', $entityItem->id) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->id }}
@@ -376,11 +383,11 @@
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->quantity }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4">
+                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->sum }}
                                     </td>
 
@@ -397,23 +404,23 @@
                             </td>
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'quantity')
-                                    <td class="px-3 py-4">
+                                    <td class="px-3 py-4 text-right">
                                         {{ $totalQuantity }}
                                     </td>
                                 @elseif($column == 'hours')
-                                    <td class="overflow-auto px-3 py-4">
+                                    <td class="overflow-auto px-3 py-4 text-right">
                                         {{ $totalHours }}
                                     </td>
                                 @elseif($column == 'cycles')
-                                    <td class="overflow-auto px-3 py-4">
+                                    <td class="overflow-auto px-3 py-4 text-right">
                                         {{ $totalCycles }}
                                     </td>
                                 @elseif($column == 'defective')
-                                    <td class="overflow-auto px-3 py-4">
+                                    <td class="overflow-auto px-3 py-4 text-right">
                                         {{ $totalDefective }}
                                     </td>
                                 @elseif($column == 'sum')
-                                    <td class="overflow-auto px-3 py-4">
+                                    <td class="overflow-auto px-3 py-4 text-right">
                                         {{ $totalSum }}
                                     </td>
                                 @else
