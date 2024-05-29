@@ -493,7 +493,7 @@
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[15rem] overflow-auto px-2 py-4"
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'payed_sum' ||
@@ -656,7 +656,7 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     @foreach ($resColumns as $column => $title)
-                                        <td class="break-all max-w-[15rem] overflow-auto px-2 py-4"
+                                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
                                             @if (is_int($shipment->$column)) style="text-align:left" @else style="text-align:right" @endif
                                             @if ($shipment->$column) title="{{ $shipment->$column }}" @endif>
                                             @if (preg_match('/_id\z/u', $column))

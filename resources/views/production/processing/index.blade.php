@@ -331,29 +331,29 @@
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
                                         <a href="{{ route('processings.show', $entityItem->id) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->id }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="3">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="3">
                                         <a href="{{ route('product.show', ['product' => $product->id]) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->name }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->quantity }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->sum }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="4">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="4">
                                         {{ $entityItem->ms_id }}
                                     </td>
 
@@ -369,29 +369,29 @@
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
                                         <a href="{{ route('processings.show', $entityItem->id) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->id }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="3">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="3">
                                         <a href="{{ route('product.show', ['product' => $product->id]) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->name }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->quantity }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
                                         {{ $product->pivot->sum }}
                                     </td>
 
-                                    <td class="break-all max-w-[28rem] overflow-auto px-3 py-4" colspan="4">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="4">
                                         {{ $entityItem->ms_id }}
                                     </td>
 

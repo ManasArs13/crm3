@@ -256,7 +256,7 @@
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[20rem] overflow-auto px-3 py-4"
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'processing_id' ||

@@ -145,7 +145,7 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 break-all max-w-[24rem] overflow-auto">
+                                <td class="px-6 py-4 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $outgoing->description }}
                                 </td>
 

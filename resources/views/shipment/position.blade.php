@@ -217,7 +217,7 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[28rem] overflow-x-auto px-6 py-4"
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-x-auto px-6 py-4"
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
