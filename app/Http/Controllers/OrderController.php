@@ -61,7 +61,7 @@ class OrderController extends Controller
             "delivery_id",
             "transport_type_id",
             "delivery_price",
-            "date_fact",
+            // "date_fact",
             "payed_sum",
             "shipped_sum",
             "reserved_sum",
