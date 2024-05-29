@@ -316,6 +316,11 @@
 	text-align: center;
 
 }
+.CEB__table td:first-child {
+
+	text-align: left;
+
+}
 
 .CEB__table tr:first-child td {
 	background-color: #e0e0e0;
