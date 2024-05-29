@@ -330,11 +330,19 @@
 }
 
 .CEB__select_color {
-	padding      : 3px 12px;
+	padding      : 10px;
 	border-radius: 4px;
 	cursor       : pointer;
+
+    text-indent: 5px;
+    line-height: 32px;
+
 }
 
+.CEB__select_color  option{
+    padding: 32px;
+    font-size: 22px;
+}
 .tabs {
     display: flex;
     gap: 10px;

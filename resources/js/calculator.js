@@ -283,8 +283,8 @@ $(document).ready(function(){
 
     let Length = 10; // длина забора
     let post_quantity = 2; // кол-во столбов
-    let wallHeight = 100; // высота стенки
-    let columnHeight = 140; // Высота колоны
+    let wallHeight = 200; // высота стенки
+    let columnHeight = 200; // Высота колоны
     let numberType = ""; // номер типа забора
 
     let weight_zakaz = 0; // вес заказа
@@ -301,7 +301,12 @@ $(document).ready(function(){
     MadeSlider_3(); // установка 3 ползунка
     MadeSlider_4(); // установка 4 ползунка
 
-    calculation0(".calcFence ");
+    $(".CEB__select_color_js").each(function() {
+        $(this).css({
+            "backgroundColor": $(this).find("option:selected").attr("data-codecolor"),
+            "color": $(this).find("option:selected").attr("data-codecolortext"),
+        });
+    });
 
     // Задаем значение первому ползунку
     function MadeSlider_1(formClass) {

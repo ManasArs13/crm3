@@ -53,7 +53,8 @@ class CalculatorController extends Controller
                         "font_color"=>$product->color->font_color,
                         "price" => $product->price,
                         "product" => $product->ms_id,
-                        "weight" => ceil($product->weight_kg)
+                        "weight" => ceil($product->weight_kg),
+                        "selected"=>($product->color_id==5)?"selected":''
                 ];
             }
         }

@@ -78,7 +78,7 @@
                         <div class="CEB__text2">Высота стенки, см</div>
 
                         <div class="CEB__wrapSlider">
-                            <div class="CEBQuestionW__input-rande-text"><span id="CEB__text_wallHeight">0</span> шт.</div>
+                            <div class="CEBQuestionW__input-rande-text"><span id="CEB__text_wallHeight">0</span> см.</div>
                             <div class="CEBQuestionW__wrap-answer-input-rande">
                                 <div id="CEBQuestionW-slide3" class="CEBQuestionW__slider"></div>
                                 <input type="hidden" id="CEB__input_wallHeight" name="Высота стенки, см: " value="0">
@@ -98,7 +98,7 @@
                     <div class="CEB__row">
                         <div class="CEB__text2">Высота колоны, см</div>
                         <div class="CEB__wrapSlider">
-                            <div class="CEBQuestionW__input-rande-text"><span id="CEB__text_columnHeight">0</span> шт.</div>
+                            <div class="CEBQuestionW__input-rande-text"><span id="CEB__text_columnHeight">0</span> см.</div>
                             <div class="CEBQuestionW__wrap-answer-input-rande">
                                 <div id="CEBQuestionW-slide4" class="CEBQuestionW__slider"></div>
                                 <input type="hidden" id="CEB__input_columnHeight" name="Высота колоны, см: "
@@ -166,7 +166,9 @@
                                                                 value="{{$color["product"]}}"
                                                                 data-codeColor="#{{$color["hex"]}}"
                                                                 data-codecolortext="#{{$color["font_color"]}}"
-                                                                style="background-color:#{{$color["hex"]}};">
+                                                                style="background-color:#{{$color["hex"]}}; padding: 10px"
+                                                                {{$color["selected"]}}
+                                                                >
                                                                 {{ $color["name"] }}
                                                         </option>
                                                     @endforeach
