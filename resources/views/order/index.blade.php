@@ -745,19 +745,19 @@
                             </td>
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'sum')
-                                    <td class="px-2 py-4">
+                                    <td class="px-2 py-4" style="text-align:right">
                                         {{ $totalSum }}
                                     </td>
                                 @elseif($column == 'positions_count')
-                                    <td class="overflow-auto px-2 py-4">
+                                    <td class="overflow-auto px-2 py-4" style="text-align:right">
                                         {{ $totalCount }}
                                     </td>
                                 @elseif($column == 'shipped_count')
-                                    <td class="overflow-auto px-2 py-4">
+                                    <td class="overflow-auto px-2 py-4" style="text-align:right">
                                         {{ $totalShipped }}
                                     </td>
                                 @elseif($column == 'residual_count')
-                                    <td class="overflow-auto px-2 py-4">
+                                    <td class="overflow-auto px-2 py-4" style="text-align:right">
                                         {{ $totalCount - $totalShipped }}
                                     </td>
                                 @else
