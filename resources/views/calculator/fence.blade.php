@@ -143,7 +143,6 @@
                         </select>
                     </div>
                     <div class="CEB__wrapSlider" id="resultAll" style="font-weight: 700;text-align: center;"></div>
-
                 </div>
             </div>
         </div>
@@ -159,7 +158,6 @@
             let ratio = 1;
             $('#resultAll').text(0);
 
-            //function setResult;
 
             let resultParams = {
                 "block12": {
@@ -220,14 +218,8 @@
             let columnHeight = 140; // Высота колоны
             let numberType = ""; // номер типа забора
 
-            // let lengthWalls = 0; // 	"Длина стен общая за вычетом длины колонны"
-            // let lengthColumns = 0; // "Длина колонн общая кол-во колонн умноженная на 0,28 (длина колонны)"
-            // let rowsBlocks = 0; // "Рядов блоков в длину по 40 см длина общая без колон деленная на 0,4 +округл"
-            // let verticalRows = 0; // "вертикальных рядов блока  20 см зависит от высоты забора "
-
             let weight_zakaz = 0; // вес заказа
             let total_zakaz = 0; // всего за заказ
-
 
             let WallSteps = 0; //	Шагов стены
             let rowsBlocks = 0; // Рядов блока
@@ -335,11 +327,8 @@
             });
 
             $("body").on("change", ".CEB__select_color_js", function() {
-
                 let name_tovar = $(this).attr("data-nameTovar");
-
                 resultParams[`${name_tovar}`]["color"] = $(this).val();
-
                 calculation();
             });
 
@@ -348,11 +337,8 @@
             });
 
             function calculation() {
-
                 numberType = +$(".CMR__input_typeZabor_js:checked").attr("data-numberType");
-
                 lengthColumns = Length - post_quantity;
-
                 lengthWalls = Length - (post_quantity * 0.28);
 
                 if (numberType == 1) {
@@ -599,7 +585,7 @@
             function calcDelivery() {
 
                 deliveryValue = $('#delivery').val();
-                vehicleType = $('#vehicleType').val();
+                vehicleType = $('#vehicleType').data("");
                 weight_zakaz_for_delivery = weight_zakaz;
 
                 if (deliveryValue < 25) {

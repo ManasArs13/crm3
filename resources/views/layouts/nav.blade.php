@@ -242,7 +242,7 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('calculator.block')">
+                                <x-dropdown-link :href="route('calculator.block').'#content-1'">
                                     Расчёт - БЛОК
                                 </x-dropdown-link>
 
