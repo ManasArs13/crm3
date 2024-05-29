@@ -26,7 +26,7 @@
         </div>
 
         <div class="tab-content" id="content-3">
-            @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton'))
+            @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton', 'vehicleTypes'=>$vehicleTypesBeton))
         </div>
     </div>
 </x-app-layout>

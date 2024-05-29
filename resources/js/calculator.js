@@ -255,17 +255,25 @@ $(document).ready(function(){
 
     $('form').submit(function(e){
         e.preventDefault();
+
         $.ajax({
           url: "api/order_ms/create",
           type: "POST",
           data: $(this).serialize(),
+          beforeSend: function() {
+            $(".preloader").addClass("active");
+          },
           success: function(data) {
-            $("#message").text(data);
+            $("#message").html(data);
           },
           error: function(response) {
-            $("#message").text(response.responseText);
+            $("#message").html(response.responseText);
+          },
+          complete: function() {
+            $(".preloader").removeClass("active");
           }
         });
+
     });
 
     $("body").on("click", ".tab-link", function(){

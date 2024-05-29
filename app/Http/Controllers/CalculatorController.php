@@ -22,6 +22,10 @@ class CalculatorController extends Controller
                     ->orderBy('name', 'asc')
                     ->get();
 
+        $vehicleTypesBeton = TransportType::where('ms_id', '8caf01fa-34f2-11ee-0a80-139c002ba64a')
+                    ->orderBy('name', 'asc')
+                    ->get();
+
         $shippingPrices = json_encode(ShipingPrice::get());
 
         $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orderBy("name","asc")->get();
@@ -78,7 +82,8 @@ class CalculatorController extends Controller
                 'vehicleTypes',
                 'shippingPrices',
                 'productsByGroup',
-                'productsByBeton'
+                'productsByBeton',
+                'vehicleTypesBeton',
             )
         );
     }
