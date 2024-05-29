@@ -33,25 +33,25 @@ class ImportAll extends Command
      */
     public function handle()
     {
-        // Artisan::call('ms:import-color');
-        // Artisan::call('ms:import-status');
-        // Artisan::call('ms:import-transport-type');
-        // Artisan::call('ms:import-transport --all');
+        Artisan::call('ms:import-color');
+        Artisan::call('ms:import-status');
+        Artisan::call('ms:import-transport-type');
+        Artisan::call('ms:import-transport --all');
 
-        // Artisan::call('ms:import-categories --all');
-        // Artisan::call('ms:import-products --all');
+        Artisan::call('ms:import-categories --all');
+        Artisan::call('ms:import-products --all');
         Artisan::call('ms:import-delivery --all');
         Artisan::call('ms:import-contact --all');
 
-        // Artisan::call('ms:import-order --all');
-        // Artisan::call('ms:import-demand --all');
+        Artisan::call('ms:import-order --all');
+        Artisan::call('ms:import-demand --all');
 
-        // Artisan::call('ms:import-supply --all');
+        Artisan::call('ms:import-supply --all');
 
-        // Artisan::call('ms:import-residual');
+        Artisan::call('ms:import-residual');
 
-        // Artisan::call('ms:import-tech-chart');
-        // Artisan::call('ms:import-processing --all');
+        Artisan::call('ms:import-tech-chart');
+        Artisan::call('ms:import-processing --all');
 
     }
 }
