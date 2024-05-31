@@ -18,7 +18,7 @@ class CalculatorController extends Controller
             $url=Option::where("code","ms_order_edit_url")->first()?->value;
             $array = $request->post();
             if ($array["deliveryPlannedMoment"]!=null)
-                $array["deliveryPlannedMoment"]=$array["deliveryPlannedMoment"]." 00:00:00.000";
+                $array["deliveryPlannedMoment"]=str_replace("T"," ",$array["deliveryPlannedMoment"]).":00.000";
             $result = $orderMsService->updateOrderMs($array);
             return new Response("<a href='".$url.$result->id."' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'>".$result->name."</a>", 200);
         } catch (\Exception $exception) {

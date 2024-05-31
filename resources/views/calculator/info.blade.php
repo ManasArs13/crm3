@@ -21,7 +21,7 @@
     <div class="CEB__wrapSlider">
         <input type="text" name="agent[name]" style="border: 1px solid gray;padding: 4px;">
         <input type="text" name="agent[phone]" class="phone" style="border: 1px solid gray;padding: 4px;">
-        <input type="date" name="deliveryPlannedMoment" class="plan" style="border: 1px solid gray;padding: 4px;">
+        <input type="datetime-local" name="deliveryPlannedMoment" class="plan" style="border: 1px solid gray;padding: 4px; width: 200px">
     </div>
 </div>
 <button type="submit" class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">Отправить в мс</button>

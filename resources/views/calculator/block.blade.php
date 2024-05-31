@@ -153,7 +153,7 @@
                                             }}
                                             value=0
                                             min=0
-                                            class="change_js ">
+                                            class="change_js">
                                         </td>
                                         @if (isset($group["colors"]))
                                             <td>
