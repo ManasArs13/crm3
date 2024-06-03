@@ -281,6 +281,13 @@ $(document).ready(function(){
         $(this).addClass("active");
     });
 
+
+    $("body").on("click", "#button-modal", function(){
+        $(".agent").toggleClass("active");
+    });
+
+    $(".select2").select2();
+
     $("body").on("click", ".time", function(){
        let value=$(this).data("time");
        $(".plan").val(value);

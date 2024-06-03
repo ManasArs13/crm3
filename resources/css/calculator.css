@@ -116,6 +116,20 @@
 
 }
 
+.CEB_flex{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.agent{
+    display: none;
+}
+
+.agent.active{
+    display: block;
+}
+
 .CEB__row {
 	margin          : 12px 0;
 	background-color: #ffffff;
