@@ -20,7 +20,7 @@
     <div class="CEB__text2">Пользователь</div>
     <div class="CEB_flex">
         <div class="flex">
-            <select name="agent[id]" required style="width:36%" class="select2 input">
+            <select name="agent[id]" style="width:36%" class="select2 input">
                 <option value="" selected disabled>не выбрано</option>
                 @foreach ($contacts as $contact)
                     <option value="{{ $contact->ms_id }}">{{ $contact->name }}</option>
