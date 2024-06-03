@@ -23,7 +23,7 @@
             <select name="agent[id]" required style="width:36%" class="select2 input">
                 <option value="" selected disabled>не выбрано</option>
                 @foreach ($contacts as $contact)
-                    <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                    <option value="{{ $contact->ms_id }}">{{ $contact->name }}</option>
                 @endforeach
             </select>
 

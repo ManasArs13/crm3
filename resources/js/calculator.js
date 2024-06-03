@@ -254,6 +254,7 @@ $(document).ready(function(){
     $("body").on("click", ".time", function(){
        let value=$(this).data("time");
        $(".plan").val(value);
+       $(".datetime-popup").toggleClass("active");
     });
 
     $("body").on("click", ".datetime", function(){

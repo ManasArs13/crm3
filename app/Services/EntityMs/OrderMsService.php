@@ -80,7 +80,7 @@ class OrderMsService
         if (isset($msOrder["agent"])) {
             if (is_array($msOrder["agent"])){
                 if (isset($msOrder["agent"]["id"]) && $msOrder["agent"]["id"]!=null){
-                    $msOrder["agent"] = $msOrder["id"];
+                    $msOrder["agent"] = $msOrder["agent"]["id"];
                 }else{
                     $agent=$this->counterpartyMsService->updateCounterpartyMs($msOrder["agent"]);
                     $msOrder["agent"] = $agent->id;
