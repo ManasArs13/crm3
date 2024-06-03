@@ -281,6 +281,17 @@ $(document).ready(function(){
         $(this).addClass("active");
     });
 
+    $("body").on("click", ".time", function(){
+       let value=$(this).data("time");
+       $(".plan").val(value);
+    });
+
+    $("body").on("click", ".datetime", function(){
+        width_datetime();
+        $(".datetime-popup").toggleClass("active");
+     });
+
+
     let Length = 10; // длина забора
     let post_quantity = 2; // кол-во столбов
     let wallHeight = 200; // высота стенки
@@ -300,6 +311,7 @@ $(document).ready(function(){
     MadeSlider_2(); // установка 2 ползунка
     MadeSlider_3(); // установка 3 ползунка
     MadeSlider_4(); // установка 4 ползунка
+    width_datetime();
 
     $(".CEB__select_color_js").each(function() {
         $(this).css({
@@ -394,5 +406,23 @@ $(document).ready(function(){
     $("body").on("change", ".CMR__change_js", function() {
         calculation0(".calcFence ");
     });
+
+
+    window.onresize = function() {
+        width_datetime();
+    }
+
+    function width_datetime(){
+        if ($(window).width()>=1650){
+            let widthTotal=$(".main-1").width();
+            let height=$(".CEB-1").height();
+            let width=$(".CEB").width();
+            let widthItogo=(widthTotal-width)/2-30;
+            $(".datetime-popup").width(widthItogo).height(height);
+        }else{
+            $(".datetime-popup").removeClass("active");
+        }
+    }
+
 
 });

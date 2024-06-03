@@ -15,6 +15,67 @@
 	-webkit-box-sizing: border-box;
 	box-sizing        : border-box;
 }
+.input{
+    border: 1px solid gray;
+    padding: 4px;
+}
+
+.datetime{
+    position: relative;
+    display: inline-block;
+}
+
+.datetime svg{
+    position: absolute;
+    right: 8px;
+    top: 9px;
+}
+
+.content{
+    position: relative;
+}
+
+.datetime-popup{
+    position: absolute;
+    display: none;
+    right: 0;
+    top: 0;
+}
+
+.datetime-popup>.CEB__row{
+    height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-color: gray #E5E5E5;
+    scrollbar-width: thin;
+}
+
+
+.date{
+    font-weight: 700;
+}
+
+.times{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.time{
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    background: #E6E6E6;
+    cursor: pointer;
+}
+
+.time:hover{
+    background: gray;
+}
+
+.active{
+    display:block;
+}
 
 .df {
 	display  : -webkit-flex;
@@ -29,6 +90,10 @@
 	max-width: 1200px;
 	width    : 100%;
 	margin   : 20px auto;
+}
+
+.CEB-1{
+    margin: 0px auto;
 }
 
 
@@ -56,6 +121,10 @@
 	background-color: #ffffff;
 	padding         : 12px;
 	border-radius   : 12px;
+}
+
+.datetime-popup .CEB__row{
+    height: 100%;
 }
 
 .labelCustomRadio {

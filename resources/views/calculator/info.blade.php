@@ -1,13 +1,13 @@
 <div class="CEB__row">
     <div class="CEB__text2">Доставка</div>
     <div class="CEB__wrapSlider">
-        <select name="attributes[delivery][id]" class="change_delivery" style="border: 1px solid gray;padding: 4px;" id="delivery">
+        <select name="attributes[delivery][id]" class="input change_delivery" id="delivery">
             @foreach ($deliveries as $delivery)
             <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" style="margin: 4px;">{{ $delivery->name }}</option>
             @endforeach
         </select>
 
-        <select name="attributes[vehicle_type][id]" class="change_delivery" style="border: 1px solid gray;padding: 4px;width:40%; {{$form=="calcBeton"?'display:none;':''}}" id="vehicleType" >
+        <select name="attributes[vehicle_type][id]" class="input change_delivery" style="{{$form=="calcBeton"?'display:none;':''}}" id="vehicleType" >
             @foreach ($vehicleTypes as $type)
             <option data-type='{{$type->id}}'  value="{{ $type->ms_id }}" style="margin: 4px;">{{ $type->name }}</option>
             @endforeach
@@ -19,9 +19,18 @@
 <div class="CEB__row">
     <div class="CEB__text2">Пользователь</div>
     <div class="CEB__wrapSlider">
-        <input type="text" name="agent[name]" style="border: 1px solid gray;padding: 4px;">
-        <input type="text" name="agent[phone]" class="phone" style="border: 1px solid gray;padding: 4px;">
-        <input type="datetime-local" name="deliveryPlannedMoment" class="plan" style="border: 1px solid gray;padding: 4px; width: 200px">
+        <input type="text" name="agent[name]"  class="input">
+        <input type="text" name="agent[phone]" class="input">
+        <div class="datetime">
+
+            <input type="text" class="input plan" name="deliveryPlannedMoment" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+                <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+
+        </div>
     </div>
 </div>
 <button type="submit" class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">Отправить в мс</button>

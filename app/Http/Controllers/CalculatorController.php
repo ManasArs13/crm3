@@ -6,6 +6,10 @@ use App\Models\Delivery;
 use App\Models\Product;
 use App\Models\ShipingPrice;
 use App\Models\TransportType;
+use App\Models\Date;
+use App\Models\Time;
+
+
 use Illuminate\Http\Request;
 
 class CalculatorController extends Controller
@@ -26,6 +30,8 @@ class CalculatorController extends Controller
                     ->orderBy('name', 'asc')
                     ->get();
 
+        $dates=Date::where("is_active", 1)->get();
+        $times=Time::where("is_active", 1)->get();
         $shippingPrices = json_encode(ShipingPrice::get());
 
         $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orderBy("name","asc")->get();
@@ -85,6 +91,8 @@ class CalculatorController extends Controller
                 'productsByGroup',
                 'productsByBeton',
                 'vehicleTypesBeton',
+                'dates',
+                'times'
             )
         );
     }
