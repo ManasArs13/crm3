@@ -14,6 +14,7 @@
         </select>
     </div>
     <div class="CEB__wrapSlider" id="resultAll" style="font-weight: 700;text-align: center;"></div>
+    <input type="hidden" name="attributes[deliveryPrice]" value=0>
 </div>
 
 <div class="CEB__row">

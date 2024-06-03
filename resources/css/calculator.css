@@ -478,7 +478,6 @@ input[type="number"]{
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, .8);
-    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
@@ -486,7 +485,7 @@ input[type="number"]{
 }
 
 .preloader.active{
-    display: block;
+    display: flex;
 }
 
 .select2-container--default .select2-selection--single {

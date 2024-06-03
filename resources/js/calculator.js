@@ -209,6 +209,7 @@ $(document).ready(function(){
                 .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
             if (shippingPrice.length !== 0) {
                 $(formClass+'#resultAll').text(shippingPrice[0].price);
+                $(formClass+'[name="attributes[deliveryPrice]"').val(shippingPrice[0].price);
             } else {
                 $(formClass+'#resultAll').text('ошибка');
             }

@@ -41,6 +41,7 @@ class OrderMsService
 
         if (isset($msOrder["positions"])) {
             $array["positions"] = [];
+
             foreach ($msOrder["positions"] as $position) {
                 if ($position["quantity"]!=0){
                     $array["positions"][] = [
@@ -56,6 +57,9 @@ class OrderMsService
                     ];
                 }
             }
+
+            if (count($array["positions"])==0)
+                throw new \Exception(trans("error.noPositions"));
         }
 
         if (isset($msOrder["description"])){
@@ -115,7 +119,7 @@ class OrderMsService
                         'type' => "attributemetadata",
                         "mediaType" => "application/json"
                     ],
-                    'value' => $msOrder["attributes"]["deliveryPrice"]
+                    'value' => (int)$msOrder["attributes"]["deliveryPrice"]
                 ];
 
             if (\Arr::exists($msOrder["attributes"], "delivery"))
