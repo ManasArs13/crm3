@@ -1,7 +1,7 @@
 <div class="CEB__row">
     <div class="CEB__text2">Доставка</div>
     <div class="CEB__wrapSlider">
-        <select name="attributes[delivery][id]" class="input change_delivery" id="delivery">
+        <select name="attributes[delivery][id]"  required class="select2 input change_delivery" id="delivery">
             @foreach ($deliveries as $delivery)
             <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" style="margin: 4px;">{{ $delivery->name }}</option>
             @endforeach

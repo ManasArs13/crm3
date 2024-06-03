@@ -15,9 +15,14 @@
 	-webkit-box-sizing: border-box;
 	box-sizing        : border-box;
 }
+
 .input{
-    border: 1px solid gray;
-    padding: 4px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 0 20px 0 8px;
+    line-height: 28px;
+    box-sizing: border-box;
+    color: #444;
 }
 
 .datetime{
@@ -28,7 +33,7 @@
 .datetime svg{
     position: absolute;
     right: 8px;
-    top: 9px;
+    top: 7px;
 }
 
 .content{
@@ -479,8 +484,18 @@ input[type="number"]{
     z-index: 9999;
     display: none;
 }
+
 .preloader.active{
     display: block;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 0;
+    height: 30px;
 }
 
 @media only screen and (max-width : 1199px) {

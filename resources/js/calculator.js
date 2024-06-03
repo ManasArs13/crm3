@@ -144,111 +144,73 @@ $(document).ready(function(){
         let vehicleType = $(formClass+'#vehicleType').find('option:selected').attr("data-type");
         let ratio = 1;
         let weight_zakaz_for_delivery = parseFloat($(formClass+"#weight_total").text());
+        let weight=Math.ceil(weight_zakaz_for_delivery/1000)+'.0';
 
         if (deliveryValue < 25) {
-            deliveryValue = 25
+            deliveryValue = 25;
         } else if (deliveryValue >= 25 && deliveryValue < 30) {
-            deliveryValue = 30
+            deliveryValue = 30;
         } else if (deliveryValue >= 30 && deliveryValue < 35) {
-            deliveryValue = 35
+            deliveryValue = 35;
         } else if (deliveryValue >= 35 && deliveryValue < 40) {
-            deliveryValue = 40
+            deliveryValue = 40;
         } else if (deliveryValue >= 40 && deliveryValue < 50) {
-            deliveryValue = 50
+            deliveryValue = 50;
         } else if (deliveryValue >= 50 && deliveryValue < 60) {
-            deliveryValue = 60
+            deliveryValue = 60;
         } else if (deliveryValue >= 60 && deliveryValue < 70) {
-            deliveryValue = 70
+            deliveryValue = 70;
         } else if (deliveryValue >= 70 && deliveryValue < 80) {
-            deliveryValue = 80
+            deliveryValue = 80;
         } else if (deliveryValue >= 80 && deliveryValue < 90) {
-            deliveryValue = 90
+            deliveryValue = 90;
         } else if (deliveryValue >= 90 && deliveryValue < 100) {
-            deliveryValue = 100
+            deliveryValue = 100;
         } else if (deliveryValue >= 100 && deliveryValue < 120) {
-            deliveryValue = 120
+            deliveryValue = 120;
         } else if (deliveryValue >= 120 && deliveryValue < 140) {
-            deliveryValue = 140
+            deliveryValue = 140;
         } else if (deliveryValue >= 140 && deliveryValue < 160) {
-            deliveryValue = 160
+            deliveryValue = 160;
         } else if (deliveryValue >= 160 && deliveryValue < 180) {
-            deliveryValue = 180
+            deliveryValue = 180;
         } else if (deliveryValue >= 180 && deliveryValue < 200) {
-            deliveryValue = 200
+            deliveryValue = 200;
         } else {
-            deliveryValue = 220
+            deliveryValue = 220;
         }
 
         if (vehicleType == 3) {
+            weight_zakaz_for_delivery = '20.0';
 
-            weight_zakaz_for_delivery = '20.0'
-
-            if (weight_zakaz > 20000) {
-                ratio = Math.ceil(weight_zakaz / 20000)
+            if (weight > '21.0') {
+                weight_zakaz_for_delivery='21.0';
             }
-
-            if (shippingPrices) {
-                let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
-                    .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
-                if (shippingPrice.length !== 0) {
-                    $(formClass+'#resultAll').text(shippingPrice[0].price * ratio);
-                } else {
-                    $(formClass+'#resultAll').text('ошибка');
-                }
-            }
-
         } else if (vehicleType == 4) {
 
-            weight_zakaz_for_delivery = '15.0'
+            weight_zakaz_for_delivery = '15.0';
 
-            if (weight_zakaz > 15000) {
-                ratio = Math.ceil(weight_zakaz / 15000)
+            if (weight < '6.0') {
+                weight_zakaz_for_delivery = '6.0';
+            }else if (weight<'15.0'){
+                weight_zakaz_for_delivery = weight;
             }
-
-            if (shippingPrices) {
-                let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
-                    .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
-                if (shippingPrice.length !== 0) {
-                    $(formClass+'#resultAll').text(shippingPrice[0].price * ratio);
-                } else {
-                    $(formClass+'#resultAll').text('ошибка');
-                }
-            }
-
-
         } else if (vehicleType == 5) {
             weight_zakaz_for_delivery = '2.5'
-
-            if (weight_zakaz > 2500) {
-                ratio = Math.ceil(weight_zakaz / 2500)
+        } else  if (vehicleType == 6){
+            if (weight > '3.0') {
+                weight_zakaz_for_delivery = '3.0';
+            }else{
+                weight_zakaz_for_delivery = weight;
             }
-
-            if (shippingPrices) {
-                let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
-                    .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
-                if (shippingPrice.length !== 0) {
-                    $(formClass+'#resultAll').text(shippingPrice[0].price * ratio);
-                } else {
-                    $(formClass+'#resultAll').text('ошибка');
-                }
-            }
-        } else {
-            if (shippingPrices) {
-                let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
-                    .transport_type_id == vehicleType && item.tonnage == String(Math.round(weight_zakaz /
-                        1000) + ".0"))
-
-                if (shippingPrice.length !== 0) {
-                    $(formClass+'#resultAll').text(shippingPrice[0].price);
-                } else {
-                    shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
-                        .transport_type_id == vehicleType && item.tonnage == '1.0')
-                    if (shippingPrice.length !== 0) {
-                        $(formClass+'#resultAll').text(shippingPrice[0].price * weight_zakaz / 1000);
-                    } else {
-                        $(formClass+'#resultAll').text('ошибка');
-                    }
-                }
+        }
+        if (shippingPrices) {
+            let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
+                .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
+            if (shippingPrice.length !== 0) {
+                $(formClass+'#resultAll').text(shippingPrice[0].price);
+            } else {
+                $(formClass+'#resultAll').text('ошибка');
             }
         }
     };
@@ -287,6 +249,7 @@ $(document).ready(function(){
     });
 
     $(".select2").select2();
+    $("#delivery").select2();
 
     $("body").on("click", ".time", function(){
        let value=$(this).data("time");
