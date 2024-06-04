@@ -7,18 +7,13 @@ $(document).ready(function(){
         let quantity=$(this).val();
         let formClass="."+$(this).parents("form").attr("class")+" ";
         let group=$(this).data("id");
-        let isColor=$(this).data("color");
+
         let price=0;
         let weight=0;
         let select=$(formClass+'[name="positions['+group+'][product_id]"]');
 
-        if (isColor){
-            price=select.find('option:selected').data("price");
-            weight=select.find('option:selected').data("weight");
-        }else{
-            price=select.data("price");
-            weight=select.data("weight");
-        }
+        price=select.find('option:selected').data("price");
+        weight=select.find('option:selected').data("weight");
 
         $(formClass+"#weight_total_"+group).text(weight*quantity);
         $(formClass+"#price_total_"+group).text(price*quantity);
@@ -38,6 +33,28 @@ $(document).ready(function(){
         $(formClass+'[name="positions['+group+'][price]"]').val(price);
         $(formClass+"#weight_total_"+group).text(weight*quantity);
         $(formClass+"#price_total_"+group).text(price*quantity);
+
+        calculation(formClass);
+    });
+
+    $("body").on("change", ".CEB__select_beton_js", function() {
+        let select=$(this);
+        let oldGroup=$(this).attr("data-id");
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let price=select.find('option:selected').data("price");
+        let weight=select.find('option:selected').data("weight");
+        let group=select.find('option:selected').data("id");
+        select.removeAttr("name").attr("name", "positions["+group+"][product_id]").attr("data-id",group);
+
+        let quantityInput=$(formClass+'[name="positions['+oldGroup+'][quantity]"]');
+        let quantity=quantityInput.val();
+        quantityInput.removeAttr("name").attr("name","positions["+group+"][quantity]").attr("data-id",group);
+
+        $(formClass+"#price_client_"+oldGroup).attr("id", "price_client_"+group).text(price);
+        $(formClass+'[name="positions['+oldGroup+'][price]"]').attr("name", 'positions['+group+'][price]').attr("id", "price_client_"+group).val(price);
+
+        $(formClass+"#weight_total_"+oldGroup).attr("id", "weight_total_"+group).text(weight*quantity);
+        $(formClass+"#price_total_"+oldGroup).attr("id", "price_total_"+group).text(price*quantity);
 
         calculation(formClass);
     });

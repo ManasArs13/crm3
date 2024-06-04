@@ -19,8 +19,7 @@ class CalculatorController extends Controller
             $array = $request->post();
             if (
                ($array["agent"]["name"]==null && $array["agent"]["phone"]==null && !isset($array["agent"]["id"]))
-            || (isset($array["agent"]["id"]) && $array["agent"]["id"]==null)
-        )
+            || (isset($array["agent"]["id"]) && $array["agent"]["id"]==null))
                     throw new \Exception(trans("error.noCounterparty"));
 
 

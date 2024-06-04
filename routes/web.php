@@ -131,7 +131,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Калькулятор
     Route::get('/calculator_block', [CalculatorController::class, 'block'])->name('calculator.block');
-    Route::get('/calculator_concrete', [CalculatorController::class, 'concrete'])->name('calculator.concrete');
+
+
+    Route::get('phpmyinfo', function () {
+        phpinfo();
+    })->name('phpmyinfo');
+
 });
 
 require __DIR__ . '/auth.php';

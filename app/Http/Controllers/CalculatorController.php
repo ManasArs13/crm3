@@ -72,7 +72,11 @@ class CalculatorController extends Controller
         unset($productsByFence[18]);
         unset($productsByFence[5]);
 
+        $idBeton = 0;
         foreach($betonProducts as $product){
+            if ($idBeton==0)
+                $idBeton = $product->id;
+
             $productsByBeton[$product->id]["name"] = $product->name;
             $productsByBeton[$product->id]["id"] = $product->id;
             $productsByBeton[$product->id]["price"] = $product->price;
@@ -94,6 +98,7 @@ class CalculatorController extends Controller
                 'vehicleTypesBeton',
                 'dates',
                 'times',
+                'idBeton',
                 'contacts'
             )
         );
