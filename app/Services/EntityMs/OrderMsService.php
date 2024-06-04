@@ -67,6 +67,14 @@ class OrderMsService
         }
 
 
+        if (isset($msOrder["shipmentAddressFull"]) && isset($msOrder["shipmentAddressFull"]["comment"])){
+            $array["shipmentAddressFull"]["comment"]=$msOrder["shipmentAddressFull"]["comment"];
+        }
+
+        if (isset($msOrder["shipmentAddressFull"]) && isset($msOrder["shipmentAddressFull"]["addInfo"])){
+            $array["shipmentAddressFull"]["addInfo"]=$msOrder["shipmentAddressFull"]["addInfo"];
+        }
+
         if (isset($msOrder["deliveryPlannedMoment"])){
             $array["deliveryPlannedMoment"]=$msOrder["deliveryPlannedMoment"];
         }

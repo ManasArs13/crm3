@@ -136,5 +136,5 @@
    'tech_chart_id' => 'Техкарта',
    'processing_id' => "Техпроцесс",
    'sostav' => 'Состав',
-
+   'delivery_date'=> 'Дата доставки',
       ];
