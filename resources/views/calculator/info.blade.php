@@ -9,7 +9,7 @@
 
         <select name="attributes[vehicle_type][id]" class="input change_delivery" style="{{$form=="calcBeton"?'display:none;':''}}" id="vehicleType" >
             @foreach ($vehicleTypes as $type)
-            <option data-type='{{$type->id}}'  value="{{ $type->ms_id }}" style="margin: 4px;">{{ $type->name }}</option>
+            <option data-type='{{$type->id}}'  value="{{ $type->ms_id }}"  {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
             @endforeach
         </select>
     </div>

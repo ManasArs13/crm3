@@ -207,9 +207,12 @@ $(document).ready(function(){
         if (shippingPrices) {
             let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
                 .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
+
             if (shippingPrice.length !== 0) {
-                $(formClass+'#resultAll').text(shippingPrice[0].price);
-                $(formClass+'[name="attributes[deliveryPrice]"').val(shippingPrice[0].price);
+                let price = shippingPrice[0].price * weight;
+                let price2= Math.ceil(price/100)*100;
+                $(formClass+'#resultAll').text("Цена доставки за тонну=" + shippingPrice[0].price + " Цена доставки=" + price + " Цена доставки, окргуленная до 100=" + price2);
+                $(formClass+'[name="attributes[deliveryPrice]"').val(price2);
             } else {
                 $(formClass+'#resultAll').text('ошибка');
             }
