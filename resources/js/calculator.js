@@ -203,7 +203,10 @@ $(document).ready(function(){
             }else{
                 weight_zakaz_for_delivery = weight;
             }
+        }  else if (vehicleType == 2){
+            weight_zakaz_for_delivery = '8.0';
         }
+
         if (shippingPrices) {
             let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
                 .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
