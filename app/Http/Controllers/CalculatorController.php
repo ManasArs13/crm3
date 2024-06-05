@@ -9,6 +9,7 @@ use App\Models\TransportType;
 use App\Models\Date;
 use App\Models\Time;
 use App\Models\Contact;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -31,7 +32,64 @@ class CalculatorController extends Controller
                     ->get();
 
         $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
-        $dates=Date::where("is_active", 1)->get();
+
+        $dateNow=(new \DateTime())->format("Y-m-d");
+        $dateFinish=(new \DateTime())->modify('+10 day')->format("Y-m-d");
+
+        $dateNowQuery=$dateNow.' 00:00.000';
+        $dateFinishQuery=$dateFinish.'  23:59.000';
+
+        $datesCalc= DB::table('orders')
+        ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
+        ->join('products', 'products.id', '=', 'order_positions.product_id')
+        ->select(DB::raw('distinct(orders.name) as name'),
+                 DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
+                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
+        )
+        ->whereIn("category_id",['6','12','21','15','11'])
+        ->whereBetween("orders.date_plan",[$dateNowQuery, $dateFinishQuery])
+        ->get();
+
+        $datesBlock= DB::table('orders')
+        ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
+        ->join('products', 'products.id', '=', 'order_positions.product_id')
+        ->select(DB::raw('distinct(orders.name) as name'),
+                 DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
+                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
+        )
+        ->whereNotNull("products.color_id")
+        ->whereBetween("orders.date_plan",[$dateNowQuery, $dateFinishQuery])
+        ->get();
+
+        $datesBeton= DB::table('orders')
+        ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
+        ->join('products', 'products.id', '=', 'order_positions.product_id')
+        ->select(
+                 DB::raw('distinct(orders.name) as name'),
+                 DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
+                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
+        )
+        ->where("category_id",'4')
+        ->whereBetween("orders.date_plan",[$dateNowQuery, $dateFinishQuery])
+        ->get();
+
+        $datesCalcFinish=[];
+        foreach($datesCalc as $date){
+            $datesCalcFinish[$date->date][$date->time][]=$date->name;
+        }
+
+        $datesBlockFinish=[];
+        foreach($datesBlock as $date){
+            $datesBlockFinish[$date->date][$date->time][]=$date->name;
+        }
+
+        $datesBetonFinish=[];
+        foreach($datesBeton as $date){
+            $datesBetonFinish[$date->date][$date->time][]=$date->name;
+        }
+
+
+        $dates=Date::where("is_active", 1)->where("date",">=",$dateNow)->where("date","<=",$dateFinish)->orderBy("date","asc")->get();
         $times=Time::where("is_active", 1)->get();
         $shippingPrices = json_encode(ShipingPrice::get());
 
@@ -99,7 +157,9 @@ class CalculatorController extends Controller
                 'dates',
                 'times',
                 'idBeton',
-                'contacts'
+                'contacts',
+                'datesBlockFinish',
+                'datesBetonFinish'
             )
         );
     }

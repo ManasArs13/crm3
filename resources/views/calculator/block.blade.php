@@ -1,4 +1,5 @@
-    <div class="CEB__wrapContent df">
+<div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
+    <div class="CEB__wrapContent df {{$form}}">
                 @if ($left_menu)
                     <div class="CEB__left">
                         <div class="CEB__row">
@@ -119,7 +120,7 @@
                     </div>
                     <div class="CEB__right">
                 @else
-                    <div class="CEB">
+                    <div class="CEB CEB-1">
                 @endif
                     <form class="{{$form}}">
                         @csrf
@@ -165,4 +166,6 @@
                     </form>
                 </div>
     </div>
+</div>
+@include("calculator.dates", array('dates' => $dates, 'datesFinish'=>$datesFinish))
 

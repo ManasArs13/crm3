@@ -40,7 +40,7 @@ class ImportOrderMs extends Command
         //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
         $all = $this->option('all');
         $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
-        
+
         $service->createUrl($url, $orderService, ["updated" => '>=' . $date, "isDeleted" => ["true", "false"]], 'positions.assortment,attributes.value,agent,state');
     }
 }

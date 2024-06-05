@@ -67,6 +67,10 @@
 }
 
 .time{
+    position: relative;
+}
+
+.time-span{
     display: block;
     padding: 10px;
     border-radius: 5px;
@@ -74,7 +78,27 @@
     cursor: pointer;
 }
 
-.time:hover{
+.bg-yellow{
+    background: yellow;
+}
+
+.bg-yellow:hover ~ .order-count{
+    background:yellow;
+    display: block;
+}
+
+.order-count{
+    display: none;
+    position: absolute;
+    background: yellow;
+    z-index: 5;
+    width: 100%;
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+}
+
+.time-span:hover{
     background: gray;
 }
 
@@ -99,6 +123,7 @@
 
 .CEB-1{
     margin: 0px auto;
+    height: 100%;
 }
 
 

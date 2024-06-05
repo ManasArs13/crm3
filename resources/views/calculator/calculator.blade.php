@@ -22,36 +22,18 @@
     </div>
 
     <div class="content">
-         <div class="CEB CEB-1 w-11/12 max-w-7xl mx-auto pb-10">
+
             <div class="tab-content" id="content-1">
-                @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence, 'form'=>"calcFence"))
+                @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence, 'form'=>"calcFence", "datesFinish"=>$datesBlockFinish))
             </div>
 
             <div class="tab-content" id="content-2">
-                @include("calculator.block", array("left_menu"=>false, 'form'=>'calcBlock'))
+                @include("calculator.block", array("left_menu"=>false, 'form'=>'calcBlock',"datesFinish"=>$datesBlockFinish))
             </div>
 
             <div class="tab-content" id="content-3">
-                @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton', 'vehicleTypes'=>$vehicleTypesBeton))
+                @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton', 'vehicleTypes'=>$vehicleTypesBeton, "datesFinish"=>$datesBetonFinish))
             </div>
-        </div>
-        <div class="datetime-popup">
-            <div class="CEB__row">
-                <div class="dates">
-                    @foreach ($dates as $date)
-                        @php
-                            $dateFormat=new DateTime($date->date)
-                        @endphp
-                        <div class="date">{{ $dateFormat->format("d.m.Y")}}</div>
-                        <div class="times">
-                            @foreach ($times as $time)
-                                <span data-time="{{$date->date.' '.$time->time}}" class="time"> {{$time->time_slot}} </span>
-                            @endforeach
-                        </div>
-                    @endforeach;
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
