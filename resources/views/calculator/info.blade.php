@@ -13,8 +13,8 @@
                 @endforeach
             </select>
 
-            <input type="text" class="price-tn input" value=0 disabled>
-            <input type="text" name="attributes[deliveryPrice]" class="input" value=0 disabled>
+            <input type="text" class="price-tn input input2" value=0 disabled>
+            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 disabled>
 
         </div>
 
@@ -23,7 +23,8 @@
 
 <div class="CEB__row">
     <div class="CEB__text2">Пользователь</div>
-    <div class="CEB_block">
+    <div class="CEB_block flex-column">
+        <div class="flex">
             <select name="agent[id]" style="width:36%" class="select2 input">
                 <option value="" selected disabled>не выбрано</option>
                 @foreach ($contacts as $contact)
@@ -50,11 +51,11 @@
                 </svg>
             </div>
 
-
-            <div class="agent">
-                <input type="text" name="agent[name]"  class="input" placeholder = "{{__('column.name')}}">
-                <input type="text" name="agent[phone]" class="input phone" placeholder = "{{__('column.phone')}}">
-            </div>
+        </div>
+        <div class="agent">
+            <input type="text" name="agent[name]"  class="input" placeholder = "{{__('column.name')}}">
+            <input type="text" name="agent[phone]" class="input phone" placeholder = "{{__('column.phone')}}">
+        </div>
     </div>
 </div>
 

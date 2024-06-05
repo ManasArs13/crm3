@@ -42,7 +42,7 @@ class CalculatorController extends Controller
         $datesCalc= DB::table('orders')
         ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
         ->join('products', 'products.id', '=', 'order_positions.product_id')
-        ->select(DB::raw('orders.name as name, ROUND(SUM(order_positions.weight_kg)/1000) as weight'),
+        ->select(DB::raw('orders.name as name, SUM(order_positions.weight_kg)/1000 as weight'),
                  DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
                  DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
         )
@@ -54,7 +54,7 @@ class CalculatorController extends Controller
         $datesBlock= DB::table('orders')
         ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
         ->join('products', 'products.id', '=', 'order_positions.product_id')
-        ->select(DB::raw('orders.name as name, ROUND(SUM(order_positions.weight_kg)/1000) as weight'),
+        ->select(DB::raw('orders.name as name, SUM(order_positions.weight_kg)/1000 as weight'),
                  DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
                  DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
         )
@@ -67,7 +67,7 @@ class CalculatorController extends Controller
         ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
         ->join('products', 'products.id', '=', 'order_positions.product_id')
         ->select(
-                DB::raw('orders.name as name, ROUND(SUM(order_positions.weight_kg)/1000) as weight'),
+                DB::raw('orders.name as name, SUM(order_positions.weight_kg)/1000 as weight'),
                 DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
         )

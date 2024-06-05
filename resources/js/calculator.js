@@ -113,12 +113,12 @@ $(document).ready(function(){
         WallSteps = Math.ceil(WallSteps);
 
         //Блоки
-        let quantity=WallSteps * rowsBlocks;
+        let quantity=parseInt(WallSteps * rowsBlocks);
         $(formClass+"[name='positions[12][quantity]']").val(quantity);
         setPriceWeight(12, quantity, formClass);
 
         //Колонны
-        quantity=post_quantity * columnHeight / 20;
+        quantity=parseInt(post_quantity * columnHeight / 20);
         $(formClass+"[name='positions[21][quantity]']").val(quantity);
         setPriceWeight(21, quantity, formClass);
 
@@ -128,11 +128,11 @@ $(document).ready(function(){
 
         //Парапет
         if (numberType == 1) {
-            quantity = +(WallSteps).toFixed(2);
+            quantity = +(WallSteps).toFixed(0);
         } else if (numberType == 2) {
-            quantity = +(WallSteps).toFixed(2);
+            quantity = +(WallSteps).toFixed(0);
         } else if (numberType == 3) {
-            quantity = +(WallSteps * 3).toFixed(2);
+            quantity = +(WallSteps * 3).toFixed(0);
         };
 
         $(formClass+"[name='positions[11][quantity]']").val(quantity);
@@ -142,15 +142,21 @@ $(document).ready(function(){
         if (numberType == 1) {
             quantity = 0;
         } else if (numberType == 2) {
-            quantity = (WallSteps * 2).toFixed(2);
+            quantity = (WallSteps * 2).toFixed(0);
         } else if (numberType == 3) {
-            quantity = (WallSteps * 2).toFixed(2);
+            quantity = (WallSteps * 2).toFixed(0);
         };
 
         $(formClass+"[name='positions[6][quantity]']").val(quantity);
         setPriceWeight(6, quantity, formClass);
         calculation(formClass);
     }
+
+    $("body").on("click", ".CMR__input_calc_js", function() {
+
+
+    });
+
 
     $("body").on("change", ".change_delivery", function() {
         let formClass="."+$(this).parents("form").attr("class")+" ";
@@ -401,6 +407,13 @@ $(document).ready(function(){
         calculation0(".calcFence ");
     });
 
+
+    $("body").on("click", ".CMR__input_calc_js", function() {
+        let block=$(this).attr("data-content");
+        $(".tab-content.active").removeClass("active");
+
+        $("#"+block).addClass("active");
+    });
 
     window.onresize = function() {
         $(".datetime-popup").removeClass("active");

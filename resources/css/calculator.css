@@ -25,8 +25,8 @@
     color: #444;
 }
 
-td{
-    white-space: nowrap;
+.input2{
+    width: 200px;
 }
 
 .datetime{
@@ -59,6 +59,9 @@ td{
     scrollbar-width: thin;
 }
 
+.CEB__select_color_js{
+    width: 115px;
+}
 
 .date{
     font-weight: 700;
@@ -71,7 +74,7 @@ td{
     flex-wrap: wrap;
 }
 
-.datetime{
+.date-time{
     margin-bottom: 30px;
 }
 
@@ -100,7 +103,7 @@ td{
 }
 
 .change_js{
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .df {
@@ -137,6 +140,10 @@ button#button-modal {
     height: 30px;
 }
 
+.CEB__wrapParams1{
+    display: flex;
+    gap: 10px;
+}
 
 .CEB__left {
 	flex: 0 0 40%;
@@ -311,6 +318,7 @@ button#button-modal {
 .CEB_block{
     gap: 10px;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .CEBQuestionW__wrap-answer-input-rande {
@@ -429,44 +437,39 @@ button#button-modal {
 	border-collapse: collapse;
 }
 
-.CEB__table td {
+.CEB__table td{
 	border    : 1px solid #dddddd;
 	padding   : 8px 5px;
-	font-size : 18px;
+	font-size : 16px;
 	text-align: center;
-
 }
-.CEB__table td:first-child {
 
+.CEB__table td:first-child {
 	text-align: left;
+    white-space: nowrap;
 
 }
 
 .CEB__table tr:first-child td {
 	background-color: #e0e0e0;
-	font-size       : 18px;
+	font-size       : 16px;
 	font-weight     : 700;
 	white-space     : pre;
 }
 
 .CEB__table tr:last-child td {
-	font-size  : 20px;
+	font-size  : 16px;
 	font-weight: 700;
 }
 
 .CEB__select_color {
-	padding      : 10px;
 	border-radius: 4px;
 	cursor       : pointer;
-
     text-indent: 5px;
-    line-height: 32px;
-
 }
 
 .CEB__select_color  option{
-    padding: 32px;
-    font-size: 22px;
+    font-size: 16px;
 }
 .tabs {
     display: flex;
@@ -492,10 +495,10 @@ button#button-modal {
 }
 
 .tab-content{
-    display:none;
+    display: none;
 }
 
-.tab-content:target {
+.tab-content.active{
     display: block;
 }
 
@@ -529,7 +532,17 @@ input[type="number"]{
     height: 30px;
 }
 
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
 @media only screen and (max-width : 1199px) {
+
+    .CEB__wrapContent{
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
 
 	.CEB {
 		max-width: 700px;

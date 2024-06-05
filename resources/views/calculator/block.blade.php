@@ -5,29 +5,29 @@
                         <div class="CEB__row">
                             <div class="CEB__text2">Тип забора</div>
 
-                            <div class="CEB__wrapParams">
+                            <fieldset class="CEB__wrapParams" id="group1">
 
                                 <label class="labelCustomRadio labelCustomRadio_js">
                                     <input checked class="labelCustomRadio__input CMR__change_js CMR__input_typeZabor_js"
-                                        type="radio" name="Тип забора" value="Французский забор, Комплектация №1"
+                                        type="radio" name="calc" value="Французский забор, Комплектация №1"
                                         data-numberType="1">
                                     <span class="labelCustomRadio__psevdo_border"></span>
                                     <p class="labelCustomRadio__text2">Французский забор, Комплектация №1</p>
                                 </label>
                                 <label class="labelCustomRadio labelCustomRadio_js">
                                     <input class="labelCustomRadio__input CMR__change_js CMR__input_typeZabor_js" type="radio"
-                                        name="Тип забора" value="Французский забор, Комплектация №2" data-numberType="2">
+                                        name="calc" value="Французский забор, Комплектация №2" data-numberType="2">
                                     <span class="labelCustomRadio__psevdo_border"></span>
                                     <p class="labelCustomRadio__text2">Французский забор, Комплектация №2</p>
                                 </label>
                                 <label class="labelCustomRadio labelCustomRadio_js">
                                     <input class="labelCustomRadio__input CMR__change_js CMR__input_typeZabor_js" type="radio"
-                                        name="Тип забора" value="Французский забор, Комплектация №3" data-numberType="3">
+                                        name="calc" value="Французский забор, Комплектация №3" data-numberType="3">
                                     <span class="labelCustomRadio__psevdo_border"></span>
                                     <p class="labelCustomRadio__text2">Французский забор, Комплектация №3</p>
                                 </label>
 
-                            </div>
+                            </fieldset>
 
                         </div>
                         <div class="CEB__row">

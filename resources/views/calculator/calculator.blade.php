@@ -14,16 +14,30 @@
 
     <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
         <span id="message"></span>
-        <div class="tabs">
-            <a class="tab-link active" href="#content-1">Калькулятор заборов</a>
-            <a class="tab-link" href="#content-2">Калькулятор блоков</a>
-            <a class="tab-link" href="#content-3">Калькулятор бетона</a>
-        </div>
+
+        <fieldset class="CEB__wrapParams1">
+            <label class="labelCustomRadio labelCustomRadio_js1">
+                <input checked="" class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №1" data-content="content-1">
+                <span class="labelCustomRadio__psevdo_border"></span>
+                <p class="labelCustomRadio__text2">Калькулятор заборов</p>
+            </label>
+            <label class="labelCustomRadio labelCustomRadio_js1">
+                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №2" data-content="content-2">
+                <span class="labelCustomRadio__psevdo_border"></span>
+                <p class="labelCustomRadio__text2">Калькулятор блоков</p>
+            </label>
+            <label class="labelCustomRadio labelCustomRadio_js1">
+                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №3" data-content="content-3">
+                <span class="labelCustomRadio__psevdo_border"></span>
+                <p class="labelCustomRadio__text2">Калькулятор бетона</p>
+            </label>
+
+        </fieldset>
     </div>
 
     <div class="content">
 
-            <div class="tab-content" id="content-1">
+            <div class="tab-content active" id="content-1">
                 @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence, 'form'=>"calcFence", "datesFinish"=>$datesBlockFinish))
             </div>
 
