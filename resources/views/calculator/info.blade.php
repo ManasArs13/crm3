@@ -1,26 +1,29 @@
 <div class="CEB__row">
     <div class="CEB__text2">Доставка</div>
-    <div class="CEB__wrapSlider">
-        <select name="attributes[delivery][id]"  required class="select2 input change_delivery" id="delivery">
-            @foreach ($deliveries as $delivery)
-            <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" style="margin: 4px;">{{ $delivery->name }}</option>
-            @endforeach
-        </select>
+    <div class="CEB_block">
+            <select name="attributes[delivery][id]"  required class="select2 input change_delivery" id="delivery">
+                @foreach ($deliveries as $delivery)
+                <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" style="margin: 4px;">{{ $delivery->name }}</option>
+                @endforeach
+            </select>
 
-        <select name="attributes[vehicle_type][id]" class="input change_delivery" style="{{$form=="calcBeton"?'display:none;':''}}" id="vehicleType" >
-            @foreach ($vehicleTypes as $type)
-            <option data-type='{{$type->id}}'  value="{{ $type->ms_id }}"  {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="CEB__wrapSlider" id="resultAll" style="font-weight: 700;text-align: center;"></div>
-    <input type="hidden" name="attributes[deliveryPrice]" value=0>
+            <select name="attributes[vehicle_type][id]" class="input change_delivery" style="{{$form=="calcBeton"?'display:none;':''}}" id="vehicleType" >
+                @foreach ($vehicleTypes as $type)
+                <option data-type='{{$type->id}}'  value="{{ $type->ms_id }}"  {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
+                @endforeach
+            </select>
+
+            <input type="text" class="price-tn input" value=0 disabled>
+            <input type="text" name="attributes[deliveryPrice]" class="input" value=0 disabled>
+
+        </div>
+
+    <input type="hidden" >
 </div>
 
 <div class="CEB__row">
     <div class="CEB__text2">Пользователь</div>
-    <div class="CEB_flex">
-        <div class="flex">
+    <div class="CEB_block">
             <select name="agent[id]" style="width:36%" class="select2 input">
                 <option value="" selected disabled>не выбрано</option>
                 @foreach ($contacts as $contact)
@@ -46,12 +49,12 @@
                     <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z"/>
                 </svg>
             </div>
-        </div>
 
-        <div class="agent">
-            <input type="text" name="agent[name]"  class="input" placeholder = "{{__('column.name')}}">
-            <input type="text" name="agent[phone]" class="input phone" placeholder = "{{__('column.phone')}}">
-        </div>
+
+            <div class="agent">
+                <input type="text" name="agent[name]"  class="input" placeholder = "{{__('column.name')}}">
+                <input type="text" name="agent[phone]" class="input phone" placeholder = "{{__('column.phone')}}">
+            </div>
     </div>
 </div>
 

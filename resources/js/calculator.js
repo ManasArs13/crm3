@@ -17,6 +17,7 @@ $(document).ready(function(){
 
         $(formClass+"#weight_total_"+group).text(weight*quantity);
         $(formClass+"#price_total_"+group).text(price*quantity);
+
         calculation(formClass);
     });
 
@@ -231,10 +232,8 @@ $(document).ready(function(){
             if (shippingPrice.length !== 0) {
                 let price = shippingPrice[0].price * weight;
                 let price2= Math.ceil(price/100)*100;
-                $(formClass+'#resultAll').text("Цена за тн=" + shippingPrice[0].price + " Итого (округл)=" + price2);
+                $(formClass+'.price-tn.input').val(shippingPrice[0].price);
                 $(formClass+'[name="attributes[deliveryPrice]"').val(price2);
-            } else {
-                $(formClass+'#resultAll').text('ошибка');
             }
         }
     };

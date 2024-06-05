@@ -25,6 +25,10 @@
     color: #444;
 }
 
+td{
+    white-space: nowrap;
+}
+
 .datetime{
     position: relative;
     display: inline-block;
@@ -58,12 +62,17 @@
 
 .date{
     font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .times{
     display:flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+.datetime{
+    margin-bottom: 30px;
 }
 
 .time{
@@ -82,28 +91,16 @@
     background: yellow;
 }
 
-.bg-yellow:hover ~ .order-count{
-    background:yellow;
-    display: block;
-}
-
-.order-count{
-    display: none;
-    position: absolute;
-    background: yellow;
-    z-index: 5;
-    width: 100%;
-    border-radius: 4px;
-    padding: 4px;
-    text-align: center;
-}
-
 .time-span:hover{
     background: gray;
 }
 
 .active{
     display:block;
+}
+
+.change_js{
+    font-size: 18px;
 }
 
 .df {
@@ -133,6 +130,11 @@
 
 .CEB__text2 {
 	font-size: 18px;
+    margin-bottom: 10px;
+}
+
+button#button-modal {
+    height: 30px;
 }
 
 
@@ -304,6 +306,11 @@
 	flex      : 1 0 100%;
 	max-width : 100%;
 	margin-top: 12px;
+}
+
+.CEB_block{
+    gap: 10px;
+    display: flex;
 }
 
 .CEBQuestionW__wrap-answer-input-rande {

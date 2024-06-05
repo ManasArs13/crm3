@@ -37,55 +37,70 @@ class CalculatorController extends Controller
         $dateFinish=(new \DateTime())->modify('+10 day')->format("Y-m-d");
 
         $dateNowQuery=$dateNow.' 00:00.000';
-        $dateFinishQuery=$dateFinish.'  23:59.000';
+        $dateFinishQuery=$dateFinish.' 23:59.000';
 
         $datesCalc= DB::table('orders')
         ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
         ->join('products', 'products.id', '=', 'order_positions.product_id')
-        ->select(DB::raw('distinct(orders.name) as name'),
+        ->select(DB::raw('orders.name as name, ROUND(SUM(order_positions.weight_kg)/1000) as weight'),
                  DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
                  DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
         )
         ->whereIn("category_id",['6','12','21','15','11'])
-        ->whereBetween("orders.date_plan",[$dateNowQuery, $dateFinishQuery])
+        ->whereBetween("orders.date_plan",[$dateNowQuery,$dateFinishQuery])
+        ->groupBy('orders.name')
         ->get();
 
         $datesBlock= DB::table('orders')
         ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
         ->join('products', 'products.id', '=', 'order_positions.product_id')
-        ->select(DB::raw('distinct(orders.name) as name'),
+        ->select(DB::raw('orders.name as name, ROUND(SUM(order_positions.weight_kg)/1000) as weight'),
                  DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
                  DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
         )
         ->whereNotNull("products.color_id")
-        ->whereBetween("orders.date_plan",[$dateNowQuery, $dateFinishQuery])
+        ->whereBetween("orders.date_plan",[$dateNowQuery,$dateFinishQuery])
+        ->groupBy('orders.name')
         ->get();
 
         $datesBeton= DB::table('orders')
         ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
         ->join('products', 'products.id', '=', 'order_positions.product_id')
         ->select(
-                 DB::raw('distinct(orders.name) as name'),
-                 DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
-                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
+                DB::raw('orders.name as name, ROUND(SUM(order_positions.weight_kg)/1000) as weight'),
+                DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
+                DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
         )
         ->where("category_id",'4')
-        ->whereBetween("orders.date_plan",[$dateNowQuery, $dateFinishQuery])
+        ->whereBetween("orders.date_plan",[$dateNowQuery,$dateFinishQuery])
+        ->groupBy('orders.name')
         ->get();
 
         $datesCalcFinish=[];
         foreach($datesCalc as $date){
-            $datesCalcFinish[$date->date][$date->time][]=$date->name;
+            $datesCalcFinish[$date->date][$date->time]["items"][]=$date->name;
+            if (!isset($datesCalcFinish[$date->date][$date->time]["weight"]))
+                $datesCalcFinish[$date->date][$date->time]["weight"]=$date->weight;
+            else
+                $datesCalcFinish[$date->date][$date->time]["weight"]+=$date->weight;
         }
 
         $datesBlockFinish=[];
         foreach($datesBlock as $date){
-            $datesBlockFinish[$date->date][$date->time][]=$date->name;
+            $datesBlockFinish[$date->date][$date->time]["items"][]=$date->name;
+            if (!isset($datesBlockFinish[$date->date][$date->time]["weight"]))
+                $datesBlockFinish[$date->date][$date->time]["weight"]=$date->weight;
+            else
+                $datesBlockFinish[$date->date][$date->time]["weight"]+=$date->weight;
         }
 
         $datesBetonFinish=[];
         foreach($datesBeton as $date){
-            $datesBetonFinish[$date->date][$date->time][]=$date->name;
+            $datesBetonFinish[$date->date][$date->time]["items"][]=$date->name;
+            if (!isset($datesBetonFinish[$date->date][$date->time]["weight"]))
+                $datesBetonFinish[$date->date][$date->time]["weight"]=$date->weight;
+            else
+                $datesBetonFinish[$date->date][$date->time]["weight"]+=$date->weight;
         }
 
 
