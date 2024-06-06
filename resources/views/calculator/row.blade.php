@@ -47,7 +47,7 @@
         <td>
             <select name="positions[{{ $group["id"]}}][product_id]"
                     data-id="{{$group["id"]}}"
-                    class="CEB__select_color_js CEB__select_color select2">
+                    class="CEB__select_color_js CEB__select_color">
                 @foreach($group["colors"] as $color)
                     <option data-price="{{$color["price"]}}"
                             data-weight="{{$color["weight"]}}"
