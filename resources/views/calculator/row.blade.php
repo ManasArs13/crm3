@@ -3,6 +3,10 @@
         @if ($form!="calcBeton")
             {{ $group["name"] }}
         @else
+            
+
+
+
             <select name="positions[{{ $group["id"]}}][product_id]"
                 data-id="{{$group["id"]}}"
                 class="CEB__select_beton_js CEB__select_beton">
