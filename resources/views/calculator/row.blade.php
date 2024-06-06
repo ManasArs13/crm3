@@ -3,32 +3,38 @@
         @if ($form!="calcBeton")
             {{ $group["name"] }}
         @else
-            
-
-
-
-            <select name="positions[{{ $group["id"]}}][product_id]"
-                data-id="{{$group["id"]}}"
-                class="CEB__select_beton_js CEB__select_beton">
-                @foreach($productsByGroup as $productByGroup)
-                    <option data-price="{{$productByGroup["price"]}}"
-                            data-weight="{{$productByGroup["weight"]}}"
-                            data-id="{{$productByGroup["id"]}}"
-                            value="{{$productByGroup["product"]}}">
-                            {{$productByGroup["name"]}}
-                    </option>
-                @endforeach
-            </select>
+            <div class="select">
+                <div class="select__head"></div>
+                <ul class="select__list CEB__select_beton_js CEB__select_beton select_product"  data-id="{{$group["id"]}}">
+                    @php
+                        $value="";
+                    @endphp
+                    @foreach($productsByGroup as $productByGroup)
+                        <li class="select__item {{($loop->first)?"selected":""}}"
+                                data-price="{{$productByGroup["price"]}}"
+                                data-weight="{{$productByGroup["weight"]}}"
+                                data-id="{{$productByGroup["id"]}}"
+                                data-value="{{$productByGroup["product"]}}"
+                        >
+                            {{ $productByGroup["name"] }}
+                        </li>
+                        @if ($loop->first)
+                           @php $value=$productByGroup["product"]; @endphp
+                        @endif
+                    @endforeach
+                </ul>
+                <input class="select__input" type="hidden" value="{{$value}}" name="positions[{{ $group["id"]}}][product_id]">
+            </div>
         @endif
     </td>
     <td>
-        <div class="quantity">
+        <div class="quantity {{($left_menu)?"cursor":""}}">
             <input type="number"
             name="positions[{{$group["id"]}}][quantity]"
             data-color="{{(isset($group["colors"]))?1:0}}"
             data-id="{{$group["id"]}}"
             {{
-                ($left_menu)?'readonly=""':''
+                ($left_menu)?'readonly="readonly"':''
             }}
             value=0
             min=0
@@ -49,22 +55,33 @@
     </td>
     @if (isset($group["colors"]))
         <td>
-            <select name="positions[{{ $group["id"]}}][product_id]"
-                    data-id="{{$group["id"]}}"
-                    class="CEB__select_color_js CEB__select_color">
-                @foreach($group["colors"] as $color)
-                    <option data-price="{{$color["price"]}}"
+            <div class="select">
+                <div class="select__head"></div>
+                <ul class="select__list CEB__select_color_js CEB__select_color select_product"  data-id="{{$group["id"]}}">
+                    @php
+                        $value="";
+                    @endphp
+                    @foreach($group["colors"] as $color)
+                        <li class="select__item {{$color["selected"]}}"
+                            data-price="{{$color["price"]}}"
                             data-weight="{{$color["weight"]}}"
-                            value="{{$color["product"]}}"
+                            data-value="{{$color["product"]}}"
                             data-codeColor="#{{$color["hex"]}}"
                             data-codecolortext="#{{$color["font_color"]}}"
-                            style="background-color:#{{$color["hex"]}}; padding: 10px"
-                            {{$color["selected"]}}
-                            >
+                            style="background-color:#{{$color["hex"]}}; color:#{{$color["font_color"]}}; padding: 10px"
+                        >
                             {{ $color["name"] }}
-                    </option>
-                @endforeach
-            </select>
+                        </li>
+
+                        @if ($color["selected"]=="selected")
+                            @php
+                                $value=$color["product"];
+                            @endphp
+                        @endif
+                    @endforeach
+                </ul>
+                <input class="select__input" type="hidden" value="{{$value}}" name="positions[{{ $group["id"]}}][product_id]">
+            </div>
         </td>
     @endif
 
@@ -72,14 +89,8 @@
         <span id="weight_total_{{$group["id"]}}" class="weight">0</span>
     </td>
     <td>
-        <span id="price_client_{{$group["id"]}}">
-            @if (isset($group["colors"]))
-                {{$group["colors"][0]["price"]}}
-            @else
-                {{$group["price"]}}
-            @endif
-        </span>
-        <input type="hidden" name="positions[{{$group["id"]}}][price]" value="{{isset($group["colors"])?$group["colors"][0]["price"]:$group["price"]}}">
+        <span id="price_client_{{$group["id"]}}">0</span>
+        <input type="hidden" name="positions[{{$group["id"]}}][price]" value="0">
     </td>
     <td><span id="price_total_{{$group["id"]}}" class="price">0</span></td>
 </tr>

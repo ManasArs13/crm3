@@ -3,8 +3,52 @@ import Inputmask from "inputmask";
 $(document).ready(function(){
     Inputmask({"mask": "+79999999999"}).mask(".phone");
 
+    $('.select').on('click', '.select__head', function () {
+        if ($(this).hasClass('open')) {
+            $(this).removeClass('open');
+            $(this).next().fadeOut();
+        } else {
+            $('.select__head').removeClass('open');
+            $('.select__list').fadeOut();
+            $(this).addClass('open');
+            $(this).next().fadeIn();
+        }
+    });
 
-    
+    $('.select').on('click', '.CEB__select_color_js .select__item', function () {
+        $('.select__head').removeClass('open');
+        $(this).parent().find('.selected').removeClass("selected");
+
+        $(this).addClass("selected");
+        $(this).parent().fadeOut();
+        $(this).parent().prev().html($(this).text()).css({
+            "backgroundColor": $(this).attr("data-codecolor"),
+            "color": $(this).attr("data-codecolortext"),
+        });
+
+        $(this).parent().next().val($(this).attr("data-value"))
+        let group=$(this).parent().attr("data-id");
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let quantity=$(formClass+'[name="positions['+group+'][quantity]"]').val();
+
+        let price=$(this).attr("data-price");
+        let weight=$(this).attr("data-weight");
+
+        $(formClass+"#price_client_"+group).text(price);
+        $(formClass+'[name="positions['+group+'][price]"]').val(price);
+        $(formClass+"#weight_total_"+group).text(weight*quantity);
+        $(formClass+"#price_total_"+group).text(price*quantity);
+
+        calculation(formClass);
+    });
+
+    $(document).click(function (e) {
+        if (!$(e.target).closest('.select').length) {
+            $('.select__head').removeClass('open');
+            $('.select__list').fadeOut();
+        }
+    });
+
     $('.quantity').each(function() {
       var spinner = $(this),
         input = spinner.find('input[type="number"]'),
@@ -40,14 +84,14 @@ $(document).ready(function(){
     $("body").on("change", ".change_js", function() {
         let quantity=$(this).val();
         let formClass="."+$(this).parents("form").attr("class")+" ";
-        let group=$(this).data("id");
+        let group=$(this).attr("data-id");
 
         let price=0;
         let weight=0;
-        let select=$(formClass+'[name="positions['+group+'][product_id]"]');
+        let select=$(formClass+'.select_product');
 
-        price=select.find('option:selected').data("price");
-        weight=select.find('option:selected').data("weight");
+        price=select.find('.selected').attr("data-price");
+        weight=select.find('.selected').attr("data-weight");
 
         $(formClass+"#weight_total_"+group).text(weight*quantity);
         $(formClass+"#price_total_"+group).text(price*quantity);
@@ -55,31 +99,23 @@ $(document).ready(function(){
         calculation(formClass);
     });
 
-    $("body").on("change", ".CEB__select_color_js", function() {
-        let select=$(this);
-        let group=$(this).data("id");
+
+    $("body").on("click", ".CEB__select_beton_js  .select__item", function() {
+        $('.select__head').removeClass('open');
+        $(this).parent().find('.selected').removeClass("selected");
+        $(this).addClass("selected");
+        $(this).parent().fadeOut();
+        $(this).parent().prev().html($(this).text());
+
+        let select=$(this).parent();
+        let oldGroup=select.attr("data-id");
         let formClass="."+$(this).parents("form").attr("class")+" ";
-        let quantity=$(formClass+'[name="positions['+group+'][quantity]"]').val();
+        let price=$(this).attr("data-price");
+        let weight=$(this).attr("data-weight");
+        let group=$(this).attr("data-id");
+        select.attr("data-id", group);
 
-        let price=select.find('option:selected').data("price");
-        let weight=select.find('option:selected').data("weight");
-
-        $(formClass+"#price_client_"+group).text(price);
-        $(formClass+'[name="positions['+group+'][price]"]').val(price);
-        $(formClass+"#weight_total_"+group).text(weight*quantity);
-        $(formClass+"#price_total_"+group).text(price*quantity);
-
-        calculation(formClass);
-    });
-
-    $("body").on("change", ".CEB__select_beton_js", function() {
-        let select=$(this);
-        let oldGroup=$(this).attr("data-id");
-        let formClass="."+$(this).parents("form").attr("class")+" ";
-        let price=select.find('option:selected').data("price");
-        let weight=select.find('option:selected').data("weight");
-        let group=select.find('option:selected').data("id");
-        select.removeAttr("name").attr("name", "positions["+group+"][product_id]").attr("data-id",group);
+        $(this).parent().next().val($(this).attr("data-value")).attr("name", "positions["+group+"][product_id]");
 
         let quantityInput=$(formClass+'[name="positions['+oldGroup+'][quantity]"]');
         let quantity=quantityInput.val();
@@ -110,19 +146,19 @@ $(document).ready(function(){
         $(formClass+"#price_total").text(price_total);
 
         $(formClass+".CEB__select_color_js").each(function() {
-            $(this).css({
-                "backgroundColor": $(this).find("option:selected").attr("data-codecolor"),
-                "color": $(this).find("option:selected").attr("data-codecolortext"),
-            });
+            $(this).parent(".select").find(".select__head").css({
+                    "backgroundColor": $(this).find(".selected").attr("data-codecolor"),
+                    "color": $(this).find(".selected").attr("data-codecolortext"),
+            }).text($(this).find(".selected").text());
         });
 
         calcDelivery(formClass);
     };
 
     function setPriceWeight(group, quantity, formClass){
-        let select=$(formClass+'[name="positions['+group+'][product_id]"]');
-        let price=select.find('option:selected').data("price");
-        let weight=select.find('option:selected').data("weight");
+        let select=$(formClass+'.CEB__select_color_js[data-id="'+group+'"');
+        let price=select.find('.selected').attr("data-price");
+        let weight=select.find('.selected').attr("data-weight");
 
         $(formClass+"#price_client_"+group).text(price);
         $(formClass+'[name="positions['+group+'][price]"]').val(price);
@@ -186,20 +222,14 @@ $(document).ready(function(){
         calculation(formClass);
     }
 
-    $("body").on("click", ".CMR__input_calc_js", function() {
-
-
-    });
-
-
     $("body").on("change", ".change_delivery", function() {
         let formClass="."+$(this).parents("form").attr("class")+" ";
         calcDelivery(formClass);
     })
 
     function calcDelivery(formClass) {
-        let deliveryValue = $(formClass+'#delivery').find('option:selected').attr("data-distance");
-        let vehicleType = $(formClass+'#vehicleType').find('option:selected').attr("data-type");
+        let deliveryValue = $(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance");
+        let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
         let ratio = 1;
         let weight_zakaz_for_delivery = parseFloat($(formClass+"#weight_total").text());
         let weight=Math.ceil(weight_zakaz_for_delivery/1000)+'.0';
@@ -311,11 +341,12 @@ $(document).ready(function(){
         $(".agent").toggleClass("active");
     });
 
+    $(".delivery_select2").select2();
     $(".select2").select2();
-    $("#delivery").select2();
+
 
     $("body").on("click", ".time-span", function(){
-       let value=$(this).data("time");
+       let value=$(this).attr("data-time");
        $(".plan").val(value);
        $(".datetime-popup").toggleClass("active");
     });
@@ -347,11 +378,27 @@ $(document).ready(function(){
     MadeSlider_3(); // установка 3 ползунка
     MadeSlider_4(); // установка 4 ползунка
 
-    $(".CEB__select_color_js").each(function() {
-        $(this).css({
-            "backgroundColor": $(this).find("option:selected").attr("data-codecolor"),
-            "color": $(this).find("option:selected").attr("data-codecolortext"),
-        });
+    $(".select__list.CEB__select_color_js").each(function() {
+        $(this).parent(".select").find(".select__head").css({
+            "backgroundColor": $(this).find(".selected").attr("data-codecolor"),
+            "color": $(this).find(".selected").attr("data-codecolortext"),
+        }).text($(this).find(".selected").text());
+
+        let group=$(this).attr("data-id");
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+
+        $(formClass+"#price_client_"+group).text($(this).find(".selected").attr("data-price"));
+        $(formClass+'[name="positions['+group+'][price]"]').val($(this).find(".selected").attr("data-price"));
+    });
+
+    $(".select__list.CEB__select_beton_js").each(function() {
+        $(this).parent(".select").find(".select__head").text($(this).find(".selected").text());
+
+        let group=$(this).attr("data-id");
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+
+        $(formClass+"#price_client_"+group).text($(this).find(".selected").attr("data-price"));
+        $(formClass+'[name="positions['+group+'][price]"]').val($(this).find(".selected").attr("data-price"));
     });
 
     // Задаем значение первому ползунку

@@ -1,23 +1,23 @@
 <div class="CEB__row">
     <div class="CEB__text2">Доставка</div>
     <div class="CEB_block">
-            <select name="attributes[delivery][id]"  required class="select2 input change_delivery" id="delivery">
+            <select name="attributes[delivery][id]" style="width:25%" class="select2 input change_delivery">
                 @foreach ($deliveries as $delivery)
-                <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" style="margin: 4px;">{{ $delivery->name }}</option>
+                    <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" {{($loop->first)?"selected":""}} style="margin: 4px;" >{{ $delivery->name }}</option>
                 @endforeach
             </select>
 
-            <select name="attributes[vehicle_type][id]" class="input change_delivery" style="{{$form=="calcBeton"?'display:none;':''}}" id="vehicleType" >
-                @foreach ($vehicleTypes as $type)
-                <option data-type='{{$type->id}}'  value="{{ $type->ms_id }}"  {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
-                @endforeach
+
+            <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery" style="width:25%;">
+                    @foreach ($vehicleTypes as $type)
+                        <option data-type='{{$type->id}}' value="{{$type->ms_id}}" {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
+                    @endforeach
             </select>
 
             <input type="text" class="price-tn input input2" value=0 disabled>
-            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 disabled>
+            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 readonly>
 
-        </div>
-
+    </div>
     <input type="hidden" >
 </div>
 
@@ -25,7 +25,7 @@
     <div class="CEB__text2">Пользователь</div>
     <div class="CEB_block flex-column">
         <div class="flex">
-            <select name="agent[id]" style="width:36%" class="select2 input">
+            <select name="agent[id]" style="width:25%" class="select2 input">
                 <option value="" selected disabled>не выбрано</option>
                 @foreach ($contacts as $contact)
                     <option value="{{ $contact->ms_id }}">{{ $contact->name }}</option>
@@ -43,7 +43,7 @@
             </button>
 
             <div class="datetime">
-                <input type="text" class="input plan" name="deliveryPlannedMoment" disabled placeholder='{{__('column.delivery_date')}}'>
+                <input type="text" class="input plan" name="deliveryPlannedMoment" readonly placeholder='{{__('column.delivery_date')}}'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
                     <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                     <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
@@ -62,6 +62,13 @@
 
 <div class="CEB__row">
     <div class="CEB_flex">
+
+
+        {{-- <select name="attributes[delivery][id]"  style="width:36%" class="change_delivery delivery_select2 input" id="delivery">
+            @foreach ($deliveries as $delivery)
+                <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" style="margin: 4px;" >{{ $delivery->name }}</option>
+            @endforeach
+        </select> --}}
         <textarea name="description" class="input" placeholder = "{{__('column.comment')}}"></textarea>
         <textarea name="shipmentAddressFull[addInfo]" class="input" placeholder = "{{__('column.shipment_address')}}"></textarea>
     </div>
