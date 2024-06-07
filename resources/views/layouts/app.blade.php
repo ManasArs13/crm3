@@ -20,6 +20,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen max-w-full bg-gray-100">
+            @if (Auth::user())
             @include('layouts.nav')
 
             <!-- Page Heading -->
@@ -29,6 +30,7 @@
                         {{ $header }}
                     </div>
                 </header>
+            @endif
             @endif
 
             <!-- Page Content -->

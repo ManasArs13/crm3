@@ -35,6 +35,7 @@ Route::get('/blocks_products', [WelcomeController::class, 'blocksProducts'])->na
 Route::get('/concretes_materials', [WelcomeController::class, 'concretesMaterials'])->name('welcome.concretesMaterials');
 Route::get('/paint', [WelcomeController::class, 'paint'])->name('welcome.paint');
 Route::get('/processing', [WelcomeController::class, 'processing'])->name('welcome.processing');
+Route::get('/block', [CalculatorController::class, 'block'])->name('calculator.block');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -134,6 +135,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-Route::get('/block', [CalculatorController::class, 'block'])->name('calculator.block');
+
 
 require __DIR__ . '/auth.php';

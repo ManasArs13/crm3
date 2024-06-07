@@ -321,7 +321,7 @@
                 </x-dropdown>
             </div>
             @endif
-            
+
             <!-- Hamburger -->
             <div class="-me-2 flex items-center lg:hidden">
                 <button @click="open = ! open"
