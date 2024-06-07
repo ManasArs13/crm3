@@ -2,6 +2,7 @@
 
 namespace App\Services\EntityMs;
 
+use App\Models\Delivery;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\EntityMs\CounterpartyMsService;
@@ -26,6 +27,7 @@ class OrderMsService
         $urlCounterparty = Option::where('code', '=',"ms_counterparty_url")->first()?->value;
         $urlDelivery = Option::where('code', '=',"ms_delivery_url")->first()?->value;
         $urlVehicleCategory = Option::where('code', '=',"ms_vehicle_type_url")->first()?->value;
+        $urlService = Option::where('code', '=',"ms_service_url")->first()?->value;
 
         $urlState =Option::where('code', '=',"ms_orders_need_status_url")->first()?->value;
         $urlAttr = Option::where('code', '=','ms_attributes_order_date_url')->first()?->value;
@@ -37,6 +39,10 @@ class OrderMsService
         $urlOrganization = Option::where('code', '=',"ms_organization_url")->first()?->value;
         $guidOrganization = Option::where('code', '=','ms_organization_guid')->first()?->value;
 
+        $vat = Option::where('code', '=',"ms_vat")->first()?->value;
+        $service_delivery_block = Option::where('code', '=',"ms_service_delivery_block_id")->first()?->value;
+        $service_delivery_beton = Option::where('code', '=',"ms_service_delivery_beton_id")->first()?->value;
+
         $array=[];
 
         if (isset($msOrder["positions"])) {
@@ -47,9 +53,10 @@ class OrderMsService
                     $array["positions"][] = [
                         "quantity" => (float)$position["quantity"],
                         "price" => (float)$position["price"] * 100,
+                        'vat'=>(int)$vat,
                         "assortment" => [
                             "meta" => [
-                                "href" => $urlProduct . $position["product_id"],
+                                "href" => $urlProduct.$position["product_id"],
                                 "type" => "product",
                                 "mediaType" => "application/json"
                             ]
@@ -60,6 +67,32 @@ class OrderMsService
 
             if (count($array["positions"])==0)
                 throw new \Exception(trans("error.noPositions"));
+
+            $delivery_id=$service_delivery_block;
+
+            if ($msOrder["form"]=="calcBeton"){
+                $delivery_id=$service_delivery_beton;
+            }
+            $price=0;
+            $quantity=1;
+
+            if (\Arr::exists($msOrder,"attributes") && \Arr::exists($msOrder["attributes"], "deliveryPrice")){
+                $price=(float)$msOrder["attributes"]["deliveryPrice"]*100;
+            }
+
+
+            $array["positions"][] = [
+                    "quantity" => (float)$quantity,
+                    "price" =>(float)$price,
+                    'vat'=> (int)$vat,
+                    "assortment" => [
+                        "meta" => [
+                            "href" => $urlService.$delivery_id,
+                            "type" => "service",
+                            "mediaType" => "application/json"
+                        ]
+                    ]
+            ];
         }
 
         if (isset($msOrder["description"])){

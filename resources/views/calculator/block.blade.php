@@ -124,6 +124,7 @@
                 @endif
                     <form class="{{$form}}">
                         @csrf
+                        <input type="hidden" name="form" value="{{$form}}">
                         <div class="CEB__row">
                             <div class="CEB__text2">Результат</div>
                             <div class="CEB__wrapTable">
