@@ -44,7 +44,7 @@
         </div>
         <div class="flex flex-col gap-4 basis-1/4">
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
-                
+
                 <table>
                     <caption class="text-lg font-semibold">Материалы</caption>
                     <thead>
@@ -69,10 +69,10 @@
                                     -
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
-                                    {{ $material->rashod ? $material->rashod : 0 }}
+                                    {{ $material->rashod ? ceil($material->rashod) : 0 }}
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
-                                    {{ $material->residual -  ($material->rashod ? $material->rashod : 0) }}
+                                    {{ ceil($material->residual -  ($material->rashod ? $material->rashod : 0) )}}
                                 </td>
                             </tr>
                         @endforeach
