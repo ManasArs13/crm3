@@ -1,0 +1,22 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class DeliveryAddTimeSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $sql = <<<SQL
+            UPDATE deliveries d SET d.time_hour=ceil(distance/50)
+        SQL;
+
+        DB::connection()->getPdo()->exec($sql);
+    }
+}
