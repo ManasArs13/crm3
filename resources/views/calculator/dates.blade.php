@@ -14,7 +14,7 @@
                                 <span data-time="{{$date->date.' '.$time->time}}" class="time-span {{isset($datesFinish[$dateFormat->format("d.m.Y")][$time->time])?"bg-yellow":""}}">
                                     {{$time->time_slot}}
                                     @if (isset($datesFinish[$dateFormat->format("d.m.Y")][$time->time]))
-                                        {{count($datesFinish[$dateFormat->format("d.m.Y")][$time->time]["items"])}}({{round($datesFinish[$dateFormat->format("d.m.Y")][$time->time]["weight"])}})
+                                        {{round($datesFinish[$dateFormat->format("d.m.Y")][$time->time]["weight"])}}
                                     @endif
                                 </span>
                             </div>
