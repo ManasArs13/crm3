@@ -51,6 +51,12 @@
                 </svg>
             </div>
 
+            <select name="state" style="width:25%" class="select2 input">
+                <option value="" selected disabled>не выбрано</option>
+                @foreach ($states as $state)
+                    <option value="{{ $state->ms_id }}">{{ $state->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="agent">
             <input type="text" name="agent[name]"  class="input" placeholder = "{{__('column.name')}}">

@@ -9,6 +9,7 @@ use App\Models\TransportType;
 use App\Models\Date;
 use App\Models\Time;
 use App\Models\Contact;
+use App\Models\Status;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class CalculatorController extends Controller
     {
         $entity = 'calculator';
         $needMenuForItem = true;
+        $states= Status::all();
 
         $deliveries = Delivery::whereNot('ms_id', '28803b00-5c8f-11ea-0a80-02ed000b1ce1')->orderBy('name', 'asc')->get();
         $vehicleTypes = TransportType::whereNot('ms_id', '5c2ad6bd-3dcf-11ee-0a80-105c001170bb')
@@ -174,7 +176,8 @@ class CalculatorController extends Controller
                 'idBeton',
                 'contacts',
                 'datesBlockFinish',
-                'datesBetonFinish'
+                'datesBetonFinish',
+                'states',
             )
         );
     }

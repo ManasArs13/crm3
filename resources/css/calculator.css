@@ -24,6 +24,10 @@
     max-width: 165px;
 }
 
+.flex-column .flex{
+    gap: 10px;
+}
+
 .select__head {
     width: 100%;
     max-width: 100%;

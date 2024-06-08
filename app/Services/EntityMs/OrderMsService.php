@@ -142,7 +142,7 @@ class OrderMsService
         }
 
 
-        if (isset($msOrder["state"])){
+        if (isset($msOrder["state"]) && $msOrder["state"]!=null){
             $array["state"]  = [
                 'meta' => [
                     'href' => $urlState . $msOrder["state"],
