@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('deliveries', function (Blueprint $table) {
             $table->integer('km_fact');
-            $table->integer("time_hour");
+            $table->integer("time_minute");
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('deliveries', function (Blueprint $table) {
             $table->dropColumn('km_fact');
-            $table->dropColumn('time_hour');
+            $table->dropColumn('time_minute');
         });
     }
 };

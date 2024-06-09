@@ -14,7 +14,7 @@ class DeliveryAddTimeSeeder extends Seeder
     public function run(): void
     {
         $sql = <<<SQL
-            UPDATE deliveries d SET d.time_hour=ceil(distance/50)
+            UPDATE deliveries d SET d.time_minute=ceil(distance*60/50)
         SQL;
 
         DB::connection()->getPdo()->exec($sql);
