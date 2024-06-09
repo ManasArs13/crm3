@@ -68,13 +68,6 @@
 
 <div class="CEB__row">
     <div class="CEB_flex">
-
-
-        {{-- <select name="attributes[delivery][id]"  style="width:36%" class="change_delivery delivery_select2 input" id="delivery">
-            @foreach ($deliveries as $delivery)
-                <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" style="margin: 4px;" >{{ $delivery->name }}</option>
-            @endforeach
-        </select> --}}
         <textarea name="description" class="input" placeholder = "{{__('column.comment')}}"></textarea>
         <textarea name="shipmentAddressFull[addInfo]" class="input" placeholder = "{{__('column.shipment_address')}}"></textarea>
     </div>

@@ -1,7 +1,10 @@
 <tr>
     <td>
         @if ($form!="calcBeton")
-            {{ $group["name"] }}
+            <div class="flex">
+                <span>{{ $group["name"] }}</span>
+                <span class="balance {{$form}}" data-id="{{$group["id"]}}">0</span>
+            </div>
         @else
             <div class="select">
                 <div class="select__head"></div>
@@ -65,6 +68,7 @@
                         <li class="select__item {{$color["selected"]}}"
                             data-price="{{$color["price"]}}"
                             data-weight="{{$color["weight"]}}"
+                            data-balance="{{$color["balance"]}}"
                             data-value="{{$color["product"]}}"
                             data-codeColor="#{{$color["hex"]}}"
                             data-codecolortext="#{{$color["font_color"]}}"

@@ -45,8 +45,15 @@ class ProductService implements EntityInterface
                 $categoryId = $category->id;
             }
 
+            if (Arr::exists($row, 'quantity')) {
+                $entity->balance= $row['quantity'];
+            }
+
             $entity->category_id = $categoryId;
-            $entity->weight_kg = $row["weight"];
+            if (Arr::exists($row, 'weight')) {
+                $entity->weight_kg = $row["weight"];
+            }
+
             $entity->count_pallets = 0;
             $entity->min_balance = isset($row["minimumBalance"]) ? isset($row["minimumBalance"]) : 0;
 

@@ -38,6 +38,7 @@ $(document).ready(function(){
         $(formClass+'[name="positions['+group+'][price]"]').val(price);
         $(formClass+"#weight_total_"+group).text(weight*quantity);
         $(formClass+"#price_total_"+group).text(price*quantity);
+        $(formClass+".balance[data-id="+group+"]").text($(this).attr("data-balance"));
 
         calculation(formClass);
     });
@@ -331,12 +332,6 @@ $(document).ready(function(){
 
     });
 
-    $("body").on("click", ".tab-link", function(){
-        $(".tab-link.active").removeClass("active");
-        $(this).addClass("active");
-    });
-
-
     $("body").on("click", "#button-modal", function(){
         $(".agent").toggleClass("active");
     });
@@ -352,9 +347,9 @@ $(document).ready(function(){
     });
 
     $("body").on("click", ".datetime", function(){
-        let formClass="."+$(this).parents("form").attr("class");
-        width_datetime(formClass);
-        $(".datetime-popup").toggleClass("active");
+        let formClass="."+$(".CMR__input_calc_js:checked").attr("data-content");
+        $(formClass+".datetime-popup").toggleClass("active");
+        width_datetime();
      });
 
 
@@ -387,6 +382,7 @@ $(document).ready(function(){
         let group=$(this).attr("data-id");
         let formClass="."+$(this).parents("form").attr("class")+" ";
 
+        $(formClass+".balance[data-id="+group+"]").text($(this).find(".selected").attr("data-balance"));
         $(formClass+"#price_client_"+group).text($(this).find(".selected").attr("data-price"));
         $(formClass+'[name="positions['+group+'][price]"]').val($(this).find(".selected").attr("data-price"));
     });
@@ -491,24 +487,31 @@ $(document).ready(function(){
 
     $("body").on("click", ".CMR__input_calc_js", function() {
         let block=$(this).attr("data-content");
+        $(".datetime-popup.active").removeClass("active");
         $(".tab-content.active").removeClass("active");
 
         $("#"+block).addClass("active");
     });
 
     window.onresize = function() {
-        $(".datetime-popup").removeClass("active");
+        width_datetime();
     }
 
-    function width_datetime(formClass ){
-        if ($(window).width()>=1650){
-            let widthTotal=$(".main-1").width();
-            let height=$(".CEB__wrapContent.df"+formClass).height();
-            let width=$(".CEB").width();
-            let widthItogo=(widthTotal-width)/2-30;
-            $(".datetime-popup").width(widthItogo).height(height);
-        }else{
-            $(".datetime-popup").removeClass("active");
+
+
+    function width_datetime(){
+        let formClass="."+$(".CMR__input_calc_js:checked").attr("data-content");
+
+        if (formClass!="calcBeton"){
+            if ($(window).width()>=1650){
+                let widthTotal=$(".main-1").width();
+                let height=$(".CEB__wrapContent.df"+formClass).height();
+                let width=$(".CEB").width();
+                let widthItogo=(widthTotal-width)/2-30;
+                $(".datetime-popup"+formClass).width(widthItogo).height(height);
+            }else{
+                $(".datetime-popup"+formClass).removeClass("active");
+            }
         }
     }
 

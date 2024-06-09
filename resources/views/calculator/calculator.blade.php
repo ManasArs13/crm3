@@ -17,17 +17,17 @@
 
         <fieldset class="CEB__wrapParams1">
             <label class="labelCustomRadio labelCustomRadio_js1">
-                <input checked="" class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №1" data-content="content-1">
+                <input checked="" class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №1" data-content="calcFence" >
                 <span class="labelCustomRadio__psevdo_border"></span>
                 <p class="labelCustomRadio__text2">Калькулятор заборов</p>
             </label>
             <label class="labelCustomRadio labelCustomRadio_js1">
-                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №2" data-content="content-2">
+                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №2" data-content="calcBlock">
                 <span class="labelCustomRadio__psevdo_border"></span>
                 <p class="labelCustomRadio__text2">Калькулятор блоков</p>
             </label>
             <label class="labelCustomRadio labelCustomRadio_js1">
-                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №3" data-content="content-3">
+                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №3" data-content="calcBeton">
                 <span class="labelCustomRadio__psevdo_border"></span>
                 <p class="labelCustomRadio__text2">Калькулятор бетона</p>
             </label>
@@ -37,15 +37,15 @@
 
     <div class="content">
 
-            <div class="tab-content active" id="content-1">
+            <div class="tab-content active" id="calcFence">
                 @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence, 'form'=>"calcFence", "datesFinish"=>$datesBlockFinish))
             </div>
 
-            <div class="tab-content" id="content-2">
+            <div class="tab-content" id="calcBlock">
                 @include("calculator.block", array("left_menu"=>false, 'form'=>'calcBlock',"datesFinish"=>$datesBlockFinish))
             </div>
 
-            <div class="tab-content" id="content-3">
+            <div class="tab-content" id="calcBeton">
                 @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton', 'vehicleTypes'=>$vehicleTypesBeton, "datesFinish"=>$datesBetonFinish))
             </div>
     </div>

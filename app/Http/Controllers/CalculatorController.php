@@ -110,8 +110,8 @@ class CalculatorController extends Controller
         $times=Time::where("is_active", 1)->get();
         $shippingPrices = json_encode(ShipingPrice::get());
 
-        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->whereNotNull("color_id")->orderBy("name","asc")->get();
-        $betonProducts =  Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->Where("category_id","4a3126bc-262d-11ee-0a80-011a00246492")->orderBy("name","asc")->get();
+        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg", "balance")->whereNotNull("color_id")->whereNot("category_id","7")->orderBy("name","asc")->get();
+        $betonProducts =  Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->Where("category_id","4")->orderBy("name","asc")->get();
 
         $productsByGroup=[];
         $productsByBeton=[];
@@ -136,7 +136,8 @@ class CalculatorController extends Controller
                         "price" => $product->price,
                         "product" => $product->ms_id,
                         "weight" => ceil($product->weight_kg),
-                        "selected"=>($product->color_id==5)?"selected":''
+                        "selected" =>($product->color_id==5)?"selected":'',
+                        "balance" => $product->balance
                 ];
             }
         }
