@@ -41,6 +41,10 @@
     position: relative;
 }
 
+span.balance.calcFence {
+    color: #c3bebe;
+}
+
 .calcBeton .select{
     width: 100%;
     min-width: 100%;
@@ -333,6 +337,13 @@
 .CEB__text2 {
 	font-size: 18px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex .CEB__text2{
+    margin-bottom: 20px;
+
 }
 
 button#button-modal {
@@ -612,7 +623,8 @@ button#button-modal {
 }
 
 .CEBQuestionW__input-rande-text {
-	font-size  : 24px;
+	font-size  : 18px;
+    line-height: 27px;
 	color      : rgba(0, 0, 0, .8);
 	font-weight: 400
 }

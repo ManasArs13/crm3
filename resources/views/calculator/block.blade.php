@@ -30,10 +30,10 @@
                         </div>
                         <div class="flex">
                             <div class="CEB__row">
-                                <div class="CEB__text2">Длина забора, м</div>
+                                <div class="CEB__text2"><div>Длина забора, м</div>  <div class="CEBQuestionW__input-rande-text"><span id="CEB__textLength">0</span> м.</div></div>
 
                                 <div class="CEB__wrapSlider">
-                                    <div class="CEBQuestionW__input-rande-text"><span id="CEB__textLength">0</span> м.</div>
+
                                     <div class="CEBQuestionW__wrap-answer-input-rande">
                                         <div id="CEBQuestionW-slide1" class="CEBQuestionW__slider"></div>
                                         <input type="hidden" id="CEB__inputLength" name="Длина забора, м: " value="0">
@@ -51,10 +51,9 @@
 
                             </div>
                             <div class="CEB__row">
-                                <div class="CEB__text2">Количество столбов, шт</div>
+                                <div class="CEB__text2"><div>Количество столбов, шт</div><div class="CEBQuestionW__input-rande-text"><span id="CEB__textPost_quantity">0</span> шт.</div></div>
 
                                 <div class="CEB__wrapSlider">
-                                    <div class="CEBQuestionW__input-rande-text"><span id="CEB__textPost_quantity">0</span> шт.</div>
                                     <div class="CEBQuestionW__wrap-answer-input-rande">
                                         <div id="CEBQuestionW-slide2" class="CEBQuestionW__slider"></div>
                                         <input type="hidden" id="CEB__inputPost_quantity" name="Количество столбов, шт: "
@@ -74,10 +73,9 @@
                         </div>
                         <div class="flex">
                             <div class="CEB__row">
-                                <div class="CEB__text2">Высота стенки, см</div>
+                                <div class="CEB__text2"><div>Высота стенки, см</div><div class="CEBQuestionW__input-rande-text"><span id="CEB__text_wallHeight">0</span> см.</div></div>
 
                                 <div class="CEB__wrapSlider">
-                                    <div class="CEBQuestionW__input-rande-text"><span id="CEB__text_wallHeight">0</span> см.</div>
                                     <div class="CEBQuestionW__wrap-answer-input-rande">
                                         <div id="CEBQuestionW-slide3" class="CEBQuestionW__slider"></div>
                                         <input type="hidden" id="CEB__input_wallHeight" name="Высота стенки, см: " value="0">
@@ -95,9 +93,8 @@
 
                             </div>
                             <div class="CEB__row">
-                                <div class="CEB__text2">Высота колоны, см</div>
+                                <div class="CEB__text2"><div>Высота колоны, см</div><div class="CEBQuestionW__input-rande-text"><span id="CEB__text_columnHeight">0</span> см.</div></div>
                                 <div class="CEB__wrapSlider">
-                                    <div class="CEBQuestionW__input-rande-text"><span id="CEB__text_columnHeight">0</span> см.</div>
                                     <div class="CEBQuestionW__wrap-answer-input-rande">
                                         <div id="CEBQuestionW-slide4" class="CEBQuestionW__slider"></div>
                                         <input type="hidden" id="CEB__input_columnHeight" name="Высота колоны, см: "
