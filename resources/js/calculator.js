@@ -169,7 +169,9 @@ $(document).ready(function(){
     }
 
     function calculation0(formClass){
+        $(".labelCustomRadio_type.checked").removeClass("checked");
         numberType = $(".CMR__input_typeZabor_js:checked").attr("data-numberType");
+        $(".CMR__input_typeZabor_js:checked").parent().addClass("checked");
         lengthColumns = Length - post_quantity;
         lengthWalls = Length - (post_quantity * 0.28);
 
@@ -371,10 +373,35 @@ $(document).ready(function(){
     let lengthColumns = 0; // Длина колонн общая
 
 
-    MadeSlider_1(); // установка первого ползунка
-    MadeSlider_2(); // установка 2 ползунка
-    MadeSlider_3(); // установка 3 ползунка
-    MadeSlider_4(); // установка 4 ползунка
+    MadeSlider_1(Length); // установка первого ползунка
+    MadeSlider_2(post_quantity); // установка 2 ползунка
+    MadeSlider_3(wallHeight); // установка 3 ползунка
+    MadeSlider_4(columnHeight); // установка 4 ползунка
+
+    $("body").on("change", ".change_length", function(){
+        let val=$(this).val();
+        MadeSlider_1(val);
+        calculation0(".calcFence ");
+    });
+
+    $("body").on("change", ".change_postQuantity", function(){
+        let val=$(this).val();
+        MadeSlider_2(val);
+        calculation0(".calcFence ");
+    });
+
+    $("body").on("change", ".change_wallHeight", function(){
+        let val=$(this).val();
+        MadeSlider_3(val);
+        calculation0(".calcFence ");
+    });
+
+    $("body").on("change", ".change_columnHeight", function(){
+        let val=$(this).val();
+        MadeSlider_4(val);
+        calculation0(".calcFence ");
+    });
+
 
     $(".select__list.CEB__select_color_js").each(function() {
         $(this).parent(".select").find(".select__head").css({
@@ -401,9 +428,9 @@ $(document).ready(function(){
     });
 
     // Задаем значение первому ползунку
-    function MadeSlider_1(formClass) {
+    function MadeSlider_1(Length) {
         jQuery("#CEB__inputLength").val(Length);
-        jQuery("#CEB__textLength").text(Length);
+        jQuery("#CEB__textLength").val(Length);
         jQuery("#CEBQuestionW-slide1").slider({
             value: Length,
             min: 0,
@@ -414,16 +441,16 @@ $(document).ready(function(){
             slide: function(event, ui) {
                 Length = ui.value;
                 jQuery("#CEB__inputLength").val(Length);
-                jQuery("#CEB__textLength").text(Length);
+                jQuery("#CEB__textLength").val(Length);
                 calculation0(".calcFence ");
             }
         });
     };
 
     // Задаем значение 2 ползунку
-    function MadeSlider_2() {
+    function MadeSlider_2(post_quantity) {
         jQuery("#CEB__inputPost_quantity").val(post_quantity);
-        jQuery("#CEB__textPost_quantity").text(post_quantity);
+        jQuery("#CEB__textPost_quantity").val(post_quantity);
         jQuery("#CEBQuestionW-slide2").slider({
             value: post_quantity,
             min: 0,
@@ -434,16 +461,16 @@ $(document).ready(function(){
             slide: function(event, ui) {
                 post_quantity = ui.value;
                 jQuery("#CEB__inputPost_quantity").val(post_quantity);
-                jQuery("#CEB__textPost_quantity").text(post_quantity);
+                jQuery("#CEB__textPost_quantity").val(post_quantity);
                 calculation0(".calcFence ");
             }
         });
     };
 
     // Задаем значение 3 ползунку
-    function MadeSlider_3() {
+    function MadeSlider_3(wallHeight) {
         jQuery("#CEB__input_wallHeight").val(wallHeight);
-        jQuery("#CEB__text_wallHeight").text(wallHeight);
+        jQuery("#CEB__text_wallHeight").val(wallHeight);
 
         jQuery("#CEBQuestionW-slide3").slider({
             value: wallHeight,
@@ -455,16 +482,16 @@ $(document).ready(function(){
             slide: function(event, ui) {
                 wallHeight = ui.value;
                 jQuery("#CEB__input_wallHeight").val(wallHeight);
-                jQuery("#CEB__text_wallHeight").text(wallHeight);
+                jQuery("#CEB__text_wallHeight").val(wallHeight);
                 calculation0(".calcFence ");
             }
         });
     };
 
     // Задаем значение 4 ползунку
-    function MadeSlider_4() {
+    function MadeSlider_4(columnHeight) {
         jQuery("#CEB__input_columnHeight").val(columnHeight);
-        jQuery("#CEB__text_columnHeight").text(columnHeight);
+        jQuery("#CEB__text_columnHeight").val(columnHeight);
 
         jQuery("#CEBQuestionW-slide4").slider({
             value: columnHeight,
@@ -476,7 +503,7 @@ $(document).ready(function(){
             slide: function(event, ui) {
                 columnHeight = ui.value;
                 jQuery("#CEB__input_columnHeight").val(columnHeight);
-                jQuery("#CEB__text_columnHeight").text(columnHeight);
+                jQuery("#CEB__text_columnHeight").val(columnHeight);
                 calculation0(".calcFence ");
             }
         });
