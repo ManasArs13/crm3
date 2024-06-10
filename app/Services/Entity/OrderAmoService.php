@@ -4,6 +4,7 @@ namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
 use App\Models\Option;
+use App\Models\Order;
 use App\Models\OrderAmo;
 use Carbon\Carbon;
 
@@ -14,7 +15,9 @@ class OrderAmoService implements EntityInterface
     {
         foreach ($rows as $rows) {
             foreach ($rows as $row) {
+
                 $entity = OrderAmo::query()->firstOrNew(['id' => $row->getId()]);
+
                 if ($entity->id === null) {
                     $entity->id = $row->getId();
                 }
@@ -27,8 +30,9 @@ class OrderAmoService implements EntityInterface
                 $msOrderLink = null;
                 $comment = null;
 
-                if ($row->getStatusId())
+                if ($row->getStatusId()) {
                     $entity->status_amo_id = $row->getStatusId();
+                }
 
                 $entity->price = $row->getPrice();
                 $contacts = $row->getContacts();
@@ -44,33 +48,31 @@ class OrderAmoService implements EntityInterface
                 $customFields = $row->getCustomFieldsValues();
 
                 if ($customFields != null) {
-                    $msField = $customFields->getBy('fieldCode', 'AMGBP_MOYSKLAD_ORDER_ID');
 
+                    $msField = $customFields->getBy('fieldCode', 'AMGBP_MOYSKLAD_ORDER_ID');
                     if ($msField != null) {
-                        $msOrder = $msField->getValues()[0]->getValue();
+                        $order = Order::where('ms_id', $msField->getValues()[0]->getValue())->select('id', 'ms_id')->First();
+                        $msOrder = $order ? $order->id : null;
                     }
 
                     $msFieldLink = $customFields->getBy('fieldCode', 'AMGBP_MOYSKLAD_ORDER_LINK');
-
                     if ($msFieldLink != null) {
-                        $msOrderLink = $msFieldLink->getValues()[0]->getValue();
+                        $OrderLink = $msFieldLink->getValues()[0]->getValue();
+                        $msOrderLink = $OrderLink ? $OrderLink : null;
                     }
 
-
                     $commentField = $customFields->getBy('fieldId', 602581);
-
-                    if ($comment != null) {
+                    if ($commentField != null) {
                         $comment = $commentField->getValues()[0]->getValue();
                     }
                 }
+
                 $entity->order_id = $msOrder;
                 $entity->order_link = $msOrderLink;
-                $entity->is_exist = 1;
                 $entity->comment = $comment;
-                $entity->updated_at = Carbon::now();
+                $entity->is_exist = 1;
                 $entity->save();
             }
         }
     }
-
 }

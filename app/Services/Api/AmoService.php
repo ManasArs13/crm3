@@ -93,28 +93,6 @@ class AmoService
     }
 
 
-    //    function getAmoAccessToken()
-    //    {
-    //        try {
-    //            $accessToken = $this->provider->getAccessToken('authorization_code', [
-    //                'code' => $this->options["code"],
-    //                "client_secret" => $this->options['client_secret']
-    //            ]);
-    //
-    //            $data = [
-    //                'accessToken' => $accessToken->getToken(),
-    //                'expires' => $accessToken->getExpires(),
-    //                'refreshToken' => $accessToken->getRefreshToken(),
-    //                'baseDomain' => $this->options["base_domain"],
-    //            ];
-    //            $this->saveAmoToken((array)$accessToken,$this->options["uploads_token_file"]);
-    //            return $this->getToken();
-    //
-    //        } catch (Exception $exception) {
-    //            $this->logger->error(__METHOD__ . ' exception request token error (Invalid access token):' . $exception->getMessage());
-    //        }
-    //    }
-
     /**
      * @param array $accessToken
      */
@@ -331,6 +309,7 @@ class AmoService
         $statusesService = $this->apiClient->statuses($this->options["pipeline_id"]);
 
         $statusesCollection = [];
+        
         try {
             $statusesCollection[] = $statusesService->get();
             $this->statusAmoService->import($statusesCollection);
@@ -365,7 +344,7 @@ class AmoService
 
             $leads[] = $this->apiClient->leads()->get($filter, [LeadModel::CONTACTS]);
             $this->orderAmoService->import($leads);
-
+            info($leads);
             $i = 2;
             while ($leads[0]->getNextPageLink() != null) {
                 $filter->setPage($i);

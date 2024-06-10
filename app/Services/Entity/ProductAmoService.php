@@ -15,9 +15,9 @@ class ProductAmoService implements EntityInterface
               if (!Product::query()->find($productMsId) ){
                   $price = (int)$data->customFieldsValues[0]->values[0]->value;
                   Product::query()->updateOrCreate(
-                      ['id'=>$data->id],
+                      ['ms_id'=>$data->id],
                       [
-                      'id'=>$data->id,
+                      'ms_id'=>$data->id,
                       'name'=> $data->name,
                       'price'=> $price
                       ]);

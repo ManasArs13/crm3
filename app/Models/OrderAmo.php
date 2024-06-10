@@ -13,7 +13,7 @@ class OrderAmo extends Model
     protected $fillable = [
         'id'
     ];
-    
+
     public function contact_amo()
     {
         return $this->belongsTo(ContactAmo::class);
@@ -24,10 +24,16 @@ class OrderAmo extends Model
         return $this->belongsTo(StatusAmo::class);
     }
 
-    public function orderMs():HasOneThrough
+    public function orderMs(): HasOneThrough
     {
 
-        return $this->hasOneThrough(Order::class, OrderAmoOrder::class, 'order_amo_id', 'id', 'id', 'order_id');
-
+        return $this->hasOneThrough(
+            Order::class,
+            OrderAmoOrder::class,
+            'order_amo_id',
+            'id',
+            'ms_id',
+            'order_id'
+        );
     }
 }
