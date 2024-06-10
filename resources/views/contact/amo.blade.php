@@ -217,7 +217,18 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[28rem] overflow-hidden px-6 py-4"
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
+                                    @if (
+                                        (is_int($entityItem->$column) ||
+                                            $column == 'phone' ||
+                                            $column == 'phone!' ||
+                                            $column == 'phone_norm' ||
+                                            $column == 'is_dublash' ||
+                                            $column == 'is_exist' ||
+                                            $column == 'created_at' ||
+                                            $column == 'updated_at') &&
+                                            !preg_match('/_id\z/u', $column) &&
+                                            $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
