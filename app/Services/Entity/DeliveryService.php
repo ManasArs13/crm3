@@ -21,6 +21,8 @@ class DeliveryService implements EntityInterface
             $entity->name = $row['name'];
             $entity->distance = Arr::exists($row, 'code') ? intval($row['code']) : 0;
 
+            $entity->time_minute=ceil($entity->distance*60/50);
+
             $entity->save();
         }
     }

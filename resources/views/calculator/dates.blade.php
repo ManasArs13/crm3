@@ -12,9 +12,10 @@
                         @foreach ($times as $time)
                             <div class="time">
                                 <span data-time="{{$date->date.' '.$time->time}}" class="time-span {{isset($datesFinish[$dateFormat->format("d.m.Y")][$time->time])?"bg-yellow":""}}">
-                                    {{$time->time_slot}}
                                     @if (isset($datesFinish[$dateFormat->format("d.m.Y")][$time->time]))
                                         {{round($datesFinish[$dateFormat->format("d.m.Y")][$time->time]["weight"])}}
+                                    @else
+                                        {{$time->time_slot}}
                                     @endif
                                 </span>
                             </div>
