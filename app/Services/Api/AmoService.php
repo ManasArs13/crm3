@@ -344,7 +344,6 @@ class AmoService
 
             $leads[] = $this->apiClient->leads()->get($filter, [LeadModel::CONTACTS]);
             $this->orderAmoService->import($leads);
-            info($leads);
             $i = 2;
             while ($leads[0]->getNextPageLink() != null) {
                 $filter->setPage($i);
