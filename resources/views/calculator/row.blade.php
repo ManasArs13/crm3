@@ -41,6 +41,7 @@
             }}
             value=0
             min=0
+            step="{{($form=="calcBeton")?0.5:1}}"
             class="change_js">
             <div class="quantity-nav">
                 <div class="quantity-button quantity-up">
