@@ -160,10 +160,31 @@
                                 <span
                                     class="basis-1/4 flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
                                     Плановая дата</span>
-                                <input type="datetime-local" min="2020-01-01"
-                                    value="{{ date('Y-m-d h:m:s', strtotime($entityItem->date_plan)) }}" name="date"
+                                <input type="date" min="2020-01-01"
+                                    value="{{ date('Y-m-d', strtotime($entityItem->date_plan)) }}" name="date"
                                     required
                                     class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                            </div>
+                            <div class="flex flex-row">
+                                <span
+                                    class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    время</span>
+                                <select name="time" class="rounded border border-solid border-neutral-400">
+                                    <option value="{{ date('h', strtotime($entityItem->date_plan)) }}:00">{{ date('h', strtotime($entityItem->date_plan)) }}:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                </select>
                             </div>
                         </div>
 

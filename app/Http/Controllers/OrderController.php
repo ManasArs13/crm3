@@ -489,7 +489,7 @@ class OrderController extends Controller
         $order->contact_id = $request->contact;
         $order->delivery_id = $request->delivery;
         $order->transport_type_id = $request->transport_type;
-        $order->date_plan = $request->date;
+        $order->date_plan = $request->date . ' ' . $request->time;
         $order->date_moment = $request->date_created;
 
         if ($request->comment) {
