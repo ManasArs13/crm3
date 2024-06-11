@@ -119,6 +119,11 @@ span.balance {
 .quantity {
     position: relative;
     display: inline-block;
+    line-height: 40px;
+  }
+
+  .metric{
+    line-height: 40px;
   }
 
 .change_reserve{
@@ -152,14 +157,19 @@ span.balance {
 
   .quantity input {
     width: 45px;
+    font-size: 18px;
     height: 40px;
-    line-height: 1.65;
+    line-height: 40px;
     float: left;
     display: block;
     padding: 0;
     margin: 0;
     padding:  0 20px;
     text-align: center;
+  }
+
+  .CEB__table .quantity input{
+    font-size: 16px;
   }
 
   .quantity input:focus {
@@ -254,16 +264,15 @@ span.balance {
     position: relative;
 }
 
+
 .datetime-popup:not(.calcBeton){
-    position: absolute;
     display: none;
-    right: 0;
-    top: 0;
 }
 
 .datetime-popup.active:not(.calcBeton){
     position: absolute;
     display: block;
+    z-index: 677;
     right: 0;
     top: 0;
 }
@@ -289,6 +298,7 @@ span.balance {
     display:flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    gap: 10px;
 }
 
 .date-time{
@@ -297,13 +307,13 @@ span.balance {
 
 .time{
     position: relative;
+    flex: 1 1 0px;
 }
 
 .time-span{
     display: block;
     padding: 10px;
     border-radius: 5px;
-    width: 65px;
     background: #E6E6E6;
     cursor: pointer;
     text-align: center;
@@ -359,6 +369,7 @@ span.balance {
 
 .CEB__text2 {
 	font-size: 18px;
+    line-height: 40px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
@@ -418,7 +429,7 @@ button#button-modal {
 }
 
 .CEB__row {
-	margin          : 12px 0;
+	margin-bottom          :  10px;
 	background-color: #ffffff;
 	padding         : 12px;
 	border-radius   : 12px;
@@ -575,7 +586,7 @@ button#button-modal {
 .CEB.CEB-1.CEB-2 {
     display: flex;
     gap: 10px;
-
+    margin-bottom: 10px;
     justify-content: space-between;
 }
 
@@ -830,8 +841,11 @@ input[type="number"]{
     flex-direction: column;
 }
 
-@media only screen and (max-width : 1199px) {
 
+
+
+
+@media only screen and (max-width : 1473px) {
     .CEB__wrapContent{
         flex-direction: column;
         flex-wrap: wrap;
@@ -841,26 +855,33 @@ input[type="number"]{
 		max-width: 700px;
 	}
 
-
-	.CEB__left {
-		flex: 0 0 100%;
-	}
-
-	.CEB__right {
-		flex       : 0 0 100%;
-		margin-left: 0;
-		overflow-x : scroll;
-	}
+    .CEB.CEB-1.CEB-2{
+        flex-direction: column;
+    }
 
 	.CEB__wrapTable {
 		overflow-x: scroll;
+    }
 
-	}
+    .times{
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+    }
+}
+
+@media only screen and (max-width : 991px) {
+
+    .CEB__wrapParams1{
+        flex-direction: column;
+    }
+
+    .CEB__wrapParams1 .labelCustomRadio{
+        flex: 0 0 50px;
+    }
 
 
 }
-
-@media only screen and (max-width : 991px) {}
 
 @media only screen and (max-width : 767px) {}
 

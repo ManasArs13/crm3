@@ -146,6 +146,7 @@ $(document).ready(function(){
 
         $(formClass+"#weight_total").text(weigth_total);
         $(formClass+"#price_total").text(price_total);
+        $(formClass+".weight-tn").val((weigth_total/1000).toFixed(1));
 
         $(formClass+".CEB__select_color_js").each(function() {
             $(this).parent(".select").find(".select__head").css({
@@ -366,11 +367,11 @@ $(document).ready(function(){
 
     $("body").on("click", ".time-span", function(){
        let value=$(this).attr("data-time");
-       let formClass="."+$(this).parents(".datetime-popup").attr("data-class")+" ";
+       let formClass="."+$(this).parents(".datetime-popup").attr("data-class");
 
-       $(formClass+'[name="deliveryPlannedMoment"]').val(value);
-       $(formClass+".plan").val(value.substr(0,19));
-       $(formClass+".datetime-popup").toggleClass("active");
+       $(formClass+' [name="deliveryPlannedMoment"]').val(value);
+       $(formClass+" .plan").val(value.substr(0,19));
+       $(formClass+".datetime-popup").removeClass("active");
     });
 
     $("body").on("click", ".datetime", function(){
@@ -546,28 +547,36 @@ $(document).ready(function(){
         $(".tab-content.active").removeClass("active");
 
         $("#"+block).addClass("active");
+        width_datetime();
     });
 
     window.onresize = function() {
         width_datetime();
     }
 
-
+    width_datetime();
 
     function width_datetime(){
         let formClass="."+$(".CMR__input_calc_js:checked").attr("data-content");
 
-        if (formClass!="calcBeton"){
-            if ($(window).width()>=1650){
-                let widthTotal=$(".main-1").width();
-                let height=$(".CEB__wrapContent.df"+formClass).height();
-                let width=$(".CEB").width();
-                let widthItogo=(widthTotal-width)/2-30;
-                $(".datetime-popup"+formClass).width(widthItogo).height(height);
-            }else{
-                $(".datetime-popup"+formClass).removeClass("active");
+        if (formClass!=".calcBeton"){
+            let widthTotal=$(".main-1").width();
+            let height=$(".CEB__wrapContent.df"+formClass).height();
+            let width=$(".CEB").outerWidth();
+            let widthItogo=(widthTotal-width)/2-30;
+            $(".datetime-popup"+formClass).width(widthItogo);
+
+
+
+            if ($(window).width()<1650){
+                $(".datetime-popup"+formClass).css("width", width+"px").css("right", widthItogo+30);
             }
         }
+
+        let height=$(".datetime-popup"+formClass+" .date-time:nth-child(1)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(2)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(3)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(4)").outerHeight(true);
+        $(".datetime-popup"+formClass).height(height+"px").css("max-height",height+"px");
+
+
     }
 
 
