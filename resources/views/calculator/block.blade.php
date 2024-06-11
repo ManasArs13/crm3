@@ -49,7 +49,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{ __('calculator.m') }}</div>
+                                <div class="metric">{{ __('calculator.m') }}</div>
                             </div>
                         </div>
 
@@ -94,7 +94,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{ __('calculator.pc') }}</div>
+                                <div class="metric">{{ __('calculator.pc') }}</div>
                             </div>
                         </div>
 
@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{ __('calculator.cm') }}</div>
+                                <div class="metric">{{ __('calculator.cm') }}</div>
                             </div>
 
                         </div>
@@ -189,7 +189,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{ __('calculator.cm') }}</div>
+                                <div class="metric">{{ __('calculator.cm') }}</div>
                             </div>
                         </div>
                         <div class="CEB__wrapSlider">
@@ -290,16 +290,15 @@
                             @endif
                         </div>
                     </div>
-
                    @include('calculator.info')
-
-                   @if ($left_menu)
-                   <div class="img_delivery">
-                        <img src="{{ Storage::url('shipping_prices.jpg') }}" alt="{{ __('calculator.type_1') }}">
-                   </div>
-                   @endif
             </form>
         </div>
     </div>
 </div>
 @include('calculator.dates', ['dates' => $dates, 'datesFinish' => $datesFinish, 'class' => $form])
+<div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
+    <div class="img_delivery">
+        <img src="{{ Storage::url('shipping_prices.jpg') }}" alt="{{ __('calculator.price_list') }}">
+        <img src="{{ Storage::url('brochure.jpg') }}" alt="{{ __('calculator.brochure') }}">
+    </div>
+</div>

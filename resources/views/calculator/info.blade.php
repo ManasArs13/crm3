@@ -14,8 +14,9 @@
                     @endforeach
             </select>
 
-            <input type="text" class="price-tn input input2" value=0 disabled>
-            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 readonly>
+            <input type="text" class="weight-tn input input2" value=0 disabled>
+            <input type="text" class="price-tn input input2" value=0 >
+            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 >
 
     </div>
     <input type="hidden" >
@@ -72,8 +73,10 @@
         <textarea name="description" class="input" placeholder = "{{__('column.comment')}}"></textarea>
         <textarea name="shipmentAddressFull[addInfo]" class="input" placeholder = "{{__('column.shipment_address')}}"></textarea>
     </div>
+
+    <button type="submit" class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 mt-5">Отправить в мс</button>
 </div>
-<button type="submit" class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">Отправить в мс</button>
+
 
 <div role="status" class="preloader">
     <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

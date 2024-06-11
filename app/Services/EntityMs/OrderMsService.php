@@ -47,6 +47,7 @@ class OrderMsService
 
         if (isset($msOrder["positions"])) {
             $array["positions"] = [];
+            $quantity=1;
 
             foreach ($msOrder["positions"] as $position) {
                 if ($position["quantity"]!=0){
@@ -62,6 +63,7 @@ class OrderMsService
                             ]
                         ]
                     ];
+                    $quantity=(float)$position["quantity"];
                 }
             }
 
@@ -70,11 +72,14 @@ class OrderMsService
 
             $delivery_id=$service_delivery_block;
 
+
             if ($msOrder["form"]=="calcBeton"){
                 $delivery_id=$service_delivery_beton;
+            }else{
+                $quantity=1;
             }
             $price=0;
-            $quantity=1;
+
 
             if (\Arr::exists($msOrder,"attributes") && \Arr::exists($msOrder["attributes"], "deliveryPrice")){
                 $price=(float)$msOrder["attributes"]["deliveryPrice"]*100;

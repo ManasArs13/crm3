@@ -132,6 +132,24 @@ $(document).ready(function(){
         calculation(formClass);
     });
 
+    $("body").on("focusout", ".price-tn", function() {
+        let priceTn=parseInt($(this).val());
+        $(this).addClass("disabled");
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let deliveryDistance = parseInt($(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance"));
+        let weightTn= parseFloat($(formClass+".weight-tn").val());
+        $(formClass+'[name="attributes[deliveryPrice]"').val(priceTn*weightTn).addClass("disabled");
+    });
+
+    $("body").on("focusout", '[name="attributes[deliveryPrice]"]', function() {
+        let priceDelivery=parseInt($(this).val());
+        $(this).addClass("disabled");
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let deliveryDistance = parseInt($(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance"));
+        let weightTn= parseFloat($(formClass+".weight-tn").val());
+        $(formClass+'.price-tn').val(priceDelivery/weightTn).addClass("disabled");
+    });
+
     function calculation(formClass){
         var weigth_total=0;
         var price_total=0;
@@ -146,6 +164,7 @@ $(document).ready(function(){
 
         $(formClass+"#weight_total").text(weigth_total);
         $(formClass+"#price_total").text(price_total);
+        $(formClass+".weight-tn").val(Math.ceil(weigth_total/1000));
 
         $(formClass+".CEB__select_color_js").each(function() {
             $(this).parent(".select").find(".select__head").css({
@@ -169,10 +188,20 @@ $(document).ready(function(){
     }
 
     function calculation0(formClass){
+
         $(".labelCustomRadio_type.checked").removeClass("checked");
         numberType = $(".CMR__input_typeZabor_js:checked").attr("data-numberType");
         let reserve=$("#CEB__textReserve").val()/100;
         $(".CMR__input_typeZabor_js:checked").parent().addClass("checked");
+
+        let Length = $("#CEB__textLength").val(); // длина забора
+        let post_quantity = $("#CEB__textPost_quantity").val(); // кол-во столбов
+        let wallHeight = $("#CEB__text_wallHeight").val(); // высота стенки
+        let columnHeight = $("#CEB__text_columnHeight").val(); // Высота колоны
+
+
+
+
         lengthColumns = Length - post_quantity;
         lengthWalls = Length - (post_quantity * 0.28);
 
@@ -241,96 +270,98 @@ $(document).ready(function(){
     })
 
     function calcDelivery(formClass) {
-        let deliveryValue = $(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance");
-        let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
-        let ratio = 1;
-        let weight_zakaz_for_delivery = parseFloat($(formClass+"#weight_total").text());
-        let weight=Math.ceil(weight_zakaz_for_delivery/1000)+'.0';
+        if (!$(formClass+'[name="attributes[deliveryPrice]"').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
+            let deliveryValue = $(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance");
+            let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
+            let weight_zakaz_for_delivery = parseFloat($(formClass+"#weight_total").text());
+            let weight=Math.ceil(weight_zakaz_for_delivery/1000);
 
-        if (deliveryValue < 25) {
-            if (vehicleType==2){
-                if (deliveryValue<15)
-                    deliveryValue=15;
-                if (deliveryValue >= 15 && deliveryValue<20)
-                    deliveryValue=20;
+            if (deliveryValue < 25) {
+                if (vehicleType==2){
+                    if (deliveryValue<15)
+                        deliveryValue=15;
+                    if (deliveryValue >= 15 && deliveryValue<20)
+                        deliveryValue=20;
+                    else
+                        deliveryValue=25;
+                }else{
+                    deliveryValue = 25;
+                }
+            } else if (deliveryValue >= 25 && deliveryValue < 30) {
+                deliveryValue = 30;
+            } else if (deliveryValue >= 30 && deliveryValue < 35) {
+                deliveryValue = 35;
+            } else if (deliveryValue >= 35 && deliveryValue < 40) {
+                deliveryValue = 40;
+            } else if (deliveryValue >= 40 && deliveryValue < 50) {
+                deliveryValue = 50;
+            } else if (deliveryValue >= 50 && deliveryValue < 60) {
+                deliveryValue = 60;
+            } else if (deliveryValue >= 60 && deliveryValue < 70) {
+                deliveryValue = 70;
+            } else if (deliveryValue >= 70 && deliveryValue < 80) {
+                deliveryValue = 80;
+            } else if (deliveryValue >= 80 && deliveryValue < 90) {
+                deliveryValue = 90;
+            } else if (deliveryValue >= 90 && deliveryValue < 100) {
+                deliveryValue = 100;
+            } else if (deliveryValue >= 100 && deliveryValue < 120) {
+                deliveryValue = 120;
+            } else if (deliveryValue >= 120 && deliveryValue < 140) {
+                deliveryValue = 140;
+            } else if (deliveryValue >= 140 && deliveryValue < 160) {
+                deliveryValue = 160;
+            } else if (deliveryValue >= 160 && deliveryValue < 180) {
+                deliveryValue = 180;
+            } else if (deliveryValue >= 180 && deliveryValue < 200) {
+                deliveryValue = 200;
+            } else {
+                if (vehicleType==2)
+                    deliveryValue=200;
                 else
-                    deliveryValue=25;
-            }else{
-                deliveryValue = 25;
+                    deliveryValue = 220;
             }
-        } else if (deliveryValue >= 25 && deliveryValue < 30) {
-            deliveryValue = 30;
-        } else if (deliveryValue >= 30 && deliveryValue < 35) {
-            deliveryValue = 35;
-        } else if (deliveryValue >= 35 && deliveryValue < 40) {
-            deliveryValue = 40;
-        } else if (deliveryValue >= 40 && deliveryValue < 50) {
-            deliveryValue = 50;
-        } else if (deliveryValue >= 50 && deliveryValue < 60) {
-            deliveryValue = 60;
-        } else if (deliveryValue >= 60 && deliveryValue < 70) {
-            deliveryValue = 70;
-        } else if (deliveryValue >= 70 && deliveryValue < 80) {
-            deliveryValue = 80;
-        } else if (deliveryValue >= 80 && deliveryValue < 90) {
-            deliveryValue = 90;
-        } else if (deliveryValue >= 90 && deliveryValue < 100) {
-            deliveryValue = 100;
-        } else if (deliveryValue >= 100 && deliveryValue < 120) {
-            deliveryValue = 120;
-        } else if (deliveryValue >= 120 && deliveryValue < 140) {
-            deliveryValue = 140;
-        } else if (deliveryValue >= 140 && deliveryValue < 160) {
-            deliveryValue = 160;
-        } else if (deliveryValue >= 160 && deliveryValue < 180) {
-            deliveryValue = 180;
-        } else if (deliveryValue >= 180 && deliveryValue < 200) {
-            deliveryValue = 200;
-        } else {
-            if (vehicleType==2)
-                deliveryValue=200;
-            else
-                deliveryValue = 220;
-        }
 
-        if (vehicleType == 3) {
-            weight_zakaz_for_delivery = '20.0';
+            if (vehicleType == 3) {
+                weight_zakaz_for_delivery = '20.0';
 
-            if (weight > '21.0') {
-                weight_zakaz_for_delivery='21.0';
+                if (weight > 21) {
+                    weight_zakaz_for_delivery='21.0';
+                }
+            } else if (vehicleType == 4) {
+
+                weight_zakaz_for_delivery = '15.0';
+
+                if (weight < 6) {
+                    weight_zakaz_for_delivery = '6.0';
+                }else if (weight<15){
+                    weight_zakaz_for_delivery = weight;
+                }
+            } else if (vehicleType == 5) {
+                weight_zakaz_for_delivery = '2.5'
+            } else  if (vehicleType == 6){
+                if (weight > 3) {
+                    weight_zakaz_for_delivery = '3.0';
+                }else{
+                    weight_zakaz_for_delivery = weight+'.0';
+                }
+            }  else if (vehicleType == 2){
+                weight_zakaz_for_delivery = '8.0';
             }
-        } else if (vehicleType == 4) {
 
-            weight_zakaz_for_delivery = '15.0';
+            if (shippingPrices) {
+                let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
+                    .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
 
-            if (weight < '6.0') {
-                weight_zakaz_for_delivery = '6.0';
-            }else if (weight<'15.0'){
-                weight_zakaz_for_delivery = weight;
-            }
-        } else if (vehicleType == 5) {
-            weight_zakaz_for_delivery = '2.5'
-        } else  if (vehicleType == 6){
-            if (weight > '3.0') {
-                weight_zakaz_for_delivery = '3.0';
-            }else{
-                weight_zakaz_for_delivery = weight;
-            }
-        }  else if (vehicleType == 2){
-            weight_zakaz_for_delivery = '8.0';
-        }
-
-        if (shippingPrices) {
-            let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
-                .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
-
-            if (shippingPrice.length !== 0) {
-                let price = shippingPrice[0].price * weight;
-                let price2= Math.ceil(price/100)*100;
-                $(formClass+'.price-tn.input').val(shippingPrice[0].price);
-                $(formClass+'[name="attributes[deliveryPrice]"').val(price2);
+                if (shippingPrice.length !== 0) {
+                    let price = shippingPrice[0].price * weight;
+                    let price2= Math.ceil(price/100)*100;
+                    $(formClass+'.price-tn.input').val(shippingPrice[0].price);
+                    $(formClass+'[name="attributes[deliveryPrice]"').val(price2);
+                }
             }
         }
+
     };
 
     $('form').submit(function(e){
@@ -366,11 +397,11 @@ $(document).ready(function(){
 
     $("body").on("click", ".time-span", function(){
        let value=$(this).attr("data-time");
-       let formClass="."+$(this).parents(".datetime-popup").attr("data-class")+" ";
+       let formClass="."+$(this).parents(".datetime-popup").attr("data-class");
 
-       $(formClass+'[name="deliveryPlannedMoment"]').val(value);
-       $(formClass+".plan").val(value.substr(0,19));
-       $(formClass+".datetime-popup").toggleClass("active");
+       $(formClass+' [name="deliveryPlannedMoment"]').val(value);
+       $(formClass+" .plan").val(value.substr(0,19));
+       $(formClass+".datetime-popup").removeClass("active");
     });
 
     $("body").on("click", ".datetime", function(){
@@ -546,28 +577,34 @@ $(document).ready(function(){
         $(".tab-content.active").removeClass("active");
 
         $("#"+block).addClass("active");
+        width_datetime();
     });
 
     window.onresize = function() {
         width_datetime();
     }
 
-
+    width_datetime();
 
     function width_datetime(){
         let formClass="."+$(".CMR__input_calc_js:checked").attr("data-content");
 
-        if (formClass!="calcBeton"){
-            if ($(window).width()>=1650){
-                let widthTotal=$(".main-1").width();
-                let height=$(".CEB__wrapContent.df"+formClass).height();
-                let width=$(".CEB").width();
-                let widthItogo=(widthTotal-width)/2-30;
-                $(".datetime-popup"+formClass).width(widthItogo).height(height);
-            }else{
-                $(".datetime-popup"+formClass).removeClass("active");
+        if (formClass==".calcFence"){
+            let widthTotal=$(".main-1").width();
+            let height=$(".CEB__wrapContent.df"+formClass).height();
+            let width=$(".CEB").outerWidth();
+            let widthItogo=(widthTotal-width)/2-30;
+            $(".datetime-popup"+formClass).width(widthItogo);
+
+            if ($(window).width()<2045){
+                $(".datetime-popup"+formClass).css("width", width+"px").css("right", widthItogo+30);
             }
         }
+
+        let height=$(".datetime-popup"+formClass+" .date-time:nth-child(1)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(2)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(3)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(4)").outerHeight(true);
+        $(".datetime-popup"+formClass).height(height+"px").css("max-height",height+"px");
+
+
     }
 
 
