@@ -223,6 +223,7 @@
                 <div class="CEB__row">
                     <div class="CEB__text2">
                             <div>{{ __('calculator.result') }}</div>
+                            @if ($left_menu)
                             <div class="flex">
                                 <div>{{__('calculator.reserve')}}</div>
                                 <div class="quantity">
@@ -245,6 +246,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                     </div>
                     <div class="CEB__wrapTable">
                             @if (count($productsByGroup) > 0)
@@ -289,7 +291,13 @@
                         </div>
                     </div>
 
-                    @include('calculator.info')
+                   @include('calculator.info')
+
+                   @if ($left_menu)
+                   <div class="img_delivery">
+                        <img src="{{ Storage::url('shipping_prices.jpg') }}" alt="{{ __('calculator.type_1') }}">
+                   </div>
+                   @endif
             </form>
         </div>
     </div>

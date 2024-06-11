@@ -121,6 +121,20 @@ span.balance {
     display: inline-block;
   }
 
+.change_reserve{
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  color: #c3bebe;
+}
+
+
+.img_delivery{
+    margin-top: 20px;
+}
+
+.img_delivery img{
+    width: 100%;
+}
+
   .quantity.cursor{
     cursor: none;
   }
@@ -273,8 +287,8 @@ span.balance {
 
 .times{
     display:flex;
-    gap: 10px;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .date-time{
@@ -359,6 +373,8 @@ span.balance {
 .CEB__text2 .flex{
     display: flex;
     align-items: center;
+    color : #c3bebe;
+    gap: 10px;
 
 }
 
