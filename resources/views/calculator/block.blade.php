@@ -290,16 +290,15 @@
                             @endif
                         </div>
                     </div>
-
                    @include('calculator.info')
-
-
-                   <div class="img_delivery">
-                        <img src="{{ Storage::url('shipping_prices.jpg') }}" alt="{{ __('calculator.type_1') }}">
-                   </div>
-                   
             </form>
         </div>
     </div>
 </div>
 @include('calculator.dates', ['dates' => $dates, 'datesFinish' => $datesFinish, 'class' => $form])
+<div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
+    <div class="img_delivery">
+        <img src="{{ Storage::url('shipping_prices.jpg') }}" alt="{{ __('calculator.price_list') }}">
+        <img src="{{ Storage::url('brochure.jpg') }}" alt="{{ __('calculator.brochure') }}">
+    </div>
+</div>
