@@ -274,7 +274,7 @@ $(document).ready(function(){
             let deliveryValue = $(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance");
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
             let weight_zakaz_for_delivery = parseFloat($(formClass+"#weight_total").text());
-            let weight=Math.ceil(weight_zakaz_for_delivery/1000)+'.0';
+            let weight=Math.ceil(weight_zakaz_for_delivery/1000);
 
             if (deliveryValue < 25) {
                 if (vehicleType==2){
@@ -325,25 +325,25 @@ $(document).ready(function(){
             if (vehicleType == 3) {
                 weight_zakaz_for_delivery = '20.0';
 
-                if (weight > '21.0') {
+                if (weight > 21) {
                     weight_zakaz_for_delivery='21.0';
                 }
             } else if (vehicleType == 4) {
 
                 weight_zakaz_for_delivery = '15.0';
 
-                if (weight < '6.0') {
+                if (weight < 6) {
                     weight_zakaz_for_delivery = '6.0';
-                }else if (weight<'15.0'){
+                }else if (weight<15){
                     weight_zakaz_for_delivery = weight;
                 }
             } else if (vehicleType == 5) {
                 weight_zakaz_for_delivery = '2.5'
             } else  if (vehicleType == 6){
-                if (weight > '3.0') {
+                if (weight > 3) {
                     weight_zakaz_for_delivery = '3.0';
                 }else{
-                    weight_zakaz_for_delivery = weight;
+                    weight_zakaz_for_delivery = weight+'.0';
                 }
             }  else if (vehicleType == 2){
                 weight_zakaz_for_delivery = '8.0';
