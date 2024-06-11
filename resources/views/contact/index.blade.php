@@ -221,10 +221,9 @@
                                     @if (
                                         (is_int($entityItem->$column) ||
                                             $column == 'phone' ||
-                                            $column == 'phone!' ||
                                             $column == 'phone_norm' ||
-                                            $column == 'is_dublash' ||
-                                            $column == 'is_exist' ||
+                                            $column == 'contact_amo_id' ||
+                                            $column == 'balance' ||
                                             $column == 'created_at' ||
                                             $column == 'updated_at') &&
                                             !preg_match('/_id\z/u', $column) &&

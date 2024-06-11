@@ -40,13 +40,13 @@ class SyncContactMsAmo extends Command
             ->where('updated_at','>',$updatedAt)->get();
         foreach ($contactMs as $contact){
             $contactAmoId =(integer) substr($contact->contact_amo_link,strrpos($contact->contact_amo_link,'/')+ 1);
-            $contactAmoExist = ContactAmo::query()->where('id',$contactAmoId)->exists();
+            $contactAmoExist = ContactAmo::query()->where('id', $contactAmoId)->exists();
             if ($contactAmoExist){
                 $contactMsContactAmo = ContactAmoContact::query()->firstOrNew([
                     'contact_id'    =>  $contact->id,
                     'contact_amo_id'   =>  $contactAmoId,
                 ]);
-                    $contactMsContactAmo->contact_ms_id = $contact->id;
+                    $contactMsContactAmo->contact_id = $contact->id;
                     $contactMsContactAmo->contact_amo_id = $contactAmoId;
                     $contactMsContactAmo->save();
             }

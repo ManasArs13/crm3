@@ -14,6 +14,4 @@ class ContactMsObserver
     {
         Artisan::call('app:update-counterparty');
     }
-
-
 }
