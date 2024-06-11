@@ -3,24 +3,23 @@
         @if ($left_menu)
             <div class="CEB CEB-1 CEB-2">
                 <div class="CEB__row">
-                    <div class="CEB__text2">{{__('calculator.type_fence')}}</div>
+                    <div class="CEB__text2">{{ __('calculator.type_fence') }}</div>
                     <fieldset class="CEB__wrapParams types" id="group1">
 
                         <label class="labelCustomRadio_type checked">
                             <input checked class="labelCustomRadio__input CMR__change_js CMR__input_typeZabor_js"
-                                type="radio" name="calc" value="type_1"
-                                data-numberType="1">
-                            <img src="{{Storage::url("1.jpg")}}" alt="{{ __('calculator.type_1')}}">
+                                type="radio" name="calc" value="type_1" data-numberType="1">
+                            <img src="{{ Storage::url('1.jpg') }}" alt="{{ __('calculator.type_1') }}">
                         </label>
                         <label class="labelCustomRadio_type">
                             <input class="labelCustomRadio__input CMR__change_js CMR__input_typeZabor_js" type="radio"
                                 name="calc" value="type_2" data-numberType="2">
-                            <img src="{{Storage::url("2.jpg")}}" alt="{{ __('calculator.type_2')}}">
+                            <img src="{{ Storage::url('2.jpg') }}" alt="{{ __('calculator.type_2') }}">
                         </label>
                         <label class="labelCustomRadio_type">
                             <input class="labelCustomRadio__input CMR__change_js CMR__input_typeZabor_js" type="radio"
                                 name="calc" value="type_3" data-numberType="3">
-                                <img src="{{Storage::url("3.jpg")}}" alt="{{ __('calculator.type_3')}}">
+                            <img src="{{ Storage::url('3.jpg') }}" alt="{{ __('calculator.type_3') }}">
                         </label>
 
                     </fieldset>
@@ -28,10 +27,11 @@
                 <div class="flex">
                     <div class="CEB__row">
                         <div class="CEB__text2">
-                            <div>{{__('calculator.fence_length')}}</div>
+                            <div>{{ __('calculator.fence_length') }}</div>
                             <div class="CEBQuestionW__input-rande-text">
                                 <div class="quantity">
-                                    <input type="number" value=0 id="CEB__textLength" min=0 class="change_length" step=1>
+                                    <input type="number" value=0 id="CEB__textLength" min=0 class="change_length"
+                                        step=1>
                                     <div class="quantity-nav">
                                         <div class="quantity-button quantity-up">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -49,7 +49,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{__('calculator.m')}}</div>
+                                <div>{{ __('calculator.m') }}</div>
                             </div>
                         </div>
 
@@ -72,10 +72,11 @@
                     </div>
                     <div class="CEB__row">
                         <div class="CEB__text2">
-                            <div>{{__('calculator.number_of_pillars')}}</div>
+                            <div>{{ __('calculator.number_of_pillars') }}</div>
                             <div class="CEBQuestionW__input-rande-text">
                                 <div class="quantity">
-                                    <input type="number" value=0 id="CEB__textPost_quantity" min=0 class="change_postQuantity" step=1>
+                                    <input type="number" value=0 id="CEB__textPost_quantity" min=0
+                                        class="change_postQuantity" step=1>
                                     <div class="quantity-nav">
                                         <div class="quantity-button quantity-up">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -93,7 +94,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{__('calculator.pc')}}</div>
+                                <div>{{ __('calculator.pc') }}</div>
                             </div>
                         </div>
 
@@ -118,11 +119,12 @@
                 <div class="flex">
                     <div class="CEB__row">
                         <div class="CEB__text2">
-                            <div>{{__('calculator.wall_height')}}</div>
+                            <div>{{ __('calculator.wall_height') }}</div>
                             <div class="CEBQuestionW__input-rande-text">
 
                                 <div class="quantity">
-                                    <input type="number" value=0 id="CEB__text_wallHeight" min=0 class="change_wallHeight" step=1 >
+                                    <input type="number" value=0 id="CEB__text_wallHeight" min=0
+                                        class="change_wallHeight" step=1>
                                     <div class="quantity-nav">
                                         <div class="quantity-button quantity-up">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -140,7 +142,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{__('calculator.cm')}}</div>
+                                <div>{{ __('calculator.cm') }}</div>
                             </div>
 
                         </div>
@@ -165,10 +167,11 @@
                     </div>
                     <div class="CEB__row">
                         <div class="CEB__text2">
-                            <div>{{__('calculator.column_height')}}</div>
+                            <div>{{ __('calculator.column_height') }}</div>
                             <div class="CEBQuestionW__input-rande-text">
                                 <div class="quantity">
-                                    <input type="number" value=0 id="CEB__text_columnHeight" min=0 class="change_columnHeight">
+                                    <input type="number" value=0 id="CEB__text_columnHeight" min=0
+                                        class="change_columnHeight">
                                     <div class="quantity-nav">
                                         <div class="quantity-button quantity-up">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -186,7 +189,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>{{__('calculator.cm')}}</div>
+                                <div>{{ __('calculator.cm') }}</div>
                             </div>
                         </div>
                         <div class="CEB__wrapSlider">
@@ -218,48 +221,75 @@
                 @csrf
                 <input type="hidden" name="form" value="{{ $form }}">
                 <div class="CEB__row">
-                    <div class="CEB__text2">Результат</div>
-                    <div class="CEB__wrapTable">
-                        @if (count($productsByGroup) > 0)
-                            <table class="CEB__table">
-                                <tr>
-                                    <td>позиция</td>
-                                    <td>кол-во</td>
-                                    @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
-                                        <td>цвет</td>
-                                    @endif
-                                    <td>вес, кг</td>
-                                    <td>цена, руб/ед</td>
-                                    <td>сумма, руб</td>
-                                </tr>
-
-                                @if ($form != 'calcBeton')
-                                    @foreach ($productsByGroup as $group)
-                                        @include('calculator.row', ['form' => $form, 'group' => $group])
-                                    @endforeach
-                                @else
-                                    @include('calculator.row', [
-                                        'form' => $form,
-                                        'productsByGroup' => $productsByGroup,
-                                        'group' => $productsByGroup[$idBeton],
-                                    ])
-                                @endif
-                                <tr>
-                                    <td>итог:</td>
-                                    <td></td>
-                                    @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
-                                        <td></td>
-                                    @endif
-                                    <td><span id="weight_total">0</span></td>
-                                    <td></td>
-                                    <td><span id="price_total">0</span></td>
-                                </tr>
-                            </table>
-                        @endif
+                    <div class="CEB__text2">
+                            <div>{{ __('calculator.result') }}</div>
+                            <div class="flex">
+                                <div>{{__('calculator.reserve')}}</div>
+                                <div class="quantity">
+                                    <input type="number" id="CEB__textReserve" min=0 class="change_reserve" value="3" step=1 max=100>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
+                                            </svg>
+                                        </div>
+                                        <div class="quantity-button quantity-down">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
-                </div>
+                    <div class="CEB__wrapTable">
+                            @if (count($productsByGroup) > 0)
+                                <table class="CEB__table">
+                                    <tr>
+                                        <td>позиция</td>
+                                        <td>кол-во</td>
+                                        @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
+                                            <td>цвет</td>
+                                        @endif
+                                        <td>вес, кг</td>
+                                        <td>цена, руб/ед</td>
+                                        <td>сумма, руб</td>
+                                    </tr>
 
-                @include('calculator.info')
+                                    @if ($form != 'calcBeton')
+                                        @foreach ($productsByGroup as $group)
+                                            @include('calculator.row', [
+                                                'form' => $form,
+                                                'group' => $group,
+                                            ])
+                                        @endforeach
+                                    @else
+                                        @include('calculator.row', [
+                                            'form' => $form,
+                                            'productsByGroup' => $productsByGroup,
+                                            'group' => $productsByGroup[$idBeton],
+                                        ])
+                                    @endif
+                                    <tr>
+                                        <td>итог:</td>
+                                        <td></td>
+                                        @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
+                                            <td></td>
+                                        @endif
+                                        <td><span id="weight_total">0</span></td>
+                                        <td></td>
+                                        <td><span id="price_total">0</span></td>
+                                    </tr>
+                                </table>
+                            @endif
+                        </div>
+                    </div>
+
+                    @include('calculator.info')
             </form>
         </div>
     </div>

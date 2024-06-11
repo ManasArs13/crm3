@@ -171,6 +171,7 @@ $(document).ready(function(){
     function calculation0(formClass){
         $(".labelCustomRadio_type.checked").removeClass("checked");
         numberType = $(".CMR__input_typeZabor_js:checked").attr("data-numberType");
+        let reserve=$("#CEB__textReserve").val()/100;
         $(".CMR__input_typeZabor_js:checked").parent().addClass("checked");
         lengthColumns = Length - post_quantity;
         lengthWalls = Length - (post_quantity * 0.28);
@@ -187,40 +188,48 @@ $(document).ready(function(){
         WallSteps = Math.ceil(WallSteps);
 
         //Блоки
-        let quantity=parseInt(WallSteps * rowsBlocks);
-        $(formClass+"[name='positions[12][quantity]']").val(quantity);
-        setPriceWeight(12, quantity, formClass);
+        let quantityBlock=WallSteps * rowsBlocks;
+        quantityBlock=Math.ceil(quantityBlock+quantityBlock*reserve);
+        $(formClass+"[name='positions[12][quantity]']").val(quantityBlock);
+        setPriceWeight(12, quantityBlock, formClass);
 
         //Колонны
-        quantity=parseInt(post_quantity * columnHeight / 20);
-        $(formClass+"[name='positions[21][quantity]']").val(quantity);
-        setPriceWeight(21, quantity, formClass);
+        let quantityColumn=post_quantity * columnHeight / 20;
+        quantityColumn=Math.ceil(quantityColumn + quantityColumn*reserve);
+        $(formClass+"[name='positions[21][quantity]']").val(quantityColumn);
+        setPriceWeight(21, quantityColumn, formClass);
 
         //Крышек
-        $(formClass+"[name='positions[15][quantity]']").val(post_quantity);
-        setPriceWeight(15, post_quantity, formClass);
+        let quantityCover=Math.ceil(post_quantity+post_quantity*reserve);
+        $(formClass+"[name='positions[15][quantity]']").val(quantityCover);
+        setPriceWeight(15, quantityCover, formClass);
 
         //Парапет
+        let quantityParapet=0
         if (numberType == 1) {
-            quantity = +(WallSteps).toFixed(0);
+            quantityParapet = Math.round(WallSteps);
         } else if (numberType == 2) {
-            quantity = +(WallSteps).toFixed(0);
+            quantityParapet = Math.round(WallSteps);
         } else if (numberType == 3) {
-            quantity = +(WallSteps * 3).toFixed(0);
+            quantityParapet = Math.round(WallSteps * 3);
         };
 
-        $(formClass+"[name='positions[11][quantity]']").val(quantity);
-        setPriceWeight(11, quantity, formClass);
+        quantityParapet=Math.ceil(quantityParapet+quantityParapet*reserve);
+
+        $(formClass+"[name='positions[11][quantity]']").val(quantityParapet);
+        setPriceWeight(11, quantityParapet, formClass);
 
         // Декор
+        let quantity=0;
         if (numberType == 1) {
             quantity = 0;
         } else if (numberType == 2) {
-            quantity = (WallSteps * 2).toFixed(0);
+            quantity = Math.round(WallSteps * 2);
         } else if (numberType == 3) {
-            quantity = (WallSteps * 2).toFixed(0);
+            quantity = Math.round(WallSteps * 2);
         };
 
+        quantity=Math.ceil(quantity+quantity*reserve);
         $(formClass+"[name='positions[6][quantity]']").val(quantity);
         setPriceWeight(6, quantity, formClass);
         calculation(formClass);
@@ -239,7 +248,16 @@ $(document).ready(function(){
         let weight=Math.ceil(weight_zakaz_for_delivery/1000)+'.0';
 
         if (deliveryValue < 25) {
-            deliveryValue = 25;
+            if (vehicleType==2){
+                if (deliveryValue<15)
+                    deliveryValue=15;
+                if (deliveryValue >= 15 && deliveryValue<20)
+                    deliveryValue=20;
+                else
+                    deliveryValue=25;
+            }else{
+                deliveryValue = 25;
+            }
         } else if (deliveryValue >= 25 && deliveryValue < 30) {
             deliveryValue = 30;
         } else if (deliveryValue >= 30 && deliveryValue < 35) {
@@ -269,7 +287,10 @@ $(document).ready(function(){
         } else if (deliveryValue >= 180 && deliveryValue < 200) {
             deliveryValue = 200;
         } else {
-            deliveryValue = 220;
+            if (vehicleType==2)
+                deliveryValue=200;
+            else
+                deliveryValue = 220;
         }
 
         if (vehicleType == 3) {
@@ -345,8 +366,11 @@ $(document).ready(function(){
 
     $("body").on("click", ".time-span", function(){
        let value=$(this).attr("data-time");
-       $(".plan").val(value);
-       $(".datetime-popup").toggleClass("active");
+       let formClass="."+$(this).parents(".datetime-popup").attr("data-class")+" ";
+
+       $(formClass+'[name="deliveryPlannedMoment"]').val(value);
+       $(formClass+".plan").val(value.substr(0,19));
+       $(formClass+".datetime-popup").toggleClass("active");
     });
 
     $("body").on("click", ".datetime", function(){
@@ -371,6 +395,7 @@ $(document).ready(function(){
     let rowsBlocks = 0; // Рядов блока
     let lengthWalls = 0; // Длина стен общая
     let lengthColumns = 0; // Длина колонн общая
+
 
 
     MadeSlider_1(Length); // установка первого ползунка
