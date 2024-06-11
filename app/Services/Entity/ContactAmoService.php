@@ -93,8 +93,8 @@ class ContactAmoService implements EntityInterface
                         continue 2;
                     }
                 }
-                $contactMs = Contact::query()->where('contact_amo_id', $row->id);
-                if ($contactMs->exists()) {
+                $contactMs = Contact::query()->where('contact_amo_id', $row->id)->first(['id']);
+                if ($contactMs) {
 
                     $budget = 0;
                     $orders = Order::where('contact_ms_id', $contactMs->id)->get('id');
