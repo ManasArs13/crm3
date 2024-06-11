@@ -265,11 +265,11 @@ span.balance {
 }
 
 
-.datetime-popup:not(.calcBeton){
+.datetime-popup.calcFence{
     display: none;
 }
 
-.datetime-popup.active:not(.calcBeton){
+.datetime-popup.active.calcFence{
     position: absolute;
     display: block;
     z-index: 677;
@@ -402,16 +402,6 @@ button#button-modal {
 .CEB__wrapParams1{
     display: flex;
     gap: 10px;
-}
-
-.CEB__left {
-	flex: 0 0 40%;
-}
-
-.CEB__right {
-	flex       : 0 0 57%;
-	margin-left: auto;
-
 }
 
 .CEB_flex{

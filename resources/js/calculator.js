@@ -589,16 +589,14 @@ $(document).ready(function(){
     function width_datetime(){
         let formClass="."+$(".CMR__input_calc_js:checked").attr("data-content");
 
-        if (formClass!=".calcBeton"){
+        if (formClass==".calcFence"){
             let widthTotal=$(".main-1").width();
             let height=$(".CEB__wrapContent.df"+formClass).height();
             let width=$(".CEB").outerWidth();
             let widthItogo=(widthTotal-width)/2-30;
             $(".datetime-popup"+formClass).width(widthItogo);
 
-
-
-            if ($(window).width()<1650){
+            if ($(window).width()<2045){
                 $(".datetime-popup"+formClass).css("width", width+"px").css("right", widthItogo+30);
             }
         }
