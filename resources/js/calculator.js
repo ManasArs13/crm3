@@ -132,6 +132,22 @@ $(document).ready(function(){
         calculation(formClass);
     });
 
+    $("body").on("focusout", ".price-tn", function() {
+        let priceTn=parseInt($(this).val());
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let deliveryDistance = parseInt($(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance"));
+        let weightTn= parseFloat($(formClass+".weight-tn").val());
+        $(formClass+'[name="attributes[deliveryPrice]"').val(deliveryDistance*priceTn*weightTn);
+    });
+
+    $("body").on("focusout", '[name="attributes[deliveryPrice]"]', function() {
+        let priceDelivery=parseInt($(this).val());
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let deliveryDistance = parseInt($(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance"));
+        let weightTn= parseFloat($(formClass+".weight-tn").val());
+        $(formClass+'.price-tn').val(priceDelivery/(deliveryDistance*weightTn));
+    });
+
     function calculation(formClass){
         var weigth_total=0;
         var price_total=0;

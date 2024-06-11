@@ -15,8 +15,8 @@
             </select>
 
             <input type="text" class="weight-tn input input2" value=0 disabled>
-            <input type="text" class="price-tn input input2" value=0 disabled>
-            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 readonly>
+            <input type="text" class="price-tn input input2" value=0 >
+            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 >
 
     </div>
     <input type="hidden" >
