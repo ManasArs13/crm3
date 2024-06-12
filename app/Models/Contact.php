@@ -27,4 +27,9 @@ class Contact extends Model
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
     }
+
+    public function contact_categories()
+    {
+        return $this->belongsToMany(ContactCategory::class);
+    }
 }

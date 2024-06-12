@@ -5,6 +5,7 @@ namespace App\Services\Entity;
 use App\Contracts\EntityInterface;
 use App\Models\Option;
 use App\Models\Contact;
+use App\Models\ContactCategory;
 use Illuminate\Support\Arr;
 
 class ContactMsService implements EntityInterface
@@ -41,6 +42,21 @@ class ContactMsService implements EntityInterface
 
                 $phone = null;
                 $phoneNorm = null;
+
+                if (Arr::exists($row, 'tags')) {
+                    $ids=[];
+                    foreach ($row['tags'] as $value) {
+                        $category=ContactCategory::firstOrNew(["name"=>$value]);
+                        if ($category->id != null){
+                            $ids[]=$category->id;
+                        }else{
+                            $category->name=$value;
+                            $category->save();
+                            $ids[] = $category->id;
+                        }
+                    }
+                    $entity->contact_categories()->sync($ids);
+                }
 
                 if (Arr::exists($row, 'phone')) {
                     $phone = $row["phone"];
