@@ -167,6 +167,7 @@ $(document).ready(function(){
 
         let weight_total_tn=weigth_total/1000;
 
+
         if (formClass==".calcBeton "){
             if (weight_total_tn<8){
                 weight_total_tn=8
