@@ -90,7 +90,7 @@ $(document).ready(function(){
 
         let price=0;
         let weight=0;
-        let select=$(formClass+'.select_product');
+        let select=$(formClass+'.select_product[data-id='+group+']');
 
         price=select.find('.selected').attr("data-price");
         weight=select.find('.selected').attr("data-weight");
