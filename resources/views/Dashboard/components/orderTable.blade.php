@@ -27,8 +27,10 @@
 
                 @foreach ($entityItem->positions as $position)
                     @php
-                        $total_quantity += $position->quantity;
-                        $totalCount += $position->quantity;
+                        if ($position->product->building_material !== 'доставка' && $position->product->building_material !== 'не выбрано') {
+                            $total_quantity += $position->quantity;
+                            $totalCount += $position->quantity;
+                        }
                     @endphp
                 @endforeach
 
