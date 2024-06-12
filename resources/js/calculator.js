@@ -164,10 +164,18 @@ $(document).ready(function(){
 
         $(formClass+"#weight_total").text(weigth_total);
         $(formClass+"#price_total").text(price_total);
-        if (formClass!=".calcBeton ")
-            $(formClass+".weight-tn").val(Math.ceil(weigth_total/1000));
-        else
-            $(formClass+".weight-tn").val((weigth_total/1000).toFixed(1));
+
+        let weight_total_tn=weigth_total/1000;
+
+        if (formClass==".calcBeton "){
+            if (weight_total_tn<8){
+                weight_total_tn=8
+            }
+            $(formClass+".weight-tn").val(weight_total_tn.toFixed(1));
+        }else{
+            weight_total_tn=Math.ceil(weight_total_tn);
+            $(formClass+".weight-tn").val(weight_total_tn);
+        }
 
         $(formClass+".CEB__select_color_js").each(function() {
             $(this).parent(".select").find(".select__head").css({
