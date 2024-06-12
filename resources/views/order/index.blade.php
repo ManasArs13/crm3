@@ -467,8 +467,13 @@
 
                             @foreach ($entityItem->positions as $position)
                                 @php
-                                    $total_quantity += $position->quantity;
-                                    $totalCount += $position->quantity;
+                                    if (
+                                        $position->product->building_material !== 'доставка' &&
+                                        $position->product->building_material !== 'не выбрано'
+                                    ) {
+                                        $total_quantity += $position->quantity;
+                                        $totalCount += $position->quantity;
+                                    }
                                 @endphp
                             @endforeach
 
@@ -506,10 +511,10 @@
                                                 $column == 'reserved_sum' ||
                                                 $column == 'weight' ||
                                                 $column == 'date_moment' ||
-                                                $column == "date_plan" ||
-                                                $column == "date_fact" ||
-                                                $column == "created_at" ||
-                                                $column == "updated_at" ||
+                                                $column == 'date_plan' ||
+                                                $column == 'date_fact' ||
+                                                $column == 'created_at' ||
+                                                $column == 'updated_at' ||
                                                 $column == 'debt') &&
                                                 !preg_match('/_id\z/u', $column) &&
                                                 $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
