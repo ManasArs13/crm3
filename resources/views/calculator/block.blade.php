@@ -252,14 +252,14 @@
                             @if (count($productsByGroup) > 0)
                                 <table class="CEB__table">
                                     <tr>
-                                        <td>позиция</td>
-                                        <td>кол-во</td>
+                                        <td>{{__("calculator.position")}}</td>
+                                        <td>{{__("calculator.quantity")}}</td>
                                         @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
-                                            <td>цвет</td>
+                                            <td>{{__("calculator.color")}}</td>
                                         @endif
-                                        <td>вес, кг</td>
-                                        <td>цена, руб/ед</td>
-                                        <td>сумма, руб</td>
+                                        <td>{{__("calculator.weight")}}</td>
+                                        <td>{{__("calculator.price")}}</td>
+                                        <td>{{__("calculator.sum")}}</td>
                                     </tr>
 
                                     @if ($form != 'calcBeton')
