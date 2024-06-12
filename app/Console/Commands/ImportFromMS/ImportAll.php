@@ -41,6 +41,7 @@ class ImportAll extends Command
         Artisan::call('ms:import-categories --all');
         Artisan::call('ms:import-products --all');
         Artisan::call('ms:import-delivery --all');
+        Artisan::call('ms:import-contact-ms-categories');
         Artisan::call('ms:import-contact --all');
 
         Artisan::call('ms:import-order --all');

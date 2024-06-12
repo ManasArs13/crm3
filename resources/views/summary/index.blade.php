@@ -15,22 +15,22 @@
             <h3 class="text-4xl font-bold mb-6">{{__('title.summary')}}</h3>
 
             <div class="CEB__wrapTable">
-                    <table class="CEB__table sum">
+                    <table class="sum">
                         <tr>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 ">{{__('summary.mutualSettlement')}}</th>
-                            <td>{{$sumMutualSettlement}}</td>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('summary.mutualSettlement')}}</th>
+                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumMutualSettlement}}</td>
                         </tr>
                         <tr>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 ">{{__('summary.mutualSettlementMain')}}</th>
-                            <td>{{$sumMutualSettlementMain}}</td>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{__('summary.mutualSettlementMain')}}</th>
+                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumMutualSettlementMain}}</td>
                         </tr>
                         <tr>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 ">{{__('summary.materials')}}</th>
-                            <td>{{$sumMaterials}}</td>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{__('summary.materials')}}</th>
+                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumMaterials}}</td>
                         </tr>
                         <tr>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 ">{{__('summary.products')}}</th>
-                            <td>{{$sumProducts}}</td>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.products')}}</th>
+                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumProducts}}</td>
                         </tr>
                     </table>
 

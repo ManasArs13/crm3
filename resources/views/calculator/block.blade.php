@@ -222,7 +222,7 @@
                 <input type="hidden" name="form" value="{{ $form }}">
                 <div class="CEB__row">
                     <div class="CEB__text2">
-                            <div>{{ __('calculator.result') }}</div>
+                            <div class="result">{{ __('calculator.result') }}</div>
                             @if ($left_menu)
                             <div class="flex">
                                 <div>{{__('calculator.reserve')}}</div>

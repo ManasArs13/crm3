@@ -164,7 +164,10 @@ $(document).ready(function(){
 
         $(formClass+"#weight_total").text(weigth_total);
         $(formClass+"#price_total").text(price_total);
-        $(formClass+".weight-tn").val(Math.ceil(weigth_total/1000));
+        if (formClass!=".calcBeton ")
+            $(formClass+".weight-tn").val(Math.ceil(weigth_total/1000));
+        else
+            $(formClass+".weight-tn").val((weigth_total/1000).toFixed(1));
 
         $(formClass+".CEB__select_color_js").each(function() {
             $(this).parent(".select").find(".select__head").css({
