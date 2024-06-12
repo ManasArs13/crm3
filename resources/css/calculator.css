@@ -751,6 +751,21 @@ td .flex{
 	white-space     : pre;
 }
 
+.CEB__table.sum tr:first-child td {
+	background-color: transparent;
+	font-size       : 16px;
+	font-weight     : normal;
+	white-space     : pre;
+}
+.CEB__table.sum tr:last-child td {
+	font-size  : 16px;
+	font-weight: normal;
+}
+
+.CEB__table.sum th{
+	border    : 1px solid #dddddd;
+}
+
 .CEB__table tr:last-child td {
 	font-size  : 16px;
 	font-weight: 700;

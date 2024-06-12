@@ -270,6 +270,9 @@
                                     Позиции отгрузок
                                 </x-dropdown-link>
 
+                                <x-dropdown-link :href="route('summary.index')">
+                                    {{__('title.summary')}}
+                                </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>

@@ -24,6 +24,7 @@ use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\SummaryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -131,6 +132,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/processing/products', [ProcessingController::class, 'products'])->name('processings.products');
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
 
+    Route::get('/summary', [SummaryController::class, 'index'])->name('summary.index');
 
 
 });
