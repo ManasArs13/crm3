@@ -288,6 +288,10 @@ $(document).ready(function(){
             let weight_zakaz_for_delivery = parseFloat($(formClass+"#weight_total").text());
             let weight=Math.ceil(weight_zakaz_for_delivery/1000);
 
+            if (formClass==".calcBeton " && weight<8)
+                weight=8;
+
+
             if (deliveryValue < 25) {
                 if (vehicleType==2){
                     if (deliveryValue<15)
