@@ -69,7 +69,7 @@ class CalculatorController extends Controller
         ->join('order_positions', 'orders.id', '=', 'order_positions.order_id')
         ->join('products', 'products.id', '=', 'order_positions.product_id')
         ->select(
-                DB::raw('orders.name as name, SUM(order_positions.weight_kg)/1000 as weight'),
+                DB::raw('orders.name as name, SUM(order_positions.quantity) as quantity'),
                 DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
         )
@@ -99,10 +99,10 @@ class CalculatorController extends Controller
         $datesBetonFinish=[];
         foreach($datesBeton as $date){
             $datesBetonFinish[$date->date][$date->time]["items"][]=$date->name;
-            if (!isset($datesBetonFinish[$date->date][$date->time]["weight"]))
-                $datesBetonFinish[$date->date][$date->time]["weight"]=$date->weight;
+            if (!isset($datesBetonFinish[$date->date][$date->time]["quantity"]))
+                $datesBetonFinish[$date->date][$date->time]["quantity"]=$date->quantity;
             else
-                $datesBetonFinish[$date->date][$date->time]["weight"]+=$date->weight;
+                $datesBetonFinish[$date->date][$date->time]["quantity"]+=$date->quantity;
         }
 
 
@@ -135,7 +135,7 @@ class CalculatorController extends Controller
                         "font_color"=>$product->color->font_color,
                         "price" => $product->price,
                         "product" => $product->ms_id,
-                        "weight" => ceil($product->weight_kg),
+                        "weight" => $product->weight_kg,
                         "selected" =>($product->color_id==5)?"selected":'',
                         "balance" => $product->balance
                 ];

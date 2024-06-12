@@ -36,7 +36,7 @@ $(document).ready(function(){
 
         $(formClass+"#price_client_"+group).text(price);
         $(formClass+'[name="positions['+group+'][price]"]').val(price);
-        $(formClass+"#weight_total_"+group).text(weight*quantity);
+        $(formClass+"#weight_total_"+group).text((weight*quantity).toFixed(1));
         $(formClass+"#price_total_"+group).text(price*quantity);
         $(formClass+".balance[data-id="+group+"]").text($(this).attr("data-balance"));
 
@@ -95,7 +95,7 @@ $(document).ready(function(){
         price=select.find('.selected').attr("data-price");
         weight=select.find('.selected').attr("data-weight");
 
-        $(formClass+"#weight_total_"+group).text(weight*quantity);
+        $(formClass+"#weight_total_"+group).text((weight*quantity).toFixed(1));
         $(formClass+"#price_total_"+group).text(price*quantity);
 
         calculation(formClass);
@@ -162,7 +162,7 @@ $(document).ready(function(){
             price_total+=parseFloat($(this).text());
         });
 
-        $(formClass+"#weight_total").text(weigth_total);
+        $(formClass+"#weight_total").text(Math.round(weigth_total));
         $(formClass+"#price_total").text(price_total);
 
         let weight_total_tn=weigth_total/1000;
@@ -195,7 +195,7 @@ $(document).ready(function(){
 
         $(formClass+"#price_client_"+group).text(price);
         $(formClass+'[name="positions['+group+'][price]"]').val(price);
-        $(formClass+"#weight_total_"+group).text(weight*quantity);
+        $(formClass+"#weight_total_"+group).text((weight*quantity).toFixed(1));
         $(formClass+"#price_total_"+group).text(price*quantity);
     }
 
@@ -210,9 +210,6 @@ $(document).ready(function(){
         let post_quantity = $("#CEB__textPost_quantity").val(); // кол-во столбов
         let wallHeight = $("#CEB__text_wallHeight").val(); // высота стенки
         let columnHeight = $("#CEB__text_columnHeight").val(); // Высота колоны
-
-
-
 
         lengthColumns = Length - post_quantity;
         lengthWalls = Length - (post_quantity * 0.28);
@@ -278,6 +275,7 @@ $(document).ready(function(){
 
     $("body").on("change", ".change_delivery", function() {
         let formClass="."+$(this).parents("form").attr("class")+" ";
+        calculation(formClass);
         calcDelivery(formClass);
     })
 
@@ -285,12 +283,9 @@ $(document).ready(function(){
         if (!$(formClass+'[name="attributes[deliveryPrice]"').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance");
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
-            let weight_zakaz_for_delivery = parseFloat($(formClass+"#weight_total").text());
-            let weight=Math.ceil(weight_zakaz_for_delivery/1000);
 
-            if (formClass==".calcBeton " && weight<8)
-                weight=8;
-
+            let weight = $(formClass+".weight-tn").val();
+            let weight_zakaz_for_delivery=weight+".0";
 
             if (deliveryValue < 25) {
                 if (vehicleType==2){
@@ -337,31 +332,38 @@ $(document).ready(function(){
                 else
                     deliveryValue = 220;
             }
-
+//трал (20 || 21)
             if (vehicleType == 3) {
-                weight_zakaz_for_delivery = '20.0';
-
-                if (weight > 21) {
+                if (weight > 20) {
                     weight_zakaz_for_delivery='21.0';
+                }else{
+                    weight_zakaz_for_delivery = '20.0';
+                    weight = 20;
                 }
-            } else if (vehicleType == 4) {
-
-                weight_zakaz_for_delivery = '15.0';
-
+//Манипулятор
+            }else if (vehicleType == 4) {
                 if (weight < 6) {
                     weight_zakaz_for_delivery = '6.0';
-                }else if (weight<15){
-                    weight_zakaz_for_delivery = weight;
+                    weight=6
+                }else if (weight>15){
+                    weight_zakaz_for_delivery = '15.0';
                 }
-            } else if (vehicleType == 5) {
+//газель
+            }else if (vehicleType == 5) {
                 weight_zakaz_for_delivery = '2.5'
-            } else  if (vehicleType == 6){
+                if (weight<2.5)
+                    weight = 3;
+//Довозка
+            }else  if (vehicleType == 6){
                 if (weight > 3) {
                     weight_zakaz_for_delivery = '3.0';
                 }else{
                     weight_zakaz_for_delivery = weight+'.0';
+                    if (weight<1)
+                        weight=1;
                 }
-            }  else if (vehicleType == 2){
+// Миксер
+            }else if (vehicleType == 2){
                 weight_zakaz_for_delivery = '8.0';
             }
 
@@ -371,9 +373,14 @@ $(document).ready(function(){
 
                 if (shippingPrice.length !== 0) {
                     let price = shippingPrice[0].price * weight;
-                    let price2= Math.ceil(price/100)*100;
+                    if (vehicleType==5 || vehicleType==3)
+                            price=Math.round(price/100)*100;
+                    else if (vehicleType==4 && weight<=14)
+                            price=Math.round(price/500)*500;
+
+                    $(formClass+".weight-tn").val(weight);
                     $(formClass+'.price-tn.input').val(shippingPrice[0].price);
-                    $(formClass+'[name="attributes[deliveryPrice]"').val(price2);
+                    $(formClass+'[name="attributes[deliveryPrice]"').val(price);
                 }
             }
         }
