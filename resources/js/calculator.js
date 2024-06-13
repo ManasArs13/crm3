@@ -487,6 +487,11 @@ $(document).ready(function(){
         calculation0(".calcFence ");
     });
 
+    $("body").on("change", ".agent_change", function(){
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        $(formClass+"[name='agent[id]']").val($(this).val());
+    });
+
     $("body").on("change", ".change_postQuantity", function(){
         let val=$(this).val();
         MadeSlider_2(val);

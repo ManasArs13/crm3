@@ -31,13 +31,13 @@
         @endif
     </td>
     <td>
-        <div class="quantity {{($left_menu)?"cursor":""}}">
+        <div class="quantity {{($menu)?"cursor":""}}">
             <input type="number"
             name="positions[{{$group["id"]}}][quantity]"
             data-color="{{(isset($group["colors"]))?1:0}}"
             data-id="{{$group["id"]}}"
             {{
-                ($left_menu)?'readonly="readonly"':''
+                ($menu)?'readonly="readonly"':''
             }}
             value=0
             min=0

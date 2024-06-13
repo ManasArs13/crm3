@@ -1,14 +1,14 @@
 <div class="CEB__row">
     <div class="CEB__text2">Доставка</div>
     <div class="CEB_block">
-            <select name="attributes[delivery][id]" style="width:25%" class="select2 input change_delivery">
+            <select name="attributes[delivery][id]" class="select2 input change_delivery">
                 @foreach ($deliveries as $delivery)
                     <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" {{($loop->first)?"selected":""}} style="margin: 4px;" >{{ $delivery->name }}</option>
                 @endforeach
             </select>
 
 
-            <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery" style="width:25%;">
+            <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery">
                     @foreach ($vehicleTypes as $type)
                         <option data-type='{{$type->id}}' value="{{$type->ms_id}}" {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
                     @endforeach
@@ -26,22 +26,25 @@
     <div class="CEB__text2">Пользователь</div>
     <div class="CEB_block flex-column">
         <div class="flex">
-            <select name="agent[id]" style="width:25%" class="select2 input">
-                <option value="" selected disabled>не выбрано</option>
-                @foreach ($contacts as $contact)
-                    <option value="{{ $contact->ms_id }}">{{ $contact->name }}</option>
-                @endforeach
-            </select>
+            <input type="hidden" name="agent[id]">
+            {{-- <div class="select"> --}}
+                <select class="select2 input agent_change">
+                    <option value="" selected disabled>{{__('column.name')}}</option>
+                    @foreach ($contacts as $contact)
+                        <option value="{{ $contact->ms_id }}">{{ $contact->name }}</option>
+                    @endforeach
+                </select>
+            {{-- </div> --}}
 
-            {{-- Add contact button --}}
-            <button type="button" id="button-modal"
-                class="inline-block rounded px-2 align-middle text-black hover:text-gray-600">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                </svg>
-            </button>
+            {{-- <div class="select"> --}}
+                <select class="select2 input agent_change">
+                    <option value="" selected disabled>{{__('column.phone')}}</option>
+                    @foreach ($contacts as $contact)
+                        <option value="{{ $contact->ms_id }}">{{ $contact->phone }}</option>
+                    @endforeach
+                </select>
+            {{-- </div> --}}
+
 
             <div class="datetime">
                 <input type="text" class="input plan deliveryPlannedMoment" readonly placeholder='{{__('column.delivery_date')}}'>
@@ -53,30 +56,17 @@
                 </svg>
             </div>
 
-            <select name="state" style="width:25%" class="select2 input">
-                <option value="" selected disabled>не выбрано</option>
+            <select name="state" class="select2 input">
+                <option value="" selected disabled>{{__('column.status')}}</option>
                 @foreach ($states as $state)
                     <option value="{{ $state->ms_id }}">{{ $state->name }}</option>
                 @endforeach
             </select>
-        </div>
-        <div class="agent">
-            <input type="text" name="agent[name]"  class="input" placeholder = "{{__('column.name')}}">
-            <input type="text" name="agent[phone]" class="input phone" placeholder = "{{__('column.phone')}}">
+
+            <button type="submit" class="rounded bg-green-400 px-6 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 submit">Отправить в мс</button>
         </div>
     </div>
 </div>
-
-
-<div class="CEB__row">
-    <div class="CEB_flex">
-        <textarea name="description" class="input" placeholder = "{{__('column.comment')}}"></textarea>
-        <textarea name="shipmentAddressFull[addInfo]" class="input" placeholder = "{{__('column.shipment_address')}}"></textarea>
-    </div>
-
-    <button type="submit" class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 mt-5">Отправить в мс</button>
-</div>
-
 
 <div role="status" class="preloader">
     <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

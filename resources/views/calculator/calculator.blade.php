@@ -38,15 +38,15 @@
     <div class="content">
 
             <div class="tab-content active" id="calcFence">
-                @include("calculator.block", array("left_menu"=>true, 'productsByGroup' => $productsByFence, 'form'=>"calcFence", "datesFinish"=>$datesBlockFinish))
+                @include("calculator.block", array("menu"=>true, 'productsByGroup' => $productsByFence, 'form'=>"calcFence", "datesFinish"=>$datesBlockFinish))
             </div>
 
             <div class="tab-content" id="calcBlock">
-                @include("calculator.block", array("left_menu"=>false, 'form'=>'calcBlock',"datesFinish"=>$datesBlockFinish))
+                @include("calculator.block", array("menu"=>false, 'form'=>'calcBlock',"datesFinish"=>$datesBlockFinish))
             </div>
 
             <div class="tab-content" id="calcBeton">
-                @include("calculator.block", array("left_menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton', 'vehicleTypes'=>$vehicleTypesBeton, "datesFinish"=>$datesBetonFinish))
+                @include("calculator.block", array("menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton', 'vehicleTypes'=>$vehicleTypesBeton, "datesFinish"=>$datesBetonFinish))
             </div>
     </div>
 </div>

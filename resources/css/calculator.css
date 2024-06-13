@@ -575,6 +575,31 @@ button#button-modal {
     margin-bottom: 0;
 }
 
+.flex{
+    gap: 10px;
+    min-width: 0;
+}
+
+.column{
+    flex-basis: 33%;
+    flex-grow: 0;
+}
+
+.column:first-of-type{
+    flex-grow: 2;
+}
+
+.submit{
+    line-height: 28px;
+}
+
+.select{
+    min-width: 0;
+}
+
+
+
+
 .CEB-2 .flex{
     flex-direction: column;
     flex-basis: 33%;
@@ -840,25 +865,62 @@ input[type="number"]{
     flex-direction: column;
 }
 
-
-
-
+.select2.select2-container{
+    width: 200px !important;
+}
 
 @media only screen and (max-width : 1473px) {
     .CEB__wrapContent{
         flex-direction: column;
         flex-wrap: wrap;
     }
+
+    .flex .CEB__text2 {
+        margin-bottom: 0;
+    }
+
+    .lg\:flex {
+        display: none;
+    }
+
+    .lg\:hidden {
+        display: flex;
+    }
+
+
     .result{
         display:none;
     }
 
     .flex-column .flex {
         flex-wrap: wrap;
+        flex-direction: column;
+    }
+
+    .columns{
+        flex-direction: column;
     }
 
     .CEB__wrapSlider{
         display: none;
+    }
+
+    .CEB_block{
+        flex-direction: column;
+    }
+
+    .input{
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    .select2.select2-container{
+        width: 100% !important;
+    }
+
+
+    .flex{
+        display:  column;
     }
 
 	.CEB {
