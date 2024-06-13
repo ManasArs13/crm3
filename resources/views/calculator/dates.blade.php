@@ -6,7 +6,7 @@
                     $dateFormat=new DateTime($date->date)
                 @endphp
                 <div class="date-time">
-                    <div class="date">{{ $dateFormat->format("d.m.Y")}}</div>
+                    <div class="date">{{__("date.".$dateFormat->format("l"))}} {{ $dateFormat->format("d.m.Y")}}</div>
 
                     <div class="times">
                         @php
