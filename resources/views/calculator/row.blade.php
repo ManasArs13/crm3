@@ -73,6 +73,7 @@
                             data-value="{{$color["product"]}}"
                             data-codeColor="#{{$color["hex"]}}"
                             data-codecolortext="#{{$color["font_color"]}}"
+                            data-countPallets="{{$color["count_pallets"]}}"
                             style="background-color:#{{$color["hex"]}}; color:#{{$color["font_color"]}}; padding: 10px"
                         >
                             {{ $color["name"] }}

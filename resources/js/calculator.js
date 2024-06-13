@@ -153,6 +153,7 @@ $(document).ready(function(){
     function calculation(formClass){
         var weigth_total=0;
         var price_total=0;
+        var countPallets=0;
 
         $(formClass+".weight").each(function() {
             weigth_total+=parseFloat($(this).text());
@@ -161,6 +162,13 @@ $(document).ready(function(){
         $(formClass+".price").each(function() {
             price_total+=parseFloat($(this).text());
         });
+
+        $(formClass+".change_js").each(function(){
+            let group=$(this).attr("data-id");
+            countPallets+=Math.ceil($(this).val()/parseInt($(formClass+'.select_product[data-id='+group+']').find('.selected').attr("data-countPallets"))); //количество паллетов
+        });
+
+
 
         $(formClass+"#weight_total").text(Math.round(weigth_total));
         $(formClass+"#price_total").text(price_total);

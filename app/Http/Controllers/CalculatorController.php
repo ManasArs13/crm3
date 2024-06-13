@@ -22,6 +22,8 @@ class CalculatorController extends Controller
         $needMenuForItem = true;
         $states= Status::all();
 
+        $pallet=0;
+
         $deliveries = Delivery::whereNot('ms_id', '28803b00-5c8f-11ea-0a80-02ed000b1ce1')->orderBy('name', 'asc')->get();
         $vehicleTypes = TransportType::whereNot('ms_id', '5c2ad6bd-3dcf-11ee-0a80-105c001170bb')
                     ->whereNot('ms_id', '8caf01fa-34f2-11ee-0a80-139c002ba64a')
@@ -113,7 +115,7 @@ class CalculatorController extends Controller
         $times=Time::where("is_active", 1)->get();
         $shippingPrices = json_encode(ShipingPrice::get());
 
-        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg", "balance")->whereNotNull("color_id")->whereNot("category_id","7")->orderBy("name","asc")->get();
+        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg", "balance", "count_pallets")->whereNotNull("color_id")->whereNot("category_id","7")->orderBy("name","asc")->get();
         $betonProducts =  Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->Where("category_id","4")->orderBy("name","asc")->get();
 
         $productsByGroup=[];
@@ -140,6 +142,7 @@ class CalculatorController extends Controller
                         "product" => $product->ms_id,
                         "weight" => $product->weight_kg,
                         "selected" =>($product->color_id==5)?"selected":'',
+                        "count_pallets"=> $product->count_pallets,
                         "balance" => $product->balance
                 ];
             }
