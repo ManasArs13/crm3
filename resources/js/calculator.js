@@ -598,8 +598,8 @@ $(document).ready(function(){
 
         jQuery("#CEBQuestionW-slide4").slider({
             value: columnHeight,
-            min: 100,
-            max: 380,
+            min: 80,
+            max: 320,
             range: 'min',
             step: 20,
             animate: true,

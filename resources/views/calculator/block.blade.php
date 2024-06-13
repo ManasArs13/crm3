@@ -199,14 +199,13 @@
                                     value="0">
                             </div> <!-- .qCEBQuestionW__wrap-answer-input-rande -->
                             <div class="CEB__wrapData">
-                                <span class="CEB__Data">100</span>
-                                <span class="CEB__Data">140</span>
-                                <span class="CEB__Data">180</span>
-                                <span class="CEB__Data">220</span>
-                                <span class="CEB__Data">260</span>
-                                <span class="CEB__Data">300</span>
-                                <span class="CEB__Data">340</span>
-                                <span class="CEB__Data">380</span>
+                                <span class="CEB__Data">80</span>
+                                <span class="CEB__Data">120</span>
+                                <span class="CEB__Data">160</span>
+                                <span class="CEB__Data">200</span>
+                                <span class="CEB__Data">240</span>
+                                <span class="CEB__Data">280</span>
+                                <span class="CEB__Data">320</span>
                             </div>
                         </div>
 
