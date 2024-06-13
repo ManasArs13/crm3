@@ -22,7 +22,7 @@ class CalculatorController extends Controller
         $needMenuForItem = true;
         $states= Status::all();
 
-        $pallet=Product::where("id", 574)->first();
+        $pallet=Product::where("ms_id", "fe06d62d-87db-11e7-7a6c-d2a900041517")->first();
 
         $deliveries = Delivery::whereNot('ms_id', '28803b00-5c8f-11ea-0a80-02ed000b1ce1')->orderBy('name', 'asc')->get();
         $vehicleTypes = TransportType::whereNot('ms_id', '5c2ad6bd-3dcf-11ee-0a80-105c001170bb')
