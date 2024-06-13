@@ -463,7 +463,7 @@ $(document).ready(function(){
     let Length = 10; // длина забора
     let post_quantity = 2; // кол-во столбов
     let wallHeight = 200; // высота стенки
-    let columnHeight = 200; // Высота колоны
+    let columnHeight = 220; // Высота колоны
     let numberType = ""; // номер типа забора
 
     let weight_zakaz = 0; // вес заказа
