@@ -168,12 +168,12 @@ $(document).ready(function(){
                 let group=$(this).attr("data-id");
                 let countPal=parseInt($(formClass+'.select_product[data-id='+group+']').find('.selected').attr("data-countPallets"));
                 if (countPal!=0){
-                    countPallets+=Math.ceil($(this).val()/countPal); //количество паллетов
+                    countPallets+=$(this).val()/countPal; //количество паллетов
                 }
             });
 
             let palletForm=$(formClass+'[name="positions[pallet][quantity]"]');
-            palletForm.val(countPallets);
+            palletForm.val(Math.ceil(countPallets));
 
             let palletWeight=palletForm.attr("data-weight")*countPallets;
             $(formClass+"#weight_total_pallet").text((palletWeight).toFixed(1));
