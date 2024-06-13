@@ -163,11 +163,27 @@ $(document).ready(function(){
             price_total+=parseFloat($(this).text());
         });
 
-        $(formClass+".change_js").each(function(){
-            let group=$(this).attr("data-id");
-            countPallets+=Math.ceil($(this).val()/parseInt($(formClass+'.select_product[data-id='+group+']').find('.selected').attr("data-countPallets"))); //количество паллетов
-        });
+        if (formClass!=".calcBeton "){
+            $(formClass+".change_js").each(function(){
+                let group=$(this).attr("data-id");
+                let countPal=parseInt($(formClass+'.select_product[data-id='+group+']').find('.selected').attr("data-countPallets"));
+                if (countPal!=0){
+                    countPallets+=Math.ceil($(this).val()/countPal); //количество паллетов
+                }
+            });
 
+            let palletForm=$(formClass+'[name="positions[pallet][quantity]"]');
+            palletForm.val(countPallets);
+
+            let palletWeight=palletForm.attr("data-weight")*countPallets;
+            $(formClass+"#weight_total_pallet").text((palletWeight).toFixed(1));
+
+            weigth_total+=palletWeight;
+
+            let palletPrice=palletForm.attr("data-price")*countPallets;
+            $(formClass+"#price_total_pallet").text(palletPrice);
+            price_total+=palletPrice;
+        }
 
 
         $(formClass+"#weight_total").text(Math.round(weigth_total));
@@ -619,23 +635,8 @@ $(document).ready(function(){
 
     function width_datetime(){
         let formClass="."+$(".CMR__input_calc_js:checked").attr("data-content");
-
-        if (formClass==".calcFence"){
-            let widthTotal=$(".main-1").width();
-            let height=$(".CEB__wrapContent.df"+formClass).height();
-            let width=$(".CEB").outerWidth();
-            let widthItogo=(widthTotal-width)/2-30;
-            $(".datetime-popup"+formClass).width(widthItogo);
-
-            if ($(window).width()<2045){
-                $(".datetime-popup"+formClass).css("width", width+"px").css("right", widthItogo+30);
-            }
-        }
-
         let height=$(".datetime-popup"+formClass+" .date-time:nth-child(1)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(2)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(3)").outerHeight(true)+$(".datetime-popup"+formClass+" .date-time:nth-child(4)").outerHeight(true);
         $(".datetime-popup"+formClass).height(height+"px").css("max-height",height+"px");
-
-
     }
 
 

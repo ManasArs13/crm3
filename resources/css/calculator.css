@@ -265,17 +265,7 @@ span.balance {
 }
 
 
-.datetime-popup.calcFence{
-    display: none;
-}
 
-.datetime-popup.active.calcFence{
-    position: absolute;
-    display: block;
-    z-index: 677;
-    right: 0;
-    top: 0;
-}
 
 .datetime-popup>.CEB__row{
     height: 100%;

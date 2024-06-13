@@ -269,6 +269,38 @@
                                                 'group' => $group,
                                             ])
                                         @endforeach
+                                        <tr>
+                                            <td>
+                                                <div class="flex">
+                                                    <span>{{$pallet->name}}</span>
+                                                    <span class="balance {{$form}}" data-id="pallet">{{$pallet->balance}}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="quantity cursor">
+                                                    <input class="select__input" type="hidden" value="{{$pallet->ms_id}}" name="positions[pallet][product_id]">
+                                                    <input type="number"
+                                                           name="positions[pallet][quantity]"
+                                                           value=0
+                                                           min=0
+                                                           readonly
+                                                           step=1
+                                                           data-price="{{$pallet->price}}"
+                                                           data-weight="{{$pallet->weight_kg}}">
+                                                </div>
+                                            </td>
+                                            @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
+                                                <td></td>
+                                            @endif
+                                            <td>
+                                                <span id="weight_total_pallet" class="weight">0</span>
+                                            </td>
+                                            <td>
+                                                <span id="price_client_pallet">0</span>
+                                                <input type="hidden" name="positions[pallet][price]" value="{{$pallet->price}}">
+                                            </td>
+                                            <td><span id="price_total_pallet" class="price">0</span></td>
+                                        </tr>
                                     @else
                                         @include('calculator.row', [
                                             'form' => $form,

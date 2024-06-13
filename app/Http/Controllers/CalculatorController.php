@@ -22,7 +22,7 @@ class CalculatorController extends Controller
         $needMenuForItem = true;
         $states= Status::all();
 
-        $pallet=0;
+        $pallet=Product::where("id", 574)->first();
 
         $deliveries = Delivery::whereNot('ms_id', '28803b00-5c8f-11ea-0a80-02ed000b1ce1')->orderBy('name', 'asc')->get();
         $vehicleTypes = TransportType::whereNot('ms_id', '5c2ad6bd-3dcf-11ee-0a80-105c001170bb')
@@ -185,6 +185,7 @@ class CalculatorController extends Controller
                 'datesBlockFinish',
                 'datesBetonFinish',
                 'states',
+                'pallet'
             )
         );
     }

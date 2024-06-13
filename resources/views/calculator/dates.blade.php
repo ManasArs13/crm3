@@ -1,4 +1,4 @@
-<div class="datetime-popup {{$class}} {{($class!="calcFence")?"CEB w-11/12 max-w-7xl mx-auto pb-10":""}}" data-class="{{$class}}">
+<div class="datetime-popup {{$class}} CEB w-11/12 max-w-7xl mx-auto pb-10" data-class="{{$class}}">
     <div class="CEB__row">
         <div class="dates">
             @foreach ($dates as $date)
