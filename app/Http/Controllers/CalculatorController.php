@@ -46,11 +46,12 @@ class CalculatorController extends Controller
         ->join('products', 'products.id', '=', 'order_positions.product_id')
         ->select(DB::raw('orders.name as name, SUM(order_positions.weight_kg)/1000 as weight'),
                  DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
-                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
+                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%H'),':00:00.000') as time")
         )
         ->whereIn("category_id",['6','12','21','15','11'])
         ->whereBetween("orders.date_plan",[$dateNowQuery,$dateFinishQuery])
-        ->groupBy('orders.name')
+        ->whereNotIn("orders.status_id", [1,2,7])
+        ->groupBy('orders.id')
         ->get();
 
         $datesBlock= DB::table('orders')
@@ -58,11 +59,12 @@ class CalculatorController extends Controller
         ->join('products', 'products.id', '=', 'order_positions.product_id')
         ->select(DB::raw('orders.name as name, SUM(order_positions.weight_kg)/1000 as weight'),
                  DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
-                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
+                 DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%H'),':00:00.000') as time")
         )
         ->whereNotNull("products.color_id")
+        ->whereNotIn("orders.status_id", [1,2,7])
         ->whereBetween("orders.date_plan",[$dateNowQuery,$dateFinishQuery])
-        ->groupBy('orders.name')
+        ->groupBy('orders.id')
         ->get();
 
         $datesBeton= DB::table('orders')
@@ -71,11 +73,12 @@ class CalculatorController extends Controller
         ->select(
                 DB::raw('orders.name as name, SUM(order_positions.quantity) as quantity'),
                 DB::raw('DATE_FORMAT(orders.date_plan, "%d.%m.%Y") as date'),
-                DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%h'),':00:00.000') as time")
+                DB::raw("CONCAT(DATE_FORMAT(orders.date_plan, '%H'),':00:00.000') as time")
         )
         ->where("category_id",'4')
+        ->whereNotIn("orders.status_id", [1,2,7])
         ->whereBetween("orders.date_plan",[$dateNowQuery,$dateFinishQuery])
-        ->groupBy('orders.name')
+        ->groupBy('orders.id')
         ->get();
 
         $datesCalcFinish=[];
@@ -102,7 +105,7 @@ class CalculatorController extends Controller
             if (!isset($datesBetonFinish[$date->date][$date->time]["quantity"]))
                 $datesBetonFinish[$date->date][$date->time]["quantity"]=$date->quantity;
             else
-                $datesBetonFinish[$date->date][$date->time]["quantity"]+=$date->quantity;
+                $datesBetonFinish[$date->date][$date->time]["quantity"]=$datesBetonFinish[$date->date][$date->time]["quantity"]+$date->quantity;
         }
 
 
