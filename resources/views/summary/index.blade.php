@@ -32,6 +32,10 @@
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.products')}}</th>
                             <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumProducts}}</td>
                         </tr>
+                        <tr>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.carriers')}}</th>
+                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumCarriers}}</td>
+                        </tr>
                     </table>
 
             </div>

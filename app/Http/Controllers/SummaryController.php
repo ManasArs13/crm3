@@ -17,6 +17,10 @@ class SummaryController extends Controller
             $q->where('contact_category_id', '=', '8');
         })->whereNot("balance",NULL)->sum("balance");
 
-        return view("summary.index", compact("sumMaterials", "sumProducts", "sumMutualSettlement","sumMutualSettlementMain"));
+        $sumCarriers=Contact::whereHas('contact_categories', function($q) {
+            $q->where('contact_category_id', '=', '9');
+        })->whereNot("balance",NULL)->sum("balance");
+
+        return view("summary.index", compact("sumMaterials", "sumProducts", "sumMutualSettlement","sumMutualSettlementMain", "sumCarriers"));
     }
 }
