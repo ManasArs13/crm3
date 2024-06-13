@@ -17,11 +17,11 @@ class CalculatorController extends Controller
         try {
             $url=Option::where("code","ms_order_edit_url")->first()?->value;
             $array = $request->post();
-            if (
-               ($array["agent"]["name"]==null && $array["agent"]["phone"]==null && !isset($array["agent"]["id"]))
-            || (isset($array["agent"]["id"]) && $array["agent"]["id"]==null))
-                    throw new \Exception(trans("error.noCounterparty"));
+            if  (!isset($array["agent"]["id"]) || $array["agent"]["id"]==null)
+                throw new \Exception(trans("error.noCounterparty"));
 
+            if  (!isset($array["state"]) || $array["state"]==null )
+                throw new \Exception(trans("error.noState"));
 
             $result = $orderMsService->updateOrderMs($array);
             return new Response("<a href='".$url.$result->id."' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'>".$result->name."</a>", 200);
