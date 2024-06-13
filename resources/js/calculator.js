@@ -358,8 +358,8 @@ $(document).ready(function(){
                 }
 //газель
             }else if (vehicleType == 5) {
-                weight_zakaz_for_delivery = '2.5'
-                if (weight<2.5)
+                weight_zakaz_for_delivery = '3.0'
+                if (weight<3.0)
                     weight = 3;
 //Довозка
             }else  if (vehicleType == 6){
