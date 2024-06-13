@@ -18,29 +18,26 @@
                     <table class="sum">
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('summary.mutualSettlement')}}</th>
-                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumMutualSettlement}}</td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumMutualSettlement,1,'.'," ")}}</td>
                         </tr>
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{__('summary.mutualSettlementMain')}}</th>
-                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumMutualSettlementMain}}</td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumMutualSettlementMain,1,'.', ' ')}}</td>
                         </tr>
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{__('summary.materials')}}</th>
-                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumMaterials}}</td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumMaterials,1,'.', ' ')}}</td>
                         </tr>
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.products')}}</th>
-                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumProducts}}</td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumProducts,1,'.',' ')}}</td>
                         </tr>
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.carriers')}}</th>
-                            <td class="text-start pl-2 pt-2 pb-2 pr-2 ">{{$sumCarriers}}</td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumCarriers,1,'.',' ')}}</td>
                         </tr>
                     </table>
-
             </div>
-
-
 </div>
 
 </x-app-layout>
