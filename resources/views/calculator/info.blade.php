@@ -1,7 +1,7 @@
 <div class="CEB__row">
     <div class="CEB__text2">Доставка</div>
     <div class="CEB_block">
-            <select name="attributes[delivery][id]" class="select2 input change_delivery">
+            <select name="attributes[delivery][id]" class="select2 input change_delivery delivery">
                 @foreach ($deliveries as $delivery)
                     <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" {{($loop->first)?"selected":""}} style="margin: 4px;" >{{ $delivery->name }}</option>
                 @endforeach
@@ -22,51 +22,7 @@
     <input type="hidden" >
 </div>
 
-<div class="CEB__row">
-    <div class="CEB__text2">Пользователь</div>
-    <div class="CEB_block flex-column">
-        <div class="flex">
-            <input type="hidden" name="agent[id]">
-            {{-- <div class="select"> --}}
-                <select class="select2 input agent_change">
-                    <option value="" selected disabled>{{__('column.name')}}</option>
-                    @foreach ($contacts as $contact)
-                        <option value="{{ $contact->ms_id }}">{{ $contact->name }}</option>
-                    @endforeach
-                </select>
-            {{-- </div> --}}
 
-            {{-- <div class="select"> --}}
-                <select class="select2 input agent_change">
-                    <option value="" selected disabled>{{__('column.phone')}}</option>
-                    @foreach ($contacts as $contact)
-                        <option value="{{ $contact->ms_id }}">{{ $contact->phone }}</option>
-                    @endforeach
-                </select>
-            {{-- </div> --}}
-
-
-            <div class="datetime">
-                <input type="text" class="input plan deliveryPlannedMoment" readonly placeholder='{{__('column.delivery_date')}}'>
-                <input type="hidden"  name="deliveryPlannedMoment" placeholder='{{__('column.delivery_date')}}'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
-                    <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
-                    <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-            </div>
-
-            <select name="state" class="select2 input">
-                <option value="" selected disabled>{{__('column.status')}}</option>
-                @foreach ($states as $state)
-                    <option value="{{ $state->ms_id }}">{{ $state->name }}</option>
-                @endforeach
-            </select>
-
-            <button type="submit" class="rounded bg-green-400 px-6 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 submit">Отправить в мс</button>
-        </div>
-    </div>
-</div>
 
 <div role="status" class="preloader">
     <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -489,7 +489,12 @@ $(document).ready(function(){
 
     $("body").on("change", ".agent_change", function(){
         let formClass="."+$(this).parents("form").attr("class")+" ";
-        $(formClass+"[name='agent[id]']").val($(this).val());
+        let val=$(this).val();
+        $(formClass+"[name='agent[id]']").val(val);
+        let selectClass=$(this).attr("data-change");
+        $(formClass+"."+selectClass+" option:selected").removeAttr('selected');
+        $(formClass+"."+selectClass+" option[value='"+val+"']").attr('selected', 'selected');
+        $(formClass+"."+selectClass).next().find(".select2-selection__rendered").text($(formClass+"."+selectClass+" option[value='"+val+"']").text());
     });
 
     $("body").on("change", ".change_postQuantity", function(){
