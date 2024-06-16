@@ -115,7 +115,7 @@ class CalculatorController extends Controller
         $times=Time::where("is_active", 1)->get();
         $shippingPrices = json_encode(ShipingPrice::get());
 
-        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg", "balance", "count_pallets")->whereNotNull("color_id")->whereNot("category_id","7")->orderBy("name","asc")->get();
+        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg", "residual as balance", "count_pallets")->whereNotNull("color_id")->whereNot("category_id","7")->orderBy("name","asc")->get();
         $betonProducts =  Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->Where("category_id","4")->orderBy("name","asc")->get();
 
         $productsByGroup=[];
