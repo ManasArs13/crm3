@@ -240,13 +240,13 @@ span.balance {
     border: 1px solid #aaa;
     border-radius: 4px;
     padding: 0 20px 0 8px;
-    line-height: 28px;
+    line-height: 35px;
     box-sizing: border-box;
     color: #444;
 }
 
 .input2{
-    width: 200px;
+    width: 149px;
 }
 
 .datetime{
@@ -257,7 +257,7 @@ span.balance {
 .datetime svg{
     position: absolute;
     right: 8px;
-    top: 7px;
+    top: 9.5px;
 }
 
 .content{
@@ -409,7 +409,6 @@ button#button-modal {
 }
 
 .CEB__row {
-	margin-bottom          :  10px;
 	background-color: #ffffff;
 	padding         : 12px;
 	border-radius   : 12px;
@@ -422,6 +421,7 @@ button#button-modal {
 .CEB__wrapParams.types{
     display : flex;
     gap: 10px;
+    margin-top: 30px;
 }
 
 .labelCustomRadio_type {
@@ -581,13 +581,21 @@ button#button-modal {
 }
 
 .column{
+    display: flex;
+    flex-direction: column;
     flex-basis: 33%;
     flex-grow: 0;
+    gap: 10px;
+    justify-content: space-between;
 }
 
 .column:first-of-type{
     flex-grow: 2;
 }
+
+
+
+
 
 .submit{
     line-height: 28px;
@@ -597,6 +605,13 @@ button#button-modal {
     min-width: 0;
 }
 
+
+.flex-row{
+    display:flex;
+    flex-direction: row;
+    gap:10px;
+
+}
 
 
 
@@ -736,7 +751,6 @@ button#button-modal {
 
 .CEB__table {
 	width          : 100%;
-	margin-top     : 20px;
 	border         : 1px solid #dddddd;
 	border-collapse: collapse;
 }
@@ -857,7 +871,11 @@ input[type="number"]{
     box-sizing: border-box;
     border-radius: 4px;
     padding: 0;
-    height: 30px;
+    height: 35px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+
+    line-height: 35px;
 }
 
 .flex-column{
@@ -870,7 +888,7 @@ input[type="number"]{
     max-width: 300px !important;
 }
 
-.column .select2.select2-container{
+.column:not(:first-child) .select2.select2-container{
     min-width: 100%;
     max-width: 100%;
 }
@@ -883,7 +901,23 @@ input[type="number"]{
     width: 300px;
 }
 
+.deliveryTn{
+    display:flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+}
+
 @media only screen and (max-width : 1473px) {
+
+    .deliveryTn{
+        flex-direction: column;
+    }
+
+    .column:first-child .select2.select2-container{
+        min-width: 100%;
+        max-width: 100%;
+    }
+
     .select2.select2-container{
         min-width: 100%;
         max-width: 100%;

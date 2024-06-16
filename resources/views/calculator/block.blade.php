@@ -3,7 +3,35 @@
         @if ($menu)
             <div class="CEB CEB-1 CEB-2">
                 <div class="CEB__row">
-                    <div class="CEB__text2">{{ __('calculator.type_fence') }}</div>
+                    <div class="CEB__text2">
+                        <div>{{ __('calculator.type_fence') }}</div>
+                        @if ($menu)
+                            <div class="flex-row">
+                                <div>{{ __('calculator.reserve') }}</div>
+                                <div class="quantity">
+                                    <input type="number" id="CEB__textReserve" min=0 class="change_reserve"
+                                        value="3" step=1 max=100>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
+                                            </svg>
+                                        </div>
+                                        <div class="quantity-button quantity-down">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
                     <fieldset class="CEB__wrapParams types" id="group1">
 
                         <label class="labelCustomRadio_type checked">
@@ -220,113 +248,90 @@
                 @csrf
                 <input type="hidden" name="form" value="{{ $form }}">
                 <div class="flex columns">
-                    <div class="CEB__row column">
-                        <div class="CEB__text2">
-                            <div class="result">{{ __('calculator.result') }}</div>
-                            @if ($menu)
-                                <div class="flex">
-                                    <div>{{ __('calculator.reserve') }}</div>
-                                    <div class="quantity">
-                                        <input type="number" id="CEB__textReserve" min=0 class="change_reserve"
-                                            value="3" step=1 max=100>
-                                        <div class="quantity-nav">
-                                            <div class="quantity-button quantity-up">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
-                                                </svg>
-                                            </div>
-                                            <div class="quantity-button quantity-down">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="CEB__wrapTable">
-                            @if (count($productsByGroup) > 0)
-                                <table class="CEB__table">
-                                    <tr>
-                                        <td>{{ __('calculator.position') }}</td>
-                                        <td>{{ __('calculator.quantity') }}</td>
-                                        @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
-                                            <td>{{ __('calculator.color') }}</td>
-                                        @endif
-                                        <td>{{ __('calculator.weight') }}</td>
-                                        <td>{{ __('calculator.price') }}</td>
-                                        <td>{{ __('calculator.sum') }}</td>
-                                    </tr>
+                    <div class="column">
+                        <div class="CEB__row">
 
-                                    @if ($form != 'calcBeton')
-                                        @foreach ($productsByGroup as $group)
+                            <div class="CEB__wrapTable">
+                                @if (count($productsByGroup) > 0)
+                                    <table class="CEB__table">
+                                        <tr>
+                                            <td>{{ __('calculator.position') }}</td>
+                                            <td>{{ __('calculator.quantity') }}</td>
+                                            @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
+                                                <td>{{ __('calculator.color') }}</td>
+                                            @endif
+                                            <td>{{ __('calculator.weight') }}</td>
+                                            <td>{{ __('calculator.price') }}</td>
+                                            <td>{{ __('calculator.sum') }}</td>
+                                        </tr>
+
+                                        @if ($form != 'calcBeton')
+                                            @foreach ($productsByGroup as $group)
+                                                @include('calculator.row', [
+                                                    'form' => $form,
+                                                    'group' => $group,
+                                                ])
+                                            @endforeach
+                                            <tr>
+                                                <td>
+                                                    <div class="flex">
+                                                        <span>{{ $pallet->name }}</span>
+                                                        <span class="balance {{ $form }}"
+                                                            data-id="pallet">{{ $pallet->balance }}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="quantity cursor">
+                                                        <input class="select__input" type="hidden"
+                                                            value="{{ $pallet->ms_id }}"
+                                                            name="positions[pallet][product_id]">
+                                                        <input type="number" name="positions[pallet][quantity]" value=0 min=0
+                                                            readonly step=1 data-price="{{ $pallet->price }}"
+                                                            data-weight="{{ $pallet->weight_kg }}">
+                                                    </div>
+                                                </td>
+                                                @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
+                                                    <td></td>
+                                                @endif
+                                                <td>
+                                                    <span id="weight_total_pallet" class="weight">0</span>
+                                                </td>
+                                                <td>
+                                                    <span id="price_client_pallet">0</span>
+                                                    <input type="hidden" name="positions[pallet][price]"
+                                                        value="{{ $pallet->price }}">
+                                                </td>
+                                                <td><span id="price_total_pallet" class="price">0</span></td>
+                                            </tr>
+                                        @else
                                             @include('calculator.row', [
                                                 'form' => $form,
-                                                'group' => $group,
+                                                'productsByGroup' => $productsByGroup,
+                                                'group' => $productsByGroup[$idBeton],
                                             ])
-                                        @endforeach
+                                        @endif
                                         <tr>
-                                            <td>
-                                                <div class="flex">
-                                                    <span>{{ $pallet->name }}</span>
-                                                    <span class="balance {{ $form }}"
-                                                        data-id="pallet">{{ $pallet->balance }}</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="quantity cursor">
-                                                    <input class="select__input" type="hidden"
-                                                        value="{{ $pallet->ms_id }}"
-                                                        name="positions[pallet][product_id]">
-                                                    <input type="number" name="positions[pallet][quantity]" value=0 min=0
-                                                        readonly step=1 data-price="{{ $pallet->price }}"
-                                                        data-weight="{{ $pallet->weight_kg }}">
-                                                </div>
-                                            </td>
+                                            <td>итог:</td>
+                                            <td></td>
                                             @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                 <td></td>
                                             @endif
-                                            <td>
-                                                <span id="weight_total_pallet" class="weight">0</span>
-                                            </td>
-                                            <td>
-                                                <span id="price_client_pallet">0</span>
-                                                <input type="hidden" name="positions[pallet][price]"
-                                                    value="{{ $pallet->price }}">
-                                            </td>
-                                            <td><span id="price_total_pallet" class="price">0</span></td>
-                                        </tr>
-                                    @else
-                                        @include('calculator.row', [
-                                            'form' => $form,
-                                            'productsByGroup' => $productsByGroup,
-                                            'group' => $productsByGroup[$idBeton],
-                                        ])
-                                    @endif
-                                    <tr>
-                                        <td>итог:</td>
-                                        <td></td>
-                                        @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
+                                            <td><span id="weight_total">0</span></td>
                                             <td></td>
-                                        @endif
-                                        <td><span id="weight_total">0</span></td>
-                                        <td></td>
-                                        <td><span id="price_total">0</span></td>
-                                    </tr>
-                                </table>
-                            @endif
+                                            <td><span id="price_total">0</span></td>
+                                        </tr>
+                                    </table>
+                                @endif
+                            </div>
                         </div>
+                        @include('calculator.info')
                     </div>
                     <div class="CEB__row column">
+
                         @include('calculator.info2')
                     </div>
                 </div>
-                @include('calculator.info')
+
             </form>
         </div>
     </div>

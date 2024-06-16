@@ -1,6 +1,6 @@
 <div class="CEB__row">
     <div class="CEB__text2">Доставка</div>
-    <div class="CEB_block">
+    <div class="CEB_block deliveryTn">
             <select name="attributes[delivery][id]" class="select2 input change_delivery delivery">
                 @foreach ($deliveries as $delivery)
                     <option data-distance="{{ $delivery->distance }}" value="{{ $delivery->ms_id }}" {{($loop->first)?"selected":""}} style="margin: 4px;" >{{ $delivery->name }}</option>
