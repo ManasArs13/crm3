@@ -413,6 +413,13 @@ $(document).ready(function(){
 
     $('form').submit(function(e){
         e.preventDefault();
+        let classForm=$(this).attr("class");
+        if (classForm=="calcBeton"){
+            let $quantity=$("."+classForm+" .change_js");
+            if ($quantity.val()<$("."+classForm+" .weight-tn").val()){
+                $quantity.val($("."+classForm+" .weight-tn").val());
+            }
+        }
 
         $.ajax({
           url: "api/order_ms/create",
