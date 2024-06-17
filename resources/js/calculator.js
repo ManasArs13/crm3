@@ -230,10 +230,10 @@ $(document).ready(function(){
         let reserve=$("#CEB__textReserve").val()/100;
         $(".CMR__input_typeZabor_js:checked").parent().addClass("checked");
 
-        let Length = $("#CEB__textLength").val(); // длина забора
-        let post_quantity = $("#CEB__textPost_quantity").val(); // кол-во столбов
-        let wallHeight = $("#CEB__text_wallHeight").val(); // высота стенки
-        let columnHeight = $("#CEB__text_columnHeight").val(); // Высота колоны
+        let Length = parseInt($("#CEB__textLength").val()); // длина забора
+        let post_quantity = parseInt($("#CEB__textPost_quantity").val()); // кол-во столбов
+        let wallHeight = parseInt($("#CEB__text_wallHeight").val()); // высота стенки
+        let columnHeight = parseInt($("#CEB__text_columnHeight").val()); // Высота колоны
 
         lengthColumns = Length - post_quantity;
         lengthWalls = Length - (post_quantity * 0.28);
