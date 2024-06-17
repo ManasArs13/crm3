@@ -448,6 +448,55 @@ $(document).ready(function(){
     $(".delivery_select2").select2();
     $(".select2").select2();
 
+    // $("body").on("click", ".change_phone+.select2", function(){
+    //     Inputmask({"mask": "+79999999999"}).mask("[aria-controls='"+$(".change_phone").next(".select2-container--open").find(".select2-selection.select2-selection--single").attr("aria-owns")+"']");
+    // });
+
+    $(".change_phone").each(function(){
+        var $this = $(this);
+        $this.select2({
+            width: '220px',
+            maximumInputLength: 12,
+            tags: $this.data('collection'),
+            language: {
+                noResults: function($this) {
+                    let $searchInput=event.target;
+                    let span=$searchInput.getAttribute("aria-controls");
+
+                    // Inputmask({"mask": "+79999999999"}).mask("[aria-controls='"+span+"']");
+                    let typed = event.target.value;
+                    if (typed.length>10){
+                        $("[aria-owns='"+span+"'] .select2-selection__rendered").html(typed).attr("title", typed);
+                        let formClass="."+$("[aria-owns='"+span+"']").parents("form").attr("class")+" ";
+                        $(formClass+"[name='agent[id]']").val(0);
+                        $(formClass+"[name='agent[phone]']").val(typed);
+                    }
+                }
+            }
+        });
+    });
+
+    $(".change_name").each(function(){
+        var $this = $(this);
+        $this.select2({
+            width: '220px',
+            tags: $this.data('collection'),
+            language: {
+                noResults: function($this) {
+
+                    let $searchInput=event.target;
+                    let typed = event.target.value;
+                    if (typed.length>4){
+                        let span=$searchInput.getAttribute("aria-controls");
+                        $("[aria-owns='"+span+"'] .select2-selection__rendered").html(typed).attr("title", typed);
+                        let formClass="."+$("[aria-owns='"+span+"']").parents("form").attr("class")+" ";
+                        $(formClass+"[name='agent[id]']").val(0);
+                        $(formClass+"[name='agent[name]']").val(typed);
+                    }
+                }
+            }
+        });
+    });
 
     $("body").on("click", ".time-span", function(){
        let value=$(this).attr("data-time");
@@ -498,6 +547,8 @@ $(document).ready(function(){
         let formClass="."+$(this).parents("form").attr("class")+" ";
         let val=$(this).val();
         $(formClass+"[name='agent[id]']").val(val);
+        $(formClass+"[name='agent[phone]']").val("");
+        $(formClass+"[name='agent[name]']").val("");
         let selectClass=$(this).attr("data-change");
         $(formClass+"."+selectClass+" option:selected").removeAttr('selected');
         $(formClass+"."+selectClass+" option[value='"+val+"']").attr('selected', 'selected');

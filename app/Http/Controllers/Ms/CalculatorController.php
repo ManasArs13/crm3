@@ -17,8 +17,20 @@ class CalculatorController extends Controller
         try {
             $url=Option::where("code","ms_order_edit_url")->first()?->value;
             $array = $request->post();
+
             if  (!isset($array["agent"]["id"]) || $array["agent"]["id"]==null)
                 throw new \Exception(trans("error.noCounterparty"));
+
+            if ($array["agent"]["id"]=="0" && $array["agent"]["name"]=="" && $array["agent"]["phone"]=="")
+                throw new \Exception(trans("error.noCounterparty"));
+
+            if ($array["agent"]["id"]=="0"){
+                unset($array["agent"]["id"]);
+            }else{
+                unset($array["agent"]["phone"]);
+                unset($array["agent"]["name"]);
+            }
+
 
             if  (!isset($array["state"]) || $array["state"]==null )
                 throw new \Exception(trans("error.noState"));
