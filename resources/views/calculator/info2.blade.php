@@ -5,7 +5,7 @@
 
         <input type="hidden" name="agent[id]">
 
-        <select class="select2 input agent_change change_name" data-change="change_phone">
+        <select class="select2 input agent_change change_name" data-change="change_phone" style="width: 100%">
             <option value="" selected disabled>{{__('column.name')}}</option>
             @foreach ($contacts as $contact)
                 <option value="{{ $contact->ms_id }}">{{ $contact->name }}</option>
@@ -14,7 +14,7 @@
 
 
 
-        <select class="select2 input agent_change change_phone" data-change="change_name">
+        <select class="select2 input agent_change change_phone" data-change="change_name" style="width: 100%">
             <option value="" selected disabled>{{__('column.phone')}}</option>
             @foreach ($contacts as $contact)
                 <option value="{{ $contact->ms_id }}" >{{ $contact->phone }}</option>
@@ -33,7 +33,7 @@
             </svg>
         </div>
 
-        <select name="state" class="select2 input">
+        <select name="state" class="select2 input" style="width: 100%">
             <option value="" selected disabled>{{__('column.status')}}</option>
             @foreach ($states as $state)
                 <option value="{{ $state->ms_id }}">{{ $state->name }}</option>
