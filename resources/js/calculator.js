@@ -322,33 +322,33 @@ $(document).ready(function(){
                 }else{
                     deliveryValue = 25;
                 }
-            } else if (deliveryValue >= 25 && deliveryValue < 30) {
+            } else if (deliveryValue > 25 && deliveryValue <= 30) {
                 deliveryValue = 30;
-            } else if (deliveryValue >= 30 && deliveryValue < 35) {
+            } else if (deliveryValue > 30 && deliveryValue <= 35) {
                 deliveryValue = 35;
-            } else if (deliveryValue >= 35 && deliveryValue < 40) {
+            } else if (deliveryValue > 35 && deliveryValue <= 40) {
                 deliveryValue = 40;
-            } else if (deliveryValue >= 40 && deliveryValue < 50) {
+            } else if (deliveryValue > 40 && deliveryValue <= 50) {
                 deliveryValue = 50;
-            } else if (deliveryValue >= 50 && deliveryValue < 60) {
+            } else if (deliveryValue > 50 && deliveryValue <= 60) {
                 deliveryValue = 60;
-            } else if (deliveryValue >= 60 && deliveryValue < 70) {
+            } else if (deliveryValue > 60 && deliveryValue <= 70) {
                 deliveryValue = 70;
-            } else if (deliveryValue >= 70 && deliveryValue < 80) {
+            } else if (deliveryValue > 70 && deliveryValue <= 80) {
                 deliveryValue = 80;
-            } else if (deliveryValue >= 80 && deliveryValue < 90) {
+            } else if (deliveryValue > 80 && deliveryValue <= 90) {
                 deliveryValue = 90;
-            } else if (deliveryValue >= 90 && deliveryValue < 100) {
+            } else if (deliveryValue > 90 && deliveryValue <= 100) {
                 deliveryValue = 100;
-            } else if (deliveryValue >= 100 && deliveryValue < 120) {
+            } else if (deliveryValue > 100 && deliveryValue <= 120) {
                 deliveryValue = 120;
-            } else if (deliveryValue >= 120 && deliveryValue < 140) {
+            } else if (deliveryValue > 120 && deliveryValue <= 140) {
                 deliveryValue = 140;
-            } else if (deliveryValue >= 140 && deliveryValue < 160) {
+            } else if (deliveryValue > 140 && deliveryValue <= 160) {
                 deliveryValue = 160;
-            } else if (deliveryValue >= 160 && deliveryValue < 180) {
+            } else if (deliveryValue > 160 && deliveryValue <= 180) {
                 deliveryValue = 180;
-            } else if (deliveryValue >= 180 && deliveryValue < 200) {
+            } else if (deliveryValue > 180 && deliveryValue <= 200) {
                 deliveryValue = 200;
             } else {
                 if (vehicleType==2)
