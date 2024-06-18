@@ -878,6 +878,10 @@ input[type="number"]{
     line-height: 35px;
 }
 
+.select2-results__option{
+    white-space: nowrap;
+}
+
 .flex-column{
     display: flex;
     flex-direction: column;
