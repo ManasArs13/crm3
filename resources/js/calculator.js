@@ -257,12 +257,12 @@ $(document).ready(function(){
 
         //Колонны
         let quantityColumn=post_quantity * columnHeight / 20;
-        quantityColumn=Math.ceil(quantityColumn + quantityColumn*reserve);
+        quantityColumn=Math.ceil(quantityColumn);
         $(formClass+"[name='positions[21][quantity]']").val(quantityColumn);
         setPriceWeight(21, quantityColumn, formClass);
 
         //Крышек
-        let quantityCover=Math.ceil(post_quantity+post_quantity*reserve);
+        let quantityCover=Math.ceil(post_quantity);
         $(formClass+"[name='positions[15][quantity]']").val(quantityCover);
         setPriceWeight(15, quantityCover, formClass);
 
