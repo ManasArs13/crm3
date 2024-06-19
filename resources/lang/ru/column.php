@@ -137,4 +137,8 @@
    'processing_id' => "Техпроцесс",
    'sostav' => 'Состав',
    'delivery_date'=> 'Дата доставки',
-      ];
+   'carrier'=> 'Перевозчик',
+   'buyer'=> 'Покупатель',
+   'mutualSettlement'=> 'Поставщик',
+   'another'=>'Остальные'
+];

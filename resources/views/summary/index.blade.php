@@ -25,6 +25,22 @@
                             <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumMutualSettlementMain,1,'.', ' ')}}</td>
                         </tr>
                         <tr>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('summary.buyers')}}</th>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumBuyer,1,'.'," ")}}</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.carriers')}}</th>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumCarriers,1,'.',' ')}}</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{__('column.another')}}</th>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumAnother,1,'.', ' ')}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan=2></td>
+                        </tr>
+
+                        <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{__('summary.materials')}}</th>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumMaterials,1,'.', ' ')}}</td>
                         </tr>
@@ -32,31 +48,71 @@
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.products')}}</th>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumProducts,1,'.',' ')}}</td>
                         </tr>
-                        <tr>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('summary.carriers')}}</th>
-                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format($sumCarriers,1,'.',' ')}}</td>
-                        </tr>
+
                     </table>
             </div>
 
-            <div class="CEB__wrapTable">
-                <table class="sum">
-                    <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.name')}}</th>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.phone')}}</th>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
-                    </tr>
-
-                    @foreach($contactsDebtor as $contact)
+            <div class="flex">
+                <div class="CEB__wrapTable">
+                    <table class="sum">
                         <tr>
-                            <td>{{$contact->name}}</td>
-                            <td>{{$contact->phone}}</td>
-                            <td>{{$contact->balance}}</td>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.mutualSettlement')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
                         </tr>
-                    @endforeach
-                </table>
-        </div>
+                        @foreach($contactsMutualSettlement as $contact)
+                            <tr>
+                                <td>{{$contact->name}}</td>
+                                <td>{{$contact->balance}}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
 
+                <div class="CEB__wrapTable">
+                    <table class="sum">
+                        <tr>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.carrier')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                        </tr>
+                        @foreach($contactsCarrier as $contact)
+                            <tr>
+                                <td>{{$contact->name}}</td>
+                                <td>{{$contact->balance}}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+
+                <div class="CEB__wrapTable">
+                    <table class="sum">
+                        <tr>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.buyer')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                        </tr>
+                        @foreach($contactsBuyer as $contact)
+                            <tr>
+                                <td>{{$contact->name}}</td>
+                                <td>{{$contact->balance}}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+
+                <div class="CEB__wrapTable">
+                    <table class="sum">
+                        <tr>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.another')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                        </tr>
+                        @foreach($contactsAnother as $contact)
+                            <tr>
+                                <td>{{$contact->name}}</td>
+                                <td>{{$contact->balance}}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
 </div>
 
 </x-app-layout>
