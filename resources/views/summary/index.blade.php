@@ -57,14 +57,18 @@
                     <table class="sum">
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.mutualSettlement')}}</th>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2">{{__('column.balance')}}</th>
                         </tr>
                         @foreach($contactsMutualSettlement as $contact)
                             <tr>
                                 <td>{{$contact->name}}</td>
-                                <td>{{$contact->balance}}</td>
+                                <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($contact->balance),0,'.',' ')}}</td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td></td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($sumMutualSettlementMainDebt),0,'.',' ')}}</td>
+                        </tr>
                     </table>
                 </div>
 
@@ -72,14 +76,18 @@
                     <table class="sum">
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.carrier')}}</th>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2  ">{{__('column.balance')}}</th>
                         </tr>
                         @foreach($contactsCarrier as $contact)
                             <tr>
                                 <td>{{$contact->name}}</td>
-                                <td>{{$contact->balance}}</td>
+                                <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($contact->balance),0,'.',' ')}}</td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td></td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($sumCarriersDebt),0,'.',' ')}}</td>
+                        </tr>
                     </table>
                 </div>
 
@@ -87,14 +95,18 @@
                     <table class="sum">
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.buyer')}}</th>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
                         </tr>
                         @foreach($contactsBuyer as $contact)
                             <tr>
                                 <td>{{$contact->name}}</td>
-                                <td>{{$contact->balance}}</td>
+                                <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($contact->balance),0,'.',' ')}}</td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td></td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($sumBuyerDebt),0,'.',' ')}}</td>
+                        </tr>
                     </table>
                 </div>
 
@@ -102,14 +114,18 @@
                     <table class="sum">
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.another')}}</th>
-                            <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                            <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
                         </tr>
                         @foreach($contactsAnother as $contact)
                             <tr>
                                 <td>{{$contact->name}}</td>
-                                <td>{{$contact->balance}}</td>
+                                <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($contact->balance),0,'.',' ')}}</td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td></td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{number_format(ceil($sumAnotherDebt),0,'.',' ')}}</td>
+                        </tr>
                     </table>
                 </div>
             </div>
