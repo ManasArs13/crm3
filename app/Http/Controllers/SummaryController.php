@@ -17,12 +17,37 @@ class SummaryController extends Controller
             $q->where('contact_category_id', '=', '8');
         })->whereNot("balance",NULL)->sum("balance");
 
+        $sumBuyer=Contact::whereHas('contact_categories', function($q) {
+            $q->whereIn('contact_category_id', [4,5]);
+        })->whereNot("balance",NULL)->sum("balance");
+
+
+
+        $sumAnother=Contact::whereHas('contact_categories', function($q) {
+            $q->whereIn('contact_category_id',[4,5, 8,9]);
+        })->whereNot("balance",NULL)->sum("balance");
+
         $sumCarriers=Contact::whereHas('contact_categories', function($q) {
             $q->where('contact_category_id', '=', '9');
         })->whereNot("balance",NULL)->sum("balance");
 
-        $contactsDebtor=Contact::where("balance","<" ,0)->get();
+        $contactsMutualSettlement=Contact::whereHas('contact_categories', function($q) {
+            $q->where('contact_category_id', '=', 8);
+        })->where("balance","<" ,0)->get();
+        $contactsCarrier=Contact::whereHas('contact_categories', function($q) {
+            $q->where('contact_category_id', '=', 9);
+        })->where("balance","<" ,0)->get();
+        $contactsBuyer=Contact::whereHas('contact_categories', function($q) {
+            $q->whereIn('contact_category_id',[4,5]);
+        })->where("balance","<" ,0)->get();
+        $contactsAnother=Contact::whereHas('contact_categories', function($q) {
+            $q->whereIn('contact_category_id',[4,5, 8,9]);
+        })->where("balance","<" ,0)->get();
 
-        return view("summary.index", compact("sumMaterials", "sumProducts", "sumMutualSettlement","sumMutualSettlementMain", "sumCarriers", "contactsDebtor"));
+
+
+
+
+        return view("summary.index", compact("sumMaterials", "sumProducts", "sumMutualSettlement","sumMutualSettlementMain", "sumCarriers", "contactsMutualSettlement", "contactsCarrier", "contactsBuyer", "contactsAnother","sumBuyer","sumAnother"));
     }
 }

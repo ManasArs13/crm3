@@ -4,5 +4,6 @@ return [
     'mutualSettlementMain'=>'Основные поставщики',
     'materials'=>'Материалы',
     'products'=>'Продукция',
-    'carriers'=>'Перевозчики'
+    'carriers'=>'Перевозчики',
+    'buyers'=>'Покупатели'
 ];
