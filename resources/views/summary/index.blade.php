@@ -14,7 +14,7 @@
 
             <h3 class="text-4xl font-bold mb-6">{{__('title.summary')}}</h3>
 
-            <div class="CEB__wrapTable">
+            <div class="CEB__wrapTable mb-5">
                     <table class="sum">
                         <tr>
                             <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('summary.mutualSettlement')}}</th>
@@ -38,6 +38,25 @@
                         </tr>
                     </table>
             </div>
+
+            <div class="CEB__wrapTable">
+                <table class="sum">
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.name')}}</th>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.phone')}}</th>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{__('column.balance')}}</th>
+                    </tr>
+
+                    @foreach($contactsDebtor as $contact)
+                        <tr>
+                            <td>{{$contact->name}}</td>
+                            <td>{{$contact->phone}}</td>
+                            <td>{{$contact->balance}}</td>
+                        </tr>
+                    @endforeach
+                </table>
+        </div>
+
 </div>
 
 </x-app-layout>
