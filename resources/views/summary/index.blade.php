@@ -102,8 +102,7 @@
                     @endforeach
                     <tr>
                         <td></td>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(ceil($sumCarriersDebt), 0, '.', ' ') }}
-                        </td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(ceil($sumCarriersDebt), 0, '.', ' ') }}</td>
                     </tr>
                 </table>
             </div>
@@ -169,7 +168,7 @@
                 @foreach($shipments as $shipment)
                     <tr>
                         <td>{{$shipment->name}}</td>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2">{{$shipment->transport->name}}</>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2">{{$shipment->transport->name}}</td>
                     </tr>
                 @endforeach
             </table>
