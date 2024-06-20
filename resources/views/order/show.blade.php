@@ -144,8 +144,6 @@
                                         @else
                                             <option value="" selected disabled>не выбрано</option>
                                         @endif
-                                        <option value="{{ $entityItem->delivery_id }}" selected>
-                                            {{ $entityItem->delivery->name }}</option>
                                         @foreach ($deliveries as $delivery)
                                             <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
                                         @endforeach
