@@ -10,7 +10,7 @@ class ContactContactCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id'
+        'id',
         'contact_category_id',
         'contact_id'
     ];

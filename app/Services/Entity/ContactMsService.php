@@ -31,6 +31,8 @@ class ContactMsService implements EntityInterface
                     $entity->balance = $row["balance"] / 100;
                 }
 
+                $entity->save();
+
             } else {
                 $entity = Contact::firstOrNew(['ms_id' => $row['id']]);
 
@@ -42,21 +44,6 @@ class ContactMsService implements EntityInterface
 
                 $phone = null;
                 $phoneNorm = null;
-
-                if (Arr::exists($row, 'tags')) {
-                    $ids=[];
-                    foreach ($row['tags'] as $value) {
-                        $category=ContactCategory::firstOrNew(["name"=>$value]);
-                        if ($category->id != null){
-                            $ids[]=$category->id;
-                        }else{
-                            $category->name=$value;
-                            $category->save();
-                            $ids[] = $category->id;
-                        }
-                    }
-                    $entity->contact_categories()->sync($ids);
-                }
 
                 if (Arr::exists($row, 'phone')) {
                     $phone = $row["phone"];
@@ -113,8 +100,27 @@ class ContactMsService implements EntityInterface
                 if (Arr::exists($row, 'updated')) {
                     $entity->updated_at = $row['updated'];
                 }
+
+                $entity->save();
+
+                if (Arr::exists($row, 'tags')) {
+
+                    $ids=[];
+
+                    foreach ($row['tags'] as $value) {
+                        $category=ContactCategory::firstOrNew(["name"=>$value]);
+                        if ($category->id != null){
+                            $ids[]=$category->id;
+                        }else{
+                            $category->name=$value;
+                            $category->save();
+                            $ids[] = $category->id;
+                        }
+                    }
+                    $entity->contact_categories()->sync($ids, ['contact_id' => $entity->id]);
+                }
             }
-            $entity->save();
+
         }
     }
 
