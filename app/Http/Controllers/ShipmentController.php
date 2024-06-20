@@ -14,6 +14,7 @@ use App\Models\ShipmentProduct;
 use App\Models\Transport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShipmentController extends Controller
 {
@@ -174,6 +175,18 @@ class ShipmentController extends Controller
             ],
         ];
 
+        $shipments=Shipment::whereIn('transport_id', function($query){
+            $query->select(DB::raw('distinct(t1.transport_id)'))
+            ->from("shipments as t1")
+            ->join(DB::raw('(select min(id) as id, transport_id from shipments where status <>"Оплачен" and transport_id is not null group by transport_id) as t0'),'t1.transport_id', '=', 't0.transport_id')
+            ->whereRaw('t1.id > t0.id');
+        })
+        ->select('shipments.name', 'transports.name as transportName')
+        ->join("transports", "transports.id","=","transport_id")
+        ->with("transport")
+        ->where('shipments.status','<>','Оплачен')->orderBy("shipments.name", "asc")->get();
+
+
         return view("shipment.index", compact(
             'entityItems',
             "resColumns",
@@ -181,6 +194,7 @@ class ShipmentController extends Controller
             "urlShow",
             "urlDelete",
             "urlEdit",
+            "shipments",
             "urlCreate",
             "entityName",
             'urlFilter',

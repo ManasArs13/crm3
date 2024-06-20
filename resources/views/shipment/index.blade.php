@@ -19,8 +19,26 @@
             <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
         @endif
 
+        @if (count($shipments)>0)
+        <div class="CEB__wrapTable mt-5">
+            <table class="sum">
+                <tr>
+                    <th class="border bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('column.name')}}</th>
+                    <th class="border bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('column.transport')}}</th>
+                </tr>
+                @foreach($shipments as $shipment)
+                    <tr class="border">
+                        <td class="border border-gray-300">{{$shipment->name}}</td>
+                        <td class="border  border-gray-300 text-end pl-2 pt-2 pb-2 pr-2">{{$shipment->transportName}}</td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+        @endif
+
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+
 
             {{-- header --}}
             <div class="border-b-2 border-neutral-100">
