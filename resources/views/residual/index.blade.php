@@ -179,7 +179,7 @@
                                     <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
                                         {{ $techchart->cost }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-left">
                                         {{ $techchart->description }}
                                     </td>
                                 </tr>
