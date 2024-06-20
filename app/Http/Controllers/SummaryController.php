@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Models\Product;
+use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -59,10 +60,20 @@ class SummaryController extends Controller
             $q->where('contact_category_id', '=', '9');
         })->where("balance","<",0)->sum("balance");
 
+        $shipments=Shipment::whereIn('transport_id', function($query){
+            $query->select(DB::raw('distinct(t1.`transport_id`)'))
+            ->from("shipments as t1")
+            ->join(DB::raw('(select min(id) as id, transport_id from shipments where status <>"Оплачен" and transport_id is not null group by transport_id) as t0'),'t1.transport_id', '=', 't0.transport_id')
+            ->where('t1.id','>','t0.id');
+        })->where('status','<>','Оплачен')->get();
 
-
-
-
-        return view("summary.index", compact("sumMaterials","sumProducts", "sumMutualSettlement","sumMutualSettlementMain", "sumCarriers", "contactsMutualSettlement", "contactsCarrier", "contactsBuyer", "contactsAnother","sumBuyer","sumAnother","sumMutualSettlementMainDebt", "sumBuyerDebt","sumAnotherDebt","sumCarriersDebt"));
+        return view("summary.index", compact("sumMaterials",
+        "sumProducts", "sumMutualSettlement",
+        "sumMutualSettlementMain", "sumCarriers",
+        "contactsMutualSettlement", "contactsCarrier",
+        "contactsBuyer", "contactsAnother",
+        "sumBuyer","sumAnother",
+        "sumMutualSettlementMainDebt", "sumBuyerDebt",
+        "sumAnotherDebt","sumCarriersDebt","shipments"));
     }
 }
