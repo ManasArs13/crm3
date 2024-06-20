@@ -61,11 +61,15 @@ class SummaryController extends Controller
         })->where("balance","<",0)->sum("balance");
 
         $shipments=Shipment::whereIn('transport_id', function($query){
-            $query->select(DB::raw('distinct(t1.`transport_id`)'))
+            $query->select(DB::raw('distinct(t1.transport_id)'))
             ->from("shipments as t1")
             ->join(DB::raw('(select min(id) as id, transport_id from shipments where status <>"Оплачен" and transport_id is not null group by transport_id) as t0'),'t1.transport_id', '=', 't0.transport_id')
-            ->where('t1.id','>','t0.id');
-        })->where('status','<>','Оплачен')->orderBy("name", "asc")->get();
+            ->whereRaw('t1.id > t0.id');
+        })
+        ->select('shipments.name', 'transports.name as transportName')
+        ->join("transports", "transports.id","=","transport_id")
+        ->with("transport")
+        ->where('shipments.status','<>','Оплачен')->orderBy("shipments.name", "asc")->get();
 
         return view("summary.index", compact("sumMaterials",
         "sumProducts", "sumMutualSettlement",
