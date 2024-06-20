@@ -194,22 +194,191 @@ class ShipmentController extends Controller
         ));
     }
 
-    public function index2()
+    public function index2(ShipmentRequest $request)
     {
+        $urlEdit = "shipment.edit";
+        $urlShow = "shipment.show";
+        $urlDelete = "shipment.destroy";
+        $urlCreate = "shipment.create";
+        $urlFilter = 'shipment.index2';
+        $entityName = 'Отгрузки';
 
-        $shipments=Shipment::whereIn('transport_id', function($query){
-            $query->select(DB::raw('distinct(t1.transport_id)'))
-            ->from("shipments as t1")
-            ->join(DB::raw('(select min(id) as id, transport_id from shipments where status <>"Оплачен" and transport_id is not null group by transport_id) as t0'),'t1.transport_id', '=', 't0.transport_id')
-            ->whereRaw('t1.id > t0.id');
-        })
-        ->select('shipments.name', 'transports.name as transportName')
-        ->join("transports", "transports.id","=","transport_id")
-        ->with("transport")
-        ->where('shipments.status','<>','Оплачен')->orderBy("shipments.name", "asc")->get();
+        // Shipments
+        $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
+
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $selectColumn = null;
+        }
+
+        // Columns
+        $all_columns = [
+            "id",
+            "name",
+            "created_at",
+            "contact_id",
+            "sostav",
+            "suma",
+            "status",
+            "products_count",
+            "delivery_id",
+            "order_id",
+            "counterparty_link",
+            "service_link",
+            "description",
+            "paid_sum",
+            "shipment_address",
+            "delivery_price",
+            "delivery_price_norm",
+            "delivery_fee",
+            "transport_id",
+            "transport_type_id",
+            "updated_at",
+            "weight",
+            'ms_link',
+            "ms_id"
+        ];
+
+        if (isset($request->columns)) {
+            $selected = $request->columns;
+        } else {
+            $selected = [
+                "name",
+                "created_at",
+                "counterparty_link",
+                "contact_id",
+                "sostav",
+                "suma",
+                "status",
+                "products_count",
+                "description",
+                "delivery_id",
+                "delivery_price",
+                "delivery_fee",
+                "delivery_id",
+                "transport_type_id",
+                "transport_id",
+                'ms_link',
+            ];
+        }
+
+        foreach ($all_columns as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
+        }
+
+        // Filters
+        $minCreated = Shipment::query()->min('created_at');
+        $minCreatedCheck = '';
+        $maxCreated = Shipment::query()->max('created_at');
+        $maxCreatedCheck = '';
+        $minUpdated = Shipment::query()->min('updated_at');
+        $minUpdatedCheck = '';
+        $maxUpdated = Shipment::query()->max('updated_at');
+        $maxUpdatedCheck = '';
+
+        $queryMaterial = 'index';
+        $queryShipment = false;
+
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                }
+                if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+
+                if ($key == 'material') {
+                    switch ($value) {
+                        case 'concrete':
+                            $queryMaterial = 'concrete';
+                            break;
+                        case 'block':
+                            $queryMaterial = 'block';
+                            break;
+                    }
+                }
+                if ($key == 'shipments_debt') {
+                    $queryShipment = $value;
+                }
+            }
+        }
+
+        $filters = [
+            [
+                'type' => 'date',
+                'name' =>  'created_at',
+                'name_rus' => 'Дата создания',
+                'min' => substr($minCreated, 0, 10),
+                'minChecked' => $minCreatedCheck,
+                'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck
+            ],
+            [
+                'type' => 'date',
+                'name' =>  'updated_at',
+                'name_rus' => 'Дата обновления',
+                'min' => substr($minUpdated, 0, 10),
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
+            ],
+            [
+                'type' => 'select',
+                'name' => 'material',
+                'name_rus' => 'Материал',
+                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
+                'checked_value' => $queryMaterial,
+            ],
+
+            [
+                'type' => 'checkbox',
+                'name' => 'shipments_debt',
+                'name_rus' => '1 статус не оплачен 2 транспорт этой отгрузки был в последующих отгрузках',
+                'value'=> $queryShipment,
+            ],
+        ];
+
+
+
 
         return view("shipment.index2", compact(
-            "shipments",
+            'entityItems',
+            "resColumns",
+            "resColumnsAll",
+            "urlShow",
+            "urlDelete",
+            "urlEdit",
+            "urlCreate",
+            "entityName",
+            'urlFilter',
+            "filters",
+            'orderBy',
+            'selectColumn'
         ));
     }
 

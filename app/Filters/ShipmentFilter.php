@@ -4,6 +4,7 @@ namespace App\Filters;
 
 use App\Models\Product;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class ShipmentFilter
 {
@@ -69,6 +70,18 @@ class ShipmentFilter
                         $queries->where('building_material', Product::BLOCK);
                     });
                 });
+        }
+    }
+
+    public function shipments_debt($value){
+        if ($value){
+            return $this->builder->whereIn('transport_id', function($query){
+                $query->select(DB::raw('distinct(t1.transport_id)'))
+                ->from("shipments as t1")
+                ->join(DB::raw('(select min(id) as id, transport_id from shipments where status <>"Оплачен" and transport_id is not null group by transport_id) as t0'),'t1.transport_id', '=', 't0.transport_id')
+                ->whereRaw('t1.id > t0.id');
+            })
+            ->where('shipments.status','<>','Оплачен');
         }
     }
 
