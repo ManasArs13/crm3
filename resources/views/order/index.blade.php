@@ -428,7 +428,28 @@
                                 @if ($key === 'remainder' || $key == 'positions_count')
                                     <th scope="col" class="px-2 py-4">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-2 py-4">
+                                    <th scope="col" class="px-2 py-4"
+                                    @if (
+                                        (   $column == '№' ||
+                                            $column == 'Сумма оплачено' ||
+                                            $column == 'Имя' ||
+                                            $column == 'Сумма' ||
+                                            $column == 'Кол-во' ||
+                                            $column == 'Остаток' ||
+                                            $column == 'Отг-но' ||
+                                            $column == 'Цена доставки' ||
+                                            $column == 'Сумма зарезервировано' ||
+                                            $column == 'Вес' ||
+                                            $column == 'Дата документа' ||
+                                            $column == 'Плановая дата' ||
+                                            $column == 'Сумма отгружено' ||
+                                            $column == 'Дата создания' ||
+                                            $column == 'Дата обновления' ||
+                                            $column == 'Долг' || is_int($column)) &&
+                                            !preg_match('/_id\z/u', $column) &&
+                                            $column !== 'sostav') style="text-align:right" 
+                                    @elseif($column == 'Статус') style='text-align:center'
+                                    @else style="text-align:left" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -436,7 +457,28 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-2 py-4">
+                                    <th scope="col" class="px-2 py-4"
+                                        @if (
+                                            (   $column == '№' ||
+                                                $column == 'Сумма оплачено' ||
+                                                $column == 'Имя' ||
+                                                $column == 'Сумма' ||
+                                                $column == 'Кол-во' ||
+                                                $column == 'Остаток' ||
+                                                $column == 'Отг-но' ||
+                                                $column == 'Цена доставки' ||
+                                                $column == 'Сумма зарезервировано' ||
+                                                $column == 'Вес' ||
+                                                $column == 'Дата документа' ||
+                                                $column == 'Плановая дата' ||
+                                                $column == 'Сумма отгружено' ||
+                                                $column == 'Дата создания' ||
+                                                $column == 'Дата обновления' ||
+                                                $column == 'Долг' || is_int($column)) &&
+                                                !preg_match('/_id\z/u', $column) &&
+                                                $column !== 'sostav') style="text-align:right" 
+                                        @elseif($column == 'Статус') style='text-align:center'
+                                        @else style="text-align:left" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -498,9 +540,10 @@
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-4"
                                         @if (
                                             (is_int($entityItem->$column) ||
+                                                $column == 'id' ||
                                                 $column == 'payed_sum' ||
                                                 $column == 'name' ||
                                                 $column == 'sum' ||
@@ -513,11 +556,14 @@
                                                 $column == 'date_moment' ||
                                                 $column == 'date_plan' ||
                                                 $column == 'date_fact' ||
+                                                $column == 'delivery_price_norm' ||
                                                 $column == 'created_at' ||
                                                 $column == 'updated_at' ||
                                                 $column == 'debt') &&
                                                 !preg_match('/_id\z/u', $column) &&
-                                                $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
+                                                $column !== 'sostav') style="text-align:right" 
+                                        @elseif($column == 'status') style='text-align:center'
+                                        @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
@@ -614,7 +660,7 @@
                                             {{ $total_quantity - $total_shipped_count >= 0 ? $total_quantity - $total_shipped_count : 0 }}
                                         @elseif($column == 'ms_link' && $entityItem->ms_id)
                                             <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
-                                                target="_blank">
+                                                class="flex justify-center" target="_blank">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-box-arrow-in-up-right"
                                                     viewBox="0 0 16 16">
