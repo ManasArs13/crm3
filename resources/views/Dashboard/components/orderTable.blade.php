@@ -1,10 +1,15 @@
 <div class="flex flex-col">
     <table class="text-left text-md text-nowrap">
         <thead>
-            <tr class="bg-neutral-200 font-semibold">
+            <tr class="bg-neutral-200">
                 <th scope="col" class="px-2 py-4"></th>
                 @foreach ($resColumns as $key => $column)
-                    <th scope="col" class="px-2 py-4">{{ $column }}</th>
+                    <th scope="col" class="px-2 py-4 mx-1 border-spacing-x-px"
+                        @if ($column == 'Контакт МС' || $column == 'Доставка' || $column == 'Комментарий' || is_int($column)) style="text-align:left"
+                    @elseif($column == 'Статус')
+                        style="text-align:center" 
+                    @else style="text-align:right" @endif>
+                        {{ $column }}</th>
                 @endforeach
             </tr>
         </thead>
@@ -27,7 +32,10 @@
 
                 @foreach ($entityItem->positions as $position)
                     @php
-                        if ($position->product->building_material !== 'доставка' && $position->product->building_material !== 'не выбрано') {
+                        if (
+                            $position->product->building_material !== 'доставка' &&
+                            $position->product->building_material !== 'не выбрано'
+                        ) {
                             $total_quantity += $position->quantity;
                             $totalCount += $position->quantity;
                         }
@@ -56,8 +64,14 @@
 
                     @foreach ($resColumns as $column => $title)
                         <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
-                            @if (is_int($entityItem->$column)) style="text-align:left" @else style="text-align:right" @endif
-                            @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                            @if ($column == 'contact_id' || $column == 'delivery_id' || $column == 'comment'|| is_int($column)) style="text-align:left"
+                            @elseif($column == 'status') style="text-align:center" 
+                            @else style="text-align:right" @endif
+
+                            @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif
+                            >
+
                             @if (preg_match('/_id\z/u', $column))
                                 @if ($column == 'contact_id')
                                     {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
@@ -150,7 +164,7 @@
                             @elseif($column == 'residual_count')
                                 {{ $total_quantity - $total_shipped_count >= 0 ? $total_quantity - $total_shipped_count : 0 }}
                             @elseif($column == 'ms_link' && $entityItem->ms_id)
-                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}" class="flex justify-center"
                                     target="_blank">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
