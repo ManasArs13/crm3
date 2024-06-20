@@ -351,7 +351,7 @@
                                 @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
 
                                     @if (isset($orderBy) && $orderBy == 'desc')
-                                        <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
+                                        <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
                                             <a class="text-black"
                                                 href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'desc']) }}">{{ __('column.materials') }}</a>
                                             @if (isset($column) && $column == 'materials' && $orderBy == 'desc')
@@ -359,7 +359,7 @@
                                             @endif
                                         </th>
                                     @else
-                                        <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
+                                        <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
                                             <a class="text-black"
                                                 href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'asc']) }}">{{ __('column.materials') }}</a>
                                             @if (isset($column) && $column == 'materials' && $orderBy == 'asc')
