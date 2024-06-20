@@ -14,43 +14,43 @@ class DeliveryProductSeeder extends Seeder
                 'name' => 'Доставка продукции',
                 'category_id' => 20,
                 'type' => 'продукция',
-                'building_material' => 'не выбрано'
+                'building_material' => 'доставка'
             ],
             [
                 'name' => 'Доставка продукции товар до 2023 года',
                 'category_id' => 20,
                 'type' => 'продукция',
-                'building_material' => 'не выбрано'
+                'building_material' => 'доставка'
             ],
             [
                 'name' => 'Простой',
                 'category_id' => 20,
                 'type' => 'продукция',
-                'building_material' => 'не выбрано'
+                'building_material' => 'доставка'
             ],
             [
                 'name' => 'Простой не использовать',
                 'category_id' => 20,
                 'type' => 'продукция',
-                'building_material' => 'не выбрано'
+                'building_material' => 'доставка'
             ],
             [
                 'name' => 'Услуга доставки автобетонанасоса',
                 'category_id' => 20,
                 'type' => 'продукция',
-                'building_material' => 'не выбрано'
+                'building_material' => 'доставка'
             ],
             [
                 'name' => 'Услуга доставки бетона',
                 'category_id' => 20,
                 'type' => 'продукция',
-                'building_material' => 'не выбрано'
+                'building_material' => 'доставка'
             ],
             [
                 'name' => 'Услуга работы ленты',
                 'category_id' => 20,
                 'type' => 'продукция',
-                'building_material' => 'не выбрано'
+                'building_material' => 'доставка'
             ],
         ]);
     }
