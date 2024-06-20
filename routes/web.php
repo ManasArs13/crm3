@@ -73,6 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'shipment_products' => ShipmentProductController::class
     ]);
 
+    Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
     //Доп
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
 

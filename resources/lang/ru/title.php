@@ -4,4 +4,6 @@ return [
      'editing' => 'Редактирование',
      'showing' => 'Просмотр',
      'summary'=> 'Сводка',
+     'shipments'=> 'Отгрузки',
+     'shipments2'=> 'Отгрузки2',
 ];

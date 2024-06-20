@@ -175,6 +175,28 @@ class ShipmentController extends Controller
             ],
         ];
 
+
+
+
+        return view("shipment.index", compact(
+            'entityItems',
+            "resColumns",
+            "resColumnsAll",
+            "urlShow",
+            "urlDelete",
+            "urlEdit",
+            "urlCreate",
+            "entityName",
+            'urlFilter',
+            "filters",
+            'orderBy',
+            'selectColumn'
+        ));
+    }
+
+    public function index2()
+    {
+
         $shipments=Shipment::whereIn('transport_id', function($query){
             $query->select(DB::raw('distinct(t1.transport_id)'))
             ->from("shipments as t1")
@@ -186,21 +208,8 @@ class ShipmentController extends Controller
         ->with("transport")
         ->where('shipments.status','<>','Оплачен')->orderBy("shipments.name", "asc")->get();
 
-
-        return view("shipment.index", compact(
-            'entityItems',
-            "resColumns",
-            "resColumnsAll",
-            "urlShow",
-            "urlDelete",
-            "urlEdit",
+        return view("shipment.index2", compact(
             "shipments",
-            "urlCreate",
-            "entityName",
-            'urlFilter',
-            "filters",
-            'orderBy',
-            'selectColumn'
         ));
     }
 

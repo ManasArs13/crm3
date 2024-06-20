@@ -24,8 +24,11 @@
                         Заказы
                     </x-nav-link>
 
-                    <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*')">
-                        Отгрузки
+                    <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*') && !request()->routeIs('shipment.index2')">
+                        {{__("title.shipments")}}
+                    </x-nav-link>
+                    <x-nav-link :href="route('shipment.index2')" :active="request()->routeIs('shipment.index2')">
+                        {{__("title.shipments2")}}
                     </x-nav-link>
 
                     <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
@@ -57,7 +60,7 @@
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('operator.shipments')">
-                                    Отгрузки
+                                    {{__("title.shipments")}}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -360,7 +363,10 @@
                 <a href="{{ route('order.index') }}">Заказы</a>
             </div>
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                <a href="{{ route('shipment.index') }}">Отгрузки</a>
+                <a href="{{ route('shipment.index') }}">{{__("title.shipments")}}</a>
+            </div>
+            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
+                <a href="{{ route('shipment.index2') }}">{{__("title.shipments2")}}</a>
             </div>
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('residual.index') }}">Остатки</a>
