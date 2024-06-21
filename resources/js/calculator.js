@@ -307,106 +307,27 @@ $(document).ready(function(){
         if (!$(formClass+'[name="attributes[deliveryPrice]"').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance");
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
-
             let weight = $(formClass+".weight-tn").val();
-            let weight_zakaz_for_delivery=weight+".0";
+            let data = {"weightTn": weight, "distance": deliveryValue, "vehicleType": vehicleType};
 
-            if (deliveryValue < 25) {
-                if (vehicleType==2){
-                    if (deliveryValue<15)
-                        deliveryValue=15;
-                    if (deliveryValue >= 15 && deliveryValue<20)
-                        deliveryValue=20;
-                    else
-                        deliveryValue=25;
-                }else{
-                    deliveryValue = 25;
-                }
-            } else if (deliveryValue > 25 && deliveryValue <= 30) {
-                deliveryValue = 30;
-            } else if (deliveryValue > 30 && deliveryValue <= 35) {
-                deliveryValue = 35;
-            } else if (deliveryValue > 35 && deliveryValue <= 40) {
-                deliveryValue = 40;
-            } else if (deliveryValue > 40 && deliveryValue <= 50) {
-                deliveryValue = 50;
-            } else if (deliveryValue > 50 && deliveryValue <= 60) {
-                deliveryValue = 60;
-            } else if (deliveryValue > 60 && deliveryValue <= 70) {
-                deliveryValue = 70;
-            } else if (deliveryValue > 70 && deliveryValue <= 80) {
-                deliveryValue = 80;
-            } else if (deliveryValue > 80 && deliveryValue <= 90) {
-                deliveryValue = 90;
-            } else if (deliveryValue > 90 && deliveryValue <= 100) {
-                deliveryValue = 100;
-            } else if (deliveryValue > 100 && deliveryValue <= 120) {
-                deliveryValue = 120;
-            } else if (deliveryValue > 120 && deliveryValue <= 140) {
-                deliveryValue = 140;
-            } else if (deliveryValue > 140 && deliveryValue <= 160) {
-                deliveryValue = 160;
-            } else if (deliveryValue > 160 && deliveryValue <= 180) {
-                deliveryValue = 180;
-            } else if (deliveryValue > 180 && deliveryValue <= 200) {
-                deliveryValue = 200;
-            } else {
-                if (vehicleType==2)
-                    deliveryValue=200;
-                else
-                    deliveryValue = 220;
-            }
-//трал (20 || 21)
-            if (vehicleType == 3) {
-                if (weight > 20) {
-                    weight_zakaz_for_delivery='21.0';
-                }else{
-                    weight_zakaz_for_delivery = '20.0';
-                    weight = 20;
-                }
-//Манипулятор
-            }else if (vehicleType == 4) {
-                if (weight < 6) {
-                    weight_zakaz_for_delivery = '6.0';
-                    weight=6
-                }else if (weight>15){
-                    weight_zakaz_for_delivery = '15.0';
-                }
-//газель
-            }else if (vehicleType == 5) {
-                weight_zakaz_for_delivery = '3.0'
-                if (weight<3.0)
-                    weight = 3;
-//Довозка
-            }else  if (vehicleType == 6){
-                if (weight > 3) {
-                    weight_zakaz_for_delivery = '3.0';
-                }else{
-                    weight_zakaz_for_delivery = weight+'.0';
-                    if (weight<1)
-                        weight=1;
-                }
-// Миксер
-            }else if (vehicleType == 2){
-                weight_zakaz_for_delivery = '8.0';
-            }
+            $.ajax({
+                url: '/api/shipping_price/get',
+                method: 'post',
+                dataType: 'json',
+                data: data,
+                success: function(data){
+                    $(formClass+'.price-tn.input').val(data.price);
+                    $(formClass+'[name="attributes[deliveryPrice]"').val(data.deliveryPrice);
+                    $(formClass+'#message').text('');
+                },
+                error: function(response) {
 
-            if (shippingPrices) {
-                let shippingPrice = shippingPrices.filter(item => item.distance == deliveryValue && item
-                    .transport_type_id == vehicleType && item.tonnage == weight_zakaz_for_delivery)
-
-                if (shippingPrice.length !== 0) {
-                    let price = shippingPrice[0].price * weight;
-                    if (vehicleType==5 || vehicleType==3)
-                            price=Math.round(price/100)*100;
-                    else if (vehicleType==4 && weight<=14)
-                            price=Math.round(price/500)*500;
-
-                    $(formClass+".weight-tn").val(weight);
-                    $(formClass+'.price-tn.input').val(shippingPrice[0].price);
-                    $(formClass+'[name="attributes[deliveryPrice]"').val(price);
+                    $("#message").html(response.responseJSON.error);
+                    $(formClass+'.price-tn.input').val(0);
+                    $(formClass+'[name="attributes[deliveryPrice]"').val(0);
                 }
-            }
+            });
+
         }
 
     };
@@ -483,7 +404,6 @@ $(document).ready(function(){
             tags: $this.data('collection'),
             language: {
                 noResults: function($this) {
-
                     let $searchInput=event.target;
                     let typed = event.target.value;
                     if (typed.length>4){

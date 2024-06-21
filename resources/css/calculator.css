@@ -16,6 +16,11 @@
 	box-sizing        : border-box;
 }
 
+.error{
+    color: red;
+    font-weight: 400;
+}
+
 .select {
     position: relative;
     display: inline-block;

@@ -174,7 +174,6 @@ class CalculatorController extends Controller
                 "productsByFence",
                 'deliveries',
                 'vehicleTypes',
-                'shippingPrices',
                 'productsByGroup',
                 'productsByBeton',
                 'vehicleTypesBeton',

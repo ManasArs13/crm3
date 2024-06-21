@@ -4,5 +4,6 @@ return [
     "noData"=>'Нет данных',
     'noCounterparty'=>"Не заполнен контрагент",
     'noPositions'=>"Нет позиции",
-    'noState'=>"Не статуса"
+    'noState'=>"Нет статуса",
+    'noPrice'=>"Нет цены"
 ];

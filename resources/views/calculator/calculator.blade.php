@@ -13,7 +13,7 @@
 <div class="main-1 w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
 
     <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
-        <span id="message"></span>
+        <span id="message" class="error"></span>
 
         <fieldset class="CEB__wrapParams1">
             <label class="labelCustomRadio labelCustomRadio_js1">
@@ -52,7 +52,5 @@
 </div>
 
 </x-app-layout>
-<script>
-  let shippingPrices= {!! $shippingPrices !!};
-</script>
+
 

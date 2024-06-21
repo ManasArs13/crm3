@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Ms;
+namespace App\Http\Controllers\Api\Ms;
 
 use App\Http\Controllers\Controller;
 use App\Models\Option;
@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 
-class CalculatorController extends Controller
+class OrderController extends Controller
 {
 
-    public function setOrderMs(Request $request, OrderMsService $orderMsService): Response
+    public function setOrderFromCalculator(Request $request, OrderMsService $orderMsService): Response
     {
         try {
             $url=Option::where("code","ms_order_edit_url")->first()?->value;
