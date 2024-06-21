@@ -1,35 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Api\Site;
-
-use App\Models\Delivery;
-use App\Models\Product;
-use App\Models\ShipingPrice;
-use App\Models\TransportType;
-use App\Models\Date;
-use App\Models\Time;
-use App\Models\Contact;
-use App\Models\Status;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
-class CalculatorController extends Controller
+class ShipingPriceController extends Controller
 {
-    public function getShippingPrices()
-    {
-        return json_encode(ShipingPrice::get());
-    }
-
-
-    public function getContacts()
-    {
-        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
-        return $contacts;
-    }
-
-
     public function getPrice(Request $request)
     {
         $distance = (int)$request->post()["distance"];
@@ -56,9 +33,8 @@ class CalculatorController extends Controller
         if($mainQuery==null){
             $mainQuery = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
                 ->mergeBindings($innerQuery)
-                ->select("ton", "distance", "price", DB::raw('max(ton) as maxTon'))
-                ->where("ton",'<',$weightTn)
-                ->havingRaw('ton=maxTon')
+                ->select("ton", "distance", "price")
+                ->orderBy("ton","desc")
                 ->first();
 
             if ($mainQuery==null){
