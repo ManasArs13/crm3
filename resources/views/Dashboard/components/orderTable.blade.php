@@ -6,7 +6,7 @@
                 @foreach ($resColumns as $key => $column)
                     <th scope="col" class="px-2 py-4 mx-1 border-spacing-x-px"
                         @if ($column == 'Контакт МС' || $column == 'Доставка' || $column == 'Комментарий' || is_int($column)) style="text-align:left"
-                    @elseif($column == 'Статус')
+                    @elseif($column == 'Статус' || $column ==   'Ссылка МС')
                         style="text-align:center" 
                     @else style="text-align:right" @endif>
                         {{ $column }}</th>
