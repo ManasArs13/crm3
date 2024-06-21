@@ -84,21 +84,29 @@
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
-                    <caption class="text-lg font-semibold">Отгрузки</caption>
+                    <caption class="text-lg font-semibold ">Отгрузки</caption>
                     <thead>
-                        <tr class="font-light border-b-2">
+                        <tr class="font-light border-b-2 text-sm">
                             <th class="font-semibold border-r-2">Время</th>
-                            <th class="font-semibold border-l-2 text-right">Транспорт</th>
+                            <th class="font-semibold border-l-2 text-center">Транспорт</th>
+                            <th class="font-semibold border-r-2">На обьекте</th>
+                            <th class="font-semibold">Конец рейса</th>
                            </tr>
                     </thead>
                     <tbody>
                         @foreach ($shipments as $shipment)
-                            <tr class="border-b-2">
-                                <td class="m-2 border-r-2">
+                            <tr class="border-b-2 text-sm">
+                                <td class="m-2 border-r-2 text-center">
                                     {{ Carbon\Carbon::parse($shipment->created_at)->format('H:m') }}
                                 </td>
-                                <td class="m-2 text-right">                               
+                                <td class="m-2 text-left">                               
                                     {{ $shipment->transport ? $shipment->transport->name : 'не указано'}}
+                                </td>
+                                <td class="m-2 border-x-2 text-center">
+                                    {{ Carbon\Carbon::parse($shipment->time_to_come)->format('H:m') }}
+                                </td>
+                                <td class="m-2 text-center">
+                                    {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:m') }}
                                 </td>
                             </tr>
                         @endforeach

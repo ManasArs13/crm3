@@ -736,8 +736,13 @@ class DashboardService
         $shipments = Shipment::whereDate('created_at', $date)
             ->orderBy('created_at')
             ->select('id', 'created_at', 'transport_id')
-            ->with('transport')
+            ->with('transport', 'delivery')
             ->get();
+
+        foreach ($shipments as $shipment) {
+            $shipment['time_to_come'] = Carbon::parse(Carbon::parse($shipment->created_at)->format('H:m'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
+            $shipment['time_to_out'] = Carbon::parse(Carbon::parse($shipment->time_to_come)->format('H:m'))->addMinutes(60);
+        }
 
         if ($date > date('Y-m-d')) {
 
