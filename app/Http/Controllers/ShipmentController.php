@@ -216,7 +216,7 @@ class ShipmentController extends Controller
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('shipments.id')->paginate(50);
             $selectColumn = null;
         }
 
@@ -332,7 +332,7 @@ class ShipmentController extends Controller
             [
                 'type' => 'date',
                 'name' =>  'created_at',
-                'name_rus' => 'Дата создания',
+                'name_rus' => trans('column.created_at'),
                 'min' => substr($minCreated, 0, 10),
                 'minChecked' => $minCreatedCheck,
                 'max' => substr($maxCreated, 0, 10),
@@ -341,7 +341,7 @@ class ShipmentController extends Controller
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
-                'name_rus' => 'Дата обновления',
+                'name_rus' => trans('column.updated_at'),
                 'min' => substr($minUpdated, 0, 10),
                 'minChecked' => $minUpdatedCheck,
                 'max' => substr($maxUpdated, 0, 10),
@@ -350,7 +350,7 @@ class ShipmentController extends Controller
             [
                 'type' => 'select',
                 'name' => 'material',
-                'name_rus' => 'Материал',
+                'name_rus' => trans('column.material'),
                 'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
                 'checked_value' => $queryMaterial,
             ],
@@ -358,7 +358,7 @@ class ShipmentController extends Controller
             [
                 'type' => 'checkbox',
                 'name' => 'shipments_debt',
-                'name_rus' => '1 статус не оплачен 2 транспорт этой отгрузки был в последующих отгрузках',
+                'name_rus' => trans('filter.filter1'),
                 'value'=> $queryShipment,
             ],
         ];
