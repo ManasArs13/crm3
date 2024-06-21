@@ -63,7 +63,7 @@
                     @endif
 
                     @foreach ($resColumns as $column => $title)
-                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
+                        <td class="break-all max-w-96 overflow-auto px-2 py-4"
 
                             @if ($column == 'contact_id' || $column == 'delivery_id' || $column == 'comment'|| is_int($column)) style="text-align:left"
                             @elseif($column == 'status') style="text-align:center" 

@@ -733,6 +733,12 @@ class DashboardService
             ->get()
             ->sortBy('sort');
 
+        $shipments = Shipment::whereDate('created_at', $date)
+            ->orderBy('created_at')
+            ->select('id', 'created_at', 'transport_id')
+            ->with('transport')
+            ->get();
+
         if ($date > date('Y-m-d')) {
 
             $orders = Order::query()->with('positions')
@@ -830,7 +836,8 @@ class DashboardService
             'materials',
             'dateNext',
             'datePrev',
-            'date'
+            'date',
+            'shipments'
         ));
     }
 

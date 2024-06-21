@@ -48,7 +48,7 @@
                 <table>
                     <caption class="text-lg font-semibold">Материалы</caption>
                     <thead>
-                        <tr class="font-light">
+                        <tr class="font-light border-b-2">
                             <th colspan="4" class="font-light"></th>
                             <th class="font-normal border-l-2">Начало</th>
                             <th class="font-normal border-x-2">Приход</th>
@@ -73,6 +73,32 @@
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
                                     {{ $material->residual -  ($material->rashod ? $material->rashod : 0) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
+
+                <table>
+                    <caption class="text-lg font-semibold">Отгрузки</caption>
+                    <thead>
+                        <tr class="font-light border-b-2">
+                            <th class="font-semibold border-r-2">Время</th>
+                            <th class="font-semibold border-l-2 text-right">Транспорт</th>
+                           </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($shipments as $shipment)
+                            <tr class="border-b-2">
+                                <td class="m-2 border-r-2">
+                                    {{ Carbon\Carbon::parse($shipment->created_at)->format('H:m') }}
+                                </td>
+                                <td class="m-2 text-right">                               
+                                    {{ $shipment->transport ? $shipment->transport->name : 'не указано'}}
                                 </td>
                             </tr>
                         @endforeach
