@@ -14,7 +14,7 @@
                 <!-- main Links -->
                 <div class="hidden space-x-3 lg:flex">
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard') ||
+                    <x-nav-link :href="route('dashboard-3')" :active="request()->routeIs('dashboard') ||
                         request()->routeIs('dashboard-2') ||
                         request()->routeIs('dashboard-3')">
                         Главная
