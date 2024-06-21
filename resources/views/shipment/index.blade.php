@@ -224,7 +224,7 @@
                             @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-6 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-6 py-4"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'payed_sum' ||
@@ -267,7 +267,7 @@
                                                 {{ null }}
                                             @endif
                                         @elseif(preg_match('/_link/u', $column) && $entityItem->$column !== null && $entityItem->$column !== '')
-                                            <a href="{{ $entityItem->$column }}" target="_blank">
+                                            <a href="{{ $entityItem->$column }}" target="_blank" class="flex justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-box-arrow-in-up-right"
                                                     viewBox="0 0 16 16">
@@ -299,7 +299,7 @@
                                             {{ $total_quantity }}
                                         @elseif($column == 'ms_link' && $entityItem->ms_id)
                                             <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
-                                                target="_blank">
+                                                target="_blank" class="flex justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-box-arrow-in-up-right"
                                                     viewBox="0 0 16 16">
