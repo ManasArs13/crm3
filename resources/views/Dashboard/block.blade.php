@@ -32,9 +32,9 @@
                     </div>
                 </div>
                 <div class="flex px-3 text-center font-bold">
-                    <a href="{{ route('dashboard-2', ['date_plan' => $datePrev ]) }}" class="mx-2 text-lg">&#9668;</a>
+                    <a href="{{ route('dashboard-2', ['date_plan' => $datePrev]) }}" class="mx-2 text-lg">&#9668;</a>
                     <p class="mx-2 text-lg">{{ $date }}</p>
-                    <a href="{{ route('dashboard-2', ['date_plan' => $dateNext ]) }}" class="mx-2 text-lg">&#9658;</a>
+                    <a href="{{ route('dashboard-2', ['date_plan' => $dateNext]) }}" class="mx-2 text-lg">&#9658;</a>
                 </div>
             </div>
             @include('Dashboard.components.canvas', ['date' => $date])
@@ -71,7 +71,7 @@
                                     {{ $material->rashod ? $material->rashod : 0 }}
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
-                                    {{ $material->residual -  ($material->rashod ? $material->rashod : 0) }}
+                                    {{ $material->residual - ($material->rashod ? $material->rashod : 0) }}
                                 </td>
                             </tr>
                         @endforeach
@@ -109,6 +109,40 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
+
+                <table>
+                    <caption class="text-lg font-semibold ">Отгрузки</caption>
+                    <thead>
+                        <tr class="font-light border-b-2 text-sm">
+                            <th class="font-semibold border-r-2">Время</th>
+                            <th class="font-semibold border-l-2 text-center">Транспорт</th>
+                            <th class="font-semibold border-r-2">На обьекте</th>
+                            <th class="font-semibold">Конец рейса</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($shipments as $shipment)
+                            <tr class="border-b-2 text-sm">
+                                <td class="m-2 border-r-2 text-center">
+                                    {{ Carbon\Carbon::parse($shipment->created_at)->format('H:m') }}
+                                </td>
+                                <td class="m-2 text-left">
+                                    {{ $shipment->transport ? $shipment->transport->name : 'не указано' }}
+                                </td>
+                                <td class="m-2 border-x-2 text-center">
+                                    {{ Carbon\Carbon::parse($shipment->time_to_come)->format('H:m') }}
+                                </td>
+                                <td class="m-2 text-center">
+                                    {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:m') }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>
