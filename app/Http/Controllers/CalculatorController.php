@@ -24,7 +24,6 @@ class CalculatorController extends Controller
 
         $pallet=Product::where("ms_id", "fe06d62d-87db-11e7-7a6c-d2a900041517")->first();
 
-        $deliveries = Delivery::whereNot('ms_id', '28803b00-5c8f-11ea-0a80-02ed000b1ce1')->orderBy('name', 'asc')->get();
         $vehicleTypes = TransportType::whereNot('ms_id', '5c2ad6bd-3dcf-11ee-0a80-105c001170bb')
                     ->whereNot('ms_id', '8caf01fa-34f2-11ee-0a80-139c002ba64a')
                     ->whereNot('ms_id', 'c518da75-a146-11ec-0a80-0da500133bca')
@@ -34,8 +33,6 @@ class CalculatorController extends Controller
         $vehicleTypesBeton = TransportType::where('ms_id', '8caf01fa-34f2-11ee-0a80-139c002ba64a')
                     ->orderBy('name', 'asc')
                     ->get();
-
-        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
 
         $dateNow=(new \DateTime())->format("Y-m-d");
         $dateFinish=(new \DateTime())->modify('+10 day')->format("Y-m-d");
@@ -113,9 +110,9 @@ class CalculatorController extends Controller
 
         $dates=Date::where("is_active", 1)->where("date",">=",$dateNow)->where("date","<=",$dateFinish)->orderBy("date","asc")->get();
         $times=Time::where("is_active", 1)->get();
-        $shippingPrices = json_encode(ShipingPrice::get());
 
-        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg", "residual as balance", "count_pallets")->whereNotNull("color_id")->whereNot("category_id","7")->orderBy("name","asc")->get();
+
+        $products = Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg", "residual as balance", "count_pallets")->with("category")->with("color")->whereNotNull("color_id")->whereNot("category_id","7")->orderBy("name","asc")->get();
         $betonProducts =  Product::select("id", "ms_id", "name", "price", "category_id", 'color_id', "weight_kg")->Where("category_id","4")->orderBy("name","asc")->get();
 
         $productsByGroup=[];
@@ -172,7 +169,6 @@ class CalculatorController extends Controller
                 "needMenuForItem",
                 "entity",
                 "productsByFence",
-                'deliveries',
                 'vehicleTypes',
                 'productsByGroup',
                 'productsByBeton',
@@ -180,10 +176,8 @@ class CalculatorController extends Controller
                 'dates',
                 'times',
                 'idBeton',
-                'contacts',
                 'datesBlockFinish',
                 'datesBetonFinish',
-                'states',
                 'pallet'
             )
         );

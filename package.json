@@ -18,6 +18,8 @@
     "dependencies": {
         "@alpinejs/mask": "^3.13.7",
         "chart.js": "^4.4.1",
-        "inputmask": "^5.0.8"
+        "inputmask": "^5.0.8",
+        "jquery": "^3.7.1",
+        "select2": "^4.1.0-rc.0"
     }
 }

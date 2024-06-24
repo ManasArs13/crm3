@@ -303,9 +303,19 @@ $(document).ready(function(){
         calcDelivery(formClass);
     })
 
+    $("body").on("change", ".change_state", function() {
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let $val=$(this).next().find('.select2-selection__rendered');
+
+        $(formClass+'[name="state"]').val($val.find('.state').attr("data-id"));
+    });
+
     function calcDelivery(formClass) {
         if (!$(formClass+'[name="attributes[deliveryPrice]"').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
-            let deliveryValue = $(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance");
+            let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
+
+            $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"))
+
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
             let weight = $(formClass+".weight-tn").val();
             let data = {"weightTn": weight, "distance": deliveryValue, "vehicleType": vehicleType};
@@ -317,11 +327,11 @@ $(document).ready(function(){
                 data: data,
                 success: function(data){
                     $(formClass+'.price-tn.input').val(data.price);
+                    $(formClass+".weight-tn").val(data.weightTn);
                     $(formClass+'[name="attributes[deliveryPrice]"').val(data.deliveryPrice);
                     $(formClass+'#message').text('');
                 },
                 error: function(response) {
-
                     $("#message").html(response.responseJSON.error);
                     $(formClass+'.price-tn.input').val(0);
                     $(formClass+'[name="attributes[deliveryPrice]"').val(0);
@@ -366,26 +376,43 @@ $(document).ready(function(){
         $(".agent").toggleClass("active");
     });
 
-    $(".delivery_select2").select2();
-    $(".select2").select2();
 
-    // $("body").on("click", ".change_phone+.select2", function(){
-    //     Inputmask({"mask": "+79999999999"}).mask("[aria-controls='"+$(".change_phone").next(".select2-container--open").find(".select2-selection.select2-selection--single").attr("aria-owns")+"']");
-    // });
+    $(".select2").select2();
 
     $(".change_phone").each(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
             maximumInputLength: 12,
-            tags: $this.data('collection'),
-            language: {
-                noResults: function($this) {
-                    let $searchInput=event.target;
-                    let span=$searchInput.getAttribute("aria-controls");
+            ajax: {
+                url: '/api/contacts/get/phone',
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data,params) {
+                    params.current_page = params.current_page || 1;
 
-                    // Inputmask({"mask": "+79999999999"}).mask("[aria-controls='"+span+"']");
-                    let typed = event.target.value;
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: (params.current_page * data.per_page) < data.total
+                        }
+                    };
+                },
+                cache: true,
+                error: function(response) {
+                    $("#message").html(response.responseJSON.message + response.responseJSON.file+ response.responseJSON.line);
+                }
+            },
+            language: {
+                noResults: function() {
+                    let $searchInput=$(".select2-search__field");
+                    let span=$searchInput.attr("aria-controls");
+
+                    let typed = $searchInput.val();
                     if (typed.length>10){
                         $("[aria-owns='"+span+"'] .select2-selection__rendered").html(typed).attr("title", typed);
                         let formClass="."+$("[aria-owns='"+span+"']").parents("form").attr("class")+" ";
@@ -393,28 +420,163 @@ $(document).ready(function(){
                         $(formClass+"[name='agent[phone]']").val(typed);
                     }
                 }
-            }
+            },
+            templateResult: formatPhone,
+            templateSelection: formatPhone
         });
     });
+
+    $(".delivery").each(function(){
+        var $this = $(this);
+        $this.select2({
+            width: '220px',
+            ajax: {
+                url: '/api/deliveries/get/name',
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data,params) {
+                    params.current_page = params.current_page || 1;
+
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: (params.current_page * data.per_page) < data.total
+                        }
+                    };
+                },
+                cache: true,
+                error: function(response) {
+                    $("#message").html(response.responseJSON.message + response.responseJSON.file+ response.responseJSON.line);
+                }
+            },
+            language: {
+                noResults: function() {
+                    $(formClass+" [attributes[delivery][id]]").val("");
+                }
+            },
+            templateResult: formatDelivery,
+            templateSelection: formatDelivery
+        });
+    });
+
+    $(".change_state").each(function(){
+        var $this = $(this);
+        $this.select2({
+            width: '220px',
+            ajax: {
+                url: 'api/states/get/name',
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data,params) {
+                    params.current_page = params.current_page || 1;
+
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: (params.current_page * data.per_page) < data.total
+                        }
+                    };
+                },
+                cache: true,
+                error: function(response) {
+                    $("#message").html(response.responseJSON.message + response.responseJSON.file+ response.responseJSON.line);
+                }
+            },
+            templateResult: formatState,
+            templateSelection: formatState
+        });
+    });
+
+    function formatDelivery(state) {
+        if (!state.id){
+            return state.text;
+        }
+		var $state = $(
+			'<span data-id="'+state.ms_id+'" data-distance="'+state.distance+'">'+state.name+'</span>'
+		);
+		return $state;
+	};
+
+    function formatName(state) {
+        if (!state.id){
+            return state.text;
+        }
+		var $state = $(
+			'<span data-id="'+state.ms_id+'" data-phone="'+state.phone+'" data-name="'+state.name+'" data-change="change_phone">'+state.name+'</span>'
+		);
+		return $state;
+	};
+
+    function formatPhone(state) {
+        if (!state.id){
+            return state.text;
+        }
+		var $state = $(
+			'<span data-id="'+state.ms_id+'" data-name="'+state.name+'" data-phone="'+state.phone+'" data-change="change_name">'+state.phone+'</span>'
+		);
+		return $state;
+	};
+
+    function formatState(state) {
+        if (!state.id){
+            return state.text;
+        }
+		var $state = $(
+			'<div class="state" data-id="'+state.ms_id+'" style="background:'+state.color+'">'+state.name+'</div>'
+		);
+		return $state;
+	};
 
     $(".change_name").each(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
-            tags: $this.data('collection'),
-            language: {
-                noResults: function($this) {
-                    let $searchInput=event.target;
-                    let typed = event.target.value;
-                    if (typed.length>4){
-                        let span=$searchInput.getAttribute("aria-controls");
-                        $("[aria-owns='"+span+"'] .select2-selection__rendered").html(typed).attr("title", typed);
-                        let formClass="."+$("[aria-owns='"+span+"']").parents("form").attr("class")+" ";
-                        $(formClass+"[name='agent[id]']").val(0);
-                        $(formClass+"[name='agent[name]']").val(typed);
-                    }
+            ajax: {
+                url: '/api/contacts/get/name',
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data,params) {
+                    params.current_page = params.current_page || 1;
+
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: (params.current_page * data.per_page) < data.total
+                        }
+                    };
+                },
+                cache: true,
+                error: function(response) {
+                    $("#message").html(response.responseJSON.message+response.responseJSON.file+response.responseJSON.line);
                 }
-            }
+            },
+            language: {
+                noResults: function() {
+                    let $searchInput=$(".select2-search__field");
+                    let span=$searchInput.attr("aria-controls");
+
+                    let typed = $searchInput.val();
+
+                    $("[aria-owns='"+span+"'] .select2-selection__rendered").html(typed).attr("title", typed);
+                    let formClass="."+$("[aria-owns='"+span+"']").parents("form").attr("class")+" ";
+                    $(formClass+"[name='agent[id]']").val(0);
+                    $(formClass+"[name='agent[name]']").val(typed);
+                }
+            },
+            templateResult: formatName,
+            templateSelection: formatName
         });
     });
 
@@ -465,14 +627,31 @@ $(document).ready(function(){
 
     $("body").on("change", ".agent_change", function(){
         let formClass="."+$(this).parents("form").attr("class")+" ";
-        let val=$(this).val();
-        $(formClass+"[name='agent[id]']").val(val);
+        let $val=$(this).next().find('.select2-selection__rendered');
+        let val='';
+
+        $(formClass+"[name='agent[id]']").val($val.find('span').attr("data-id"));
         $(formClass+"[name='agent[phone]']").val("");
         $(formClass+"[name='agent[name]']").val("");
-        let selectClass=$(this).attr("data-change");
-        $(formClass+"."+selectClass+" option:selected").removeAttr('selected');
-        $(formClass+"."+selectClass+" option[value='"+val+"']").attr('selected', 'selected');
-        $(formClass+"."+selectClass).next().find(".select2-selection__rendered").text($(formClass+"."+selectClass+" option[value='"+val+"']").text());
+
+        let selectClass=$val.find('span').attr("data-change");
+
+        $(formClass+"."+selectClass).append($(this).find("option:last-child").prop('outerHTML'));
+
+        if (selectClass=="change_name"){
+            val=$val.find('span').attr("data-name");
+        }else{
+            val=$val.find('span').attr("data-phone");
+        }
+
+        $(formClass+"."+selectClass).next().find(".select2-selection__rendered").html($val.html()).find("span").text(val);
+    });
+
+
+    $("body").on("change", ".state_change", function(){
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let $val=$(this).next().find('.select2-selection__rendered');
+        $(formClass+"[name='state']").val($val.find('span').attr("data-id"));
     });
 
     $("body").on("change", ".change_postQuantity", function(){
@@ -520,9 +699,9 @@ $(document).ready(function(){
 
     // Задаем значение первому ползунку
     function MadeSlider_1(Length) {
-        jQuery("#CEB__inputLength").val(Length);
-        jQuery("#CEB__textLength").val(Length);
-        jQuery("#CEBQuestionW-slide1").slider({
+        $("#CEB__inputLength").val(Length);
+        $("#CEB__textLength").val(Length);
+        $("#CEBQuestionW-slide1").slider({
             value: Length,
             min: 0,
             max: 300,
@@ -531,8 +710,8 @@ $(document).ready(function(){
             animate: true,
             slide: function(event, ui) {
                 Length = ui.value;
-                jQuery("#CEB__inputLength").val(Length);
-                jQuery("#CEB__textLength").val(Length);
+                $("#CEB__inputLength").val(Length);
+                $("#CEB__textLength").val(Length);
                 calculation0(".calcFence ");
             }
         });
@@ -540,9 +719,9 @@ $(document).ready(function(){
 
     // Задаем значение 2 ползунку
     function MadeSlider_2(post_quantity) {
-        jQuery("#CEB__inputPost_quantity").val(post_quantity);
-        jQuery("#CEB__textPost_quantity").val(post_quantity);
-        jQuery("#CEBQuestionW-slide2").slider({
+        $("#CEB__inputPost_quantity").val(post_quantity);
+        $("#CEB__textPost_quantity").val(post_quantity);
+        $("#CEBQuestionW-slide2").slider({
             value: post_quantity,
             min: 0,
             max: 120,
@@ -551,8 +730,8 @@ $(document).ready(function(){
             animate: true,
             slide: function(event, ui) {
                 post_quantity = ui.value;
-                jQuery("#CEB__inputPost_quantity").val(post_quantity);
-                jQuery("#CEB__textPost_quantity").val(post_quantity);
+                $("#CEB__inputPost_quantity").val(post_quantity);
+                $("#CEB__textPost_quantity").val(post_quantity);
                 calculation0(".calcFence ");
             }
         });
@@ -560,10 +739,10 @@ $(document).ready(function(){
 
     // Задаем значение 3 ползунку
     function MadeSlider_3(wallHeight) {
-        jQuery("#CEB__input_wallHeight").val(wallHeight);
-        jQuery("#CEB__text_wallHeight").val(wallHeight);
+        $("#CEB__input_wallHeight").val(wallHeight);
+        $("#CEB__text_wallHeight").val(wallHeight);
 
-        jQuery("#CEBQuestionW-slide3").slider({
+        $("#CEBQuestionW-slide3").slider({
             value: wallHeight,
             min: 80,
             max: 320,
@@ -572,8 +751,8 @@ $(document).ready(function(){
             animate: true,
             slide: function(event, ui) {
                 wallHeight = ui.value;
-                jQuery("#CEB__input_wallHeight").val(wallHeight);
-                jQuery("#CEB__text_wallHeight").val(wallHeight);
+                $("#CEB__input_wallHeight").val(wallHeight);
+                $("#CEB__text_wallHeight").val(wallHeight);
                 calculation0(".calcFence ");
             }
         });
@@ -581,10 +760,10 @@ $(document).ready(function(){
 
     // Задаем значение 4 ползунку
     function MadeSlider_4(columnHeight) {
-        jQuery("#CEB__input_columnHeight").val(columnHeight);
-        jQuery("#CEB__text_columnHeight").val(columnHeight);
+        $("#CEB__input_columnHeight").val(columnHeight);
+        $("#CEB__text_columnHeight").val(columnHeight);
 
-        jQuery("#CEBQuestionW-slide4").slider({
+        $("#CEBQuestionW-slide4").slider({
             value: columnHeight,
             min: 80,
             max: 320,
@@ -593,8 +772,8 @@ $(document).ready(function(){
             animate: true,
             slide: function(event, ui) {
                 columnHeight = ui.value;
-                jQuery("#CEB__input_columnHeight").val(columnHeight);
-                jQuery("#CEB__text_columnHeight").val(columnHeight);
+                $("#CEB__input_columnHeight").val(columnHeight);
+                $("#CEB__text_columnHeight").val(columnHeight);
                 calculation0(".calcFence ");
             }
         });
