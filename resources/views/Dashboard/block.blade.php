@@ -120,7 +120,8 @@
                             <th class="font-semibold border-r-2">Время</th>
                             <th class="font-semibold border-l-2 text-center">Транспорт</th>
                             <th class="font-semibold border-r-2">На обьекте</th>
-                            <th class="font-semibold">Конец рейса</th>
+                            <th class="font-semibold border-r-2">Конец рейса</th>
+                            <th class="font-semibold">Возврат</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,6 +138,9 @@
                                 </td>
                                 <td class="m-2 text-center">
                                     {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:m') }}
+                                </td>
+                                <td class="m-2 text-center">
+                                    {{ Carbon\Carbon::parse($shipment->time_to_return)->format('H:m') }}
                                 </td>
                             </tr>
                         @endforeach
