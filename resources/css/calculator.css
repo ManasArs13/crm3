@@ -50,6 +50,20 @@ span.balance {
     color: #c3bebe;
 }
 
+.state{
+    display: block;
+    box-sizing: border-box;
+    margin: -6px;
+    padding: 6px;
+}
+
+.select2-selection__rendered .state{
+    margin: 0 0 0 -8px;
+    padding: 0 0 0 6px;
+    line-height: 33px;
+    overflow: hidden;
+}
+
 .calcBeton .select{
     width: 100%;
     min-width: 100%;
@@ -245,7 +259,7 @@ span.balance {
     border: 1px solid #aaa;
     border-radius: 4px;
     padding: 0 20px 0 8px;
-    line-height: 35px;
+    line-height: 33px;
     box-sizing: border-box;
     color: #444;
 }
@@ -881,6 +895,10 @@ input[type="number"]{
 .select2-container--default .select2-selection--single .select2-selection__rendered {
 
     line-height: 35px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 35px;
 }
 
 .select2-results__option{

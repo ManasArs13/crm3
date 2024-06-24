@@ -57,6 +57,6 @@ class ShipingPriceController extends Controller
         else if ($vehicleType==4 && $weightTn<=14)
             $deliveryPrice=round($deliveryPrice/500)*500;
 
-        return response()->json(["price"=>$price, "deliveryPrice"=>$deliveryPrice], 200);
+        return response()->json(["price"=>$price, "deliveryPrice"=>$deliveryPrice, 'weightTn'=>$weightTn], 200);
     }
 }
