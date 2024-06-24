@@ -377,13 +377,19 @@ $(document).ready(function(){
     });
 
 
-    $(".select2").select2();
+    $(".select2").each(function(){
+        var $this = $(this);
+        $this.select2({
+            dropdownParent: $(this).parent()
+        });
+    });
 
     $(".change_phone").each(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
             maximumInputLength: 12,
+            dropdownParent: $(this).parent(),
             ajax: {
                 url: '/api/contacts/get/phone',
                 data: function (params) {
@@ -430,6 +436,7 @@ $(document).ready(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
+            dropdownParent: $(this).parent(),
             ajax: {
                 url: '/api/deliveries/get/name',
                 data: function (params) {
@@ -467,6 +474,7 @@ $(document).ready(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
+            dropdownParent: $(this).parent(),
             ajax: {
                 url: 'api/states/get/name',
                 data: function (params) {
@@ -539,6 +547,7 @@ $(document).ready(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
+            dropdownParent: $(this).parent(),
             ajax: {
                 url: '/api/contacts/get/name',
                 data: function (params) {

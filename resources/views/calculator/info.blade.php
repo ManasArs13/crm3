@@ -3,23 +3,25 @@
     <div class="CEB_block deliveryTn">
             <input type="hidden" name="attributes[delivery][id]">
 
-            <select class="select2 input change_delivery delivery">
-                <option value="" selected disabled>{{__('column.delivery')}}</option>
-            </select>
+            <div class="select-popup">
+                <select class="select2 input change_delivery delivery">
+                    <option value="" selected disabled>{{__('column.delivery')}}</option>
+                </select>
+            </div>
 
-
-            <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery">
-                    @foreach ($vehicleTypes as $type)
-                        <option data-type='{{$type->id}}' value="{{$type->ms_id}}" {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
-                    @endforeach
-            </select>
+            <div class="select-popup">
+                <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery">
+                        @foreach ($vehicleTypes as $type)
+                            <option data-type='{{$type->id}}' value="{{$type->ms_id}}" {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
+                        @endforeach
+                </select>
+            </div>
 
             <input type="text" class="weight-tn input input2" value=0 disabled>
             <input type="text" class="price-tn input input2" value=0 >
             <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 >
 
     </div>
-    <input type="hidden" >
 </div>
 
 

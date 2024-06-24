@@ -5,18 +5,20 @@
 
         <input type="hidden" name="agent[id]">
 
-        <select class="input agent_change change_name" data-change="change_phone" style="width: 100%">
-            <option value="" selected disabled>{{__('column.name')}}</option>
-        </select>
+        <div class="select-popup">
+            <select class="input agent_change change_name" data-change="change_phone" style="width: 100%">
+                <option value="" selected disabled>{{__('column.name')}}</option>
+            </select>
+        </div>
         <input type="hidden" name="agent[name]" >
         <input type="hidden" name="agent[phone]">
 
 
-
-        <select class="input agent_change change_phone" data-change="change_name" style="width: 100%">
-            <option value="" selected disabled>{{__('column.phone')}}</option>
-        </select>
-
+        <div class="select-popup">
+            <select class="input agent_change change_phone" data-change="change_name" style="width: 100%">
+                <option value="" selected disabled>{{__('column.phone')}}</option>
+            </select>
+        </div>
 
 
         <div class="datetime">
@@ -29,10 +31,12 @@
             </svg>
         </div>
 
-        <input type="hidden" name="state">
-        <select class="change_state input" style="width: 100%">
-            <option value="" selected disabled>{{__('column.status')}}</option>
-        </select>
+        <div class="select-popup">
+            <input type="hidden" name="state">
+            <select class="change_state input" style="width: 100%">
+                <option value="" selected disabled>{{__('column.status')}}</option>
+            </select>
+        </div>
     </div>
     <div>
         <button type="submit" class="rounded bg-green-400 px-6 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 submit">Отправить в мс</button>
