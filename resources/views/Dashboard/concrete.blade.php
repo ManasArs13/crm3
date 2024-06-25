@@ -98,19 +98,19 @@
                         @foreach ($shipments as $shipment)
                             <tr class="border-b-2 text-sm">
                                 <td class="m-2 border-r-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->created_at)->format('H:m') }}
+                                    {{ Carbon\Carbon::parse($shipment->created_at)->format('H:i') }}
                                 </td>
                                 <td class="m-2 text-left">
                                     {{ $shipment->transport ? $shipment->transport->name : 'не указано' }}
                                 </td>
                                 <td class="m-2 border-x-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_come)->format('H:m') }}
+                                    {{ Carbon\Carbon::parse($shipment->time_to_come)->format('H:i') }}
                                 </td>
                                 <td class="m-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:m') }}
+                                    {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:i') }}
                                 </td>
                                 <td class="m-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_return)->format('H:m') }}
+                                    {{ Carbon\Carbon::parse($shipment->time_to_return)->format('H:i') }}
                                 </td>
                             </tr>
                         @endforeach

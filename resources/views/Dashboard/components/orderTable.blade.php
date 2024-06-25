@@ -6,7 +6,7 @@
                 @foreach ($resColumns as $key => $column)
                     <th scope="col" class="px-2 py-4 mx-1 border-spacing-x-px"
                         @if ($column == 'Контакт МС' || $column == 'Доставка' || $column == 'Комментарий' || is_int($column)) style="text-align:left"
-                    @elseif($column == 'Статус' || $column ==   'Ссылка МС')
+                    @elseif($column == 'Статус' || $column == 'Ссылка МС' || $column == 'Отгружено')
                         style="text-align:center" 
                     @else style="text-align:right" @endif>
                         {{ $column }}</th>
@@ -26,8 +26,8 @@
                 @endphp
 
                 @php
-                    $total_quantity = 0;
-                    $total_shipped_count = 0;
+                    $products_quantity = 0;
+                    $products_shipped_count = 0;
                 @endphp
 
                 @foreach ($entityItem->positions as $position)
@@ -36,7 +36,7 @@
                             $position->product->building_material !== 'доставка' &&
                             $position->product->building_material !== 'не выбрано'
                         ) {
-                            $total_quantity += $position->quantity;
+                            $products_quantity += $position->quantity;
                             $totalCount += $position->quantity;
                         }
                     @endphp
@@ -45,8 +45,13 @@
                 @foreach ($entityItem->shipments as $shipment)
                     @foreach ($shipment->products as $position)
                         @php
-                            $total_shipped_count += $position->quantity;
-                            $totalShipped += $position->quantity;
+                            if (
+                                $position->product->building_material !== 'доставка' &&
+                                $position->product->building_material !== 'не выбрано'
+                            ) {
+                                $products_shipped_count += $position->quantity;
+                                $totalShipped += $position->quantity;
+                            }
                         @endphp
                     @endforeach
                 @endforeach
@@ -64,13 +69,10 @@
 
                     @foreach ($resColumns as $column => $title)
                         <td class="break-all max-w-96 overflow-auto px-2 py-4"
-
-                            @if ($column == 'contact_id' || $column == 'delivery_id' || $column == 'comment'|| is_int($column)) style="text-align:left"
+                            @if ($column == 'contact_id' || $column == 'delivery_id' || $column == 'comment' || is_int($column)) style="text-align:left"
                             @elseif($column == 'status') style="text-align:center" 
                             @else style="text-align:right" @endif
-
-                            @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif
-                            >
+                            @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                             @if (preg_match('/_id\z/u', $column))
                                 @if ($column == 'contact_id')
@@ -158,14 +160,14 @@
                                     {{ $entityItem->$column }}
                                 </a>
                             @elseif($column == 'positions_count')
-                                {{ $total_quantity }}
+                                {{ $products_quantity }}
                             @elseif($column == 'shipped_count')
-                                {{ $total_shipped_count }}
+                                {{ $products_shipped_count }}
                             @elseif($column == 'residual_count')
-                                {{ $total_quantity - $total_shipped_count >= 0 ? $total_quantity - $total_shipped_count : 0 }}
+                                {{ $products_quantity - $products_shipped_count }}
                             @elseif($column == 'ms_link' && $entityItem->ms_id)
-                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}" class="flex justify-center"
-                                    target="_blank">
+                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                    class="flex justify-center" target="_blank">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
@@ -178,6 +180,12 @@
                                 </a>
                             @elseif($column == 'date_plan')
                                 {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                            @elseif($column == 'is_demand')
+                                @if ($entityItem->$column)
+                                    <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                                @else
+                                    <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                                @endif
                             @elseif($column == 'sostav')
                                 @if (isset($entityItem->positions[0]) && isset($entityItem->positions[0]->product))
                                     {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->name : '-' }}
@@ -267,16 +275,21 @@
                                     {{ $shipment->description }}
                                 @elseif($column == 'positions_count')
                                     @php
-                                        $total_quantity_shipment = 0;
+                                        $products_quantity_shipment = 0;
                                     @endphp
 
                                     @foreach ($shipment->products as $position)
                                         @php
-                                            $total_quantity_shipment += $position->quantity;
+                                            if (
+                                                $position->product->building_material !== 'доставка' &&
+                                                $position->product->building_material !== 'не выбрано'
+                                            ) {
+                                                $products_quantity_shipment += $position->quantity;
+                                            }
                                         @endphp
                                     @endforeach
 
-                                    {{ $total_quantity_shipment }}
+                                    {{ $products_quantity_shipment }}
                                 @else
                                     {{ $shipment->$column }}
                                 @endif

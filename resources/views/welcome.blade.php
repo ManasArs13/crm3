@@ -385,7 +385,7 @@
                                         @if (url()->current() == route('welcome.blocksProducts') || url()->current() == route('welcome.index'))
 
                                             @if (isset($orderBy) && $orderBy == 'desc')
-                                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
+                                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
                                                     <a class="text-black"
                                                         href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'desc']) }}">{{ __('column.materials') }}</a>
                                                     @if (isset($column) && $column == 'materials' && $orderBy == 'desc')
@@ -393,7 +393,7 @@
                                                     @endif
                                                 </th>
                                             @else
-                                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
+                                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
                                                     <a class="text-black"
                                                         href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'asc']) }}">{{ __('column.materials') }}</a>
                                                     @if (isset($column) && $column == 'materials' && $orderBy == 'asc')
@@ -426,7 +426,7 @@
                                             {{ __('column.need') }}
                                         </th>
 
-                                        @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
+                                        @if (url()->current() !== route('welcome.concretesMaterials') && url()->current() !== route('welcome.blocksMaterials'))
                                             <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
                                                 {{ __('column.making_dais') }}
                                             </th>
@@ -465,7 +465,7 @@
                                                     @endif
                                                 </th>
 
-                                                @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
+                                                @if (url()->current() == route('welcome.blocksProducts') || url()->current() == route('welcome.index'))
                                                     <th
                                                         class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                                         @if ($product->materials == 'нет')
@@ -504,7 +504,7 @@
                                                     @endif
                                                 </th>
 
-                                                @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
+                                                @if (url()->current() !== route('welcome.concretesMaterials') && url()->current() !== route('welcome.blocksMaterials'))
                                                     <th class="text-right px-2">
                                                         @if ($product->making_day)
                                                             {{ $product->making_day }}
