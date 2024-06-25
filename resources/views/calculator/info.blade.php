@@ -1,5 +1,13 @@
 <div class="CEB__row">
-    <div class="CEB__text2">Доставка</div>
+    <div class="CEB__text2">{{__("column.distance")}}</div>
+    <div class="CEB_block">
+        <input type="text" class="address input" placeholder="{{__('column.address')}}">
+        <input type="text" class="distance input" placeholder="{{__('column.distance')}}">
+    </div>
+</div>
+
+<div class="CEB__row">
+    <div class="CEB__text2">{{__("column.delivery")}}</div>
     <div class="CEB_block deliveryTn">
             <input type="hidden" name="attributes[delivery][id]">
 
@@ -9,7 +17,8 @@
                 </select>
             </div>
 
-            <div class="select-popup">
+            <div class="select-popup {{($form!="calcBeton")?'select2':'hidden'}}">
+
                 <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery">
                         @foreach ($vehicleTypes as $type)
                             <option data-type='{{$type->id}}' value="{{$type->ms_id}}" {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
@@ -20,11 +29,8 @@
             <input type="text" class="weight-tn input input2" value=0 disabled>
             <input type="text" class="price-tn input input2" value=0 >
             <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 >
-
     </div>
 </div>
-
-
 
 <div role="status" class="preloader">
     <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

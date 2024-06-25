@@ -432,6 +432,37 @@ $(document).ready(function(){
         });
     });
 
+
+    $("body").on("change",".address", function(){
+        let apikey='83a5c651-59e9-4762-9fa9-d222e4aa50ab';
+        let lang='ru_RU';
+        let geocode=$(this).val();
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let point0=[34.083744, 44.984683];
+
+        let url='https://geocode-maps.yandex.ru/1.x/?apikey='+apikey+'&geocode='+geocode+'&format=json&lang=ru_RU';
+
+        if (geocode.length>0){
+            $.ajax({
+                url: url,
+                method: 'get',
+                dataType: 'json',
+                success: function(data){
+                    let point1=data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(" ");
+                    let km=(ymaps.coordSystem.geo.getDistance(point0, point1)/1000).toFixed(1);
+                    $(formClass+".distance").val(km);
+                    $(formClass+"#message").html('');
+                },
+                error: function(response) {
+                    $(formClass+"#message").html(response.responseJSON.error);
+                }
+            });
+        }else{
+            $(formClass+".distance").val('');
+            $(formClass+"#message").html('');
+        }
+    });
+
     $(".delivery").each(function(){
         var $this = $(this);
         $this.select2({

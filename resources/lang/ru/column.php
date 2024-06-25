@@ -118,7 +118,7 @@
    'status' => 'Статус мс',
    'contact' => "контакт",
    'transport' => 'транспорт',
-   'delivery' => 'доставка',
+   'delivery' => 'Доставка',
    'transport_type' => 'тип транспорта',
    'order_amo' => 'заказ AMO',
    'ms' => 'uuid',
@@ -142,5 +142,5 @@
    'mutualSettlement'=> 'Поставщик',
    'another'=>'Остальные',
    'material'=>'Материал',
-   
+   'address'=>'Адрес'
 ];
