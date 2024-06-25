@@ -5,8 +5,11 @@
                 <th scope="col" class="px-2 py-4"></th>
                 @foreach ($resColumns as $key => $column)
                     <th scope="col" class="px-2 py-4 mx-1 border-spacing-x-px"
-                        @if ($column == 'Контакт МС' || $column == 'Доставка' || $column == 'Комментарий' || is_int($column)) style="text-align:left"
-                    @elseif($column == 'Статус' || $column == 'Ссылка МС')
+                        @if (  $column == 'Контакт МС' ||
+                                $column == 'Доставка' ||
+                                $column == 'Комментарий' ||
+                                is_int($column)) style="text-align:left"
+                    @elseif($column == 'Статус' || $column == 'Ссылка МС' || $column == 'Отгружено')
                         style="text-align:center" 
                     @else style="text-align:right" @endif>
                         {{ $column }}</th>
@@ -180,6 +183,12 @@
                                 </a>
                             @elseif($column == 'date_plan')
                                 {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                            @elseif($column == 'is_demand')
+                                @if ($entityItem->$column)
+                                    <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                                @else
+                                    <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                                @endif
                             @elseif($column == 'sostav')
                                 @if (isset($entityItem->positions[0]) && isset($entityItem->positions[0]->product))
                                     {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->name : '-' }}
