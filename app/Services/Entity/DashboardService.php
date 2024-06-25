@@ -589,9 +589,9 @@ class DashboardService
             ->get();
 
         foreach ($shipments as $shipment) {
-            $shipment['time_to_come'] = Carbon::parse(Carbon::parse($shipment->created_at)->format('H:m'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
-            $shipment['time_to_out'] = Carbon::parse(Carbon::parse($shipment->time_to_come)->format('H:m'))->addMinutes(60);
-            $shipment['time_to_return'] = Carbon::parse(Carbon::parse($shipment['time_to_out'])->format('H:m'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
+            $shipment['time_to_come'] = Carbon::parse(Carbon::parse($shipment->created_at)->format('H:i'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
+            $shipment['time_to_out'] = Carbon::parse(Carbon::parse($shipment->time_to_come)->format('H:i'))->addMinutes(60);
+            $shipment['time_to_return'] = Carbon::parse(Carbon::parse($shipment['time_to_out'])->format('H:i'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
         }
 
         if ($date > date('Y-m-d')) {
@@ -754,9 +754,9 @@ class DashboardService
             ->get();
 
         foreach ($shipments as $shipment) {
-            $shipment['time_to_come'] = Carbon::parse(Carbon::parse($shipment->created_at)->format('H:m'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
-            $shipment['time_to_out'] = Carbon::parse(Carbon::parse($shipment->time_to_come)->format('H:m'))->addMinutes(60);
-            $shipment['time_to_return'] = Carbon::parse(Carbon::parse($shipment['time_to_out'])->format('H:m'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
+            $shipment['time_to_come'] = Carbon::parse(Carbon::parse($shipment->created_at)->format('H:i'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
+            $shipment['time_to_out'] = Carbon::parse(Carbon::parse($shipment->time_to_come)->format('H:i'))->addMinutes(60);
+            $shipment['time_to_return'] = Carbon::parse(Carbon::parse($shipment['time_to_out'])->format('H:i'))->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
         }
 
         if ($date > date('Y-m-d')) {
