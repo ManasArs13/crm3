@@ -5,10 +5,7 @@
                 <th scope="col" class="px-2 py-4"></th>
                 @foreach ($resColumns as $key => $column)
                     <th scope="col" class="px-2 py-4 mx-1 border-spacing-x-px"
-                        @if (  $column == 'Контакт МС' ||
-                                $column == 'Доставка' ||
-                                $column == 'Комментарий' ||
-                                is_int($column)) style="text-align:left"
+                        @if ($column == 'Контакт МС' || $column == 'Доставка' || $column == 'Комментарий' || is_int($column)) style="text-align:left"
                     @elseif($column == 'Статус' || $column == 'Ссылка МС' || $column == 'Отгружено')
                         style="text-align:center" 
                     @else style="text-align:right" @endif>
@@ -283,7 +280,12 @@
 
                                     @foreach ($shipment->products as $position)
                                         @php
-                                            $products_quantity_shipment += $position->quantity;
+                                            if (
+                                                $position->product->building_material !== 'доставка' &&
+                                                $position->product->building_material !== 'не выбрано'
+                                            ) {
+                                                $products_quantity_shipment += $position->quantity;
+                                            }
                                         @endphp
                                     @endforeach
 
