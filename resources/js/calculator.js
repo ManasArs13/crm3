@@ -138,10 +138,10 @@ $(document).ready(function(){
         let formClass="."+$(this).parents("form").attr("class")+" ";
         let deliveryDistance = parseInt($(formClass+'select[name="attributes[delivery][id]"]').find('option:selected').attr("data-distance"));
         let weightTn= parseFloat($(formClass+".weight-tn").val());
-        $(formClass+'[name="attributes[deliveryPrice]"').val(priceTn*weightTn).addClass("disabled");
+        $(formClass+'.deliveryPrice').val(priceTn*weightTn).addClass("disabled");
     });
 
-    $("body").on("focusout", '[name="attributes[deliveryPrice]"]', function() {
+    $("body").on("focusout", '.deliveryPrice', function() {
         let priceDelivery=parseInt($(this).val());
         $(this).addClass("disabled");
         let formClass="."+$(this).parents("form").attr("class")+" ";
@@ -311,7 +311,7 @@ $(document).ready(function(){
     });
 
     function calcDelivery(formClass) {
-        if (!$(formClass+'[name="attributes[deliveryPrice]"').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
+        if (!$(formClass+'.deliveryPrice').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
 
             $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"))
@@ -328,13 +328,13 @@ $(document).ready(function(){
                 success: function(data){
                     $(formClass+'.price-tn.input').val(data.price);
                     $(formClass+".weight-tn").val(data.weightTn);
-                    $(formClass+'[name="attributes[deliveryPrice]"').val(data.deliveryPrice);
+                    $(formClass+'.deliveryPrice').val(data.deliveryPrice);
                     $(formClass+'#message').text('');
                 },
                 error: function(response) {
                     $("#message").html(response.responseJSON.error);
                     $(formClass+'.price-tn.input').val(0);
-                    $(formClass+'[name="attributes[deliveryPrice]"').val(0);
+                    $(formClass+'.deliveryPrice').val(0);
                 }
             });
 

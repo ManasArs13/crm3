@@ -1,12 +1,4 @@
 <div class="CEB__row">
-    <div class="CEB__text2">{{__("column.distance")}}</div>
-    <div class="CEB_block">
-        <input type="text" class="address input" placeholder="{{__('column.address')}}">
-        <input type="text" class="distance input" placeholder="{{__('column.distance')}}">
-    </div>
-</div>
-
-<div class="CEB__row">
     <div class="CEB__text2">{{__("column.delivery")}}</div>
     <div class="CEB_block deliveryTn">
             <input type="hidden" name="attributes[delivery][id]">
@@ -26,8 +18,8 @@
             </div>
 
             <input type="text" class="weight-tn input input2" value=0 disabled>
-            <input type="text" class="price-tn input input2" value=0 >
-            <input type="text" name="attributes[deliveryPrice]" class="input input2" value=0 >
+            <input type="text" name="attributes[deliveryPrice]" class="price-tn input input2" value=0 >
+            <input type="text" class="input input2 deliveryPrice" value=0 >
     </div>
 </div>
 
