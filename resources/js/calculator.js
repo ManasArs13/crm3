@@ -564,7 +564,7 @@ $(document).ready(function(){
             return state.text;
         }
 		var $state = $(
-			'<span data-id="'+state.ms_id+'" data-name="'+state.name+'" data-phone="'+state.phone+'" data-change="change_name">'+state.phone+'</span>'
+			'<span data-id="'+state.ms_id+'" data-name="'+state.name+'" data-phone="'+state.phone+'" data-change="change_name">'+state.phone+' ('+state.name+')</span>'
 		);
 		return $state;
 	};

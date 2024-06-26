@@ -1,5 +1,4 @@
 <div class="CEB__row">
-    <div class="CEB__text2">{{__("column.delivery")}}</div>
     <div class="CEB_block deliveryTn">
             <input type="hidden" name="attributes[delivery][id]">
 
