@@ -191,9 +191,23 @@
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder')
-                                    <th scope="col" class="px-6 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-6 py-3">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-3"
+                                        @if (
+                                            ($column == '№' ||
+                                                $column == 'Телефон' ||
+                                                $column == 'Телефон нормированный' ||
+                                                $column == 'Контакт амо' ||
+                                                $column == 'Баланс' ||
+                                                $column == 'Существует' ||
+                                                $column == 'Дубляж' ||
+                                                $column == 'В архиве' ||
+                                                $column == 'Дата создания' ||
+                                                $column == 'Дата обновления') &&
+                                                $column !== 'sostav') style="text-align:right" 
+                                                @elseif($column == 'Ссылка на контакт амо')
+                                                @else style="text-align:left" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -201,7 +215,21 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-3"
+                                        @if (
+                                            ($column == '№' ||
+                                                $column == 'Телефон' ||
+                                                $column == 'Телефон нормированный' ||
+                                                $column == 'Контакт амо' ||
+                                                $column == 'Баланс' ||
+                                                $column == 'Существует' ||
+                                                $column == 'Дубляж' ||
+                                                $column == 'В архиве' ||
+                                                $column == 'Дата создания' ||
+                                                $column == 'Дата обновления') &&
+                                                $column !== 'sostav') style="text-align:right" 
+                                    @elseif($column == 'Ссылка на контакт амо')
+                                    @else style="text-align:left" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -217,17 +245,18 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
-                                    @if (
-                                        (is_int($entityItem->$column) ||
-                                            $column == 'phone' ||
-                                            $column == 'phone_norm' ||
-                                            $column == 'contact_amo_id' ||
-                                            $column == 'balance' ||
-                                            $column == 'created_at' ||
-                                            $column == 'updated_at') &&
-                                            !preg_match('/_id\z/u', $column) &&
-                                            $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                        @if (
+                                            (is_int($entityItem->$column) ||
+                                                $column == 'phone' ||
+                                                $column == 'phone_norm' ||
+                                                $column == 'contact_amo_id' ||
+                                                $column == 'balance' ||
+                                                $column == 'created_at' ||
+                                                $column == 'updated_at') &&
+                                                $column !== 'sostav') style="text-align:right" 
+                                                @elseif($column == 'contact_amo_link') style="text-align:center"
+                                                @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
@@ -290,7 +319,8 @@
                                                 {{ null }}
                                             @endif
                                         @elseif(preg_match('/_link/u', $column) && $entityItem->$column !== null && $entityItem->$column !== '')
-                                            <a href="{{ $entityItem->$column }}" target="_blank">
+                                            <a href="{{ $entityItem->$column }}" target="_blank"
+                                                class="flex justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-box-arrow-in-up-right"
                                                     viewBox="0 0 16 16">
@@ -328,7 +358,7 @@
                                         </button>
                                     </form>
                                 </td>
-                                
+
                             </tr>
                         @endforeach
                     </tbody>
