@@ -134,8 +134,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
 
     Route::get('/summary', [SummaryController::class, 'index'])->name('summary.index');
-
-
+    Route::get('/shipments/debtors', [ShipmentController::class, 'getDebtors'])->name('shipments.debtors');
 });
 
 

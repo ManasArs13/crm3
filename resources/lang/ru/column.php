@@ -142,5 +142,6 @@
    'mutualSettlement'=> 'Поставщик',
    'another'=>'Остальные',
    'material'=>'Материал',
-   'address'=>'Адрес'
+   'address'=>'Адрес',
+   'days'=> 'Дни',
 ];

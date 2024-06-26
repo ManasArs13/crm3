@@ -6,4 +6,5 @@ return [
      'summary'=> 'Сводка',
      'shipments'=> 'Отгрузки',
      'shipments2'=> 'Отгрузки2',
+     'debtors'=>'Должники'
 ];

@@ -718,6 +718,16 @@ class ShipmentController extends Controller
         $entityItem = Shipment::find($id);
         $entityItem->delete();
 
-        return redirect()->route('shipments.index');
+        return redirect()->route('shipment.index');
+    }
+
+    public function getDebtors(){
+        $shipments=Shipment::where('status',Shipment::NOT_PAID)
+        ->selectRaw('contacts.name, sum(suma-paid_sum) as sum, min(shipments.created_at) as moment, DATEDIFF(CURDATE(), min(shipments.created_at)) as days')
+        ->join('contacts','shipments.contact_id','=','contacts.id')
+        ->groupBy('contact_id')
+        ->get();
+
+        return view('shipment.debtors',compact('shipments'));
     }
 }

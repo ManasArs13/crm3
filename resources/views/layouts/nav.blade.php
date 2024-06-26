@@ -276,6 +276,10 @@
                                 <x-dropdown-link :href="route('summary.index')">
                                     {{__('title.summary')}}
                                 </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('shipments.debtors')">
+                                    {{__('title.debtors')}}
+                                </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -432,7 +436,7 @@
 
         <div class="py-1 px-2 flex flex-row border-b border-gray-200">
             <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                <a href="{{ route('calculator.block').'#content-1' }}">Калькулятор</a>
+                <a href="{{ route('calculator.block') }}">Калькулятор</a>
             </div>
         </div>
 
