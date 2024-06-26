@@ -438,7 +438,7 @@ $(document).ready(function(){
         let lang='ru_RU';
         let geocode=$(this).val();
         let formClass="."+$(this).parents("form").attr("class")+" ";
-        let point0=[34.083744, 44.984683];
+        let point0=[34.012516,45.124109];
 
         let url='https://geocode-maps.yandex.ru/1.x/?apikey='+apikey+'&geocode='+geocode+'&format=json&lang=ru_RU';
 
