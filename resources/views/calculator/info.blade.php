@@ -21,6 +21,9 @@
             <input type="text" name="{{($form=="calcBeton")?'attributes[deliveryPrice]':''}}" class="price-tn input input2" >
             <input type="text" name="{{($form!="calcBeton")?'attributes[deliveryPrice]':''}}" class="input input2 deliveryPrice" >
     </div>
+    <div class="font-weight-bolder">
+        {{__("calculator.total")}} <span class="total">0</span> {{__("calculator.rub")}}
+    </div>
 </div>
 
 <div role="status" class="preloader">

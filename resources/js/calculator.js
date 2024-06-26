@@ -319,6 +319,7 @@ $(document).ready(function(){
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
             let weight = $(formClass+".weight-tn").val();
             let data = {"weightTn": weight, "distance": deliveryValue, "vehicleType": vehicleType};
+            let priceTotal=parseInt($(formClass+'#price_total').html());
 
             $.ajax({
                 url: '/api/shipping_price/get',
@@ -329,17 +330,20 @@ $(document).ready(function(){
                     $(formClass+'.price-tn.input').val(data.price);
                     $(formClass+".weight-tn").val(data.weightTn);
                     $(formClass+'.deliveryPrice').val(data.deliveryPrice);
+                    priceTotal=priceTotal+data.deliveryPrice;
                     $(formClass+'#message').text('');
+                    $(formClass+'.total').html(priceTotal);
                 },
                 error: function(response) {
                     $("#message").html(response.responseJSON.error);
                     $(formClass+'.price-tn.input').val(0);
                     $(formClass+'.deliveryPrice').val(0);
+                    $(formClass+'.total').html(priceTotal);
                 }
             });
 
-        }
 
+        }
     };
 
     $('form').submit(function(e){
