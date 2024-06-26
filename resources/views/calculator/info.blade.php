@@ -16,10 +16,9 @@
                     <option value="" selected disabled>{{__('column.delivery')}}</option>
                 </select>
             </div>
-
             <div class="select-popup {{($form!="calcBeton")?'select2':'hidden'}}">
 
-                <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery">
+                <select name="attributes[vehicle_type][id]" class="input {{($form!="calcBeton")?'select2':'hidden'}} change_delivery vehicle_type">
                         @foreach ($vehicleTypes as $type)
                             <option data-type='{{$type->id}}' value="{{$type->ms_id}}" {{($type->id==4)?"selected":""}} style="margin: 4px;">{{ $type->name }}</option>
                         @endforeach
