@@ -4,7 +4,7 @@
 
         <div class="CEB_block">
             <input type="text" name="shipmentAddressFull[addInfo]" class="address input" placeholder="{{__('column.shipment_address')}}">
-            <input type="text" class="distance input" placeholder="{{__('column.distance')}}">
+            <input type="text" class="distance input" placeholder="{{__('calculator.km')}}">
         </div>
 
         <input type="hidden" name="agent[id]">

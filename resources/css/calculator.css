@@ -91,6 +91,13 @@ span.balance {
     overflow: hidden;
 }
 
+.distance.input{
+    width: 100px;
+}
+
+.address{
+    flex: 1;
+}
 .calcBeton .select{
     width: 100%;
     min-width: 100%;
