@@ -17,9 +17,9 @@
                 </select>
             </div>
 
-            <input type="text" class="weight-tn input input2" value=0 disabled>
-            <input type="text" name="{{($form!="calcBeton")?'attributes[deliveryPrice]':''}}" class="price-tn input input2" >
-            <input type="text" name="{{($form=="calcBeton")?'attributes[deliveryPrice]':''}}" class="input input2 deliveryPrice" >
+            <input type="text" class="weight-tn input input2" readonly>
+            <input type="text" name="{{($form=="calcBeton")?'attributes[deliveryPrice]':''}}" class="price-tn input input2" >
+            <input type="text" name="{{($form!="calcBeton")?'attributes[deliveryPrice]':''}}" class="input input2 deliveryPrice" >
     </div>
 </div>
 
