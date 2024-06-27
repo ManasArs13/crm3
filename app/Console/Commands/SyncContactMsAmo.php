@@ -40,7 +40,7 @@ class SyncContactMsAmo extends Command
             ->where('updated_at','>',$updatedAt)->get();
         foreach ($contactMs as $contact){
             $contactAmoId =(integer) substr($contact->contact_amo_link,strrpos($contact->contact_amo_link,'/')+ 1);
-            $contactAmoExist = ContactAmo::query()->where('id', $contactAmoId)->exists();
+            $contactAmoExist = ContactAmo::query()->where('id', $contactAmoId)->First();
             if ($contactAmoExist){
                 $contactMsContactAmo = ContactAmoContact::query()->firstOrNew([
                     'contact_id'    =>  $contact->id,
@@ -49,6 +49,15 @@ class SyncContactMsAmo extends Command
                     $contactMsContactAmo->contact_id = $contact->id;
                     $contactMsContactAmo->contact_amo_id = $contactAmoId;
                     $contactMsContactAmo->save();
+
+                    $contact->contact_amo_link = 'https://euroblock.amocrm.ru/contacts/detail/' .$contactAmoId;
+                    $contact->contact_amo_id = $contactAmoId;
+                    $contact->update();
+
+                    $contactAmoExist->contact_ms_link = 'https://online.moysklad.ru/#Company/edit?id=' .$contact->ms_id;
+                    $contactAmoExist->contact_ms_id = $contact->ms_id;
+                    $contactAmoExist->update();
+
             }
         }
         Option::query()->where('code','updated_at_sync_contact')->update([
