@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use AmoCRM\EntitiesServices\Contacts;
 use App\Filters\ShipmentFilter;
 use App\Http\Requests\FilterRequest;
 use App\Http\Requests\ShipmentRequest;
@@ -722,12 +723,13 @@ class ShipmentController extends Controller
     }
 
     public function getDebtors(){
-        $shipments=Shipment::selectRaw('contacts.name, contacts.balance, contacts.ms_id, max(shipments.created_at) as moment, DATEDIFF(CURDATE(), max(shipments.created_at)) as days')
-        ->join('contacts','shipments.contact_id','=','contacts.id')
-        ->where('balance','<', 0)
+        $shipments=Contact::whereDoesntHave('contact_categories', function($q) {
+            $q->where('contact_category_id', '=', '9');
+        })->selectRaw('contacts.name, contacts.balance, contacts.ms_id, max(shipments.created_at) as moment, DATEDIFF(CURDATE(), max(shipments.created_at)) as days')
+        ->join('shipments', 'shipments.contact_id','=','contacts.id')
+        ->where("balance","<",0)
         ->groupBy('contact_id')
-        ->orderBy('days','asc')
-        ->get();
+        ->orderBy('days','asc')->get();
 
         return view('shipment.debtors',compact('shipments'));
     }
