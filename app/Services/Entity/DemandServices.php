@@ -162,6 +162,7 @@ class DemandServices implements EntityInterface
 
                             $entity_position->shipment_id = $entity->id;
                             $entity_position->quantity = $position['quantity'];
+                            $entity_position->price = $position['price']/100;
 
                             $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
 

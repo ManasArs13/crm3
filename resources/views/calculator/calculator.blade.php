@@ -1,4 +1,4 @@
-pp<x-app-layout>
+<x-app-layout>
 
     <x-slot:title>
         Калькулятор (БЛОК)
@@ -36,7 +36,11 @@ pp<x-app-layout>
                 </label>
             </fieldset>
 
-            <a href="{{route('shipments.debtors')}}" class="labelCustomRadio" target="__blank"><p class='labelCustomRadio__text2'>{{__('title.debtors')}}</p></a>
+            <label class="labelCustomRadio labelCustomRadio_js1">
+                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="{{__('title.debtors')}}" data-content="calcDebt">
+                <span class="labelCustomRadio__psevdo_border"></span>
+                <p class="labelCustomRadio__text2">{{__('title.debtors')}}</p>
+            </label>
         </div>
     </div>
 
@@ -52,6 +56,14 @@ pp<x-app-layout>
 
             <div class="tab-content" id="calcBeton">
                 @include("calculator.block", array("menu"=>false, 'productsByGroup' => $productsByBeton,'form'=>'calcBeton', 'vehicleTypes'=>$vehicleTypesBeton, "datesFinish"=>$datesBetonFinish))
+            </div>
+
+            <div class="tab-content" id="calcDebt">
+                <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
+                    <div class="CEB__row">
+                        @include("shipment.debtorstable", array("shipments"=>$shipments))
+                    </div>
+                </div>
             </div>
     </div>
 </div>

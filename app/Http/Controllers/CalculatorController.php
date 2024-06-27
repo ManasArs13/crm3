@@ -163,6 +163,14 @@ class CalculatorController extends Controller
             $productsByBeton[$product->id]["product"] = $product->ms_id;
         }
 
+        $shipments=Contact::whereDoesntHave('contact_categories', function($q) {
+            $q->where('contact_category_id', '=', '9');
+        })->selectRaw('contacts.name, contacts.balance, contacts.ms_id, DATE_FORMAT(max(shipments.created_at),"%d.%m.%Y") as moment, DATEDIFF(CURDATE(), max(shipments.created_at)) as days')
+        ->join('shipments', 'shipments.contact_id','=','contacts.id')
+        ->where("balance","<",0)
+        ->groupBy('contact_id')
+        ->orderBy('days','asc')->orderBy('moment','asc')->get();
+
         return view(
             "calculator.calculator",
             compact(
@@ -173,6 +181,7 @@ class CalculatorController extends Controller
                 'productsByGroup',
                 'productsByBeton',
                 'vehicleTypesBeton',
+                'shipments',
                 'dates',
                 'times',
                 'idBeton',

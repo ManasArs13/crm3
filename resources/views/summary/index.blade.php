@@ -14,6 +14,8 @@
 
         <h3 class="text-4xl font-bold mb-6">{{ __('title.summary') }}</h3>
 
+        @include('summary.canvas')
+
         <div class="CEB__wrapTable mb-5">
             <table class="sum">
                 <tr>
