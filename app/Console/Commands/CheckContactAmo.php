@@ -40,7 +40,7 @@ class CheckContactAmo extends Command
 
             $id = null;
             $link = null;
-            $budget = 0;
+           // $budget = 0;
 
             if ($contactAmo->phone_norm !== null) {
 
@@ -52,14 +52,14 @@ class CheckContactAmo extends Command
                         $link = 'https://online.moysklad.ru/#Company/edit?id=' . $contactMS->id;
                         
                         $orders = Order::where('contact_ms_id', $contactMS->id)->get('id');
-                        foreach($orders as $order) {
-                            $budget += Shipment::where('order_id', $order->id)->sum('suma');
-                        }
+                        // foreach($orders as $order) {
+                        //     $budget += Shipment::where('order_id', $order->id)->sum('suma');
+                        // }
                     }
                 }
             }
 
-            $contactAmo->budget = $budget;
+          //  $contactAmo->budget = $budget;
             $contactAmo->contact_ms_id = $id;
             $contactAmo->contact_ms_link = $link;
             $contactAmo->save();
