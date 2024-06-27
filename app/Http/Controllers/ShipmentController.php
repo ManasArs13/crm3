@@ -729,7 +729,7 @@ class ShipmentController extends Controller
         ->join('shipments', 'shipments.contact_id','=','contacts.id')
         ->where("balance","<",0)
         ->groupBy('contact_id')
-        ->orderBy('days','asc')->get();
+        ->orderBy('days','asc')->orderBy('moment','asc')->get();
 
         return view('shipment.debtors',compact('shipments'));
     }
