@@ -23,7 +23,7 @@
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->moment}}</td>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->days }}</td>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->balance }}</td>
-                            <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->description }}</td>
+                            <td class="text-start pl-2 pt-2 pb-2 pr-2">{{ $shipment->description }}</td>
                         </tr>
                         @php
                             $sum+=$shipment->balance;

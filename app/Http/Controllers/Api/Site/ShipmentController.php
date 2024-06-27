@@ -56,7 +56,7 @@ class ShipmentController extends Controller
         ->join('products','products.id','=','shipment_products.product_id')
         ->whereNotNull('building_material')->where('building_material','<>', Product::NOT_SELECTED)
         ->where('shipments.created_at','>=', $year.'01-01 00:00:00'))
-        ->selectRaw('sum(sum1), month1, material')->groupBy('month1',"building_material")->orderBy("month1")->get();
+        ->selectRaw('sum(sum1), month1, material')->groupBy('month1',"material")->orderBy("month1")->get();
 
         foreach ($dbResults as $dbRow) {
             $charts[$dbRow["material"]][$dbRow["month1"]] = $dbRow["sum1"];
