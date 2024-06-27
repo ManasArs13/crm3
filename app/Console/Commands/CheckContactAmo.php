@@ -40,7 +40,7 @@ class CheckContactAmo extends Command
 
             $id = null;
             $link = null;
-            $budget = 0;
+           // $budget = 0;
 
             if ($contactAmo->phone_norm !== null) {
 
@@ -51,18 +51,18 @@ class CheckContactAmo extends Command
                         $id = $contactMS->id;
                         $link = 'https://online.moysklad.ru/#Company/edit?id=' . $contactMS->id;
                         
-                        $orders = Order::where('contact_ms_id', $contactMS->id)->get('id');
-                        foreach($orders as $order) {
-                            $budget += Shipment::where('order_id', $order->id)->sum('suma');
-                        }
+                       //$orders = Order::where('contact_ms_id', $contactMS->id)->get('id');
+                        // foreach($orders as $order) {
+                        //     $budget += Shipment::where('order_id', $order->id)->sum('suma');
+                        // }
                     }
                 }
             }
 
-            $contactAmo->budget = $budget;
-            $contactAmo->contact_ms_id = $id;
-            $contactAmo->contact_ms_link = $link;
-            $contactAmo->save();
+          //  $contactAmo->budget = $budget;
+            // $contactAmo->contact_ms_id = $id;
+            // $contactAmo->contact_ms_link = $link;
+            // $contactAmo->save();
 
             $accessToken = json_decode(file_get_contents(base_path('token_amocrm_widget.json')), true)['accessToken'];
 
@@ -89,17 +89,17 @@ class CheckContactAmo extends Command
                 ]
             ];
 
-            $customFieldUpdate3 = [
-                "field_id" => 609001,
-                "field_name" => "Бюджет",
-                "field_code" => null,
-                "field_type" => "text",
-                "values" => [
-                    [
-                        "value" => $budget
-                    ]
-                ]
-            ];
+            // $customFieldUpdate3 = [
+            //     "field_id" => 609001,
+            //     "field_name" => "Бюджет",
+            //     "field_code" => null,
+            //     "field_type" => "text",
+            //     "values" => [
+            //         [
+            //             "value" => $budget
+            //         ]
+            //     ]
+            // ];
          
             $client = new Client([
                 'base_uri' => 'https://euroblock.amocrm.ru/api/v4/',
@@ -111,7 +111,7 @@ class CheckContactAmo extends Command
 
             try {
                 $response = $client->patch("contacts/$contactAmo->id", [
-                    'json' => ['custom_fields_values' => [$customFieldUpdate, $customFieldUpdate2, $customFieldUpdate3]],
+                    'json' => ['custom_fields_values' => [$customFieldUpdate, $customFieldUpdate2]],
                 ]);
 
                 if ($response->getStatusCode() == 200) {
