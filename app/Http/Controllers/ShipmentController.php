@@ -723,7 +723,7 @@ class ShipmentController extends Controller
 
     public function getDebtors(){
         $shipments=Shipment::where('status',Shipment::NOT_PAID)
-        ->selectRaw('contacts.name, contacts.ms_id, max(shipments.created_at) as moment, DATEDIFF(CURDATE(), max(shipments.created_at)) as days')
+        ->selectRaw('contacts.name, contacts.balance, contacts.ms_id, max(shipments.created_at) as moment, DATEDIFF(CURDATE(), max(shipments.created_at)) as days')
         ->join('contacts','shipments.contact_id','=','contacts.id')
         ->groupBy('contact_id')
         ->orderBy('days','asc')
