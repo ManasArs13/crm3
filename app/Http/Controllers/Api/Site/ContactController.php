@@ -18,7 +18,7 @@ class ContactController extends Controller
     public function getByPhone(Request $request)
     {
         $phones = Contact::query()
-        ->where('phone', 'LIKE', $request->query('q') . '%')
+        ->where('phone', 'LIKE', '%'.$request->query('q') . '%')
         ->orderByDesc('id')->paginate(10,  ['*'], 'page', request()->query('page'));
 
         return response()->json($phones);
