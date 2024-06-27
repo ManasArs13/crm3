@@ -168,12 +168,12 @@ $(document).ready(function(){
                 let group=$(this).attr("data-id");
                 let countPal=parseInt($(formClass+'.select_product[data-id='+group+']').find('.selected').attr("data-countPallets"));
                 if (countPal!=0){
-                    countPallets+=$(this).val()/countPal; //количество паллетов
+                    countPallets+=Math.ceil($(this).val()/countPal); //количество паллетов
                 }
             });
 
             let palletForm=$(formClass+'[name="positions[pallet][quantity]"]');
-            palletForm.val(Math.ceil(countPallets));
+            palletForm.val(countPallets);
 
             let palletWeight=palletForm.attr("data-weight")*countPallets;
             $(formClass+"#weight_total_pallet").text((palletWeight).toFixed(1));
@@ -235,9 +235,11 @@ $(document).ready(function(){
         let wallHeight = parseInt($("#CEB__text_wallHeight").val()); // высота стенки
         let columnHeight = parseInt($("#CEB__text_columnHeight").val()); // Высота колоны
 
-        lengthColumns = Length - post_quantity;
-        lengthWalls = Length - (post_quantity * 0.28);
 
+        lengthWalls = Length - (post_quantity * 0.28); // Длина стен общая +
+        lengthColumns = Length - lengthWalls;  // Длина колонн общая
+
+        //сколько рядов блока +
         if (numberType == 1) {
             rowsBlocks = wallHeight / 20;
         } else if (numberType == 2) {
@@ -246,10 +248,9 @@ $(document).ready(function(){
             rowsBlocks = wallHeight / 20 - 1;
         };
 
-        WallSteps = lengthWalls / 0.4;
-        WallSteps = Math.ceil(WallSteps);
+        WallSteps = Math.ceil(lengthWalls / 0.39); //шагов стены для заборного блока и парапетов
 
-        //Блоки
+        //Блоки+
         let quantityBlock=WallSteps * rowsBlocks;
         quantityBlock=Math.ceil(quantityBlock+quantityBlock*reserve);
         $(formClass+"[name='positions[12][quantity]']").val(quantityBlock);
@@ -257,23 +258,22 @@ $(document).ready(function(){
 
         //Колонны
         let quantityColumn=post_quantity * columnHeight / 20;
-        quantityColumn=Math.ceil(quantityColumn);
         $(formClass+"[name='positions[21][quantity]']").val(quantityColumn);
         setPriceWeight(21, quantityColumn, formClass);
 
         //Крышек
-        let quantityCover=Math.ceil(post_quantity);
+        let quantityCover=post_quantity;
         $(formClass+"[name='positions[15][quantity]']").val(quantityCover);
         setPriceWeight(15, quantityCover, formClass);
 
         //Парапет
         let quantityParapet=0
         if (numberType == 1) {
-            quantityParapet = Math.round(WallSteps);
+            quantityParapet = WallSteps;
         } else if (numberType == 2) {
-            quantityParapet = Math.round(WallSteps);
+            quantityParapet = WallSteps;
         } else if (numberType == 3) {
-            quantityParapet = Math.round(WallSteps * 3);
+            quantityParapet = WallSteps * 3;
         };
 
         quantityParapet=Math.ceil(quantityParapet+quantityParapet*reserve);
@@ -286,12 +286,12 @@ $(document).ready(function(){
         if (numberType == 1) {
             quantity = 0;
         } else if (numberType == 2) {
-            quantity = Math.round(WallSteps * 2);
+            quantity =  Math.ceil(lengthWalls / 0.19) * 2;
         } else if (numberType == 3) {
-            quantity = Math.round(WallSteps * 2);
+            quantity =  Math.ceil(lengthWalls / 0.19) * 2;
         };
 
-        quantity=Math.ceil(quantity+quantity*reserve);
+        quantity=Math.ceil(quantity+quantity*0.004);
         $(formClass+"[name='positions[6][quantity]']").val(quantity);
         setPriceWeight(6, quantity, formClass);
         calculation(formClass);
