@@ -298,7 +298,7 @@
 
                                             {{ $total_quantity }}
                                         @elseif($column == 'ms_link' && $entityItem->ms_id)
-                                            <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                            <a href="https://online.moysklad.ru/app/#demand/edit?id={{ $entityItem->ms_id }}"
                                                 target="_blank" class="flex justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-box-arrow-in-up-right"
