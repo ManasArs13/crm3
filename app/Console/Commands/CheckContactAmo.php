@@ -51,7 +51,7 @@ class CheckContactAmo extends Command
                         $id = $contactMS->id;
                         $link = 'https://online.moysklad.ru/#Company/edit?id=' . $contactMS->id;
                         
-                        $orders = Order::where('contact_ms_id', $contactMS->id)->get('id');
+                       //$orders = Order::where('contact_ms_id', $contactMS->id)->get('id');
                         // foreach($orders as $order) {
                         //     $budget += Shipment::where('order_id', $order->id)->sum('suma');
                         // }
@@ -60,9 +60,9 @@ class CheckContactAmo extends Command
             }
 
           //  $contactAmo->budget = $budget;
-            $contactAmo->contact_ms_id = $id;
-            $contactAmo->contact_ms_link = $link;
-            $contactAmo->save();
+            // $contactAmo->contact_ms_id = $id;
+            // $contactAmo->contact_ms_link = $link;
+            // $contactAmo->save();
 
             $accessToken = json_decode(file_get_contents(base_path('token_amocrm_widget.json')), true)['accessToken'];
 
