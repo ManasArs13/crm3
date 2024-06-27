@@ -67,6 +67,14 @@ class ContactMsService implements EntityInterface
 
                 $isArchived = 0;
 
+                $description=null;
+                if (Arr::exists($row, 'description')){
+                    $description= $row['description'];
+                }
+
+                $entity->description = $description;
+
+
                 if (Arr::exists($row, 'archived')) {
                     $isArchived = $row["archived"];
                 }
