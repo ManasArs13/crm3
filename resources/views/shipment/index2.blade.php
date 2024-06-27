@@ -239,7 +239,7 @@
                             @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-6 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-6 py-4"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'payed_sum' ||
