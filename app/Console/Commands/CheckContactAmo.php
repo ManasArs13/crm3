@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderMs;
 use App\Models\Shipment;
 use App\Models\Shipments;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -34,7 +35,7 @@ class CheckContactAmo extends Command
      */
     public function handle(): void
     {
-        $contactAmos = ContactAmo::get();
+        $contactAmos = ContactAmo::where('created_at', Carbon::now()->subDays(30))->get();
 
         foreach ($contactAmos as $contactAmo) {
 
