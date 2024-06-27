@@ -11,6 +11,8 @@
                                 {{ __('column.days') }}</th>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
                                     {{ __('column.balance') }}</th>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
+                                    {{ __('column.description') }}</th>
                     </tr>
                     @php
                         $sum=0;
@@ -21,12 +23,14 @@
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->moment}}</td>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->days }}</td>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->balance }}</td>
+                            <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->description }}</td>
                         </tr>
                         @php
                             $sum+=$shipment->balance;
                         @endphp
                     @endforeach
                     <tr>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2"></td>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2"></td>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2"></td>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2"></td>
