@@ -1,4 +1,4 @@
-<x-app-layout>
+pp<x-app-layout>
 
     <x-slot:title>
         Калькулятор (БЛОК)
@@ -17,24 +17,27 @@
     <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
         <span id="message" class="error"></span>
 
-        <fieldset class="CEB__wrapParams1">
-            <label class="labelCustomRadio labelCustomRadio_js1">
-                <input checked="" class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №1" data-content="calcFence" >
-                <span class="labelCustomRadio__psevdo_border"></span>
-                <p class="labelCustomRadio__text2">Калькулятор заборов</p>
-            </label>
-            <label class="labelCustomRadio labelCustomRadio_js1">
-                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №2" data-content="calcBlock">
-                <span class="labelCustomRadio__psevdo_border"></span>
-                <p class="labelCustomRadio__text2">Калькулятор блоков</p>
-            </label>
-            <label class="labelCustomRadio labelCustomRadio_js1">
-                <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №3" data-content="calcBeton">
-                <span class="labelCustomRadio__psevdo_border"></span>
-                <p class="labelCustomRadio__text2">Калькулятор бетона</p>
-            </label>
+        <div class="flex justify-between">
+            <fieldset class="CEB__wrapParams1">
+                <label class="labelCustomRadio labelCustomRadio_js1">
+                    <input checked="" class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №1" data-content="calcFence" >
+                    <span class="labelCustomRadio__psevdo_border"></span>
+                    <p class="labelCustomRadio__text2">Калькулятор заборов</p>
+                </label>
+                <label class="labelCustomRadio labelCustomRadio_js1">
+                    <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №2" data-content="calcBlock">
+                    <span class="labelCustomRadio__psevdo_border"></span>
+                    <p class="labelCustomRadio__text2">Калькулятор блоков</p>
+                </label>
+                <label class="labelCustomRadio labelCustomRadio_js1">
+                    <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="Тип забора" value="Французский забор, Комплектация №3" data-content="calcBeton">
+                    <span class="labelCustomRadio__psevdo_border"></span>
+                    <p class="labelCustomRadio__text2">Калькулятор бетона</p>
+                </label>
+            </fieldset>
 
-        </fieldset>
+            <a href="{{route('shipments.debtors')}}" class="labelCustomRadio" target="__blank"><p class='labelCustomRadio__text2'>{{__('title.debtors')}}</p></a>
+        </div>
     </div>
 
     <div class="content">
