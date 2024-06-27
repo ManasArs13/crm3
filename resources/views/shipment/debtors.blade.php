@@ -25,7 +25,7 @@
                     </tr>
                     @foreach($shipments as $shipment)
                         <tr>
-                            <td class="text-start pl-2 pt-2 pb-2 pr-2"><a href="https://online.moysklad.ru/app/#Company/edit?id={{ $shipment->id }}" target="__blank">{{ $shipment->name }}</a></td>
+                            <td class="text-start pl-2 pt-2 pb-2 pr-2"><a href="https://online.moysklad.ru/app/#Company/edit?id={{ $shipment->ms_id }}" target="__blank">{{ $shipment->name }}</a></td>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->moment}}</td>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->days }}</td>
                             <td class="text-end pl-2 pt-2 pb-2 pr-2">{{ $shipment->balance }}</td>
