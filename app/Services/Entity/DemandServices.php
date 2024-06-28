@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Services\Api\MoySkladService;
 use Illuminate\Support\Arr;
 use App\Helpers\Math;
+use App\Models\Carrier;
 use App\Models\Contact;
 use App\Models\Order;
 use App\Models\ShipingPrice;
@@ -45,6 +46,7 @@ class DemandServices implements EntityInterface
         $attributeVehicleType = 'ba39ab18-a5ee-11ec-0a80-00d3000c54d7';
         $attributeDeliveryPrice = "368d767a-25d9-11ec-0a80-0844000fc7ec";
         $attributeDeliveryFee = "bf195073-ebc2-11ec-0a80-0173001b47dd";
+        $attributeCarrier = '368d75db-25d9-11ec-0a80-0844000fc7eb';
 
         foreach ($rows['rows'] as $row) {
 
@@ -60,6 +62,7 @@ class DemandServices implements EntityInterface
 
                 $delivery = null;
                 $transport = null;
+                $carrier = null;
                 $deliveryPrice = 0;
                 $vehicleType = null;
                 $deliveryFee = null;
@@ -129,6 +132,19 @@ class DemandServices implements EntityInterface
                             case $attributeDeliveryFee:
                                 $deliveryFee = $attribute["value"];
                                 break;
+                            case $attributeCarrier:
+                                $carrier = $this->getGuidFromUrl($attribute["value"]["meta"]["href"]);
+                                $carrier_bd = Carrier::where('ms_id', $carrier)->firstorNew();
+
+                                if ($carrier_bd!=null){
+                                    $carrier=$carrier_bd->id;
+                                }else{
+                                    $carrier_bd->name=$attribute["value"];
+                                    $carrier_bd->ms_id=$carrier;
+                                    $carrier_bd->save();
+                                    $carrier=$carrier_bd->id;
+                                }
+                                break;
                         }
                     }
                 }
@@ -141,7 +157,8 @@ class DemandServices implements EntityInterface
 
                 $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
                 $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
-
+                
+                $entity->carrier_id = $carrier;
                 $entity->delivery_price = $deliveryPrice;
                 $entity->delivery_fee = $deliveryFee;
                 $entity->weight = $shipmentWeight;
