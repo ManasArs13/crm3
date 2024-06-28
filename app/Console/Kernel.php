@@ -52,6 +52,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:update-counterparty')->hourly();
         //$schedule->command('ms:ckeck-contacts-ms')->hourly();
 
+        $schedule->command('ms:import-carrier')->everySixHours();
         $schedule->command('ms:import-color')->everySixHours();
         $schedule->command('ms:import-status')->everySixHours();
         $schedule->command('ms:import-transport-type')->everySixHours();
