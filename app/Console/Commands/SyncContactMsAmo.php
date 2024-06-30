@@ -36,9 +36,9 @@ class SyncContactMsAmo extends Command
 
             if ($contactAmo) {
                 $contactMsContactAmo = ContactAmoContact::query()->firstOrCreate([
-                    'contact_id'  =>  $contact->id,
-                    'contact_amo_id' =>  $contactAmo->id,
-                    'ms_id' => $contact->ms_id
+                    'contact_id'  =>  (string)$contact->id,
+                    'contact_amo_id' =>  (string)$contactAmo->id,
+                    'ms_id' => (string)$contact->ms_id
                 ]);
 
                 $contact->contact_amo_link = 'https://euroblock.amocrm.ru/contacts/detail/' . $contactAmo->id;
