@@ -25,8 +25,8 @@ class SyncContactMsAmo extends Command
         $authMC = base64_encode($login . ':' . $password);
 
         $contactMs = Contact::query()
-            ->groupBy('phone_norm')
-            ->havingRaw('COUNT(*) = 1')
+            // ->groupBy('phone_norm')
+            // ->havingRaw('COUNT(*) = 1')
             //->whereNull('contact_amo_link')
             //->where('updated_at', '>', Carbon::now()->subDays(20))
             ->get();
