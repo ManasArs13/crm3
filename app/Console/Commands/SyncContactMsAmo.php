@@ -27,7 +27,7 @@ class SyncContactMsAmo extends Command
         $contactMs = Contact::query()
             ->groupBy('phone_norm')
             ->havingRaw('COUNT(*) = 1')
-            ->whereNull('contact_amo_link')
+            //->whereNull('contact_amo_link')
             ->where('updated_at', '>', Carbon::now()->subDays(20))->get();
 
         foreach ($contactMs as $contact) {
