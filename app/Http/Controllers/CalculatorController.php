@@ -121,17 +121,19 @@ class CalculatorController extends Controller
         $idCategory=0;
 
         foreach($products as $product){
+            $idCategory=$product->category_id;
+            $nameCategory=$product->name;
+
             if ($product->ms_id=="a656eb95-be75-11ee-0a80-15e100320243"){
-                $product->category_id=$product->category_id."_1";
-                $product->category->name=$product->name;
-                $idCategory=$product->category_id;
+                $idCategory=$product->category_id."_1";
+                $nameCategory=$product->name;
             }
 
-            $productsByGroup[$product->category_id]["name"] = $product->category->name;
-            $productsByGroup[$product->category_id]["id"] = $product->category_id;
+            $productsByGroup[$idCategory]["name"] = $nameCategory;
+            $productsByGroup[$idCategory]["id"] = $idCategory;
 
             if ($product->color!=null){
-                $productsByGroup[$product->category_id]["colors"][] = [
+                $productsByGroup[$idCategory]["colors"][] = [
                         "id" => $product->color_id,
                         "hex"=>$product->color->hex,
                         "name"=>$product->color->name,
