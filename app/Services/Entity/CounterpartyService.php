@@ -52,7 +52,7 @@ class CounterpartyService
                                ],
                                'value' => (string)$contact->id,
                            ];
-                           $this->service->actionPutRowsFromJson($url.$counterparty['id'], $array);
+                           info($counterparty['id'] . ' : ' .$this->service->actionPutRowsFromJson($url.$counterparty['id'], $array));
                        }
 
                    }
