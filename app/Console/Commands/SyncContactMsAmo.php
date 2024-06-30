@@ -35,12 +35,11 @@ class SyncContactMsAmo extends Command
             $contactAmo = ContactAmo::query()->where('phone_norm', $contact->phone_norm)->first();
 
             if ($contactAmo) {
-                $contactMsContactAmo = ContactAmoContact::query()->firstOrCreate([
+                $contactMsContactAmo = ContactAmoContact::firstOrNew([
                     'contact_id'  =>  $contact->id,
                     'contact_amo_id' =>  $contactAmo->id,
-                    'ms_id' => $contact->ms_id
-                ]);
-
+                 ]);
+                 
                 $contact->contact_amo_link = 'https://euroblock.amocrm.ru/contacts/detail/' . $contactAmo->id;
                 $contact->contact_amo_id = $contactAmo->id;
                 $contact->update();
@@ -144,6 +143,11 @@ class SyncContactMsAmo extends Command
                 } catch (RequestException  $e) {
                     info($e->getMessage());
                 }
+                $contactMsContactAmo->contact_id = $contact->id;
+                $contactMsContactAmo->contact_amo_id = $contactAmo->id;
+                $contactMsContactAmo->ms_id = $contact->ms_id;
+
+                $contactMsContactAmo->save();
             }
         }
     }
