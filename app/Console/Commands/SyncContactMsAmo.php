@@ -143,6 +143,8 @@ class SyncContactMsAmo extends Command
                 } catch (RequestException  $e) {
                     info($e->getMessage());
                 }
+
+                $contactMsContactAmo->save();
             }
         }
     }
