@@ -37,41 +37,27 @@ class ShipmentController extends Controller
         $year = Carbon::now()->format('Y');
 
 
-
-
-
-
-
-
-        // $query='select sum(tab.sum) as sum1, month1, building_material from
-        //         (select
-        //         building_material,
-        //         DATE_FORMAT(`shipments`.created_at, "%m") as month1,
-        //         shipment_products.price*shipment_products.quantity as sum
-        //         from `shipments`
-        //         inner join `shipment_products` on `shipments`.`id` = `shipment_products`.`shipment_id`
-        //         inner join `products` on `shipment_products`.`product_id` = `products`.`id`
-        //         where building_material is not null and building_material<>"не выбрано"
-        //         and `shipments`.created_at>"2024-01-01 00:00:00") as tab
-        //         group by month1, building_material';
-
-
         $dbResults=DB::table(Shipment::selectRaw('building_material as material,
         DATE_FORMAT(`shipments`.created_at, "%m") as month1,
         products.price*shipment_products.quantity as sum1')
         ->join('shipment_products','shipments.id','=','shipment_products.shipment_id')
         ->join('products','products.id','=','shipment_products.product_id')
         ->whereNotNull('building_material')->where('building_material','<>', Product::NOT_SELECTED)
-        ->where('shipments.created_at','>=', $year.'01-01 00:00:00'))
-        ->selectRaw('sum(sum1), month1, material')->groupBy('month1',"material")->orderBy("month1")->get();
+        ->where('shipments.created_at','>=', $year.'-01-01 00:00:00'))
+        ->groupBy('month1',"material")->orderBy("month1")->get();
+
+        $datasets=[];
 
         foreach ($dbResults as $dbRow) {
-            $charts[$dbRow["material"]][$dbRow["month1"]] = $dbRow["sum1"];
+            $charts[$dbRow->material][$dbRow->month1] = $dbRow->sum1;
+            $datasets[$dbRow->material]=["label"=>$dbRow->material, "hidden"=>false,"data"=>$charts[$dbRow->material], "backgroundColor"=>"#".dechex(rand(0,10000000)), "borderColor"=>"#".dechex(rand(0,10000000)), "borderWidth"=>4];
         }
+
 
         return response()->json([
             'charts'=>$charts,
-            'labels'=>$labels
+            'labels'=>$labels,
+            'datasets'=>$datasets
         ]);
     }
 

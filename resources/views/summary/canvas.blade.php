@@ -8,13 +8,17 @@
 
             let charts = [];
             let labels = [];
+            let datasets = [];
 
             await fetch('/api/shipments/get/month_category')
             .then((response) => response.json())
             .then((data) => {
-                    charts=data.charts;
+                    
                     labels=data.labels;
-                    console.log(charts);
+
+                    for (let item in data.datasets) {
+                        datasets.push(data.datasets[item])
+                    }
             })
             .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -31,30 +35,7 @@
                 type: "line",
                 data: {
                     labels: labels,
-                    datasets: [{
-                            label: "Сумма выручки по блоку",
-                            hidden: true,
-                            data: charts["продукция"],
-                            backgroundColor: "rgb(145,202,246)",
-                            borderColor: "rgb(145,202,246)",
-                            borderWidth: 4,
-                        },
-                        {
-                            label: "Сумма выручки по бетону",
-                            data: charts["бетон"],
-                            hidden: true,
-                            backgroundColor: "rgb(236,112,112)",
-                            borderColor: "rgb(236,112,112)",
-                            borderWidth: 4,
-                        },
-                        {
-                            label: "Сумма выручки по доставке",
-                            data: charts["доставка"],
-                            backgroundColor: "rgb(255, 205, 86)",
-                            borderColor: "rgb(255, 205, 86)",
-                            borderWidth: 4,
-                        }
-                    ],
+                    datasets: datasets,
                 },
                 options: {
                     scale: {
