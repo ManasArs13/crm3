@@ -84,7 +84,7 @@ class SyncContactMsAmo extends Command
                     ]);
 
                     if ($responseMC->getStatusCode() == 200) {
-                        info('Contact MC updated successfully.' . $contact->id);
+                    //    info('Contact MC updated successfully.' . $contact->id);
                     } else {
                         info('Error updating contact MC.' . $contact->id);
                     }
@@ -136,7 +136,7 @@ class SyncContactMsAmo extends Command
                     ]);
 
                     if ($responseAMO->getStatusCode() == 200) {
-                        info('Contact AMO updated successfully.' . $contactAmo->id);
+                     //   info('Contact AMO updated successfully.' . $contactAmo->id);
                     } else {
                         info('Error updating contact AMO.' . $contactAmo->id);
                     }
