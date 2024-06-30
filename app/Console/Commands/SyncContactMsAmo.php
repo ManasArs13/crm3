@@ -24,12 +24,12 @@ class SyncContactMsAmo extends Command
         $password = Option::where('code', '=', 'ms_password')->first()?->value;
         $authMC = base64_encode($login . ':' . $password);
 
-        $contacts_ms = Contact::
-            // ->groupBy('phone_norm')
-            // ->havingRaw('COUNT(*) = 1')
+        $contacts_ms = Contact::query()
+            ->groupBy('phone_norm')
+            ->havingRaw('COUNT(*) = 1')
             //->whereNull('contact_amo_link')
-            //->where('updated_at', '>', Carbon::now()->subDays(20))
-            get();
+            ->where('updated_at', '>', Carbon::now()->subDays(20))
+            ->get();
 
         foreach ($contacts_ms as $contact) {
             $contactAmo = ContactAmo::query()->where('phone_norm', $contact->phone_norm)->first();
@@ -84,7 +84,7 @@ class SyncContactMsAmo extends Command
                     ]);
 
                     if ($responseMC->getStatusCode() == 200) {
-                        info('Contact MC updated successfully.' . $contact->id);
+                    //    info('Contact MC updated successfully.' . $contact->id);
                     } else {
                         info('Error updating contact MC.' . $contact->id);
                     }
@@ -136,7 +136,7 @@ class SyncContactMsAmo extends Command
                     ]);
 
                     if ($responseAMO->getStatusCode() == 200) {
-                        info('Contact AMO updated successfully.' . $contactAmo->id);
+                     //   info('Contact AMO updated successfully.' . $contactAmo->id);
                     } else {
                         info('Error updating contact AMO.' . $contactAmo->id);
                     }
