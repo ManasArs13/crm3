@@ -28,15 +28,16 @@ class SyncContactMsAmo extends Command
             ->groupBy('phone_norm')
             ->havingRaw('COUNT(*) = 1')
             //->whereNull('contact_amo_link')
-            ->where('updated_at', '>', Carbon::now()->subDays(20))->get();
+            //->where('updated_at', '>', Carbon::now()->subDays(20))
+            ->get();
 
         foreach ($contactMs as $contact) {
             $contactAmo = ContactAmo::query()->where('phone_norm', $contact->phone_norm)->first();
 
             if ($contactAmo) {
-                $contactMsContactAmo = ContactAmoContact::query()->firstOrNew([
-                    'contact_id'    =>  $contact->id,
-                    'contact_amo_id'   =>  $contactAmo->id,
+                $contactMsContactAmo = ContactAmoContact::query()->firstOrCreate([
+                    'contact_id'  =>  $contact->id,
+                    'contact_amo_id' =>  $contactAmo->id,
                     'ms_id' => $contact->ms_id
                 ]);
 
@@ -143,8 +144,6 @@ class SyncContactMsAmo extends Command
                 } catch (RequestException  $e) {
                     info($e->getMessage());
                 }
-
-                $contactMsContactAmo->save();
             }
         }
     }
