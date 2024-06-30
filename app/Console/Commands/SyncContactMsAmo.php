@@ -24,14 +24,14 @@ class SyncContactMsAmo extends Command
         $password = Option::where('code', '=', 'ms_password')->first()?->value;
         $authMC = base64_encode($login . ':' . $password);
 
-        $contactMs = Contact::query()
+        $contacts_ms = Contact::
             // ->groupBy('phone_norm')
             // ->havingRaw('COUNT(*) = 1')
             //->whereNull('contact_amo_link')
             //->where('updated_at', '>', Carbon::now()->subDays(20))
-            ->get();
+            get();
 
-        foreach ($contactMs as $contact) {
+        foreach ($contacts_ms as $contact) {
             $contactAmo = ContactAmo::query()->where('phone_norm', $contact->phone_norm)->first();
 
             if ($contactAmo) {
@@ -48,9 +48,9 @@ class SyncContactMsAmo extends Command
                 //Отправка данных в МС
                 $counterparty = [];
 
-                $counterparty['name'] = $contact->name;
+                //$counterparty['name'] = $contact->name;
                 $counterparty['updated'] = Carbon::now();
-                $counterparty['phone'] = $contact->phone;
+                //$counterparty['phone'] = $contact->phone;
 
                 if (isset($contact->email)){
                     $counterparty['email'] = $contact->email;
