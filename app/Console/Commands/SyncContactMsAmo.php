@@ -6,7 +6,6 @@ use App\Models\Contact;
 use App\Models\ContactAmo;
 use App\Models\ContactAmoContact;
 use App\Models\Option;
-use App\Services\Api\MoySkladService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
@@ -14,24 +13,10 @@ use GuzzleHttp\Exception\RequestException;
 
 class SyncContactMsAmo extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:sync-contact-ms-amo';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Command description';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(MoySkladService $moySkladService): void
+    public function handle(): void
     {
         $accessToken = json_decode(file_get_contents(base_path('token_amocrm_widget.json')), true)['accessToken'];
 
@@ -39,12 +24,9 @@ class SyncContactMsAmo extends Command
         $password = Option::where('code', '=', 'ms_password')->first()?->value;
         $authMC = base64_encode($login . ':' . $password);
 
-        //    $updatedAt = Option::query()->where('code','updated_at_sync_contact')->value('value');
         $contactMs = Contact::query()
             ->groupBy('phone_norm')
             ->havingRaw('COUNT(*) = 1')
-            // ->whereNotNull('contact_amo_link')
-            // ->where('contact_amo_link' ,'!=' ,'')
             ->where('updated_at', '>', Carbon::now()->subDays(20))->get();
 
         foreach ($contactMs as $contact) {
