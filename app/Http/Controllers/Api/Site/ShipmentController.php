@@ -36,6 +36,13 @@ class ShipmentController extends Controller
 
         $year = Carbon::now()->format('Y');
 
+
+
+
+
+
+
+
         // $query='select sum(tab.sum) as sum1, month1, building_material from
         //         (select
         //         building_material,
