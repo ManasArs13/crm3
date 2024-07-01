@@ -163,7 +163,7 @@ class WelcomeController extends Controller
     public function paint(FilterRequest $request)
     {
         $entity = 'residuals';
-        $urlFilter = 'welcome.concretesMaterials';
+        $urlFilter = 'welcome.paint';
         $column = $request->column;
 
         $products = Product::query()
