@@ -122,7 +122,7 @@ class CalculatorController extends Controller
 
         foreach($products as $product){
             $idCategory=$product->category_id;
-            $nameCategory=$product->name;
+            $nameCategory=$product->category->name;
 
             if ($product->ms_id=="a656eb95-be75-11ee-0a80-15e100320243"){
                 $idCategory=$product->category_id."_1";

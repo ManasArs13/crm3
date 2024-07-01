@@ -268,10 +268,12 @@
 
                                         @if ($form != 'calcBeton')
                                             @foreach ($productsByGroup as $group)
-                                                @include('calculator.row', [
-                                                    'form' => $form,
-                                                    'group' => $group,
-                                                ])
+                                                @if (!($form=="calcFence" && $group["id"]=="5_1"))
+                                                    @include('calculator.row', [
+                                                        'form' => $form,
+                                                        'group' => $group,
+                                                    ])
+                                                @endif
                                             @endforeach
                                             <tr>
                                                 <td>

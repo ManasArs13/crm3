@@ -38,60 +38,63 @@ class SyncContactMsAmo extends Command
                 $contactMsContactAmo = ContactAmoContact::firstOrNew([
                     'contact_id'  =>  $contact->id,
                     'contact_amo_id' =>  $contactAmo->id,
-                 ]);
-                 
-                $contact->contact_amo_link = 'https://euroblock.amocrm.ru/contacts/detail/' . $contactAmo->id;
-                $contact->contact_amo_id = $contactAmo->id;
-                $contact->update();
+                ]);
 
-                //Отправка данных в МС
-                $counterparty = [];
+                if ($contactAmo->is_exist == 1) {
+                    $contact->contact_amo_link = 'https://euroblock.amocrm.ru/contacts/detail/' . $contactAmo->id;
+                    $contact->contact_amo_id = $contactAmo->id;
+                    $contact->update();
+                    //Отправка данных в МС
+                    $counterparty = [];
 
-                //$counterparty['name'] = $contact->name;
-                $counterparty['updated'] = Carbon::now();
-                //$counterparty['phone'] = $contact->phone;
+                    //$counterparty['name'] = $contact->name;
+                    $counterparty['updated'] = Carbon::now();
+                    //$counterparty['phone'] = $contact->phone;
 
-                if (isset($contact->email)){
-                    $counterparty['email'] = $contact->email;
-                }
-
-                $counterparty["attributes"][] = [
-                    'meta' => [
-                        'href' => 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/metadata/attributes/bb95261f-972b-11ed-0a80-0e9300807fe0',
-                        'type' => "attributemetadata",
-                        "mediaType" => "application/json"
-                    ],
-                    'value' => 'https://euroblock.amocrm.ru/contacts/detail/' . $contactAmo->id,
-                ];
-
-                $counterparty["attributes"][] = [
-                    'meta' => [
-                        'href' => 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/metadata/attributes/bb952939-972b-11ed-0a80-0e9300807fe1',
-                        'type' => "attributemetadata",
-                        "mediaType" => "application/json"
-                    ],
-                    'value' => (string)$contactAmo->id,
-                ];
-
-                try {
-                    $clientMC = new Client();
-                    $responseMC = $clientMC->request("PUT", 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/'.$contact->ms_id, [
-                        'headers' => [
-                            'Accept-Encoding' => 'gzip',
-                            'Authorization' => 'Basic ' . $authMC
-                        ],
-                        'json' => $counterparty
-                    ]);
-
-                    if ($responseMC->getStatusCode() == 200) {
-                    //    info('Contact MC updated successfully.' . $contact->id);
-                    } else {
-                        info('Error updating contact MC.' . $contact->id);
+                    if (isset($contact->email)) {
+                        $counterparty['email'] = $contact->email;
                     }
-                } catch (RequestException  $e) {
-                    info($e->getMessage());
-                }
 
+                    $counterparty["attributes"][] = [
+                        'meta' => [
+                            'href' => 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/metadata/attributes/bb95261f-972b-11ed-0a80-0e9300807fe0',
+                            'type' => "attributemetadata",
+                            "mediaType" => "application/json"
+                        ],
+                        'value' => 'https://euroblock.amocrm.ru/contacts/detail/' . $contactAmo->id,
+                    ];
+
+                    $counterparty["attributes"][] = [
+                        'meta' => [
+                            'href' => 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/metadata/attributes/bb952939-972b-11ed-0a80-0e9300807fe1',
+                            'type' => "attributemetadata",
+                            "mediaType" => "application/json"
+                        ],
+                        'value' => (string)$contactAmo->id,
+                    ];
+
+                    try {
+                        $clientMC = new Client();
+                        $responseMC = $clientMC->request("PUT", 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/' . $contact->ms_id, [
+                            'headers' => [
+                                'Accept-Encoding' => 'gzip',
+                                'Authorization' => 'Basic ' . $authMC
+                            ],
+                            'json' => $counterparty
+                        ]);
+                    } catch (RequestException  $e) {
+                        if ($responseMC->getStatusCode() == 400) {
+                            $contact->is_exist = 0;
+                            $contact->update();
+                        } else {
+                            info($e->getMessage());
+                        }
+                    }
+                } else {
+                    $contact->contact_amo_link = null;
+                    $contact->contact_amo_id = $contactAmo->id;
+                    $contact->update();
+                }
 
                 $contactAmo->contact_ms_link = 'https://online.moysklad.ru/#Company/edit?id=' . $contact->ms_id;
                 $contactAmo->contact_ms_id = $contact->ms_id;
@@ -134,14 +137,16 @@ class SyncContactMsAmo extends Command
                     $responseAMO = $clientAMO->patch("contacts/$contactAmo->id", [
                         'json' => ['custom_fields_values' => [$customFieldUpdate, $customFieldUpdate2]],
                     ]);
-
-                    if ($responseAMO->getStatusCode() == 200) {
-                     //   info('Contact AMO updated successfully.' . $contactAmo->id);
-                    } else {
-                        info('Error updating contact AMO.' . $contactAmo->id);
-                    }
                 } catch (RequestException  $e) {
-                    info($e->getMessage());
+                    if ($responseAMO->getStatusCode() == 400) {
+                        $contact->contact_amo_link = null;
+                        $contact->update();
+
+                        $contactAmo->is_exist = 0;
+                        $contactAmo->update();
+                    } else {
+                        info($e->getMessage());
+                    }
                 }
                 $contactMsContactAmo->contact_id = $contact->id;
                 $contactMsContactAmo->contact_amo_id = $contactAmo->id;
