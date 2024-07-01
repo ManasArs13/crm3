@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\Site;
 use App\Http\Controllers\Controller;
+use App\Models\ShipingPrice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
@@ -16,25 +17,39 @@ class ShipingPriceController extends Controller
         $price=0;
         $deliveryPrice=0;
 
-        $innerQuery=DB::table('shiping_prices as tab')
-                ->select('distance','tonnage as ton','price', DB::raw('min(distance) as minDistance'))
+        $innerQuery=DB::table('shiping_prices')
+                ->selectRaw('transport_type_id, min(distance) as minDistance')
                 ->where('transport_type_id', $vehicleType)
-                ->where('distance','>=',$distance)
-                ->groupBy('tonnage')
-                ->havingRaw('distance=minDistance');
+                ->where('distance','>=',$distance);
 
-        $mainQuery = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
+        $mainQuery0 = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
                 ->mergeBindings($innerQuery)
-                ->select("ton", "distance", "price", DB::raw('min(ton) as minTon'))
-                ->where("ton",'>=',$weightTn)
-                ->havingRaw('ton=minTon')
-                ->first();
+                ->selectRaw("sh.distance, min(sh.tonnage) as tonnage, sh.transport_type_id")
+                ->join("shiping_prices as sh", function($join){
+                    $join->on('tab.minDistance', '=', 'sh.distance');
+                    $join->on("tab.transport_type_id","=","sh.transport_type_id");
+                })
+                ->where("sh.tonnage",'>=',$weightTn);
+
+        $mainQuery = DB::table(DB::raw('(' .$mainQuery0->toSql() . ') as tab0'))
+                ->mergeBindings($mainQuery0)
+                ->selectRaw("sh2.price, sh2.tonnage as ton, sh2.distance")
+                ->join("shiping_prices as sh2", function($join){
+                    $join->on('tab0.distance', '=', 'sh2.distance');
+                    $join->on("tab0.transport_type_id","=","sh2.transport_type_id");
+                    $join->on("tab0.tonnage","=","sh2.tonnage");
+                })->first();
+
 
         if($mainQuery==null){
             $mainQuery = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
                 ->mergeBindings($innerQuery)
-                ->select("ton", "distance", "price")
-                ->orderBy("ton","desc")
+                ->selectRaw("sh2.tonnage as ton, sh2.distance, sh2.price")
+                ->join("shiping_prices as sh2", function($join){
+                    $join->on('tab.minDistance', '=', 'sh2.distance');
+                    $join->on("tab.transport_type_id","=","sh2.transport_type_id");
+                })
+                ->orderBy("sh2.tonnage","desc")
                 ->first();
 
             if ($mainQuery==null){
