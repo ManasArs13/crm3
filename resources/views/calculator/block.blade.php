@@ -256,14 +256,15 @@
                                     <table class="CEB__table">
                                         <tr>
                                             <td>{{ __('calculator.position') }}</td>
-                                            <td>{{ __('calculator.quantity') }}</td>
+                                            <td @if ($form == 'calcBeton') class="td-weight" @endif>{{ __('calculator.quantity') }}</td>
+
                                             @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                 <td>{{ __('calculator.color') }}</td>
                                             @endif
 
-                                            <td   @if ($form == 'calcBeton') class="hidden" @endif>{{ __('calculator.weight') }}</td>
-                                            <td>{{ __('calculator.price') }}</td>
-                                            <td>{{ __('calculator.sum') }}</td>
+                                            <td   @if ($form == 'calcBeton') class="hidden" @else class="td-weight" @endif>{{ __('calculator.weight') }}</td>
+                                            <td class="td-price">{{ __('calculator.price') }}</td>
+                                            <td class="td-sum">{{ __('calculator.sum') }}</td>
                                         </tr>
 
                                         @if ($form != 'calcBeton')

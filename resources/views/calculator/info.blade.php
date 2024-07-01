@@ -16,9 +16,17 @@
                 </select>
             </div>
 
-            <input type="text" class="weight-tn input input2" readonly>
-            <input type="text" name="{{($form=="calcBeton")?'attributes[deliveryPrice]':''}}" class="price-tn input input2" >
-            <input type="text" name="{{($form!="calcBeton")?'attributes[deliveryPrice]':''}}" class="input input2 deliveryPrice" >
+            <div class="sim">
+                <div class="input-sim input-weight">
+                    <input type="text" class="weight-tn input input2" readonly>
+                </div>
+                <div class="input-sim input-price">
+                    <input type="text" name="{{($form=="calcBeton")?'attributes[deliveryPrice]':''}}" class="price-tn input input2" >
+                </div>
+                <div class="input-sim input-sum">
+                    <input type="text" name="{{($form!="calcBeton")?'attributes[deliveryPrice]':''}}" class="input input2 deliveryPrice" >
+                </div>
+            </div>
     </div>
     <div class="font-weight-bolder">
         {{__("calculator.total")}} <span class="total">0</span> {{__("calculator.rub")}}
