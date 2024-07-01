@@ -26,7 +26,7 @@ Route::get('/products', [ProductController::class, 'get_api'])->name('api.get.pr
 
 Route::get('/shipments/get/month_category', [App\Http\Controllers\Api\Site\ShipmentController::class, 'getShipmentsByMonthAndCategory'])->name('api.get.month.category');
 Route::post('/order_ms/create', [App\Http\Controllers\Api\Ms\OrderController::class, 'setOrderFromCalculator'])->name("api.post.order");
-Route::post("/shipping_price/get", [App\Http\Controllers\Api\Site\ShipingPriceController::class,"getPrice"])->name("api.get.shipping_price");
+Route::get("/shipping_price/get", [App\Http\Controllers\Api\Site\ShipingPriceController::class,"getPrice"])->name("api.get.shipping_price");
 Route::get("/deliveries/get/name", [App\Http\Controllers\Api\Site\DeliveryController::class,"getByName"])->name("api.get.delivery");
 Route::get("/contacts/get/name", [App\Http\Controllers\Api\Site\ContactController::class,"getByName"])->name("api.get.contact.name");
 Route::get("/contacts/get/phone", [App\Http\Controllers\Api\Site\ContactController::class,"getByPhone"])->name("api.get.contact.phone");

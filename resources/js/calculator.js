@@ -323,7 +323,7 @@ $(document).ready(function(){
 
             $.ajax({
                 url: '/api/shipping_price/get',
-                method: 'post',
+                method: 'get',
                 dataType: 'json',
                 data: data,
                 success: function(data){
@@ -466,6 +466,26 @@ $(document).ready(function(){
             $(formClass+".distance").val('');
             $(formClass+"#message").html('');
         }
+    });
+
+    $(".td-sum").each(function(){
+        let itogo=$(this).width()+$(this).next(".td-price").width()+$(this).next("td-weight").width();
+        let form="."+$(this).parents("form").attr("class");
+
+        $(form+' .sim').css("width", itogo+"px");
+        $(form+" .input-sum").css("width",$(".td-sum").width()-2+"px");
+    });
+
+    $(".td-price").each(function(){
+
+        let form="."+$(this).parents("form").attr("class");
+        $(form+" .input-price").css("width",$(".td-price").width()-2+"px");
+    });
+
+    $(".td-weight").each(function(){
+
+        let form="."+$(this).parents("form").attr("class");
+        $(form+" .input-weight").css("width",$(".td-weight").width()-2+"px");
     });
 
     $(".delivery").each(function(){

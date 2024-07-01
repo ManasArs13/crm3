@@ -10,9 +10,9 @@ class ShipingPriceController extends Controller
 {
     public function getPrice(Request $request)
     {
-        $distance = (int)$request->post()["distance"];
-        $vehicleType = (int)$request->post()["vehicleType"];
-        $weightTn = (float)$request->post()["weightTn"];
+        $distance = (int)$request->get("distance");
+        $vehicleType = (int)$request->get("vehicleType");
+        $weightTn = (float)$request->get("weightTn");
 
         $price=0;
         $deliveryPrice=0;
