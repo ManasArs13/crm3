@@ -310,11 +310,12 @@ span.balance {
 
 .sim{
     display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
 }
 
 .input-sim{
     padding: 0 5px;
-    width: 149px;
 }
 
 .input-sim .input2{
@@ -327,8 +328,6 @@ span.balance {
     max-width: calc(100% / 5);
     overflow: hidden;
 }
-
-
 
 .comment{
     width: 200px;
@@ -1019,6 +1018,24 @@ input[type="number"]{
 
 @media only screen and (max-width : 1473px) {
 
+    .sim{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .CEB__wrapParams1{
+        flex-direction: column;
+    }
+
+    .labelCustomRadio{
+        flex: 0 0 40px;
+    }
+
+    .sim .input-sim{
+        padding: 0;
+    }
+
     .deliveryTn{
         flex-direction: column;
     }
@@ -1083,7 +1100,7 @@ input[type="number"]{
 
 
     .flex{
-        display:  column;
+        flex-direction:  column;
     }
 
 	.CEB {
