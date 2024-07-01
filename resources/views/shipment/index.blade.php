@@ -173,6 +173,38 @@
                             </button>
                         </div>
                     </form>
+
+                    {{-- Delivery --}}
+                    <div class="flex flex-row gap-1">
+                        <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
+                            <div>
+                                @foreach ($filters as $filter)
+                                    @if ($filter['name'] == 'delivery')
+                                        <div class="flex flex-row gap-1 w-100">
+                                            <div>
+                                                <select
+                                                    class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                    , name="filters[{{ $filter['name'] }}]" data-offset="false">
+                                                    @foreach ($filter['values'] as $value)
+                                                        <option @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                            value="{{ $value['value'] }} ">
+                                                            {{ $value['name'] }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                            <div>
+                                <button type="submit"
+                                    class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-2 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                    выбрать доставку
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
                     @if (isset($urlCreate) && $urlCreate != '')
                         <div class="flex px-3 text-center font-bold">
                             <a href="{{ route($urlCreate) }}"
@@ -193,7 +225,14 @@
                                 @if ($key === 'remainder')
                                     <th scope="col" class="px-6 py-4">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-4"
+                                        @if (
+                                            $column == 'Имя' ||
+                                                $column == 'Дата создания' ||
+                                                $column == 'Сумма' ||
+                                                $column == 'Кол-во' ||
+                                                $column == 'Дата обновления' ||
+                                                $column == 'Вес') style="text-align:right" @else style="text-align:left" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -201,7 +240,15 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-4"
+                                        @if (
+                                                $column == 'Имя' ||
+                                                $column == '№' ||
+                                                $column == 'Дата создания' ||
+                                                $column == 'Сумма' ||
+                                                $column == 'Кол-во' ||
+                                                $column == 'Дата обновления' ||
+                                                $column == 'Вес') style="text-align:right" @else style="text-align:left" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -227,16 +274,16 @@
                                     <td class="break-all max-w-96 overflow-auto px-6 py-4"
                                         @if (
                                             (is_int($entityItem->$column) ||
+                                                $column == 'id' ||
+                                                $column == 'name' ||
                                                 $column == 'payed_sum' ||
-                                                $column !== 'status' ||
-                                                $column !== 'description' ||
                                                 $column == 'positions_count' ||
                                                 $column == 'residual_count' ||
                                                 $column == 'shipped_count' ||
                                                 $column == 'shipped_sum' ||
                                                 $column == 'reserved_sum' ||
                                                 $column == 'weight' ||
-                                                $column ==  'debt') &&
+                                                $column == 'debt') &&
                                                 !preg_match('/_id\z/u', $column) &&
                                                 $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
@@ -267,7 +314,8 @@
                                                 {{ null }}
                                             @endif
                                         @elseif(preg_match('/_link/u', $column) && $entityItem->$column !== null && $entityItem->$column !== '')
-                                            <a href="{{ $entityItem->$column }}" target="_blank" class="flex justify-center">
+                                            <a href="{{ $entityItem->$column }}" target="_blank"
+                                                class="flex justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-box-arrow-in-up-right"
                                                     viewBox="0 0 16 16">
