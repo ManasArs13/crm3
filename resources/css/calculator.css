@@ -308,6 +308,42 @@ span.balance {
     width: 149px;
 }
 
+.sim{
+    display: flex;
+}
+
+.input-sim{
+    padding: 0 5px;
+    width: 149px;
+}
+
+.input-sim .input2{
+    width: 100%;
+}
+
+.sum.sum1 td{
+    width: calc(100% / 5);
+    width: calc(100% / 5);
+    max-width: calc(100% / 5);
+    overflow: hidden;
+}
+
+
+
+.comment{
+    width: 200px;
+    overflow: hidden;
+    text-wrap: nowrap;
+}
+
+.sum.sum1 td:first-of-type{
+    text-wrap: nowrap;
+}
+
+.sum.sum1 td:nth-of-type(2){
+    width: max-content;
+}
+
 .datetime{
     position: relative;
     display: inline-block;
@@ -649,7 +685,7 @@ button#button-modal {
     flex-basis: 33%;
     flex-grow: 0;
     gap: 10px;
-    justify-content: space-between;
+
 }
 
 .column:first-of-type{
