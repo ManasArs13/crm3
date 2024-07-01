@@ -114,7 +114,16 @@ class ShipmentController extends Controller
         $maxUpdated = Shipment::query()->max('updated_at');
         $maxUpdatedCheck = '';
 
+        //     $deliveryValues = [];
+        $deliveries = Delivery::select('id', 'name')->orderBy('distance')->get();
+        $deliveryValues[] = ['value' => 'index', 'name' => 'Все'];
+
+        foreach ($deliveries as $delivery) {
+            $deliveryValues[] = ['value' => $delivery->id, 'name' => $delivery->name];
+        }
+
         $queryMaterial = 'index';
+        $queryDelivery = 'index';
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
@@ -145,9 +154,12 @@ class ShipmentController extends Controller
                             break;
                     }
                 }
+
+                if ($key == 'delivery') {
+                    $queryDelivery = $value;
+                }
             }
         }
-
         $filters = [
             [
                 'type' => 'date',
@@ -174,6 +186,13 @@ class ShipmentController extends Controller
                 'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
                 'checked_value' => $queryMaterial,
             ],
+            [
+                'type' => 'select',
+                'name' => 'delivery',
+                'name_rus' => 'Доставка',
+                'values' => $deliveryValues,
+                'checked_value' => $queryDelivery,
+            ],
         ];
 
 
@@ -194,7 +213,6 @@ class ShipmentController extends Controller
             'selectColumn'
         ));
     }
-
     public function index2(ShipmentRequest $request)
     {
         $urlEdit = "shipment.edit";
@@ -360,7 +378,7 @@ class ShipmentController extends Controller
                 'type' => 'checkbox',
                 'name' => 'shipments_debt',
                 'name_rus' => trans('filter.filter1'),
-                'value'=> $queryShipment,
+                'value' => $queryShipment,
             ],
         ];
 
@@ -722,10 +740,11 @@ class ShipmentController extends Controller
         return redirect()->route('shipment.index');
     }
 
-    public function getDebtors(){
-        $contacts=Contact::whereDoesntHave('contact_categories', function($q) {
-                $q->where('contact_category_id', '=', '9');
-            })
+    public function getDebtors()
+    {
+        $contacts = Contact::whereDoesntHave('contact_categories', function ($q) {
+            $q->where('contact_category_id', '=', '9');
+        })
             ->selectRaw('contacts.id,
                         contacts.name,
                         contacts.balance,
@@ -733,18 +752,18 @@ class ShipmentController extends Controller
                         contacts.description,
                         max(shipments.created_at) as moment,
                         DATEDIFF(CURDATE(), max(shipments.created_at)) as days')
-            ->join('shipments','shipments.contact_id','=','contacts.id')
-            ->where("balance","<",0)
+            ->join('shipments', 'shipments.contact_id', '=', 'contacts.id')
+            ->where("balance", "<", 0)
             ->groupBy('contact_id');
 
-        $shipments0=DB::table("shipments as sh")
-                        ->selectRaw('tab.moment, tab.id, tab.name, tab.balance, tab.ms_id, tab.description, sh.carrier_id, carriers.name as carrier')
-                        ->join(DB::raw('(' .$contacts->toSql() . ') as tab'), 'tab.id','sh.contact_id')
-                        ->join("carriers","carriers.id","sh.carrier_id")
-                        ->mergeBindings($contacts->getQuery())
-                        ->whereRaw('tab.moment=sh.created_at');
+        $shipments0 = DB::table("shipments as sh")
+            ->selectRaw('tab.moment, tab.id, tab.name, tab.balance, tab.ms_id, tab.description, sh.carrier_id, carriers.name as carrier')
+            ->join(DB::raw('(' . $contacts->toSql() . ') as tab'), 'tab.id', 'sh.contact_id')
+            ->join("carriers", "carriers.id", "sh.carrier_id")
+            ->mergeBindings($contacts->getQuery())
+            ->whereRaw('tab.moment=sh.created_at');
 
-        $shipments=Shipment::selectRaw('shipments.id as ship,
+        $shipments = Shipment::selectRaw('shipments.id as ship,
                                         DATE_FORMAT(max(tab1.moment),"%d.%m.%Y") as moment,
                                         DATEDIFF(CURDATE(), max(tab1.moment)) as days,
                                         shipments.carrier_id,
@@ -756,16 +775,15 @@ class ShipmentController extends Controller
                                         tab1.carrier_id,
                                         tab1.carrier,
                                         count(*) as cnt')
-                            ->rightJoin(DB::raw('(' .$shipments0->toSql() . ') as tab1'), function($join)
-                            {
-                                    $join->on('tab1.carrier_id', '=', 'shipments.carrier_id');
-                                    $join->on("tab1.moment","<","shipments.created_at");
-                            })
-                            ->mergeBindings($shipments0)
-                            ->orderBy('days','asc')
-                            ->orderBy('moment','asc')
-                            ->groupBy("shipments.carrier_id","tab1.id")->get();
+            ->rightJoin(DB::raw('(' . $shipments0->toSql() . ') as tab1'), function ($join) {
+                $join->on('tab1.carrier_id', '=', 'shipments.carrier_id');
+                $join->on("tab1.moment", "<", "shipments.created_at");
+            })
+            ->mergeBindings($shipments0)
+            ->orderBy('days', 'asc')
+            ->orderBy('moment', 'asc')
+            ->groupBy("shipments.carrier_id", "tab1.id")->get();
 
-        return view('shipment.debtors',compact('shipments'));
+        return view('shipment.debtors', compact('shipments'));
     }
 }

@@ -73,17 +73,25 @@ class ShipmentFilter
         }
     }
 
-    public function shipments_debt($value){
-        if ($value){
-            return $this->builder->whereIn('transport_id', function($query){
+    public function delivery($value)
+    {
+        if ($value !== 'index') {
+            $this->builder->where('delivery_id', $value);
+        }
+    }
+
+    public function shipments_debt($value)
+    {
+        if ($value) {
+            return $this->builder->whereIn('transport_id', function ($query) {
                 $query->select(DB::raw('distinct(t1.transport_id)'))
-                ->from("shipments as t1")
-                ->join(DB::raw('(select min(id) as id, transport_id from shipments where status <>"Не оплачен" and transport_id is not null group by transport_id) as t0'),'t1.transport_id', '=', 't0.transport_id')
-                ->whereRaw('t1.id > t0.id');
+                    ->from("shipments as t1")
+                    ->join(DB::raw('(select min(id) as id, transport_id from shipments where status <>"Не оплачен" and transport_id is not null group by transport_id) as t0'), 't1.transport_id', '=', 't0.transport_id')
+                    ->whereRaw('t1.id > t0.id');
             })
-            ->join("contacts","contacts.id","=","shipments.contact_id")
-            ->where('shipments.status','=','Не оплачен')
-            ->where('contacts.balance','<',0);
+                ->join("contacts", "contacts.id", "=", "shipments.contact_id")
+                ->where('shipments.status', '=', 'Не оплачен')
+                ->where('contacts.balance', '<', 0);
         }
     }
 
