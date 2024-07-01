@@ -735,8 +735,7 @@ class ShipmentController extends Controller
                         DATEDIFF(CURDATE(), max(shipments.created_at)) as days')
             ->join('shipments','shipments.contact_id','=','contacts.id')
             ->where("balance","<",0)
-            ->groupBy('contact_id')
-            ->orderBy('days','asc')->orderBy('moment','asc');
+            ->groupBy('contact_id');
 
         $shipments0=DB::table("shipments as sh")
                         ->selectRaw('tab.moment, tab.id, tab.name, tab.balance, tab.ms_id, tab.description, sh.carrier_id, carriers.name as carrier')
@@ -749,7 +748,6 @@ class ShipmentController extends Controller
                                         DATE_FORMAT(max(tab1.moment),"%d.%m.%Y") as moment,
                                         DATEDIFF(CURDATE(), max(tab1.moment)) as days,
                                         shipments.carrier_id,
-                                        tab1.moment,
                                         tab1.id,
                                         tab1.name,
                                         tab1.balance,
@@ -764,6 +762,8 @@ class ShipmentController extends Controller
                                     $join->on("tab1.moment","<","shipments.created_at");
                             })
                             ->mergeBindings($shipments0)
+                            ->orderBy('days','asc')
+                            ->orderBy('moment','asc')
                             ->groupBy("shipments.carrier_id","tab1.id")->get();
 
         return view('shipment.debtors',compact('shipments'));
