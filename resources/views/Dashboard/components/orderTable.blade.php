@@ -247,8 +247,8 @@
                                     @else
                                         {{ null }}
                                     @endif
-                                @elseif(preg_match('/_link/u', $column) && $shipment->$column !== null && $shipment->$column !== '')
-                                    <a href="{{ $shipment->$column }}" target="_blank">
+                                @elseif($column == 'ms_link')
+                                    <a href="{{ $shipment->service_link }}" target="_blank" class="flex justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -265,7 +265,7 @@
                                         {{ $shipment->id }}
                                     </a>
                                 @elseif($column == 'date_moment' || $column == 'date_plan')
-                                    {{ $shipment->created_at }}
+                                    {{  \Illuminate\Support\Carbon::parse($shipment->created_at)->format('H:i') }}
                                 @elseif($column == 'name')
                                     <a href="{{ route('shipment.show', $shipment->id) }}"
                                         class="text-blue-500 hover:text-blue-600">
@@ -295,8 +295,6 @@
                                 @endif
                             </td>
                         @endforeach
-                        <td class="text-nowrap px-3 py-4">
-                        </td>
                     </tr>
                 @endforeach
             @endforeach

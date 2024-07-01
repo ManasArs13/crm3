@@ -192,7 +192,6 @@ class CalculatorController extends Controller
                                         DATE_FORMAT(max(tab1.moment),"%d.%m.%Y") as moment,
                                         DATEDIFF(CURDATE(), max(tab1.moment)) as days,
                                         shipments.carrier_id,
-                                        tab1.moment,
                                         tab1.id,
                                         tab1.name,
                                         tab1.balance,
