@@ -321,7 +321,7 @@
                                             @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                 <td></td>
                                             @endif
-                                            <td @if ($form == 'calcBeton') class="hidden" @endif><span id="weight_total">0</span></td>
+                                            <td @if ($form == 'calcBeton') class="hidden" @endif><span id="weight_total">0</span> {{__("calculator.ton")}}</td>
                                             <td></td>
                                             <td><span id="price_total">0</span></td>
                                         </tr>

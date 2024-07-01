@@ -186,10 +186,10 @@ $(document).ready(function(){
         }
 
 
-        $(formClass+"#weight_total").text(Math.round(weigth_total));
-        $(formClass+"#price_total").text(price_total);
-
         let weight_total_tn=weigth_total/1000;
+
+        $(formClass+"#weight_total").text(weight_total_tn.toFixed(1));
+        $(formClass+"#price_total").text(price_total);
 
 
         if (formClass==".calcBeton "){
