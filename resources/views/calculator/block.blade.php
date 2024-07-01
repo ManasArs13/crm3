@@ -260,7 +260,8 @@
                                             @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                 <td>{{ __('calculator.color') }}</td>
                                             @endif
-                                            <td>{{ __('calculator.weight') }}</td>
+
+                                            <td   @if ($form == 'calcBeton') class="hidden" @endif>{{ __('calculator.weight') }}</td>
                                             <td>{{ __('calculator.price') }}</td>
                                             <td>{{ __('calculator.sum') }}</td>
                                         </tr>
@@ -293,9 +294,11 @@
                                                 @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                     <td></td>
                                                 @endif
-                                                <td>
+
+                                                <td @if ($form == 'calcBeton') class="hidden" @endif>
                                                     <span id="weight_total_pallet" class="weight">0</span>
                                                 </td>
+
                                                 <td>
                                                     <span id="price_client_pallet">0</span>
                                                     <input type="hidden" name="positions[pallet][price]"
@@ -316,7 +319,7 @@
                                             @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                 <td></td>
                                             @endif
-                                            <td><span id="weight_total">0</span></td>
+                                            <td @if ($form == 'calcBeton') class="hidden" @endif><span id="weight_total">0</span></td>
                                             <td></td>
                                             <td><span id="price_total">0</span></td>
                                         </tr>

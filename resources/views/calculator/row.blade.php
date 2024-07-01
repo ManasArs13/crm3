@@ -91,7 +91,7 @@
         </td>
     @endif
 
-    <td>
+    <td @if ($form == 'calcBeton') class="hidden" @endif>
         <span id="weight_total_{{$group["id"]}}" class="weight">0</span>
     </td>
     <td>
