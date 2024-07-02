@@ -114,52 +114,81 @@ class ShipmentController extends Controller
         $maxUpdated = Shipment::query()->max('updated_at');
         $maxUpdatedCheck = '';
 
-        //     $deliveryValues = [];
+        // Значения фильтра доставки
         $deliveries = Delivery::select('id', 'name')->orderBy('distance')->get();
-        $deliveryValues[] = ['value' => 'index', 'name' => 'Все'];
+        $deliveryValues[] = ['value' => 'index', 'name' => 'Все доставки'];
 
         foreach ($deliveries as $delivery) {
             $deliveryValues[] = ['value' => $delivery->id, 'name' => $delivery->name];
         }
 
+        // Значения фильтра статуса
+        $statuses = Shipment::select('status')->groupBy('status')->distinct('status')->orderByDesc('status')->get();
+        $statusValues[] = ['value' => 'index', 'name' => 'Все статусы'];
+
+        foreach ($statuses as $status) {
+            if ($status->status) {
+                $statusValues[] = ['value' => $status->status, 'name' => $status->status];
+            } else {
+                $statusValues[] = ['value' => $status->status, 'name' => 'Не указано'];
+            }
+        }
+
+        // Значение фильтра транспорта
+        $transports = Transport::select('id', 'name')->orderBy('name')->get();
+        $transportValues[] = ['value' => 'index', 'name' => 'Весь транспорт'];
+
+        foreach ($transports as $transport) {
+            $transportValues[] = ['value' => $transport->id, 'name' => $transport->name];
+        }
+
         $queryMaterial = 'index';
         $queryDelivery = 'index';
+        $queryStatus = 'index';
+        $queryTransport = 'index';
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
-                if ($key == 'created_at') {
-                    if ($value['max']) {
-                        $maxCreatedCheck = $value['max'];
-                    }
-                    if ($value['min']) {
-                        $minCreatedCheck = $value['min'];
-                    }
-                }
-                if ($key == 'updated_at') {
-                    if ($value['max']) {
-                        $maxUpdatedCheck = $value['max'];
-                    }
-                    if ($value['min']) {
-                        $minUpdatedCheck = $value['min'];
-                    }
-                }
-
-                if ($key == 'material') {
-                    switch ($value) {
-                        case 'concrete':
-                            $queryMaterial = 'concrete';
-                            break;
-                        case 'block':
-                            $queryMaterial = 'block';
-                            break;
-                    }
-                }
-
-                if ($key == 'delivery') {
-                    $queryDelivery = $value;
+                switch ($key) {
+                    case 'created_at':
+                        if ($value['max']) {
+                            $maxCreatedCheck = $value['max'];
+                        }
+                        if ($value['min']) {
+                            $minCreatedCheck = $value['min'];
+                        }
+                        break;
+                    case 'updated_at':
+                        if ($value['max']) {
+                            $maxUpdatedCheck = $value['max'];
+                        }
+                        if ($value['min']) {
+                            $minUpdatedCheck = $value['min'];
+                        }
+                        break;
+                    case 'material':
+                        switch ($value) {
+                            case 'concrete':
+                                $queryMaterial = 'concrete';
+                                break;
+                            case 'block':
+                                $queryMaterial = 'block';
+                                break;
+                        }
+                        break;
+                    case 'delivery':
+                        $queryDelivery = $value;
+                        break;
+                    case 'status':
+                        $queryStatus = $value;
+                        break;
+                    case 'transport':
+                        $queryTransport = $value;
+                        break;
                 }
             }
         }
+
         $filters = [
             [
                 'type' => 'date',
@@ -193,10 +222,21 @@ class ShipmentController extends Controller
                 'values' => $deliveryValues,
                 'checked_value' => $queryDelivery,
             ],
+            [
+                'type' => 'select',
+                'name' => 'status',
+                'name_rus' => "Статус",
+                'values' => $statusValues,
+                'checked_value' => $queryStatus,
+            ],
+            [
+                'type' => 'select',
+                'name' => 'transport',
+                'name_rus' => 'Транспорт',
+                'values' => $transportValues,
+                'checked_value' => $queryTransport,
+            ],
         ];
-
-
-
 
         return view("shipment.index", compact(
             'entityItems',
@@ -213,6 +253,7 @@ class ShipmentController extends Controller
             'selectColumn'
         ));
     }
+
     public function index2(ShipmentRequest $request)
     {
         $urlEdit = "shipment.edit";
