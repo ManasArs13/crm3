@@ -43,9 +43,9 @@ class ShipmentController extends Controller
         ->join('shipment_products','shipments.id','=','shipment_products.shipment_id')
         ->join('products','products.id','=','shipment_products.product_id')
         ->whereNotNull('building_material')->where('building_material','<>', Product::NOT_SELECTED)
-        ->where('type','=', Product::MATERIAL)
+         ->where('type','=', Product::PRODUCTS)
         ->where('shipments.created_at','>=', $year.'-01-01 00:00:00')
-        ->groupBy('month1',"material")->orderBy("month1")->get();
+        ->groupBy('month1',"material")->orderBy("month1")->dd();
 
         $datasets=[];
 
