@@ -193,8 +193,21 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    @endif
-                                    @if ($filter['name'] == 'delivery')
+                                    @elseif ($filter['name'] == 'transport')
+                                        <div class="flex flex-row gap-1 w-100">
+                                            <div>
+                                                <select
+                                                    class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                    , name="filters[{{ $filter['name'] }}]" data-offset="false">
+                                                    @foreach ($filter['values'] as $value)
+                                                        <option @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                            value="{{ $value['value'] }} ">
+                                                            {{ $value['name'] }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @elseif ($filter['name'] == 'delivery')
                                         <div class="flex flex-row gap-1 w-100">
                                             <div>
                                                 <select

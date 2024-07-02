@@ -116,7 +116,7 @@ class ShipmentController extends Controller
 
         // Значения фильтра доставки
         $deliveries = Delivery::select('id', 'name')->orderBy('distance')->get();
-        $deliveryValues[] = ['value' => 'index', 'name' => 'Все'];
+        $deliveryValues[] = ['value' => 'index', 'name' => 'Все доставки'];
 
         foreach ($deliveries as $delivery) {
             $deliveryValues[] = ['value' => $delivery->id, 'name' => $delivery->name];
@@ -124,7 +124,7 @@ class ShipmentController extends Controller
 
         // Значения фильтра статуса
         $statuses = Shipment::select('status')->groupBy('status')->distinct('status')->orderByDesc('status')->get();
-        $statusValues[] = ['value' => 'index', 'name' => 'Все'];
+        $statusValues[] = ['value' => 'index', 'name' => 'Все статусы'];
 
         foreach ($statuses as $status) {
             if ($status->status) {
@@ -134,9 +134,18 @@ class ShipmentController extends Controller
             }
         }
 
+        // Значение фильтра транспорта
+        $transports = Transport::select('id', 'name')->orderBy('name')->get();
+        $transportValues[] = ['value' => 'index', 'name' => 'Весь транспорт'];
+
+        foreach ($transports as $transport) {
+            $transportValues[] = ['value' => $transport->id, 'name' => $transport->name];
+        }
+
         $queryMaterial = 'index';
         $queryDelivery = 'index';
         $queryStatus = 'index';
+        $queryTransport = 'index';
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
@@ -172,6 +181,10 @@ class ShipmentController extends Controller
                         break;
                     case 'status':
                         $queryStatus = $value;
+                        break;
+                    case 'transport':
+                        $queryTransport = $value;
+                        break;
                 }
             }
         }
@@ -215,7 +228,14 @@ class ShipmentController extends Controller
                 'name_rus' => "Статус",
                 'values' => $statusValues,
                 'checked_value' => $queryStatus,
-            ]
+            ],
+            [
+                'type' => 'select',
+                'name' => 'transport',
+                'name_rus' => 'Транспорт',
+                'values' => $transportValues,
+                'checked_value' => $queryTransport,
+            ],
         ];
 
         return view("shipment.index", compact(
