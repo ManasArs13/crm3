@@ -32,7 +32,7 @@ class SyncContactMsAmo extends Command
             ->get();
 
         foreach ($contacts_ms as $contact) {
-            $contactAmo = ContactAmo::query()->where('phone_norm', $contact->phone_norm)->first();
+            $contactAmo = ContactAmo::query()->where('phone_norm', $contact->phone_norm)->where('is_exist', 1)->first();
 
             if ($contactAmo) {
                 $contactMsContactAmo = ContactAmoContact::firstOrNew([

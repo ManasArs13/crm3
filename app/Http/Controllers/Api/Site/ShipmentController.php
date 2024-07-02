@@ -45,7 +45,7 @@ class ShipmentController extends Controller
         ->whereNotNull('building_material')->where('building_material','<>', Product::NOT_SELECTED)
          ->where('type','=', Product::PRODUCTS)
         ->where('shipments.created_at','>=', $year.'-01-01 00:00:00')
-        ->groupBy('month1',"material")->orderBy("month1")->dd();
+        ->groupBy('month1',"material")->orderBy("month1")->get();
 
         $datasets=[];
 
