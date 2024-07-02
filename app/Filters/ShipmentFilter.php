@@ -80,6 +80,13 @@ class ShipmentFilter
         }
     }
 
+    public function status($value)
+    {
+        if($value !== 'index') {
+            $this->builder->where('status', $value);
+        }
+    }
+
     public function shipments_debt($value)
     {
         if ($value) {

@@ -174,11 +174,26 @@
                         </div>
                     </form>
 
-                    {{-- Delivery --}}
+                    {{-- Query Filters --}}
                     <div class="flex flex-row gap-1">
                         <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
-                            <div>
+                            <div class="flex flex-row gap-1">
                                 @foreach ($filters as $filter)
+                                    @if ($filter['name'] == 'status')
+                                        <div class="flex flex-row gap-1 w-100">
+                                            <div>
+                                                <select
+                                                    class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                    , name="filters[{{ $filter['name'] }}]" data-offset="false">
+                                                    @foreach ($filter['values'] as $value)
+                                                        <option @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                            value="{{ $value['value'] }} ">
+                                                            {{ $value['name'] }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
                                     @if ($filter['name'] == 'delivery')
                                         <div class="flex flex-row gap-1 w-100">
                                             <div>
@@ -199,7 +214,7 @@
                             <div>
                                 <button type="submit"
                                     class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-2 text-md font-medium leading-normal text-white hover:bg-blue-700">
-                                    выбрать доставку
+                                    отфильтровать
                                 </button>
                             </div>
                         </form>
@@ -242,7 +257,7 @@
                                 @else
                                     <th scope="col" class="px-6 py-4"
                                         @if (
-                                                $column == 'Имя' ||
+                                            $column == 'Имя' ||
                                                 $column == '№' ||
                                                 $column == 'Дата создания' ||
                                                 $column == 'Сумма' ||
