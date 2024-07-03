@@ -145,6 +145,8 @@ class SyncContactMsAmo extends Command
                         $contactAmo->is_exist = 0;
                         $contactAmo->update();
                     } else {
+                        $contactAmo->is_exist = 0;
+                        $contactAmo->update();
                         info($e->getMessage());
                     }
                 }

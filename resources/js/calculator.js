@@ -318,8 +318,7 @@ $(document).ready(function(){
             if (distanceValue!='')
                 deliveryValue=distanceValue;
 
-            $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"))
-
+            $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"));
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
             let weight = $(formClass+".weight-tn").val();
             let data = {"weightTn": weight, "distance": deliveryValue, "vehicleType": vehicleType};
@@ -448,11 +447,9 @@ $(document).ready(function(){
         let geocode=$(this).val();
         let addressPopup=$(this).next(".address-popup");
         let formClass="."+$(this).parents("form").attr("class")+" ";
-        let point0=[34.012516,45.124109];
-        let ull="34.12516,45.124109";
-
+        let ull="34.01251650000001,45.12410907456747";
         let bbox="32.14,44~36.69,46";
-        let url='https://suggest-maps.yandex.ru/v1/suggest?text='+geocode+'&bbox='+bbox+'&apikey='+apikey+'&format=json&lang=ru_RU&print_address=1';
+        let url='https://suggest-maps.yandex.ru/v1/suggest?text='+geocode+'&bbox='+bbox+'&apikey='+apikey+'&format=json&lang=ru_RU&print_address=1&ull='+ull;
 
         if (geocode.length>10){
             $.ajax({
@@ -463,7 +460,6 @@ $(document).ready(function(){
                     let results=data.results;
                     $(formClass+'.select2-results__options').empty();
                     $(formClass+'.address-popup').show();
-
                     $.each(results,function(index, value){
                         $(formClass+".select2-results__options").append('<li class="select2-results__option click" data-distance="'+(value.distance.value/1000).toFixed(2)+'">'+value.address.formatted_address+'</li>');
                     });
