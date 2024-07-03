@@ -3,7 +3,16 @@
         <textarea name="description" class="input" placeholder = "{{__('column.comment')}}"></textarea>
 
         <div class="CEB_block">
-            <input type="text" name="shipmentAddressFull[addInfo]" class="address input" placeholder="{{__('column.shipment_address')}}">
+            <div class="address-field open">
+                <input type="text" name="shipmentAddressFull[addInfo]" class="address input" placeholder="{{__('column.shipment_address')}}">
+                <div class="address-popup">
+                    <span class="select2-results">
+                        <ul class="select2-results__options" role="listbox">
+
+                        </ul>
+                    </span>
+                </div>
+            </div>
             <input type="text" class="distance input" placeholder="{{__('calculator.km')}}">
         </div>
 

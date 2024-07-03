@@ -313,6 +313,10 @@ $(document).ready(function(){
     function calcDelivery(formClass) {
         if (!$(formClass+'.deliveryPrice').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
+            let distanceValue = $(formClass+' .distance').val();
+
+            if (distanceValue!='')
+                deliveryValue=distanceValue;
 
             $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"))
 
@@ -438,27 +442,33 @@ $(document).ready(function(){
     });
 
 
-    $("body").on("change",".address", function(){
-        let apikey='83a5c651-59e9-4762-9fa9-d222e4aa50ab';
+    $("body").on("keyup",".address", function(){
+        let apikey='6bf2f721-5fc7-48cd-9b69-e2249c499235';
         let lang='ru_RU';
         let geocode=$(this).val();
+        let addressPopup=$(this).next(".address-popup");
         let formClass="."+$(this).parents("form").attr("class")+" ";
         let point0=[34.012516,45.124109];
+        let ull="34.12516,45.124109";
 
-        let url='https://geocode-maps.yandex.ru/1.x/?apikey='+apikey+'&geocode='+geocode+'&format=json&lang=ru_RU';
+        let bbox="32.14,44~36.69,46";
+        let url='https://suggest-maps.yandex.ru/v1/suggest?text='+geocode+'&bbox='+bbox+'&apikey='+apikey+'&format=json&lang=ru_RU&print_address=1';
 
-        if (geocode.length>0){
+        if (geocode.length>10){
             $.ajax({
                 url: url,
                 method: 'get',
                 dataType: 'json',
                 success: function(data){
-                    let point1=data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(" ");
-                    let km=(ymaps.coordSystem.geo.getDistance(point0, point1)/1000).toFixed(1);
-                    $(formClass+".distance").val(km);
-                    $(formClass+"#message").html('');
+                    let results=data.results;
+                    $(formClass+'.select2-results__options').empty();
+                    $(formClass+'.address-popup').show();
+
+                    $.each(results,function(index, value){
+                        $(formClass+".select2-results__options").append('<li class="select2-results__option click" data-distance="'+(value.distance.value/1000).toFixed(2)+'">'+value.address.formatted_address+'</li>');
+                    });
                 },
-                error: function(response) {
+                error: function(rjqXHR, textStatus, errorThrown) {
                     $(formClass+"#message").html(response.responseJSON.error);
                 }
             });
@@ -466,6 +476,18 @@ $(document).ready(function(){
             $(formClass+".distance").val('');
             $(formClass+"#message").html('');
         }
+    });
+
+    $(".address-popup").on("click", ".select2-results__option", function(){
+        let formClass="."+$(this).parents("form").attr("class")+" ";
+        let val=$(this).text();
+        $(formClass+".address").val(val);
+        $(formClass+".address-popup").hide();
+
+        let km=$(this).data("distance");
+        $(formClass+".distance").val(km);
+        $(formClass+"#message").html('');
+        calcDelivery(formClass);
     });
 
     $(".delivery").each(function(){
