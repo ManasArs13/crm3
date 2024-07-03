@@ -6,6 +6,34 @@
         </x-slot>
     @endif
 
+    <x-slot:head>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+
+                let buttons = document.querySelectorAll(".buttonForOpen")
+                for (var i = 0; i < buttons.length; i++) {
+                    let attrib = buttons[i].getAttribute("data-id");
+                    let but = buttons[i];
+
+                    function cl(attr, b) {
+                        let positions = document.querySelectorAll(".position_column_" + attr, b);
+                        for (var i = 0; i < positions.length; i++) {
+                            console.log(positions[i].style.display)
+                            if (positions[i].style.display === 'none') {
+                                positions[i].style.display = ''
+                                b.textContent = '-'
+                            } else {
+                                positions[i].style.display = 'none'
+                                b.textContent = '+'
+                            }
+                        }
+                    }
+                    buttons[i].addEventListener("click", cl.bind(null, attrib, but));
+                }
+            });
+        </script>
+    </x-slot>
+
     <div class="w-11/12 mx-auto py-8">
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
@@ -13,101 +41,181 @@
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
-             {{-- header --}}
-             <div class="border-b-2 border-neutral-100">
+            {{-- header --}}
+            <div class="border-b-2 border-neutral-100">
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex flex-row gap-1">
                         <div>
-                            @if (url()->current() == route('supplies.index'))
-                                <a href="{{ route('supplies.index') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
+                            @if (url()->current() == route('supply.index'))
+                                <a href="{{ route('supply.index') }}"
+                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая
+                                    таблица</a>
                             @else
-                                <a href="{{ route('supplies.index') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая таблица</a>
+                                <a href="{{ route('supply.index') }}"
+                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая
+                                    таблица</a>
                             @endif
                         </div>
                         <div>
-                            @if (url()->current() == route('supplies.products'))
-                                <a href="{{ route('supplies.products') }}"
-                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
+                            @if (url()->current() == route('supply.products'))
+                                <a href="{{ route('supply.products') }}"
+                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
                             @else
-                                <a href="{{ route('supplies.products') }}"
-                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
+                                <a href="{{ route('supply.products') }}"
+                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
                             @endif
                         </div>
                     </div>
-                </div>              
+                </div>
             </div>
 
-            {{-- body --}}
-            <div class="flex flex-col w-100 p-1 bg-white overflow-x-scroll">
+            {{-- body card --}}
+            <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.name') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.date_plan') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.contact_id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.sum') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.incoming_number') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.incoming_date') }}
-                            </th>
-                            <th scope="col" class="px-6 py-4">
-                                {{ __('column.description') }}
-                            </th>
+                            <th scope="col" class="px-2 py-4"></th>
+                            @foreach ($resColumns as $key => $column)
+                                @if ($key === 'remainder' || $key == 'positions_count')
+                                    <th scope="col" class="px-2 py-4">{{ $column }}</th>
+                                @elseif(isset($orderBy) && $orderBy == 'desc')
+                                    <th scope="col" class="px-2 py-4"
+                                        @if (
+                                            $column == '№' ||
+                                                $column == 'Дата создания' ||
+                                                $column == 'Дата обновления' ||
+                                                $column == 'Имя' ||
+                                                $column == 'Фактическая дата' ||
+                                                $column == 'Сумма' ||
+                                                $column == 'Входящий номер' ||
+                                                $column == 'Входящий номер от') style="text-align: right" @endif>
+                                        <a class="text-black"
+                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
+                                            &#9650;
+                                        @endif
+                                    </th>
+                                @else
+                                    <th scope="col" class="px-2 py-4"
+                                        @if (
+                                            $column == '№' ||
+                                                $column == 'Дата создания' ||
+                                                $column == 'Дата обновления' ||
+                                                $column == 'Имя' ||
+                                                $column == 'Фактическая дата' ||
+                                                $column == 'Сумма' ||
+                                                $column == 'Входящий номер' ||
+                                                $column == 'Входящий номер от') style="text-align: right" @endif>
+                                        <a class="text-black"
+                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
+                                            &#9660;
+                                        @endif
+                                    </th>
+                                @endif
+                            @endforeach
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($supplies as $supply)
+                        @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
-                                <td class="px-6 py-4 text-blue-600 text-right">
-                                    <a href="{{ route('supplies.show', ['supply' => $supply->id]) }}">
-                                        {{ $supply->id }}
-                                    </a>
+
+                                @if (count($entityItem->products) > 0)
+                                    <td class="text-nowrap px-2 py-4">
+                                        <button class="buttonForOpen text-normal font-bold"
+                                            data-id="{!! $entityItem->id !!}">+</button>
+                                    </td>
+                                @else
+                                    <td class="text-nowrap px-2 py-4">
+                                    </td>
+                                @endif
+
+                                @foreach ($resColumns as $column => $title)
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                        @if (
+                                            $column == 'id' ||
+                                                $column == 'created_at' ||
+                                                $column == 'updated_at' ||
+                                                $column == 'name' ||
+                                                $column == 'moment' ||
+                                                $column == 'sum' ||
+                                                $column == 'incoming_number' ||
+                                                $column == 'incoming_date') style="text-align: right" @endif
+                                        @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+                                        @if (preg_match('/_id\z/u', $column))
+                                            @if ($column == 'contact_id')
+                                                {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                            @endif
+                                        @elseif(preg_match('/_link/u', $column) && $entityItem->$column !== null && $entityItem->$column !== '')
+                                            <a href="{{ $entityItem->$column }}" target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                    viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                    </path>
+                                                    <path fill-rule="evenodd"
+                                                        d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                    </path>
+                                                </svg>
+                                            </a>
+                                        @elseif($column == 'name' || $column == 'id')
+                                            <a href="{{ route($urlShow, $entityItem->id) }}"
+                                                class="text-blue-500 hover:text-blue-600">
+                                                {{ $entityItem->$column }}
+                                            </a>
+                                        @else
+                                            {{ $entityItem->$column }}
+                                        @endif
+                                    </td>
+                                @endforeach
+
+                                {{-- Delete --}}
+                                <td class="text-nowrap px-2 py-4">
+
+                                    <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
+                                        class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6 stroke-red-500 hover:stroke-white">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                            </svg>
+
+                                        </button>
+                                    </form>
                                 </td>
-                                <td class="px-6 py-4 text-blue-600">
-                                    <a href="{{ route('supplies.show', ['supply' => $supply->id]) }}">
-                                        {{ $supply->name }}
-                                    </a>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ $supply->moment }}
-                                </td>
-                                <td class="text-blue-600">
-                                    @if($supply->contact)
-                                     <a href="{{ route('contact.show', ['contact' => $supply->contact->id]) }}">
-                                        {{ $supply->contact->name }}
-                                     </a> 
-                                     @else
-                                     {{ __('column.no') }}
-                                     @endif
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ $supply->sum }}
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ $supply->incoming_number }}
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ $supply->incoming_date }}
-                                </td>
-                                <td class="px-6 py-4 break-all max-w-[24rem] overflow-auto">
-                                    {{ $supply->description }}
-                                </td>
+
                             </tr>
+
+                            @foreach ($entityItem->products as $product)
+                                <tr style="display: none"
+                                    class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}">
+                                    <td class="text-nowrap px-3 py-4">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    @foreach ($resColumns as $column => $title)
+                                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4" style="text-align: right">
+                                            @if ($column == 'created_at' || $column == 'updated_at')
+                                                {{ $entityItem->$column }}
+                                            @elseif($column == 'name')
+                                                {{ $product->pivot->quantity }}
+                                            @elseif($column == 'contact_id')
+                                                {{ $product->name }}
+                                            @elseif($column == 'sum')
+                                                {{ $product->pivot->price }}
+                                            @endif
+                                        </td>
+                                    @endforeach
+                                    <td class="text-nowrap px-3 py-4">
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endforeach
                     </tbody>
                 </table>
@@ -115,8 +223,8 @@
 
             {{-- footer --}}
             <div class="border-t-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
-                {{ $supplies->appends(request()->query())->links() }}
+                {{ $entityItems->appends(request()->query())->links() }}
             </div>
-            
+
         </div>
 </x-app-layout>

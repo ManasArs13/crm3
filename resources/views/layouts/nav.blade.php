@@ -125,7 +125,7 @@
                                     Расход
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('supplies.index')">
+                                <x-dropdown-link :href="route('supply.index')">
                                     Приёмки
                                 </x-dropdown-link>
                             </x-slot>
@@ -403,7 +403,7 @@
                 <a href="{{ route('outgoings.index') }}">Расход</a>
             </div>
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                <a href="{{ route('supplies.index') }}">Приёмки</a>
+                <a href="{{ route('supply.index') }}">Приёмки</a>
             </div>
         </div>
 
