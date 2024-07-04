@@ -70,12 +70,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'shiping_price' => ShipingPriceController::class,
         'category' => CategoryController::class,
         'order_positions' => OrderPositionController::class,
-        'shipment_products' => ShipmentProductController::class
+        'shipment_products' => ShipmentProductController::class,
+        'supply'    => SupplyController::class,
     ]);
 
     Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
     //Доп
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
+    Route::get('/supply/products', [SupplyController::class, 'products'])->name('supply.products');
 
     // Фильтры
     Route::get('/orders/filter', [OrderController::class, 'filter'])->name('order.filter');
@@ -91,6 +93,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
     Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
+    Route::get('/supply/filter', [SupplyController::class, 'filter'])->name('supply.filter');
+    
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
@@ -102,10 +106,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/residuals/processing', [ResidualController::class, 'processing'])->name('residual.processing');
 
     // Приёмки
-    Route::resource('supplies', SupplyController::class)->only([
-        'index', 'show'
-    ]);
-    Route::get('/supply/products', [SupplyController::class, 'products'])->name('supplies.products');
+    // Route::resource('supplies', SupplyController::class)->only([
+    //     'index', 'show'
+    // ]);
+    
 
     // Приход
     Route::resource('incomings', IncomingController::class)->only([
