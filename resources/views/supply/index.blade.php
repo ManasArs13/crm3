@@ -44,7 +44,208 @@
             {{-- header --}}
             <div class="border-b-2 border-neutral-100">
                 <div class="flex flex-row w-full p-3 justify-between">
+                    <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
+                        <div>
+                            <x-dropdown align="left" width="64" outside='false'>
+                                <x-slot name="trigger">
+                                    <button type="button"
+                                        class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-1 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
+                                        столбцы
+                                        <div class="ms-1 mt-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="grid grid-cols-3 w-100 p-4 gap-1">
+                                        <div class="flex basis-1/3">
+                                            <p>
+                                                <input type="checkbox" id="change_all">
+                                                Выбрать все
+                                            </p>
+                                        </div>
+                                        @foreach ($resColumnsAll as $key => $column)
+                                            <div class="flex basis-1/3">
+                                                <p>
+                                                    <input name="columns[]" class="columns_all" type="checkbox"
+                                                        value="{{ $key }}"
+                                                        @if ($column['checked'] == true) checked @endif>
+                                                    {{ $column['name_rus'] }}
+                                                </p>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function(event) {
+                                            var checkboxAll = document.querySelector("#change_all");
+                                            checkboxAll.addEventListener('change', function() {
+                                                let inputs = document.querySelectorAll(".columns_all")
+
+                                                if (this.checked) {
+                                                    inputs.forEach(element => {
+                                                        element.checked = true
+                                                    });
+                                                } else {
+                                                    inputs.forEach(element => {
+                                                        element.checked = false
+                                                    });
+                                                }
+                                            });
+
+                                        });
+                                    </script>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                        <div>
+                            <x-dropdown align="left" width="64" outside='false'>
+                                <x-slot name="trigger">
+                                    <button type="button"
+                                        class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-1 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
+                                        фильтр
+                                        <div class="ms-1 mt-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="w-100 p-4">
+                                        @foreach ($filters as $filter)
+                                            @if ($filter['type'] == 'date' || $filter['type'] == 'number')
+                                                <div class="flex flex-row gap-1 w-100">
+                                                    <div class="basis-1/5">
+                                                        <p>
+                                                            {{ $filter['name_rus'] }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="basis-2/5">
+                                                        <div class="relative mb-4 flex flex-wrap items-stretch">
+                                                            <span
+                                                                class="flex items-center whitespace-nowrap rounded-l border border-r-0 border-solid border-neutral-300 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-neutral-700 dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200">
+                                                                от</span>
+                                                            <input name="filters[{{ $filter['name'] }}][min]"
+                                                                step="0.1" type="{{ $filter['type'] }}"
+                                                                min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
+                                                                @if ($filter['name'] == 'sum') placeholder="{{ $filter['min'] }}" @endif
+                                                                value="{{ $filter['minChecked'] }}"
+                                                                class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
+                                                        </div>
+                                                    </div>
+                                                    <div class="basis-2/5">
+                                                        <div class="relative mb-4 flex flex-wrap items-stretch">
+                                                            <span
+                                                                class="flex items-center whitespace-nowrap rounded-l border border-r-0 border-solid border-neutral-300 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-neutral-700 dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200">
+                                                                до</span>
+                                                            <input name="filters[{{ $filter['name'] }}][max]"
+                                                                step="0.1" type="{{ $filter['type'] }}"
+                                                                min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
+                                                                @if ($filter['name'] == 'sum') placeholder="{{ $filter['max'] }}" @endif
+                                                                value="{{ $filter['maxChecked'] }}"
+                                                                class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @elseif ($filter['type'] == 'select')
+                                                <div class="flex flex-row gap-1 w-100">
+                                                    <div class="basis-1/5">
+                                                        <p>
+                                                            {{ $filter['name_rus'] }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="basis-4/5">
+                                                        <select
+                                                            class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                            name="filters[{{ $filter['name'] }}]">
+                                                            @foreach ($filter['values'] as $value)
+                                                                <option
+                                                                    @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                                    value="{{ $value['value'] }} ">
+                                                                    {{ $value['name'] }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            @elseif($filter['type'] == 'checkbox')
+                                                <div class="flex flex-row gap-1 w-100">
+                                                    <div class="basis-1/5">
+                                                        <p>
+                                                            {{ $filter['name_rus'] }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="basis-4/5 flex flex-wrap">
+                                                        @foreach ($filter['values'] as $value)
+                                                            <div class="basis-1/3 text-left">
+                                                                <input name="{{ $filter['name'] }}[]"
+                                                                    @if ($value['checked'] == true) checked=checked @endif
+                                                                    class="border border-solid border-neutral-300 rounded"
+                                                                    type="checkbox" value="{{ $value['value'] }}" />
+                                                                <p
+                                                                    class="inline-block ps-[0.15rem] hover:cursor-pointer">
+                                                                    {{ $value['name'] }}
+                                                                </p>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                        <div>
+                            <button type="submit"
+                                class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                поиск
+                            </button>
+                        </div>
+                    </form>
+
+
+                    {{-- Query Filters --}}
                     <div class="flex flex-row gap-1">
+                        <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
+                            <div class="flex flex-row gap-1">
+                                @foreach ($filters as $filter)
+                                    @if ($filter['name'] == 'contact')
+                                        <div class="flex flex-row gap-1 w-100">
+                                            <div>
+                                                <select
+                                                    class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                    , name="filters[{{ $filter['name'] }}]" data-offset="false">
+                                                    @foreach ($filter['values'] as $value)
+                                                        <option @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                            value="{{ $value['value'] }} ">
+                                                            {{ $value['name'] }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                            <div>
+                                <button type="submit"
+                                    class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-2 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                    отфильтровать
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="flex flex-row p-1 gap-1">
                         <div>
                             @if (url()->current() == route('supply.index'))
                                 <a href="{{ route('supply.index') }}"
@@ -67,6 +268,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             {{-- body card --}}
@@ -180,8 +382,8 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor"
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                 class="w-6 h-6 stroke-red-500 hover:stroke-white">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -200,7 +402,8 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     @foreach ($resColumns as $column => $title)
-                                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4" style="text-align: right">
+                                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
+                                            style="text-align: right">
                                             @if ($column == 'created_at' || $column == 'updated_at')
                                                 {{ $entityItem->$column }}
                                             @elseif($column == 'name')

@@ -48,6 +48,35 @@ class SupplyFilter
         }
     }
 
+    public function moment($value)
+    {
+        if ($value['min']) {
+            $this->builder->where('moment', '>=', $value['min'] . ' 00:00:00');
+        }
+
+        if ($value['max']) {
+            $this->builder->where('moment', '<=', $value['max'] . ' 23:59:59');
+        }
+    }
+
+    public function sum($value)
+    {
+        if ($value['min']) {
+            $this->builder->where('sum', '>=', $value['min'] . ' 00:00:00');
+        }
+
+        if ($value['max']) {
+            $this->builder->where('sum', '<=', $value['max'] . ' 23:59:59');
+        }
+    }
+    
+    public function contact($value)
+    {
+        if ($value !== 'index') {
+            $this->builder->where('contact_id', $value);
+        }
+    }
+
     public function filters()
     {
         return $this->request->filters ? $this->request->filters : [];
