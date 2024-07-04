@@ -313,10 +313,10 @@ $(document).ready(function(){
     function calcDelivery(formClass) {
         if (!$(formClass+'.deliveryPrice').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
-            let distanceValue = $(formClass+' .distance').val();
+            // let distanceValue = $(formClass+' .distance').val();
 
-            if (distanceValue!='')
-                deliveryValue=distanceValue;
+            // if (distanceValue!='')
+            //     deliveryValue=distanceValue;
 
             $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"));
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
@@ -483,7 +483,7 @@ $(document).ready(function(){
         let km=$(this).data("distance");
         $(formClass+".distance").val(km);
         $(formClass+"#message").html('');
-        calcDelivery(formClass);
+        // calcDelivery(formClass);
     });
 
     $(".delivery").each(function(){
