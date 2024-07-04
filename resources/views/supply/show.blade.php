@@ -26,19 +26,19 @@
                 <table class="text-left text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-4 text-right">
                                 {{ __('column.id') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
                                 {{ __('column.contact_id') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-4 text-right">
                                 {{ __('column.sum') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-4 text-right">
                                 {{ __('column.incoming_number') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-4 text-right">
                                 {{ __('column.incoming_date') }}
                             </th>
                         </tr>
@@ -100,16 +100,16 @@
                 <table class="text-left text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-4 text-right">
                                 {{ __('column.id') }}
                             </th>
                             <th scope="col" class="px-6 py-4">
                                 {{ __('column.product_id') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-4 text-right">
                                 {{ __('column.quantity') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-4 text-right">
                                 {{ __('column.price') }}
                             </th>
                         </tr>
@@ -117,7 +117,7 @@
                     <tbody>
                         @foreach ($supply->products as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-blue-600">
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-blue-600 text-right">
                                     <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                         {{ $product->pivot->id }}
                                     </a>
@@ -127,10 +127,10 @@
                                         {{ $product->name }}
                                     </a>
                                 </td>
-                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right text-right">
                                     {{ $product->pivot->quantity }}
                                 </td>
-                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right">
+                                <td class="break-all max-w-32 overflow-hidden px-6 py-4 text-right text-right">
                                     {{ $product->pivot->price }}
                                 </td>
                             </tr>
