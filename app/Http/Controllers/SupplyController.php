@@ -90,6 +90,21 @@ class SupplyController extends Controller
         $maxMoment = Supply::query()->max('moment');
         $maxMomentCheck = '';
 
+        $minSum = Supply::query()->min('sum');
+        $minSumCheck = '';
+        $maxSum = Supply::query()->max('sum');
+        $maxSumCheck = '';
+
+        // Значения фильтра контакта
+        $contacts = Supply::with('contact')->select('contact_id')->groupBy('contact_id')->distinct('contact_id')->orderByDesc('contact_id')->get();
+        $contactValues[] = ['value' => 'index', 'name' => 'Все контакты'];
+
+        foreach ($contacts as $contact) {
+            $contactValues[] = ['value' => $contact->contact->id, 'name' => $contact->contact->name];
+        }
+
+        $queryContact = 'index';
+
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 if ($key == 'created_at') {
@@ -111,8 +126,17 @@ class SupplyController extends Controller
                         $maxMomentCheck = $value['max'];
                     }
                     if ($value['min']) {
-                        $minMomentCheck = $value['min'];
+                        $minMomentCkeck = $value['min'];
                     }
+                } else if ($key == 'sum') {
+                    if ($value['max']) {
+                        $maxSumCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minSumCheck = $value['min'];
+                    }
+                } else if ($key == 'contact') {
+                    $queryContact = $value;
                 }
             }
         }
@@ -138,12 +162,28 @@ class SupplyController extends Controller
             ],
             [
                 'type' => 'date',
-                'name' =>  'date_plan',
+                'name' =>  'moment',
                 'name_rus' => 'Дата приёмки',
                 'min' => substr($minMoment, 0, 10),
                 'minChecked' => $minMomentCkeck,
                 'max' => substr($maxMoment, 0, 10),
                 'maxChecked' => $maxMomentCheck
+            ],
+            [
+                'type' => 'number',
+                'name' =>  'sum',
+                'name_rus' => 'Сумма',
+                'min' => substr($minSum, 0, 10),
+                'minChecked' => $minSumCheck,
+                'max' => substr($maxSum, 0, 10),
+                'maxChecked' => $maxSumCheck
+            ],
+            [
+                'type' => 'select',
+                'name' => 'contact',
+                'name_rus' => 'Контакты',
+                'values' => $contactValues,
+                'checked_value' => $queryContact,
             ],
         ];
 
