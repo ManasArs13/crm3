@@ -964,6 +964,11 @@ input[type="number"]{
     display: flex;
 }
 
+.labelCustom.labelCustomRadio{
+    flex-basis: 43px;
+    justify-content: center;
+}
+
 .select2-container--default .select2-selection--single {
     background-color: #fff;
     border: 1px solid #aaa;

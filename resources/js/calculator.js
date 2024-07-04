@@ -349,6 +349,18 @@ $(document).ready(function(){
         }
     };
 
+    $('body').on('click','.print', function(){
+        let pdf = new jsPDF();
+
+        let section=$('.tab-content.active').attr("data-id");
+
+        let page= function() {
+            pdf.save('pagename.pdf');
+        };
+
+        pdf.addHTML(section,page);
+    });
+
     $('form').submit(function(e){
         e.preventDefault();
         let classForm=$(this).attr("class");
