@@ -30,9 +30,7 @@ class TempCommand extends Command
      */
     public function handle(DemandServices $demandServices, MoySkladService $service)
     {
-
         $url = Option::query()->where('code', '=', 'ms_url_demand')->first()?->value;
-
         $service->createUrl($url,$demandServices, ["updated"=>'>='.'2024-01-01 00:00:00', "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
     }
 }
