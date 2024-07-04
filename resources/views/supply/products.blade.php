@@ -18,12 +18,12 @@
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex flex-row gap-1">
                         <div>
-                            @if (url()->current() == route('supplies.index'))
-                                <a href="{{ route('supplies.index') }}"
+                            @if (url()->current() == route('supply.index'))
+                                <a href="{{ route('supply.index') }}"
                                     class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая
                                     таблица</a>
                             @else
-                                <a href="{{ route('supplies.index') }}"
+                                <a href="{{ route('supply.index') }}"
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Общая
                                     таблица</a>
                             @endif
@@ -73,13 +73,13 @@
                         @foreach ($supply_products as $product)
                             <tr class="border-b-2">
                                 <td class="px-6 py-4 text-blue-600 text-right">
-                                    <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
+                                    <a href="{{ route('supply.show', ['supply' => $product->supply_id]) }}">
                                         {{ $product->id }}
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 text-blue-600 text-right">
                                     @if ($product->supply)
-                                        <a href="{{ route('supplies.show', ['supply' => $product->supply_id]) }}">
+                                        <a href="{{ route('supply.show', ['supply' => $product->supply_id]) }}">
                                             {{ $product->supply->name }}
                                         </a>
                                     @else

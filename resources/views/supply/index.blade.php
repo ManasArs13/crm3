@@ -245,7 +245,7 @@
                         </form>
                     </div>
 
-                    <div class="flex flex-row p-1 gap-1">
+                    {{-- <div class="flex flex-row p-1 gap-1">
                         <div>
                             @if (url()->current() == route('supply.index'))
                                 <a href="{{ route('supply.index') }}"
@@ -266,7 +266,7 @@
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Состав</a>
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
             </div>

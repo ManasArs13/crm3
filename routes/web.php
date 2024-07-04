@@ -77,11 +77,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
     //Доп
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
-    Route::get('/supply/products', [SupplyController::class, 'products'])->name('supply.products');
+    //Route::get('/supplies/products', [SupplyController::class, 'products'])->name('supplies.products');
 
     // Фильтры
-    Route::get('/orders/filter', [OrderController::class, 'filter'])->name('order.filter');
-    Route::get('/shipments/filter', [ShipmentController::class, 'filter'])->name('shipment.filter');
     Route::get('/products/filter', [ProductController::class, 'filter'])->name('product.filter');
     Route::get('/transports/filter', [TransportController::class, 'filter'])->name('transport.filter');
     Route::get('/transportTypes/filter', [TransportTypeController::class, 'filter'])->name('transportType.filter');
@@ -93,8 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
     Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
-    Route::get('/supply/filter', [SupplyController::class, 'filter'])->name('supply.filter');
-    
+     
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
