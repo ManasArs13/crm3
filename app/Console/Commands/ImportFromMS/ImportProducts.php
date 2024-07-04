@@ -37,10 +37,10 @@ class ImportProducts extends Command
     public function handle(MoySkladService $service, ProductService $productService): void
     {
         $url = Option::where('code', '=', 'ms_product_url')->first()?->value;
-        
+
         $all = $this->option('all');
         $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
 
-        $service->createUrl($url, $productService, ["updated" => '>=' . $date], "productFolder");
+        $service->createUrl($url, $productService, ["updated" => '>=' . $date, "type"=>["service","product"]], "productFolder");
     }
 }
