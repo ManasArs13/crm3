@@ -206,6 +206,7 @@ class CalculatorController extends Controller
                                     $join->on("tab1.moment","<","shipments.created_at");
                             })
                             ->mergeBindings($shipments0)
+                            ->orderBy('days','asc')->orderBy('moment','asc')
                             ->groupBy("shipments.carrier_id","tab1.id")->get();
 
         return view(
