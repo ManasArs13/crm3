@@ -104,6 +104,11 @@ span.balance {
 .address{
     width: 100%;
 }
+
+.row-active{
+    background: #fcf2f1;
+}
+
 .calcBeton .select{
     width: 100%;
     min-width: 100%;

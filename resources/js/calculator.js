@@ -1,4 +1,6 @@
 import Inputmask from "inputmask";
+import { jsPDF } from "jspdf";
+import * as rasterizeHTML from 'rasterizehtml';
 
 $(document).ready(function(){
     Inputmask({"mask": "+79999999999"}).mask(".phone");
@@ -39,6 +41,7 @@ $(document).ready(function(){
         $(formClass+"#weight_total_"+group).text((weight*quantity).toFixed(1));
         $(formClass+"#price_total_"+group).text(price*quantity);
         $(formClass+".balance[data-id="+group+"]").text($(this).attr("data-balance"));
+        $(formClass+".quantity[data-id="+group+"]").attr("max", $(this).attr("data-balance"));
 
         calculation(formClass);
     });
@@ -56,16 +59,12 @@ $(document).ready(function(){
         btnUp = spinner.find('.quantity-up'),
         btnDown = spinner.find('.quantity-down'),
         min = input.attr('min'),
-        max = input.attr('max'),
         step=parseFloat(input.attr("step"));
 
-      btnUp.click(function() {
+     btnUp.click(function() {
         var oldValue = parseFloat(input.val());
-        if (oldValue >= max) {
-          var newVal = oldValue;
-        } else {
-          var newVal = oldValue + step;
-        }
+        var newVal = oldValue + step;
+
         spinner.find("input").val(newVal);
         spinner.find("input").trigger("change");
       });
@@ -87,6 +86,8 @@ $(document).ready(function(){
         let quantity=$(this).val();
         let formClass="."+$(this).parents("form").attr("class")+" ";
         let group=$(this).attr("data-id");
+        let tr=$(this).parents("tr");
+        let max=$(this).attr('max');
 
         let price=0;
         let weight=0;
@@ -98,6 +99,15 @@ $(document).ready(function(){
         $(formClass+"#weight_total_"+group).text((weight*quantity).toFixed(1));
         $(formClass+"#price_total_"+group).text(price*quantity);
 
+        if (quantity>max){
+            if (!tr.hasClass("row-active")){
+                tr.addClass("row-active");
+            }
+        }else{
+            if (tr.hasClass("row-active")){
+                tr.removeClass("row-active");
+            }
+        }
         calculation(formClass);
     });
 
@@ -350,15 +360,17 @@ $(document).ready(function(){
     };
 
     $('body').on('click','.print', function(){
-        let pdf = new jsPDF();
+        let pdf = new jsPDF('p','pt','a4');
 
-        let section=$('.tab-content.active').attr("data-id");
+        let section=$('.tab-content.active').html();
 
-        let page= function() {
-            pdf.save('pagename.pdf');
-        };
+        pdf.html(section, {
+            callback: function(pdf) {
+              pdf.save('page.pdf');
+            }
+        });
 
-        pdf.addHTML(section,page);
+
     });
 
     $('form').submit(function(e){
@@ -758,6 +770,7 @@ $(document).ready(function(){
         let formClass="."+$(this).parents("form").attr("class")+" ";
 
         $(formClass+".balance[data-id="+group+"]").text($(this).find(".selected").attr("data-balance"));
+        $(formClass+".change_js[data-id="+group+"]").attr("max", $(this).find(".selected").attr("data-balance"));
         $(formClass+"#price_client_"+group).text($(this).find(".selected").attr("data-price"));
         $(formClass+'[name="positions['+group+'][price]"]').val($(this).find(".selected").attr("data-price"));
     });
