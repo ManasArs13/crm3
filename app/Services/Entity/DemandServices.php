@@ -157,7 +157,7 @@ class DemandServices implements EntityInterface
 
                 $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
                 $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
-                
+
                 $entity->carrier_id = $carrier;
                 $entity->delivery_price = $deliveryPrice;
                 $entity->delivery_fee = $deliveryFee;
@@ -168,6 +168,7 @@ class DemandServices implements EntityInterface
                 if (isset($row["positions"])) {
 
                     $positions = $this->service->actionGetRowsFromJson($row['positions']['meta']['href']);
+                    $guids=[];
 
                     if ($positions) {
                         foreach ($positions as $position) {
@@ -181,6 +182,7 @@ class DemandServices implements EntityInterface
                             $entity_position->quantity = $position['quantity'];
                             $entity_position->price = $position['price']/100;
 
+                            $guids[]=$position["id"];
                             $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
 
                             if ($product_bd) {
@@ -190,6 +192,10 @@ class DemandServices implements EntityInterface
                                 $shipmentWeight += $position["quantity"] * $product_bd->weight_kg;
                             }
                         }
+
+                        if (count($guids) > 0) {
+                            $this->deleteDeletedPositionsFromMS($entity->id, $guids);
+                        }
                     }
                 }
 
@@ -197,6 +203,12 @@ class DemandServices implements EntityInterface
                 $entity->update();
             }
         }
+    }
+
+
+    public function deleteDeletedPositionsFromMS($shipment, $guids)
+    {
+        ShipmentProduct::where("shipment_id", $shipment)->whereNotIn('ms_id', $guids)->delete();
     }
 
     /**
