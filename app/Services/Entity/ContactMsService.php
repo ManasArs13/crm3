@@ -32,7 +32,6 @@ class ContactMsService implements EntityInterface
                 }
 
                 $entity->save();
-
             } else {
                 $entity = Contact::firstOrNew(['ms_id' => $row['id']]);
 
@@ -67,9 +66,9 @@ class ContactMsService implements EntityInterface
 
                 $isArchived = 0;
 
-                $description=null;
-                if (Arr::exists($row, 'description')){
-                    $description= $row['description'];
+                $description = null;
+                if (Arr::exists($row, 'description')) {
+                    $description = $row['description'];
                 }
 
                 $entity->description = $description;
@@ -77,6 +76,10 @@ class ContactMsService implements EntityInterface
 
                 if (Arr::exists($row, 'archived')) {
                     $isArchived = $row["archived"];
+                }
+
+                if (Arr::exists($row, 'balance')) {
+                    $entity->balance = $row["balance"] / 100;
                 }
 
                 $entity->is_archived = $isArchived;
@@ -113,14 +116,14 @@ class ContactMsService implements EntityInterface
 
                 if (Arr::exists($row, 'tags')) {
 
-                    $ids=[];
+                    $ids = [];
 
                     foreach ($row['tags'] as $value) {
-                        $category=ContactCategory::firstOrNew(["name"=>$value]);
-                        if ($category->id != null){
-                            $ids[]=$category->id;
-                        }else{
-                            $category->name=$value;
+                        $category = ContactCategory::firstOrNew(["name" => $value]);
+                        if ($category->id != null) {
+                            $ids[] = $category->id;
+                        } else {
+                            $category->name = $value;
                             $category->save();
                             $ids[] = $category->id;
                         }
@@ -128,7 +131,6 @@ class ContactMsService implements EntityInterface
                     $entity->contact_categories()->sync($ids, ['contact_id' => $entity->id]);
                 }
             }
-
         }
     }
 
@@ -144,7 +146,6 @@ class ContactMsService implements EntityInterface
             if ($entity !== null) {
                 $entity->balance = $row["balance"] / 100;
             }
-
         } else {
             $entity = Contact::firstOrNew(['ms_id' => $row['id']]);
 
@@ -181,6 +182,10 @@ class ContactMsService implements EntityInterface
 
             if (Arr::exists($row, 'archived')) {
                 $isArchived = $row["archived"];
+            }
+
+            if (Arr::exists($row, 'balance')) {
+                $entity->balance = $row["balance"] / 100;
             }
 
             $entity->is_archived = $isArchived;
