@@ -328,10 +328,10 @@ span.balance {
 }
 
 .sum.sum1 td{
-    width: calc(100% / 5);
+    /* width: calc(100% / 5);
     width: calc(100% / 5);
     max-width: calc(100% / 5);
-    overflow: hidden;
+    overflow: hidden; */
 }
 
 .comment{
