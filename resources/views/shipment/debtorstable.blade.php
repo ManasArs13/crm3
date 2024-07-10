@@ -3,17 +3,17 @@
             <div class="CEB__wrapTable mb-5">
                 <table class="sum sum1">
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2 w-1/6">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2">
                             {{ __('column.name') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2 w-1/6">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2">
                                 {{ __('column.date_of_last_shipment') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2 w-1/6">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2">
                                 {{ __('column.days') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2 w-1/6">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2 ">
                                     {{ __('column.balance') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2 w-1/6">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2">
                                     {{ __('column.description') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2 w-1/6">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-1 pb-2 pr-2">
                                         {{ __('column.cnt') }}</th>
                     </tr>
                     @php
