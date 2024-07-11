@@ -188,7 +188,7 @@
                                 @endif
                             @elseif($column == 'sostav')
                                 @if (isset($entityItem->positions[0]) && isset($entityItem->positions[0]->product))
-                                    {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->name : '-' }}
+                                    {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->short_name : '-' }}
                                 @else
                                     -
                                 @endif
