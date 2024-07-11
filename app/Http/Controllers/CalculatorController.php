@@ -11,6 +11,7 @@ use App\Models\Date;
 use App\Models\Time;
 use App\Models\Contact;
 use App\Models\Status;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -228,5 +229,12 @@ class CalculatorController extends Controller
                 'pallet'
             )
         );
+    }
+
+    public function createPDF()
+    {
+        $pdf = Pdf::loadView('calculator.pdf');
+
+        return $pdf->download('pdf_file.pdf');
     }
 }
