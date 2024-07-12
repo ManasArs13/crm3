@@ -38,7 +38,6 @@ Route::get('/paint', [WelcomeController::class, 'paint'])->name('welcome.paint')
 Route::get('/processing', [WelcomeController::class, 'processing'])->name('welcome.processing');
 // Калькулятор
 Route::get('/calculator1', [CalculatorController::class, 'block'])->name('calculator.block');
-Route::get('/create_pdf', [CalculatorController::class, 'createPDF'])->name('calculator.createPDF');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
