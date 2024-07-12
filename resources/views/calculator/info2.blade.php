@@ -67,15 +67,7 @@
             скачать PDF
         </button>
     </div>
-    <script type="text/javascript">
-        function exportHTMLtoPDF() {
-            let htmlElement = document.getElementById('content_to_pdf');
 
-            html2pdf().from(htmlElement).save('exported_file.pdf');
-        }
-
-        document.getElementById('exportButton').addEventListener('click', exportHTMLtoPDF);
-    </script>
     <div class="flex basis-1/2">
         <a href="" target="_blank"
             class="rounded bg-green-600 uppercase px-1 text-xs font-semibold text-white hover:bg-green-700 w-full text-center py-1">

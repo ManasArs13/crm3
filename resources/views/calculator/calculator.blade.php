@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="content" id="content_to_pdf">
+        <div class="content">
 
             <div class="tab-content active" id="calcFence">
                 @include('calculator.block', [
@@ -121,5 +121,28 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function exportHTMLtoPDF() {
+            let htmlElement = document.getElementById('content_to_pdf');
+            var opt = {
+                margin: 0,
+                filename: 'calculator.pdf',
+                html2canvas: {
+                    scale: 2,
+                    logging: false,
+                    width: 1200,
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'landscape'
+                }
+            };
+            html2pdf().set(opt).from(htmlElement).save();
+        }
+
+        document.getElementById('exportButton').addEventListener('click', exportHTMLtoPDF);
+    </script>
 
 </x-app-layout>
