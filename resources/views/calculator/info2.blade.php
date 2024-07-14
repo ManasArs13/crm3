@@ -62,7 +62,7 @@
 </div>
 <div class="flex flex-row ">
     <div class="flex basis-1/2">
-        <button id="exportButton"
+        <button id="exportButton" type="button"
             class="rounded bg-green-600 uppercase px-1 text-xs font-semibold text-white hover:bg-green-700 w-full text-center py-1">
             скачать PDF
         </button>

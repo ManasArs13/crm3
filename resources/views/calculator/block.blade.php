@@ -1,5 +1,5 @@
 <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
-    <div class="CEB__wrapContent df {{ $form }}" id="content_to_pdf">
+    <div class="CEB__wrapContent df {{ $form }}" id="{{ $form }}_to_pdf">
         @if ($menu)
             <div class="CEB CEB-1 CEB-2">
                 <div class="CEB__row">
