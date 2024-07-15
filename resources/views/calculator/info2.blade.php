@@ -69,9 +69,9 @@
     </div>
 
     <div class="flex basis-1/2">
-        <a href="" target="_blank"
+        <button type="button" onclick="copyText()"
             class="rounded bg-green-600 uppercase px-1 text-xs font-semibold text-white hover:bg-green-700 w-full text-center py-1">
             скопировать в буфер обмена
-        </a>
+        </button>
     </div>
 </div>
