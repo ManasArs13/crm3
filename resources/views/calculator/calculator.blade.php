@@ -153,16 +153,28 @@
         }
 
         function copyText() {
-            var text = "Example text to appear on clipboard";
-            if (navigator.clipboard) {
 
+            var text = "Example text to copy";
+
+            if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(function() {
                     console.log('Async: Copying to clipboard was successful!');
                 }, function(err) {
                     console.error('Async: Could not copy text: ', err);
                 });
             } else {
-                console.log('Clipboard doesn`t assigned');
+                try {
+
+                    var input = document.createElement('textarea');
+                    input.innerHTML = text;
+                    document.body.appendChild(input);
+                    input.select();
+                    var result = document.execCommand('copy');
+                    document.body.removeChild(input);
+
+                } catch (err) {
+                    console.log('Oops, unable to copy');
+                }
             }
         }
     </script>
