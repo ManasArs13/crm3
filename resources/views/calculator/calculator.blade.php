@@ -140,14 +140,8 @@
                     } else {
                         let htmlElement = document.getElementById('calcFence_to_pdf');
                         html2pdf().set(opt).from(htmlElement).save();
-                    }
-
-                   
-
-                    
+                    }                
                 }
-
-                document.getElementById('exportButton').addEventListener('click', exportHTMLtoPDF);
             </script>
 
 </x-app-layout>
