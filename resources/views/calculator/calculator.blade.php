@@ -165,12 +165,12 @@
             } else {
                 try {
 
-                    var input = document.createElement('textarea');
-                    input.innerHTML = text;
-                    document.body.appendChild(input);
-                    input.select();
+                    var inputForeCopy = document.createElement('textarea');
+                    inputForeCopy.innerHTML = text;
+                    document.body.appendChild(inputForeCopy);
+                    inputForeCopy.select();
                     var result = document.execCommand('copy');
-                    document.body.removeChild(input);
+                    document.body.removeChild(inputForeCopy);
 
                 } catch (err) {
                     console.log('Oops, unable to copy');
