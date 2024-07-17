@@ -56,14 +56,6 @@
                     $sum += $shipment->balance;
                 @endphp
             @endforeach
-            {{-- <tr>
-                <td class="text-end pl-2 pt-1 pb-2 pr-2 w-4/12"></td>
-                <td class="text-end pl-2 pt-1 pb-2 pr-2 w-2/12"></td>
-                <td class="text-end pl-2 pt-1 pb-2 pr-2 w-1/12"></td>
-                <td class="text-end pl-2 pt-1 pb-2 pr-2 w-1/12"><b>{{ $sum }}</b></td>
-                <td class="text-end pl-2 pt-1 pb-2 pr-2 w-3/12"></td>
-                <td class="text-end pl-2 pt-1 pb-2 pr-2 w-1/12"></td>
-            </tr> --}}
 
         </table>
 
@@ -132,12 +124,14 @@
                 case 2:
                     if (th_column_days.innerText == `Дни ↓`) {
                         th_column_days.innerText = `Дни ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText > rowB.cells[column].innerText ? 1 : -
-                            1);
+                        sortedRows.sort(function(rowA, rowB) {
+                            return rowA.cells[column].innerText - rowB.cells[column].innerText
+                        });
                     } else {
                         th_column_days.innerText = `Дни ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText < rowB.cells[column].innerText ? 1 : -
-                            1);
+                        sortedRows.sort(function(rowA, rowB) {
+                            return rowB.cells[column].innerText - rowA.cells[column].innerText
+                        });
                     }
 
                     th_column_date_of_last_shipment.innerText = `Дата последней отгрузки`;
@@ -150,12 +144,14 @@
                 case 3:
                     if (th_column_balance.innerText == `Баланс ↓`) {
                         th_column_balance.innerText = `Баланс ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText > rowB.cells[column].innerText ? 1 : -
-                            1);
+                        sortedRows.sort(function(rowA, rowB) {
+                            return rowA.cells[column].innerText - rowB.cells[column].innerText
+                        });
                     } else {
                         th_column_balance.innerText = `Баланс ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText < rowB.cells[column].innerText ? 1 : -
-                            1);
+                        sortedRows.sort(function(rowA, rowB) {
+                            return rowB.cells[column].innerText - rowA.cells[column].innerText
+                        });
                     }
 
                     th_column_date_of_last_shipment.innerText = `Дата последней отгрузки`;
@@ -200,9 +196,8 @@
                     th_column_name.innerText = `Имя`;
                     th_column_description.innerText = `Комментарий`;
                     break;
-
             }
-
+            
             DebtorsTable.tBodies[0].append(...sortedRows);
         }
     </script>
