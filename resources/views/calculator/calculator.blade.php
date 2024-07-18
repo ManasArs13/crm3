@@ -135,6 +135,8 @@
     <script type="text/javascript">
         function exportHTMLtoPDF() {
 
+            let export_button = document.getElementsByClassName('exportButton');
+
             var opt = {
                 margin: 0,
                 filename: 'calculator.pdf',
@@ -153,18 +155,31 @@
             if (document.getElementById('calcBeton').classList.contains("active")) {
                 let htmlElement = document.getElementById('calcBeton_to_pdf');
                 html2pdf().set(opt).from(htmlElement).save();
+
+                export_button[2].innerText = 'скачивает...';
+                export_button[1].innerText = 'скачать PDF';
+                export_button[0].innerText = 'скачать PDF';
             } else if (document.getElementById('calcBlock').classList.contains("active")) {
                 let htmlElement = document.getElementById('calcBlock_to_pdf');
                 html2pdf().set(opt).from(htmlElement).save();
+
+                export_button[1].innerText = 'скачивает...';
+                export_button[0].innerText = 'скачать PDF';
+                export_button[2].innerText = 'скачать PDF';
             } else {
                 let htmlElement = document.getElementById('calcFence_to_pdf');
                 html2pdf().set(opt).from(htmlElement).save();
+
+                export_button[0].innerText = 'скачивает...';
+                export_button[1].innerText = 'скачать PDF';
+                export_button[2].innerText = 'скачать PDF';
             }
         }
 
         function copyText() {
 
             let COPY_TEXT = "";
+            let copy_text_button = document.getElementsByClassName('copyTextButton');
 
             if (document.getElementById('calcBeton').classList.contains("active")) {
                 let select__head = document.getElementsByClassName('select__head');
@@ -186,7 +201,9 @@
                     delivery + `; ${transport_type}` + `\n` +
                     `ИТОГО С ДОСТАВКОЙ ${total}`;
 
-                console.log(COPY_TEXT)
+                copy_button = copy_text_button[2];
+                copy_text_button[0].innerText = 'скопировать в буфер обмена';
+                copy_text_button[1].innerText = 'скопировать в буфер обмена';
 
             } else if (document.getElementById('calcBlock').classList.contains("active")) {
 
@@ -283,6 +300,10 @@
                     delivery + `; ${transport_type}` + `\n` +
                     `ИТОГО С ДОСТАВКОЙ ${total}`;
 
+                copy_button = copy_text_button[1];
+                copy_text_button[2].innerText = 'скопировать в буфер обмена';
+                copy_text_button[0].innerText = 'скопировать в буфер обмена';
+
             } else {
                 // Конструкция стены
                 let CEB__textReserve = document.getElementById('CEB__textReserve').value;
@@ -369,11 +390,14 @@
                     delivery + `; ${transport_type}` + `\n` +
                     `ИТОГО С ДОСТАВКОЙ ${total}`;
 
+                copy_button = copy_text_button[0];
+                copy_text_button[2].innerText = 'скопировать в буфер обмена';
+                copy_text_button[1].innerText = 'скопировать в буфер обмена';
             }
 
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(COPY_TEXT).then(function() {
-                    console.log('Async: Copying to clipboard was successful!');
+                    copy_button.innerText = 'скопировано';
                 }, function(err) {
                     console.error('Oops, unable to copy');
                 });
@@ -386,6 +410,8 @@
                     inputForeCopy.select();
                     let result = document.execCommand('copy');
                     document.body.removeChild(inputForeCopy);
+
+                    copy_button.innerText = 'скопировано';
 
                 } catch (err) {
                     console.log('Oops, unable to copy');

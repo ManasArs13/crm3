@@ -62,15 +62,15 @@
 </div>
 <div class="flex flex-row ">
     <div class="flex basis-1/2">
-        <button id="exportButton" type="button" onclick="exportHTMLtoPDF()"
-            class="rounded bg-green-600 uppercase px-1 text-xs font-semibold text-white hover:bg-green-700 w-full text-center py-1">
+        <button type="button" onclick="exportHTMLtoPDF()"
+            class="exportButton rounded bg-green-100 uppercase px-1 text-xs font-semibold text-green-800 hover:bg-green-200 w-full text-center py-1">
             скачать PDF
         </button>
     </div>
 
     <div class="flex basis-1/2">
         <button type="button" onclick="copyText()"
-            class="rounded bg-green-600 uppercase px-1 text-xs font-semibold text-white hover:bg-green-700 w-full text-center py-1">
+            class="copyTextButton rounded bg-green-100 uppercase px-1 text-xs font-semibold text-green-800 hover:bg-green-200 w-full text-center py-1">
             скопировать в буфер обмена
         </button>
     </div>
