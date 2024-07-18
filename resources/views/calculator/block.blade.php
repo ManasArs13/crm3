@@ -256,20 +256,23 @@
                                     <table class="CEB__table">
                                         <tr>
                                             <td>{{ __('calculator.position') }}</td>
-                                            <td @if ($form == 'calcBeton') class="td-weight" @endif>{{ __('calculator.quantity') }}</td>
+                                            <td @if ($form == 'calcBeton') class="td-weight" @endif>
+                                                {{ __('calculator.quantity') }}</td>
 
                                             @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                 <td>{{ __('calculator.color') }}</td>
                                             @endif
 
-                                            <td   @if ($form == 'calcBeton') class="hidden" @else class="td-weight" @endif>{{ __('calculator.weight') }}</td>
+                                            <td
+                                                @if ($form == 'calcBeton') class="hidden" @else class="td-weight" @endif>
+                                                {{ __('calculator.weight') }}</td>
                                             <td class="td-price">{{ __('calculator.price') }}</td>
                                             <td class="td-sum">{{ __('calculator.sum') }}</td>
                                         </tr>
 
                                         @if ($form != 'calcBeton')
                                             @foreach ($productsByGroup as $group)
-                                                @if (!($form=="calcFence" && $group["id"]=="5_1"))
+                                                @if (!($form == 'calcFence' && $group['id'] == '5_1'))
                                                     @include('calculator.row', [
                                                         'form' => $form,
                                                         'group' => $group,
@@ -289,8 +292,9 @@
                                                         <input class="select__input" type="hidden"
                                                             value="{{ $pallet->ms_id }}"
                                                             name="positions[pallet][product_id]">
-                                                        <input type="number" name="positions[pallet][quantity]" value=0 min=0
-                                                            readonly step=1 data-price="{{ $pallet->price }}"
+                                                        <input type="number" name="positions[pallet][quantity]"
+                                                            value=0 min=0 readonly step=1
+                                                            data-price="{{ $pallet->price }}"
                                                             data-weight="{{ $pallet->weight_kg }}">
                                                     </div>
                                                 </td>
@@ -322,7 +326,8 @@
                                             @if (isset($productsByGroup[array_key_first($productsByGroup)]['colors']))
                                                 <td></td>
                                             @endif
-                                            <td @if ($form == 'calcBeton') class="hidden" @endif><span id="weight_total">0</span> {{__("calculator.ton")}}</td>
+                                            <td @if ($form == 'calcBeton') class="hidden" @endif><span
+                                                    id="weight_total">0</span> {{ __('calculator.ton') }}</td>
                                             <td></td>
                                             <td><span id="price_total">0</span></td>
                                         </tr>

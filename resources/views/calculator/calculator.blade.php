@@ -64,7 +64,8 @@
                     }
                 @endphp
 
-                <label class="labelCustomRadio labelCustomRadio_js1" @if($Totalsum < -3000000) style="background-color: #ff836e;" @endif>
+                <label class="labelCustomRadio labelCustomRadio_js1"
+                    @if ($Totalsum < -3000000) style="background-color: #ff836e;" @endif>
                     <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
                         value="{{ __('title.debtors') }}" data-content="calcDebt">
                     <span class="labelCustomRadio__psevdo_border"></span>
@@ -163,22 +164,106 @@
 
         function copyText() {
 
-            var text = "Example text to copy";
+            let COPY_TEXT = "Example text to copy";
+
+            if (document.getElementById('calcBeton').classList.contains("active")) {
+
+            } else if (document.getElementById('calcBlock').classList.contains("active")) {
+
+            } else {
+                // Конструкция стены
+                let CEB__textReserve = document.getElementById('CEB__textReserve').value;
+                let ZAPAS = `Запас ${CEB__textReserve}%;`;
+
+                let CEB__textLength = document.getElementById('CEB__textLength').value;
+                let ZABOR_LENGHT = `Длина забора ${CEB__textLength}м. `;
+
+                let CEB__textPost_quantity = document.getElementById('CEB__textPost_quantity').value;
+                let COUNT_POST = `Количество столбов ${CEB__textPost_quantity}шт.`;
+
+                let CEB__text_wallHeight = document.getElementById('CEB__text_wallHeight').value;
+                let WALL_HEIGHT = `Высота стенки ${CEB__text_wallHeight}см. `;
+
+                let CEB__text_columnHeight = document.getElementById('CEB__text_columnHeight').value;
+                let COLUMN_HEIGHT = `Высота колонны ${CEB__text_columnHeight}см.`;
+
+                // 0 Декор для забора
+                let positions_6_quantity = document.getElementsByName('positions[6][quantity]');
+                let weight_total_6 = document.getElementById('weight_total_6');
+                let select__head = document.getElementsByClassName('select__head');
+                let positions_6_price = document.getElementById('price_client_6');
+                let price_total_6 = document.getElementById('price_total_6');
+                let PRODUCT_6 =
+                    `0 Декор для забора: кол-во ${positions_6_quantity[0].value}; цвет ${select__head[0].innerText}; Вес ${weight_total_6.innerText}кг.; Цена ${positions_6_price.innerText}; Сумма ${price_total_6.innerText};`;
+
+                // 0 Заборный блок
+                let positions_12_quantity = document.getElementsByName('positions[12][quantity]');
+                let weight_total_12 = document.getElementById('weight_total_12');
+                let positions_12_price = document.getElementById('price_client_12');
+                let price_total_12 = document.getElementById('price_total_12');
+                let PRODUCT_12 =
+                    `0 Заборный блок: кол-во ${positions_12_quantity[0].value}; цвет ${select__head[1].innerText}; Вес ${weight_total_12.innerText}кг.; Цена ${positions_12_price.innerText}; Сумма ${price_total_12.innerText};`;
+
+                // 0  Колонны на забор
+                let positions_21_quantity = document.getElementsByName('positions[21][quantity]');
+                let weight_total_21 = document.getElementById('weight_total_21');
+                let positions_21_price = document.getElementById('price_client_21');
+                let price_total_21 = document.getElementById('price_total_21');
+                let PRODUCT_21 =
+                    `0 Колонны на забор: кол-во ${positions_21_quantity[0].value}; цвет ${select__head[2].innerText}; Вес ${weight_total_21.innerText}кг.; Цена ${positions_21_price.innerText}; Сумма ${price_total_21.innerText};`;
+
+                // 0  Крышки колонны
+                let positions_15_quantity = document.getElementsByName('positions[15][quantity]');
+                let weight_total_15 = document.getElementById('weight_total_15');
+                let positions_15_price = document.getElementById('price_client_15');
+                let price_total_15 = document.getElementById('price_total_15');
+                let PRODUCT_15 =
+                    `0 Крышки колонны: кол-во ${positions_15_quantity[0].value}; цвет ${select__head[3].innerText}; Вес ${weight_total_15.innerText}кг.; Цена ${positions_15_price.innerText}; Сумма ${price_total_15.innerText};`;
+
+                // 0  Парапеты
+                let positions_11_quantity = document.getElementsByName('positions[11][quantity]');
+                let weight_total_11 = document.getElementById('weight_total_11');
+                let positions_11_price = document.getElementById('price_client_11');
+                let price_total_11 = document.getElementById('price_total_11');
+                let PRODUCT_11 =
+                    `0 Парапеты: кол-во ${positions_11_quantity[0].value}; цвет ${select__head[4].innerText}; Вес ${weight_total_11.innerText}кг.; Цена ${positions_11_price.innerText}; Сумма ${price_total_11.innerText};`;
+
+                // 0  Поддон 120х80 (euro)
+                let positions_pallet_quantity = document.getElementsByName('positions[pallet][quantity]');
+                let weight_total_pallet = document.getElementById('weight_total_pallet');
+                let PRODUCT_pallet =
+                    `0  Поддон 120х80 (euro): кол-во ${positions_pallet_quantity[0].value}; Вес ${weight_total_pallet.innerText}кг.;`;
+
+                let weight_total = document.getElementById('weight_total');
+                let price_total = document.getElementById('price_total');
+
+                let delivery = document.getElementsByClassName('selection')[0].innerText;
+                let transport_type = document.getElementsByClassName('selection')[1].innerText;
+
+                let total = document.getElementsByClassName('total')[0].innerText;
+  
+                COPY_TEXT = ZAPAS + `\n` + ZABOR_LENGHT + COUNT_POST + `\n` + WALL_HEIGHT + COLUMN_HEIGHT + `\n\n` +
+                    PRODUCT_6 + `\n` + PRODUCT_12 + `\n` + PRODUCT_21 + `\n` + PRODUCT_15 + `\n` + PRODUCT_11 + '\n' +
+                    PRODUCT_pallet + '\n\n' + `Итог: ${weight_total.innerText} тонн; ${price_total.innerText} р.` + '\n\n' +
+                    `\n` + delivery + ` ; ${transport_type}` + `\n` +
+                    `ИТОГО С ДОСТАВКОЙ ${total}`;
+
+            }
 
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(function() {
+                navigator.clipboard.writeText(COPY_TEXT).then(function() {
                     console.log('Async: Copying to clipboard was successful!');
                 }, function(err) {
-                    console.error('Async: Could not copy text: ', err);
+                    console.error('Oops, unable to copy');
                 });
             } else {
                 try {
 
-                    var inputForeCopy = document.createElement('textarea');
-                    inputForeCopy.innerHTML = text;
+                    let inputForeCopy = document.createElement('textarea');
+                    inputForeCopy.innerHTML = COPY_TEXT;
                     document.body.appendChild(inputForeCopy);
                     inputForeCopy.select();
-                    var result = document.execCommand('copy');
+                    let result = document.execCommand('copy');
                     document.body.removeChild(inputForeCopy);
 
                 } catch (err) {
