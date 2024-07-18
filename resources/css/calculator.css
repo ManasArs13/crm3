@@ -881,7 +881,7 @@ td .flex{
 	background-color: #e0e0e0;
 	font-size       : 16px;
 	font-weight     : 700;
-	white-space     : pre;
+	/* white-space     : pre; */
 }
 
 .sum tr:first-child td {

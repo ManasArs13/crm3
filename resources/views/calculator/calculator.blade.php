@@ -245,7 +245,7 @@
                 COPY_TEXT = ZAPAS + `\n` + ZABOR_LENGHT + COUNT_POST + `\n` + WALL_HEIGHT + COLUMN_HEIGHT + `\n\n` +
                     PRODUCT_6 + `\n` + PRODUCT_12 + `\n` + PRODUCT_21 + `\n` + PRODUCT_15 + `\n` + PRODUCT_11 + '\n' +
                     PRODUCT_pallet + '\n\n' + `Итог: ${weight_total.innerText} тонн; ${price_total.innerText} р.` + '\n\n' +
-                    `\n` + delivery + ` ; ${transport_type}` + `\n` +
+                    `\n` + delivery + `; ${transport_type}` + `\n` +
                     `ИТОГО С ДОСТАВКОЙ ${total}`;
 
             }
