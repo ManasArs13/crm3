@@ -189,11 +189,12 @@
                 // Цена продуктов
                 let price_total = document.getElementsByClassName('price_total')[2].innerText;
 
-                // Цена доставки
-                let price_delivery = document.getElementsByClassName('input input2 deliveryPrice')[2].innerText;
-
                 // Цена с доставкой
                 let total = document.getElementsByClassName('total')[2].innerText;
+
+                // Цена доставки
+                let price_delivery = Number(total) - Number(price_total);
+
 
                 // Цена 1 шт.
                 let price = Number(price_total) / Number(positions_beton_quantity)
@@ -279,11 +280,11 @@
                 // Цена продуктов
                 let price_total = document.getElementsByClassName('price_total')[1].innerText;
 
-                // Цена доставки
-                let price_delivery = document.getElementsByClassName('input input2 deliveryPrice')[1].innerText;
-
                 // Цена с доставкой
                 let total = document.getElementsByClassName('total')[1].innerText;
+
+                // Цена доставки
+                let price_delivery = Number(total) - Number(price_total);
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     PRODUCT_6 + `\n` +
@@ -364,11 +365,11 @@
                 // Цена продуктов
                 let price_total = document.getElementsByClassName('price_total')[0].innerText;
 
-                // Цена доставки
-                let price_delivery = document.getElementsByClassName('input input2 deliveryPrice')[0].innerText;
-
                 // Цена с доставкой
                 let total = document.getElementsByClassName('total')[0].innerText;
+
+                // Цена доставки
+                let price_delivery = Number(total) - Number(price_total);
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     ZAPAS + `\n` +
@@ -379,7 +380,7 @@
                     PRODUCT_21 + `\n` +
                     PRODUCT_15 + `\n` +
                     PRODUCT_11 + '\n' +
-                //    PRODUCT_pallet + '\n\n' +
+                    //    PRODUCT_pallet + '\n\n' +
                     `Итог: ${price_total} р.` + '\n' +
                     `Доставка: ${price_delivery} р.` + `\n` +
                     `ИТОГО С ДОСТАВКОЙ ${total} р.`;
