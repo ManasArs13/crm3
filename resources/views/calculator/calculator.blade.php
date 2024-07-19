@@ -379,7 +379,7 @@
                     PRODUCT_12 + `\n` +
                     PRODUCT_21 + `\n` +
                     PRODUCT_15 + `\n` +
-                    PRODUCT_11 + '\n' +
+                    PRODUCT_11 + '\n\n' +
                     //    PRODUCT_pallet + '\n\n' +
                     `Итог: ${price_total} р.` + '\n' +
                     `Доставка: ${price_delivery} р.` + `\n` +
