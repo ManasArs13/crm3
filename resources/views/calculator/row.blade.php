@@ -95,8 +95,8 @@
         <span id="weight_total_{{$group["id"]}}" class="weight">0</span>
     </td>
     <td>
-        <span id="price_client_{{$group["id"]}}">0</span>
+        <span id="price_client_{{$group["id"]}}" class="price_client_{{$group["id"]}}">0</span>
         <input type="hidden" name="positions[{{$group["id"]}}][price]" value="0">
     </td>
-    <td><span id="price_total_{{$group["id"]}}" class="price">0</span></td>
+    <td><span id="price_total_{{$group["id"]}}" class="price price_total_{{$group["id"]}}">0</span></td>
 </tr>
