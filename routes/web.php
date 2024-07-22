@@ -36,9 +36,9 @@ Route::get('/blocks_products', [WelcomeController::class, 'blocksProducts'])->na
 Route::get('/concretes_materials', [WelcomeController::class, 'concretesMaterials'])->name('welcome.concretesMaterials');
 Route::get('/paint', [WelcomeController::class, 'paint'])->name('welcome.paint');
 Route::get('/processing', [WelcomeController::class, 'processing'])->name('welcome.processing');
+
 // Калькулятор
 Route::get('/calculator', [CalculatorController::class, 'block'])->name('calculator.block');
-Route::get('/calculator/debtors', [CalculatorController::class, 'debtors'])->name('calculator.debtors');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

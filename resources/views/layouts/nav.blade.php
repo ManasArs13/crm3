@@ -25,10 +25,10 @@
                     </x-nav-link>
 
                     <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*') && !request()->routeIs('shipment.index2')">
-                        {{__("title.shipments")}}
+                        {{ __('title.shipments') }}
                     </x-nav-link>
                     <x-nav-link :href="route('shipment.index2')" :active="request()->routeIs('shipment.index2')">
-                        {{__("title.shipments2")}}
+                        {{ __('title.shipments2') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
@@ -60,7 +60,7 @@
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('operator.shipments')">
-                                    {{__("title.shipments")}}
+                                    {{ __('title.shipments') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -227,36 +227,12 @@
 
                     {{-- Калькулятор --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Калькулятор</div>
-
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('calculator.block').'#content-1'">
-                                    калькулятор
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('calculator.debtors')">
-                                    должники
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
+                        <x-nav-link :href="route('calculator.block') . '#content-1'">
+                            Калькулятор
+                        </x-nav-link>
                     </div>
 
-                     {{-- Прочее --}}
+                    {{-- Прочее --}}
                     <div class="hidden md:flex md:items-center md:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -297,11 +273,11 @@
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('summary.index')">
-                                    {{__('title.summary')}}
+                                    {{ __('title.summary') }}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('shipments.debtors')">
-                                    {{__('title.debtors')}}
+                                    {{ __('title.debtors') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -311,48 +287,44 @@
             </div>
 
             @if (Auth::user())
-            <!-- Settings Dropdown -->
-            <div class="hidden lg:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ (Auth::user())?Auth::user()->name:"" }}</div>
+                <!-- Settings Dropdown -->
+                <div class="hidden lg:flex sm:items-center sm:ms-6">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ Auth::user() ? Auth::user()->name : '' }}</div>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
 
-                    <x-slot name="content">
+                        <x-slot name="content">
 
-                        <x-dropdown-link :href="route('option.index')">
-                            Опции
-                        </x-dropdown-link>
-
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                            <x-dropdown-link :href="route('option.index')">
+                                Опции
                             </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    Выйти
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
             @endif
 
             <!-- Hamburger -->
@@ -390,10 +362,10 @@
                 <a href="{{ route('order.index') }}">Заказы</a>
             </div>
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                <a href="{{ route('shipment.index') }}">{{__("title.shipments")}}</a>
+                <a href="{{ route('shipment.index') }}">{{ __('title.shipments') }}</a>
             </div>
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                <a href="{{ route('shipment.index2') }}">{{__("title.shipments2")}}</a>
+                <a href="{{ route('shipment.index2') }}">{{ __('title.shipments2') }}</a>
             </div>
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('residual.index') }}">Остатки</a>
@@ -492,9 +464,6 @@
                 <div class="flex flex-row">
                     <div class="basis-1/2  text-center mx-1 rounded-sm">
                         <a href="{{ route('option.index') }}">Опции</a>
-                    </div>
-                    <div class="basis-1/2 text-center mx-1 rounded-sm">
-                        <a href="{{ route('profile.edit') }}">Профиль</a>
                     </div>
                 </div>
 

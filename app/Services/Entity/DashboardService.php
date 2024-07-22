@@ -152,7 +152,7 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
-        return view('Dashboard.index', compact(
+        return view('dashboard.index', compact(
             'urlShow',
             'entityItems',
             "resColumns",
@@ -692,7 +692,7 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
-        return view('Dashboard.block', compact(
+        return view('dashboard.block', compact(
             'urlShow',
             'entityItems',
             "resColumns",
@@ -848,7 +848,7 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
-        return view('Dashboard.concrete', compact(
+        return view('dashboard.concrete', compact(
             'urlShow',
             'entityItems',
             "resColumns",
