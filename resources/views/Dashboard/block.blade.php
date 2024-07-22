@@ -37,9 +37,9 @@
                     <a href="{{ route('dashboard-2', ['date_plan' => $dateNext]) }}" class="mx-2 text-lg">&#9658;</a>
                 </div>
             </div>
-            @include('Dashboard.components.canvas', ['date' => $date])
+            @include('dashboard.components.canvas', ['date' => $date])
             <div class="block border-t-2 py-5 overflow-x-scroll">
-                @include('Dashboard.components.orderTable')
+                @include('dashboard.components.orderTable')
             </div>
         </div>
         <div class="flex flex-col gap-4 basis-1/4">
