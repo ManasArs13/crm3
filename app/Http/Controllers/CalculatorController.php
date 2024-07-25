@@ -243,6 +243,8 @@ class CalculatorController extends Controller
             "ms_link",
         ];
 
+        $urlShow = "order.show";
+
         foreach ($columns as $column) {
             $resColumns[$column] = trans("column." . $column);
         }
@@ -265,7 +267,8 @@ class CalculatorController extends Controller
                 'datesBetonFinish',
                 'pallet',
                 'orders',
-                'resColumns'
+                'resColumns',
+                'urlShow'
             )
         );
     }
