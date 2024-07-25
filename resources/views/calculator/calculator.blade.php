@@ -47,12 +47,6 @@
                         <span class="labelCustomRadio__psevdo_border"></span>
                         <p class="labelCustomRadio__text2">{{ __('calculator.mixers') }}</p>
                     </label>
-                    {{-- <label class="labelCustomRadio labelCustomRadio_js1">
-                        <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
-                            value="{{ __('calculator.pumps') }}" data-content="calcPumps">
-                        <span class="labelCustomRadio__psevdo_border"></span>
-                        <p class="labelCustomRadio__text2">{{ __('calculator.pumps') }}</p>
-                    </label> --}}
 
                     <label class="labelCustomRadio labelCustomRadio_js1">
                         <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
@@ -124,17 +118,7 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="tab-content" id="calcPumps">
-                <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
-                    <div class="CEB__row">
-                        <div class="img_delivery">
-                            <img src="{{ Storage::url('pumps.jpg') }}" alt="{{ __('calculator.pumps') }}">
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-
+            
             <div class="tab-content" id="calcOrders">
                 <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
                     <div class="CEB__row">
