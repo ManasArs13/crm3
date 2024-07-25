@@ -9,26 +9,26 @@
 </div>
 
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", () => {
-            now = document.getElementById('nowDate');
-            now.innerText = new Date().toISOString().slice(0, 10);
-            data = now.innerText
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     now = document.getElementById('nowDate');
+        //     now.innerText = new Date().toISOString().slice(0, 10);
+        //     data = now.innerText
 
-            $.ajax({
-                url: '/api/get/orders/',
-                method: 'get',
-                dataType: 'json',
-                data: data,
-                success: function(data) {
-                    console.log(data)
-                },
-                error: function(response) {
-                    $("#message").html(response.responseJSON.error);
-                }
-            });
-        });
+        //     $.ajax({
+        //         url: '/api/get/orders/',
+        //         method: 'get',
+        //         dataType: 'json',
+        //         data: data,
+        //         success: function(data) {
+        //             console.log(data)
+        //         },
+        //         error: function(response) {
+        //             $("#message").html(response.responseJSON.error);
+        //         }
+        //     });
+        // });
 
-        function next() {}
+        // function next() {}
 
-        function back() {}
+        // function back() {}
     </script>
