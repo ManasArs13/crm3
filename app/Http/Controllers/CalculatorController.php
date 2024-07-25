@@ -10,6 +10,7 @@ use App\Models\TransportType;
 use App\Models\Date;
 use App\Models\Time;
 use App\Models\Contact;
+use App\Models\Order;
 use App\Models\Status;
 use Illuminate\Support\Facades\DB;
 
@@ -210,6 +211,42 @@ class CalculatorController extends Controller
             ->orderBy('days', 'asc')->orderBy('moment', 'asc')
             ->groupBy("shipments.carrier_id", "tab1.id")->get();
 
+        $date = date('Y-m-d');
+
+        $orders = Order::query()->with(
+            'positions',
+            'status',
+            'delivery',
+            'transport',
+            'contact',
+            'transport_type'
+        )
+            ->whereDate('date_plan', $date)
+            ->whereIn('status_id', [3, 4, 5, 6])
+            ->orderBy('date_plan')
+            ->get();
+
+        $resColumns = [];
+
+        $columns = [
+            "name",
+            "contact_id",
+            "sostav",
+            "sum",
+            "date_plan",
+            "status_id",
+            "comment",
+            "positions_count",
+            'is_demand',
+            "residual_count",
+            "delivery_id",
+            "ms_link",
+        ];
+
+        foreach ($columns as $column) {
+            $resColumns[$column] = trans("column." . $column);
+        }
+
         return view(
             "calculator.calculator",
             compact(
@@ -226,7 +263,9 @@ class CalculatorController extends Controller
                 'idBeton',
                 'datesBlockFinish',
                 'datesBetonFinish',
-                'pallet'
+                'pallet',
+                'orders',
+                'resColumns'
             )
         );
     }
@@ -271,11 +310,11 @@ class CalculatorController extends Controller
                 $join->on("tab1.moment", "<", "shipments.created_at");
             })
             ->mergeBindings($shipments0);
-            // ->orderBy('days', 'asc')
-            // ->orderBy('moment', 'asc')
-            //->groupBy("shipments.carrier_id", "tab1.id");
+        // ->orderBy('days', 'asc')
+        // ->orderBy('moment', 'asc')
+        //->groupBy("shipments.carrier_id", "tab1.id");
 
-            // Columns
+        // Columns
         $all_columns = ['name', 'moment', 'days', 'balance', 'description', 'ship'];
 
         if (isset($request->columns)) {

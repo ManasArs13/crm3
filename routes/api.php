@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Ms\OrderController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/orders', [App\Http\Controllers\OrderController::class, 'get_api'])->name('api.get.order');
+Route::get('/orders', [OrderController::class, 'get_api'])->name('api.get.order');
+Route::get('get/orders/', [OrderController::class, 'order_get_calculator'])->name('order.get.calculator');
 Route::get('/contacts', [ContactController::class, 'get_api'])->name('api.get.contact');
 Route::get('/products', [ProductController::class, 'get_api'])->name('api.get.product');
 
