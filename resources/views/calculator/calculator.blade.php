@@ -118,11 +118,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="tab-content" id="calcOrders">
                 <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
                     <div class="CEB__row">
-                        @include('calculator.orders', ['entityItems' => $orders, 'resColumns' => $resColumns])
+                        @include('calculator.orders', [
+                            'entityItems' => $orders,
+                            'resColumns' => $resColumns,
+                        ])
                     </div>
                 </div>
             </div>
@@ -200,7 +203,6 @@
                 // Цена доставки
                 let price_delivery = Number(total) - Number(price_total);
 
-
                 // Цена 1 шт.
                 let price = Number(price_total) / Number(positions_beton_quantity)
 
@@ -209,7 +211,6 @@
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     PRODUCT_BETON + `\n` +
-                    `Итого:  ${price_total} р.` + '\n' +
                     `Доставка: ${price_delivery} р.` + `\n` +
                     `ИТОГО С ДОСТАВКОЙ ${total} р.`;
 
@@ -224,57 +225,93 @@
                 let select__head = document.getElementsByClassName('select__head');
                 let positions_6_price = document.getElementsByClassName('price_client_6');
                 let price_total_6 = document.getElementsByClassName('price_total_6');
-                let PRODUCT_6 =
-                    `0 Декор для забора: ${select__head[5].innerText} ${positions_6_quantity[1].value} шт. *  ${positions_6_price[1].innerText} = ${price_total_6[1].innerText} руб.;`;
+
+                let PRODUCT_6 = ``;
+                if (positions_6_quantity[1].value !== '0') {
+                    PRODUCT_6 =
+                        `0 Декор для забора: ${select__head[5].innerText} ${positions_6_quantity[1].value} шт. *  ${positions_6_price[1].innerText} = ${price_total_6[1].innerText} руб.;\n`;
+                }
 
                 // 0 Заборный блок
                 let positions_12_quantity = document.getElementsByName('positions[12][quantity]');
                 let positions_12_price = document.getElementsByClassName('price_client_12');
                 let price_total_12 = document.getElementsByClassName('price_total_12');
-                let PRODUCT_12 =
-                    `0 Заборный блок:   ${select__head[6].innerText} ${positions_12_quantity[1].value} шт. * ${positions_12_price[1].innerText} = ${price_total_12[1].innerText} руб.;`;
+
+                let PRODUCT_12 = ``;
+                if (positions_12_quantity[1].value !== '0') {
+                    PRODUCT_12 =
+                        `0 Заборный блок:   ${select__head[6].innerText} ${positions_12_quantity[1].value} шт. * ${positions_12_price[1].innerText} = ${price_total_12[1].innerText} руб.;\n`;
+                }
 
                 // 0  Колонны на забор
                 let positions_21_quantity = document.getElementsByName('positions[21][quantity]');
                 let positions_21_price = document.getElementsByClassName('price_client_21');
                 let price_total_21 = document.getElementsByClassName('price_total_21');
-                let PRODUCT_21 =
-                    `0 Колонны на забор: ${select__head[7].innerText} ${positions_21_quantity[1].value} шт. * ${positions_21_price[1].innerText} = ${price_total_21[1].innerText} руб.;`;
+
+                let PRODUCT_21 = ``;
+                if (positions_21_quantity[1].value !== '0') {
+                    PRODUCT_21 =
+                        `0 Колонны на забор: ${select__head[7].innerText} ${positions_21_quantity[1].value} шт. * ${positions_21_price[1].innerText} = ${price_total_21[1].innerText} руб.;\n`;
+                }
 
                 // 0  Крышки колонны
                 let positions_15_quantity = document.getElementsByName('positions[15][quantity]');
                 let positions_15_price = document.getElementsByClassName('price_client_15');
                 let price_total_15 = document.getElementsByClassName('price_total_15');
-                let PRODUCT_15 =
-                    `0 Крышки колонны: ${select__head[8].innerText} ${positions_15_quantity[1].value} шт. * ${positions_15_price[1].innerText} = ${price_total_15[1].innerText} руб.;`;
+
+                let PRODUCT_15 = ``;
+                if (positions_15_quantity[1].value !== '0') {
+                    PRODUCT_15 =
+                        `0 Крышки колонны: ${select__head[8].innerText} ${positions_15_quantity[1].value} шт. * ${positions_15_price[1].innerText} = ${price_total_15[1].innerText} руб.;\n`;
+                }
 
                 // 0  Парапеты
                 let positions_11_quantity = document.getElementsByName('positions[11][quantity]');
                 let positions_11_price = document.getElementsByClassName('price_client_11');
                 let price_total_11 = document.getElementsByClassName('price_total_11');
-                let PRODUCT_11 =
-                    `0 Парапеты: ${select__head[9].innerText} ${positions_11_quantity[1].value} шт. * ${positions_11_price[1].innerText} = ${price_total_11[1].innerText} руб.;`;
+
+                let PRODUCT_11 = ``;
+                if (positions_11_quantity[1].value !== '0') {
+                    PRODUCT_11 =
+                        `0 Парапеты: ${select__head[9].innerText} ${positions_11_quantity[1].value} шт. * ${positions_11_price[1].innerText} = ${price_total_11[1].innerText} руб.;\n`;
+                }
+
 
                 // 0 Перегородочный блок 9
                 let positions_18_quantity = document.getElementsByName('positions[18][quantity]');
                 let positions_18_price = document.getElementsByClassName('price_client_18');
                 let price_total_18 = document.getElementsByClassName('price_total_18');
-                let PRODUCT_18 =
-                    `0 Перегородочный блок 9: ${select__head[10].innerText} ${positions_18_quantity[0].value} шт. * ${positions_18_price[0].innerText} = ${price_total_18[0].innerText} руб.;`;
+
+                let PRODUCT_18 = ``;
+                if (positions_18_quantity[0].value !== '0') {
+                    PRODUCT_18 =
+                        `0 Перегородочный блок 9: ${select__head[10].innerText} ${positions_18_quantity[0].value} шт. * ${positions_18_price[0].innerText} = ${price_total_18[0].innerText} руб.;\n`;
+                }
+
 
                 // Стеновой блок (4х)
                 let positions_5_1_quantity = document.getElementsByName('positions[5_1][quantity]');
                 let positions_5_1_price = document.getElementsByClassName('price_client_5_1');
                 let price_total_5_1 = document.getElementsByClassName('price_total_5_1');
-                let PRODUCT_5_1 =
-                    `Стеновой блок (4х): ${select__head[11].innerText} ${positions_5_1_quantity[0].value} шт. * ${positions_5_1_price[0].innerText} = ${price_total_5_1[0].innerText} руб.;`;
+
+                let PRODUCT_5_1 = ``;
+                if (positions_5_1_quantity[0].value !== '0') {
+                    PRODUCT_5_1 =
+                        `Стеновой блок (4х): ${select__head[11].innerText} ${positions_5_1_quantity[0].value} шт. * ${positions_5_1_price[0].innerText} = ${price_total_5_1[0].innerText} руб.;\n`;
+                }
+
 
                 // 0 Стеновые блоки
                 let positions_5_quantity = document.getElementsByName('positions[5][quantity]');
                 let positions_5_price = document.getElementsByClassName('price_client_5');
                 let price_total_5 = document.getElementsByClassName('price_total_5');
-                let PRODUCT_5 =
-                    `0 Стеновые блоки: ${select__head[12].innerText} ${positions_5_quantity[0].value} шт. * ${positions_5_price[0].innerText} = ${price_total_5[0].innerText} руб.;`;
+
+                let PRODUCT_5 = ``;
+                if (positions_5_quantity[0].value !== '0') {
+                    PRODUCT_5 =
+                        `0 Стеновые блоки: ${select__head[12].innerText} ${positions_5_quantity[0].value} шт. * ${positions_5_price[0].innerText} = ${price_total_5[0].innerText} руб.;\n`;
+                }
+
 
                 // 0  Поддон 120х80 (euro)
                 let positions_pallet_quantity = document.getElementsByName('positions[pallet][quantity]');
@@ -292,14 +329,14 @@
                 let price_delivery = Number(total) - Number(price_total);
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
-                    PRODUCT_6 + `\n` +
-                    PRODUCT_12 + `\n` +
-                    PRODUCT_21 + `\n` +
-                    PRODUCT_15 + `\n` +
-                    PRODUCT_11 + '\n' +
-                    PRODUCT_18 + '\n' +
-                    PRODUCT_5_1 + '\n' +
-                    PRODUCT_5 + '\n\n' +
+                    PRODUCT_6 +
+                    PRODUCT_12 +
+                    PRODUCT_21 +
+                    PRODUCT_15 +
+                    PRODUCT_11 +
+                    PRODUCT_18 +
+                    PRODUCT_5_1 +
+                    PRODUCT_5 + '\n' +
                     `Итого:  ${price_total} р.` + '\n' +
                     `Доставка: ${price_delivery} р.` + `\n` +
                     `ИТОГО С ДОСТАВКОЙ ${total} р.`;
@@ -330,42 +367,62 @@
                 let select__head = document.getElementsByClassName('select__head');
                 let positions_6_price = document.getElementsByClassName('price_client_6');
                 let price_total_6 = document.getElementsByClassName('price_total_6');
-                let PRODUCT_6 =
-                    `0 Декор для забора: ${select__head[0].innerText} ${positions_6_quantity[0].value} шт. *  ${positions_6_price[0].innerText} = ${price_total_6[0].innerText} руб.;`;
+
+                let PRODUCT_6 = ``;
+                if (positions_6_quantity[0].value !== '0') {
+                    PRODUCT_6 =
+                        `0 Декор для забора: ${select__head[0].innerText} ${positions_6_quantity[0].value} шт. *  ${positions_6_price[0].innerText} = ${price_total_6[0].innerText} руб.;\n`;
+                }
+
 
                 // 0 Заборный блок
                 let positions_12_quantity = document.getElementsByName('positions[12][quantity]');
                 let positions_12_price = document.getElementsByClassName('price_client_12');
                 let price_total_12 = document.getElementsByClassName('price_total_12');
-                let PRODUCT_12 =
-                    `0 Заборный блок: ${select__head[1].innerText} ${positions_12_quantity[0].value} шт. *  ${positions_12_price[0].innerText} = ${price_total_12[0].innerText} руб.;`;
+
+                let PRODUCT_12 = ``;
+                if (positions_12_quantity[0].value !== '0') {
+                    PRODUCT_12 =
+                        `0 Заборный блок: ${select__head[1].innerText} ${positions_12_quantity[0].value} шт. *  ${positions_12_price[0].innerText} = ${price_total_12[0].innerText} руб.;\n`;
+                }
 
                 // 0  Колонны на забор
                 let positions_21_quantity = document.getElementsByName('positions[21][quantity]');
                 let positions_21_price = document.getElementsByClassName('price_client_21');
                 let price_total_21 = document.getElementsByClassName('price_total_21');
-                let PRODUCT_21 =
-                    `0 Колонны на забор:${select__head[2].innerText} ${positions_21_quantity[0].value} шт. *  ${positions_21_price[0].innerText} = ${price_total_21[0].innerText} руб.;`;
+
+                let PRODUCT_21 = ``;
+                if (positions_21_quantity[0].value !== '0') {
+                    PRODUCT_21 =
+                        `0 Колонны на забор:${select__head[2].innerText} ${positions_21_quantity[0].value} шт. *  ${positions_21_price[0].innerText} = ${price_total_21[0].innerText} руб.;\n`;
+                }
 
                 // 0  Крышки колонны
                 let positions_15_quantity = document.getElementsByName('positions[15][quantity]');
                 let positions_15_price = document.getElementsByClassName('price_client_15');
                 let price_total_15 = document.getElementsByClassName('price_total_15');
-                let PRODUCT_15 =
-                    `0 Крышки колонны: ${select__head[3].innerText} ${positions_15_quantity[0].value} шт. *  ${positions_15_price[0].innerText} = ${price_total_15[0].innerText} руб.;`;
 
+                let PRODUCT_15 = ``;
+                if (positions_15_quantity[0].value !== '0') {
+                    PRODUCT_15 =
+                        `0 Крышки колонны: ${select__head[3].innerText} ${positions_15_quantity[0].value} шт. *  ${positions_15_price[0].innerText} = ${price_total_15[0].innerText} руб.;\n`;
+                }
                 // 0  Парапеты
                 let positions_11_quantity = document.getElementsByName('positions[11][quantity]');
                 let positions_11_price = document.getElementsByClassName('price_client_11');
                 let price_total_11 = document.getElementsByClassName('price_total_11');
-                let PRODUCT_11 =
-                    `0 Парапеты: ${select__head[1].innerText} ${positions_11_quantity[0].value} шт. *  ${positions_11_price[0].innerText} = ${price_total_11[0].innerText} руб.;`;
+
+                let PRODUCT_11 = ``;
+                if (positions_11_quantity[0].value !== '0') {
+                    PRODUCT_11 =
+                        `0 Парапеты: ${select__head[1].innerText} ${positions_11_quantity[0].value} шт. *  ${positions_11_price[0].innerText} = ${price_total_11[0].innerText} руб.;\n`;
+                }
 
                 // 0  Поддон 120х80 (euro)
                 let positions_pallet_quantity = document.getElementsByName('positions[pallet][quantity]');
                 let weight_total_pallet = document.getElementById('weight_total_pallet');
                 let PRODUCT_pallet =
-                    `0  Поддон 120х80 (euro): кол-во ${positions_pallet_quantity[0].value}; Вес ${weight_total_pallet.innerText}кг.;`;
+                    `0  Поддон 120х80 (euro): кол-во ${positions_pallet_quantity[0].value}; Вес ${weight_total_pallet.innerText}кг.;\n`;
 
                 // Цена продуктов
                 let price_total = document.getElementsByClassName('price_total')[0].innerText;
@@ -377,14 +434,14 @@
                 let price_delivery = Number(total) - Number(price_total);
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
-                    ZAPAS + `\n` +
+                    // ZAPAS + `\n` +
                     ZABOR_LENGHT + COUNT_POST + `\n` +
                     WALL_HEIGHT + COLUMN_HEIGHT + `\n\n` +
-                    PRODUCT_6 + `\n` +
-                    PRODUCT_12 + `\n` +
-                    PRODUCT_21 + `\n` +
-                    PRODUCT_15 + `\n` +
-                    PRODUCT_11 + '\n\n' +
+                    PRODUCT_6 +
+                    PRODUCT_12 +
+                    PRODUCT_21 +
+                    PRODUCT_15 +
+                    PRODUCT_11 + '\n' +
                     //    PRODUCT_pallet + '\n\n' +
                     `Итог: ${price_total} р.` + '\n' +
                     `Доставка: ${price_delivery} р.` + `\n` +

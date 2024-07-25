@@ -227,10 +227,8 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", () => {
         now = document.getElementById('nowDate');
-
         now.innerText = new Date().toISOString().slice(0, 10);
         orderTable = document.getElementById('orderTable');
-        console.log(orderTable)
     });
 
     function next() {
@@ -300,7 +298,6 @@
         dataNow = new Date(now.innerText);
         dataBack = new Date(addDays(dataNow, -1)).toISOString().slice(0, 10);
 
-        console.log(dataBack);
         $.ajax({
             url: '/api/get/orders/',
             method: 'get',
