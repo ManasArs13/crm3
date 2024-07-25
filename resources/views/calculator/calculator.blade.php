@@ -119,6 +119,9 @@
                     <div class="CEB__row h-100">
                         <img src="{{ Storage::url('transports.jpg') }}" alt="{{ __('column.transport') }}">
                     </div>
+                    <div class="img_delivery">
+                        <img src="{{ Storage::url('pumps.jpg') }}" alt="{{ __('calculator.pumps') }}">
+                    </div>
                 </div>
             </div>
 
