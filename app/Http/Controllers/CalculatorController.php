@@ -222,6 +222,11 @@ class CalculatorController extends Controller
             'transport_type'
         )
             ->whereDate('date_plan', $date)
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
             ->whereIn('status_id', [3, 4, 5, 6])
             ->orderBy('date_plan')
             ->get();
@@ -231,16 +236,14 @@ class CalculatorController extends Controller
         $columns = [
             "name",
             "contact_id",
-            "sostav",
             "sum",
             "date_plan",
             "status_id",
             "comment",
             "positions_count",
-            'is_demand',
-            "residual_count",
+            // 'is_demand',
+            // "residual_count",
             "delivery_id",
-            "ms_link",
         ];
 
         $urlShow = "order.show";

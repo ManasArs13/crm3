@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\Ms;
 use App\Http\Controllers\Controller;
 use App\Models\Option;
 use App\Models\Order;
+use App\Models\Product;
 use App\Services\EntityMs\OrderMsService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -44,7 +46,9 @@ class OrderController extends Controller
     }
 
     public function order_get_calculator(Request $request)
-    {  return response()->json($request);
+    {
+        $date = Carbon::parse($request['needDate']);
+
         $orders = Order::query()->with(
             'positions',
             'status',
@@ -53,7 +57,12 @@ class OrderController extends Controller
             'contact',
             'transport_type'
         )
-           // ->whereDate('date_plan', $date)
+            ->whereDate('date_plan', $date)
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
             ->whereIn('status_id', [3, 4, 5, 6])
             ->orderBy('date_plan')
             ->get();

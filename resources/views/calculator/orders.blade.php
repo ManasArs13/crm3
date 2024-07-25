@@ -1,15 +1,15 @@
 <div class="flex p-4 text-center font-bold">
-    <button class="mx-2 text-lg" id="backDate">&#9668;</button>
+    <button class="mx-2 text-lg" id="backDate" onclick="back()">&#9668;</button>
     <p class="mx-4 text-lg" id="nowDate"></p>
-    <button class="mx-4 text-lg" id="nextDate">&#9658;</button>
+    <button class="mx-4 text-lg" id="nextDate" onclick="next()">&#9658;</button>
 </div>
 
 <div class="block border-t-2 py-5 overflow-x-scroll">
     <div class="flex flex-col">
-        <table class="text-left text-md text-nowrap">
+        <table class="text-left text-md text-nowrap" id="orderTable">
             <thead>
                 <tr class="bg-neutral-200">
-                      @foreach ($resColumns as $key => $column)
+                    @foreach ($resColumns as $key => $column)
                         <th scope="col" class="px-2 py-4 mx-1 border-spacing-x-px"
                             @if ($column == 'Контакт МС' || $column == 'Доставка' || $column == 'Комментарий' || is_int($column)) style="text-align:left"
                         @elseif($column == 'Статус' || $column == 'Ссылка МС' || $column == 'Отгружено')
@@ -25,17 +25,17 @@
                     $totalCount = 0;
                     $totalShipped = 0;
                 @endphp
-    
+
                 @foreach ($entityItems as $entityItem)
                     @php
                         $totalSum += $entityItem->sum;
                     @endphp
-    
+
                     @php
                         $products_quantity = 0;
                         $products_shipped_count = 0;
                     @endphp
-    
+
                     @foreach ($entityItem->positions as $position)
                         @php
                             if (
@@ -47,7 +47,7 @@
                             }
                         @endphp
                     @endforeach
-    
+
                     @foreach ($entityItem->shipments as $shipment)
                         @foreach ($shipment->products as $position)
                             @php
@@ -61,16 +61,16 @@
                             @endphp
                         @endforeach
                     @endforeach
-    
+
                     <tr class="border-b-2">
-    
+
                         @foreach ($resColumns as $column => $title)
                             <td class="break-all max-w-96 overflow-auto px-2 py-4"
                                 @if ($column == 'contact_id' || $column == 'delivery_id' || $column == 'comment' || is_int($column)) style="text-align:left"
                                 @elseif($column == 'status') style="text-align:center" 
                                 @else style="text-align:right" @endif
                                 @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
-    
+
                                 @if (preg_match('/_id\z/u', $column))
                                     @if ($column == 'contact_id')
                                         {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
@@ -86,48 +86,49 @@
                                                     <span>[N] Новый</span>
                                                 </div>
                                             @break
-    
+
                                             @case(2)
                                                 <div id="status"
                                                     class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
                                                     <span>Думают</span>
                                                 </div>
                                             @break
-    
+
                                             @case(3)
                                                 <div id="status"
                                                     class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
                                                     <span>[DN] Подтвержден</span>
                                                 </div>
                                             @break
-    
+
                                             @case(4)
                                                 <div id="status"
                                                     class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
                                                     <span>На брони</span>
                                                 </div>
                                             @break
-    
+
                                             @case(5)
                                                 <div id="status"
                                                     class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
                                                     <span>[DD] Отгружен с долгом</span>
                                                 </div>
                                             @break
-    
+
                                             @case(6)
                                                 <div id="status"
                                                     class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
                                                     <span>[DF] Отгружен и закрыт</span>
                                                 </div>
                                             @break
-    
+
                                             @case(7)
-                                                <div id="status" class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                <div id="status"
+                                                    class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
                                                     <span>[C] Отменен</span>
                                                 </div>
                                             @break
-    
+
                                             @default
                                                 -
                                         @endswitch
@@ -183,22 +184,15 @@
                                     @else
                                         <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
                                     @endif
-                                @elseif($column == 'sostav')
-                                    @if (isset($entityItem->positions[0]) && isset($entityItem->positions[0]->product))
-                                        {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->short_name : '-' }}
-                                    @else
-                                        -
-                                    @endif
                                 @else
                                     {{ $entityItem->$column }}
                                 @endif
                             </td>
                         @endforeach
-    
+
                     </tr>
-    
                 @endforeach
-    
+
                 <tr class="border-b-2 bg-gray-100">
                     <td>
                     </td>
@@ -230,27 +224,141 @@
     </div>
 </div>
 
-    <script type="text/javascript">
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     now = document.getElementById('nowDate');
-        //     now.innerText = new Date().toISOString().slice(0, 10);
-        //     data = now.innerText
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+        now = document.getElementById('nowDate');
 
-        //     $.ajax({
-        //         url: '/api/get/orders/',
-        //         method: 'get',
-        //         dataType: 'json',
-        //         data: data,
-        //         success: function(data) {
-        //             console.log(data)
-        //         },
-        //         error: function(response) {
-        //             $("#message").html(response.responseJSON.error);
-        //         }
-        //     });
-        // });
+        now.innerText = new Date().toISOString().slice(0, 10);
+        orderTable = document.getElementById('orderTable');
+        console.log(orderTable)
+    });
 
-        // function next() {}
+    function next() {
+        let dataNow = new Date(now.innerText);
+        let dataNext = new Date(addDays(dataNow, 1)).toISOString().slice(0, 10);
 
-        // function back() {}
-    </script>
+        $.ajax({
+            url: '/api/get/orders/',
+            method: 'get',
+            dataType: 'json',
+            data: {
+                "needDate": dataNext
+            },
+            success: function(data) {
+
+                now.innerText = dataNext;
+
+                for (var i = 1; i < orderTable.rows.length;) {
+                    orderTable.deleteRow(i);
+                }
+
+                for (var i = 0; i < data.length; i++) {
+                    var newRow = orderTable.insertRow(i + 1);
+
+                    newRow.innerHTML = `
+                    <tr class="border-b-2">
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="03863">
+                                <a href="" class="text-blue-500 hover:text-blue-600">
+                                        ${data[i]['name']}
+                                </a>
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="11189">
+                                ${data[i]['contact']['name']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="59400.0">
+                                ${data[i]['sum']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="25-07-2024 08:00">
+                                ${data[i]['date_plan']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="5">
+                                <div class="rounded px-2 py-1 text-center">
+                                    <span>${data[i]['status']['name']}</span>
+                                </div>
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                ${data[i]['comment']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
+                                ${data[i]['positions'].length}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="1035">
+                                ${data[i]['delivery']['name']}
+                            </td>                    
+                    </tr>
+                    `;
+                }
+
+            },
+            error: function(response) {
+                $("#message").html(response.responseJSON.error);
+            }
+        });
+    }
+
+    function back() {
+        dataNow = new Date(now.innerText);
+        dataBack = new Date(addDays(dataNow, -1)).toISOString().slice(0, 10);
+
+        console.log(dataBack);
+        $.ajax({
+            url: '/api/get/orders/',
+            method: 'get',
+            dataType: 'json',
+            data: {
+                "needDate": dataBack
+            },
+            success: function(data) {
+                now.innerText = dataBack;
+
+                for (var i = 1; i < orderTable.rows.length;) {
+                    orderTable.deleteRow(i);
+                }
+
+                for (var i = 0; i < data.length; i++) {
+                    var newRow = orderTable.insertRow(i + 1);
+
+                    newRow.innerHTML = `
+                    <tr class="border-b-2">
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="03863">
+                                <a href="" class="text-blue-500 hover:text-blue-600">
+                                        ${data[i]['name']}
+                                </a>
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="11189">
+                                ${data[i]['contact']['name']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="59400.0">
+                                ${data[i]['sum']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="25-07-2024 08:00">
+                                ${data[i]['date_plan']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="5">
+                                <div class="rounded px-2 py-1 text-center">
+                                    <span>${data[i]['status']['name']}</span>
+                                </div>
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                ${data[i]['comment']}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
+                                ${data[i]['positions'].length}
+                            </td>
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="1035">
+                                ${data[i]['delivery']['name']}
+                            </td>                    
+                    </tr>
+                    `;
+                }
+            },
+            error: function(response) {
+                $("#message").html(response.responseJSON.error);
+            }
+        });
+    }
+
+    function addDays(dateTime, count_days = 0) {
+        return new Date(new Date(dateTime).setDate(dateTime.getDate() + count_days));
+    }
+</script>
