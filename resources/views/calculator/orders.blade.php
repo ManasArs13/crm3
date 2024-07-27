@@ -65,7 +65,7 @@
                     <tr class="border-b-2">
 
                         @foreach ($resColumns as $column => $title)
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                            <td class="break-all max-w-96 overflow-hidden px-2 py-4"
                                 @if ($column == 'contact_id' || $column == 'delivery_id' || $column == 'comment' || is_int($column)) style="text-align:left"
                                 @elseif($column == 'status') style="text-align:center" 
                                 @else style="text-align:right" @endif
@@ -184,6 +184,12 @@
                                     @else
                                         <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
                                     @endif
+                                @elseif($column == 'sostav')
+                                    @if (isset($entityItem->positions[0]) && isset($entityItem->positions[0]->product))
+                                        {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->short_name : '-' }}
+                                    @else
+                                        -
+                                    @endif
                                 @else
                                     {{ $entityItem->$column }}
                                 @endif
@@ -253,35 +259,134 @@
                 for (var i = 0; i < data.length; i++) {
                     var newRow = orderTable.insertRow(i + 1);
 
+                    if (data[i]['positions'] && data[i]['positions'][0]) {
+                        if (data[i]['positions'][0]['building_materials'] == 'бетон') {
+                            sostav =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['short_name']}</td>`;
+                        } else {
+                            sostav =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`;
+                        }
+                    } else {
+                        sostav =
+                            `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`;
+                    }
+
+                    if (data[i]['is_demand'] == 1) {
+                        is_demand =
+                            `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                            </td>`;
+                    } else {
+                        is_demand =
+                            `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                            </td>`;
+                    }
+
+                    switch (data[i]['status_id']) {
+                        case (1):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                    <span>[N] Новый</span>
+                                                </div>
+                                                </td>`;
+                            break
+
+                        case (2):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                    <span>Думают</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (3):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                    <span>[DN] Подтвержден</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (4):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                    <span>На брони</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (5):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                    <span>[DD] Отгружен с долгом</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (6):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                    <span>[DF] Отгружен и закрыт</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (7):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                    <span>[C] Отменен</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        default:
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`
+                    }
+
                     newRow.innerHTML = `
                     <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="03863">
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
                                 <a href="" class="text-blue-500 hover:text-blue-600">
                                         ${data[i]['name']}
                                 </a>
                             </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="11189">
-                                ${data[i]['contact']['name']}
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="59400.0">
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                ${data[i]['contact'] ? data[i]['contact']['name'] : '-'}
+                            </td>` +
+                        sostav +
+                        `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
                                 ${data[i]['sum']}
                             </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="25-07-2024 08:00">
-                                ${data[i]['date_plan']}
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="5">
-                                <div class="rounded px-2 py-1 text-center">
-                                    <span>${data[i]['status']['name']}</span>
-                                </div>
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
-                                ${data[i]['comment']}
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
+                                ${data[i]['date_plan'].slice(11)}
+                            </td>` +
+                        status +
+                        `<td class="break-all max-w-96 overflow-hidden px-2 py-4" style="text-align:left">
+                                ${data[i]['comment'] ? data[i]['comment']: '-'}
                             </td>
                             <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
                                 ${data[i]['positions'].length}
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="1035">
-                                ${data[i]['delivery']['name']}
+                            </td>` +
+                        is_demand +
+                        `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                ${data[i]['delivery'] ? data[i]['delivery']['name'] : '-'}
                             </td>                    
                     </tr>
                     `;
@@ -315,35 +420,134 @@
                 for (var i = 0; i < data.length; i++) {
                     var newRow = orderTable.insertRow(i + 1);
 
+                    if (data[i]['positions'] && data[i]['positions'][0]) {
+                        if (data[i]['positions'][0]['building_materials'] == 'бетон') {
+                            sostav =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['short_name']}</td>`;
+                        } else {
+                            sostav =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`;
+                        }
+                    } else {
+                        sostav =
+                            `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`;
+                    }
+
+                    if (data[i]['is_demand'] == 1) {
+                        is_demand =
+                            `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                            </td>`;
+                    } else {
+                        is_demand =
+                            `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                            </td>`;
+                    }
+
+                    switch (data[i]['status_id']) {
+                        case (1):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                    <span>[N] Новый</span>
+                                                </div>
+                                                </td>`;
+                            break
+
+                        case (2):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                    <span>Думают</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (3):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                    <span>[DN] Подтвержден</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (4):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                    <span>На брони</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (5):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                    <span>[DD] Отгружен с долгом</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (6):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                    <span>[DF] Отгружен и закрыт</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        case (7):
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                    <div id="status"
+                                                    class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                    <span>[C] Отменен</span>
+                                                </div>
+                                                </td>`
+                            break
+
+                        default:
+                            status =
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`
+                    }
+
                     newRow.innerHTML = `
                     <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="03863">
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
                                 <a href="" class="text-blue-500 hover:text-blue-600">
                                         ${data[i]['name']}
                                 </a>
                             </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="11189">
-                                ${data[i]['contact']['name']}
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="59400.0">
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                ${data[i]['contact'] ? data[i]['contact']['name'] : '-'}
+                            </td>` +
+                        sostav +
+                        `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
                                 ${data[i]['sum']}
                             </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="25-07-2024 08:00">
-                                ${data[i]['date_plan']}
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right" title="5">
-                                <div class="rounded px-2 py-1 text-center">
-                                    <span>${data[i]['status']['name']}</span>
-                                </div>
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
-                                ${data[i]['comment']}
+                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
+                                ${data[i]['date_plan'].slice(11)}
+                            </td>` +
+                        status +
+                        `<td class="break-all max-w-96 overflow-hidden px-2 py-4" style="text-align:left">
+                                ${data[i]['comment'] ? data[i]['comment']: '-'}
                             </td>
                             <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
                                 ${data[i]['positions'].length}
-                            </td>
-                            <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left" title="1035">
-                                ${data[i]['delivery']['name']}
+                            </td>` +
+                        is_demand +
+                        `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
+                                ${data[i]['delivery'] ? data[i]['delivery']['name'] : '-'}
                             </td>                    
                     </tr>
                     `;

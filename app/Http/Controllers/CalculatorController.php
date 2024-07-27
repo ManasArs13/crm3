@@ -236,12 +236,13 @@ class CalculatorController extends Controller
         $columns = [
             "name",
             "contact_id",
+            "sostav",
             "sum",
             "date_plan",
             "status_id",
             "comment",
             "positions_count",
-            // 'is_demand',
+            'is_demand',
             // "residual_count",
             "delivery_id",
         ];
