@@ -259,8 +259,8 @@
                 for (var i = 0; i < data.length; i++) {
                     var newRow = orderTable.insertRow(i + 1);
 
-                    if (data[i]['positions'] && data[i]['positions'][0]) {
-                        if (data[i]['positions'][0]['building_materials'] == 'бетон') {
+                    if (data[i]['positions'] && data[i]['positions'][0] && data[i]['positions'][0]['product']) {
+                        if (data[i]['positions'][0]['product']['building_materials'] == 'бетон') {
                             sostav =
                                 `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['short_name']}</td>`;
                         } else {
@@ -443,8 +443,8 @@
                 for (var i = 0; i < data.length; i++) {
                     var newRow = orderTable.insertRow(i + 1);
 
-                    if (data[i]['positions'] && data[i]['positions'][0]) {
-                        if (data[i]['positions'][0]['building_materials'] == 'бетон') {
+                    if (data[i]['positions'] && data[i]['positions'][0] && data[i]['positions'][0]['product']) {
+                        if (data[i]['positions'][0]['product']['building_materials'] == 'бетон') {
                             sostav =
                                 `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['short_name']}</td>`;
                         } else {
