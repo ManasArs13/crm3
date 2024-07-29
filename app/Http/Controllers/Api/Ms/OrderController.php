@@ -51,7 +51,10 @@ class OrderController extends Controller
 
         $orders = Order::query()->with(
             'positions',
+            'positions.product',
             'status',
+            'shipment_products',
+            'shipment_products.product',
             'delivery',
             'transport',
             'contact',

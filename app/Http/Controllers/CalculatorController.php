@@ -243,7 +243,7 @@ class CalculatorController extends Controller
             "comment",
             "positions_count",
             'is_demand',
-            // "residual_count",
+            "residual_count",
             "delivery_id",
         ];
 

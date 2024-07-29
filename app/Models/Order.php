@@ -42,6 +42,11 @@ class Order extends Model
         return $this->hasMany(Shipment::class);
     }
 
+    public function shipment_products()
+    {
+        return $this->hasManyThrough(ShipmentProduct::class, Shipment::class);
+    }
+
     public function positions()
     {
         return $this->hasMany(OrderPosition::class);

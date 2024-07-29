@@ -251,7 +251,7 @@
             success: function(data) {
 
                 now.innerText = dataNext;
-
+                console.log(data)
                 for (var i = 1; i < orderTable.rows.length;) {
                     orderTable.deleteRow(i);
                 }
@@ -360,6 +360,26 @@
                                 `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`
                     }
 
+                    var positionQuantity = 0;
+                    var products_shipped_count = 0;
+
+                    data[i]['positions'].forEach(element => {
+                        if (element['product'] && element['product']['building_material'] !==
+                            'доставка' && element[
+                                'product']['building_material'] !== 'не выбрано') {
+                            positionQuantity += element['quantity'];
+                        }
+                    });
+
+                    data[i]['shipment_products'].forEach(element => {
+                        if (element['product'] && element['product']['building_material'] !==
+                            'доставка' && element[
+                                'product']['building_material'] !== 'не выбрано') {
+                            products_shipped_count += element['quantity'];
+                        }
+                    });
+
+
                     newRow.innerHTML = `
                     <tr class="border-b-2">
                             <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
@@ -382,9 +402,12 @@
                                 ${data[i]['comment'] ? data[i]['comment']: '-'}
                             </td>
                             <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
-                                ${data[i]['positions'].length}
+                                ${positionQuantity}
                             </td>` +
                         is_demand +
+                        `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
+                                ${positionQuantity - products_shipped_count}
+                            </td>` +
                         `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
                                 ${data[i]['delivery'] ? data[i]['delivery']['name'] : '-'}
                             </td>                    
@@ -412,7 +435,7 @@
             },
             success: function(data) {
                 now.innerText = dataBack;
-
+                console.log(data)
                 for (var i = 1; i < orderTable.rows.length;) {
                     orderTable.deleteRow(i);
                 }
@@ -521,6 +544,25 @@
                                 `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`
                     }
 
+                    var positionQuantity = 0;
+                    var products_shipped_count = 0;
+
+                    data[i]['positions'].forEach(element => {
+                        if (element['product'] && element['product']['building_material'] !==
+                            'доставка' && element[
+                                'product']['building_material'] !== 'не выбрано') {
+                            positionQuantity += element['quantity'];
+                        }
+                    });
+
+                    data[i]['shipment_products'].forEach(element => {
+                        if (element['product'] && element['product']['building_material'] !==
+                            'доставка' && element[
+                                'product']['building_material'] !== 'не выбрано') {
+                            products_shipped_count += element['quantity'];
+                        }
+                    });
+
                     newRow.innerHTML = `
                     <tr class="border-b-2">
                             <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
@@ -543,9 +585,12 @@
                                 ${data[i]['comment'] ? data[i]['comment']: '-'}
                             </td>
                             <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
-                                ${data[i]['positions'].length}
+                                ${positionQuantity}
                             </td>` +
                         is_demand +
+                        `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right">
+                                ${positionQuantity - products_shipped_count}
+                            </td>` +
                         `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">
                                 ${data[i]['delivery'] ? data[i]['delivery']['name'] : '-'}
                             </td>                    
