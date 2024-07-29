@@ -260,9 +260,9 @@
                     var newRow = orderTable.insertRow(i + 1);
 
                     if (data[i]['positions'] && data[i]['positions'][0] && data[i]['positions'][0]['product']) {
-                        if (data[i]['positions'][0]['product']['building_materials'] == 'бетон') {
+                        if (data[i]['positions'][0]['product']['building_material'] == 'бетон' && data[i]['positions'][0]['product']['short_name'] !== null) {
                             sostav =
-                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['short_name']}</td>`;
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['product']['short_name']}</td>`;
                         } else {
                             sostav =
                                 `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`;
@@ -444,9 +444,9 @@
                     var newRow = orderTable.insertRow(i + 1);
 
                     if (data[i]['positions'] && data[i]['positions'][0] && data[i]['positions'][0]['product']) {
-                        if (data[i]['positions'][0]['product']['building_materials'] == 'бетон') {
+                        if (data[i]['positions'][0]['product']['building_material'] == 'бетон' && data[i]['positions'][0]['product']['short_name'] !== null) {
                             sostav =
-                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['short_name']}</td>`;
+                                `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">${data[i]['positions'][0]['product']['short_name']}</td>`;
                         } else {
                             sostav =
                                 `<td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:left">-</td>`;
