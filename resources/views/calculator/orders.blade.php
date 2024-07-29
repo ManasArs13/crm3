@@ -251,7 +251,7 @@
             success: function(data) {
 
                 now.innerText = dataNext;
-                console.log(data)
+
                 for (var i = 1; i < orderTable.rows.length;) {
                     orderTable.deleteRow(i);
                 }
@@ -435,7 +435,7 @@
             },
             success: function(data) {
                 now.innerText = dataBack;
-                console.log(data)
+
                 for (var i = 1; i < orderTable.rows.length;) {
                     orderTable.deleteRow(i);
                 }
