@@ -232,6 +232,13 @@
                         </x-nav-link>
                     </div>
 
+                    {{-- Сотрудники --}}
+                    <div class="hidden md:flex md:items-center md:ms-1">
+                        <x-nav-link :href="route('employee.index')">
+                            Сотрудники
+                        </x-nav-link>
+                    </div>
+
                     {{-- Прочее --}}
                     <div class="hidden md:flex md:items-center md:ms-6">
                         <x-dropdown align="left" width="48">
