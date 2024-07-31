@@ -10,6 +10,7 @@ use App\Console\Commands\ImportFromMS\ImportColor;
 use App\Console\Commands\ImportFromMS\ImportContactMs;
 use App\Console\Commands\ImportFromMS\ImportDelivery;
 use App\Console\Commands\ImportFromMS\ImportDemand;
+use App\Console\Commands\ImportFromMS\ImportEmployee;
 use App\Console\Commands\ImportFromMS\ImportOrderMs;
 use App\Console\Commands\ImportFromMS\ImportProcessing;
 use App\Console\Commands\ImportFromMS\ImportProducts;
@@ -41,7 +42,8 @@ class Kernel extends ConsoleKernel
         ImportTechChart::class,
         ImportTransportType::class,
         ImportTransport::class,
-        CkeckContactsMs::class
+        CkeckContactsMs::class,
+        ImportEmployee::class
     ];
 
     protected function schedule(Schedule $schedule): void
@@ -51,6 +53,7 @@ class Kernel extends ConsoleKernel
         //$schedule->command('app:check-contact-amo')->hourly();
         //$schedule->command('app:update-counterparty')->hourly();
         //$schedule->command('ms:ckeck-contacts-ms')->hourly();
+        $schedule->command('ms:import-employee')->everySixHours();
 
         $schedule->command('ms:import-carrier')->everySixHours();
         $schedule->command('ms:import-color')->everySixHours();
