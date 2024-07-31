@@ -5,6 +5,7 @@ namespace App\Services\Entity;
 use App\Contracts\EntityInterface;
 use App\Models\Contact;
 use App\Models\Delivery;
+use App\Models\Employee;
 use App\Models\Option;
 use App\Models\Order;
 use App\Models\ShipingPrice;
@@ -222,6 +223,17 @@ class OrderService implements EntityInterface
 
                 if (Arr::exists($row, 'updated')) {
                     $entity->updated_at = $row['updated'];
+                }
+
+                if (Arr::exists($row, 'owner')) {
+                    $employeeMS_id = $this->getGuidFromUrl($row['owner']['meta']['href']);
+
+                    $employee = Employee::where('ms_id', $employeeMS_id)->first();
+
+                    if($employee) {
+                        $entity->employee_id = $employee->id;
+                    }
+                    
                 }
             }
             $entity->save();

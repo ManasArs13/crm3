@@ -12,6 +12,11 @@ class Employee extends Model
 
     protected $guarded = false;
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
