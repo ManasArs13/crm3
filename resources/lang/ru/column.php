@@ -148,5 +148,11 @@
    'cnt'=>"Количество",
    'ship' => 'Количество',
    'short_name' => 'Краткое имя',
-   'count_orders' => 'Всего заказов'
+   'count_orders' => 'Всего заказов',
+   'percent' => 'Процент',
+   'sum_orders' => 'Сумма заказов',
+   'new_orders' => 'Новых заказов',
+   'sum_new_orders' => 'Сумма новых',
+   'percent_new_orders' => 'Процент новых'
+
 ];

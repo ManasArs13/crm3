@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\EmployeeFilter;
 use App\Models\Employee;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -18,7 +19,19 @@ class EmployeeController extends Controller
         $entityName = 'Сотрудники';
 
         // Orders
-        $builder = Employee::query()->with('orders')->withCount('orders');
+        $builder = Employee::query()
+            ->with('orders')
+            ->withCount(['orders', 'orders as new_orders' => function (Builder $query) {
+                $query->whereHas('contact', function ($queries) {
+                    $queries->whereMonth('created_at', now()->month);
+                });
+            }])
+            ->withSum('orders', 'sum')
+            ->withSum(['orders as new_orders_sum' => function (Builder $query) {
+                $query->whereHas('contact', function ($queries) {
+                    $queries->whereMonth('created_at', now()->month);
+                });
+            }], 'sum');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new EmployeeFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);

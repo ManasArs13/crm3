@@ -214,36 +214,36 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
-                                @if ($key === 'remainder' || $key == 'positions_count')
-                                    <th scope="col" class="px-2 py-4">{{ $column }}</th>
-                                @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-2 py-4">
-                                        <a class="text-black"
-                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
-                                        @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-2 py-4">
-                                        <a class="text-black"
-                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
-                                        @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
-                                    </th>
-                                @endif
+                                <th scope="col" class="px-2 py-4"
+                                    @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
+                                    {{ $column }}</th>
                             @endforeach
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
+
+                        @php
+                            $totalOrders = 0;
+                            $totalSum = 0;
+                            $totalNewOrders = 0;
+                            $totalNewSumOrders = 0;
+                        @endphp
+
+                        @foreach ($entityItems as $entityItem)
+                            @php
+                                $totalOrders += $entityItem->orders_count;
+                                $totalSum += $entityItem->orders_sum_sum;
+                                $totalNewOrders += $entityItem->new_orders;
+                                $totalNewSumOrders += $entityItem->new_orders_sum;
+                            @endphp
+                        @endforeach
 
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                        @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                                         @switch($column)
@@ -252,7 +252,31 @@
                                             @break
 
                                             @case('sum_orders')
-                                                {{ $entityItem->orders_count }}
+                                                {{ $entityItem->orders_sum_sum ? $entityItem->orders_sum_sum : '-' }}
+                                            @break
+
+                                            @case('percent')
+                                                @if ($entityItem->orders_sum_sum && $entityItem->orders_sum_sum !== 0 && $totalSum && $totalSum !== 0)
+                                                    {{ round(100 / ($totalSum / +$entityItem->orders_sum_sum), 2) }}
+                                                @else
+                                                    -
+                                                @endif
+                                            @break
+
+                                            @case('new_orders')
+                                                {{ $entityItem->new_orders }}
+                                            @break
+
+                                            @case('sum_new_orders')
+                                                {{ $entityItem->new_orders_sum ? $entityItem->new_orders_sum : '-' }}
+                                            @break
+
+                                            @case('percent_new_orders')
+                                                @if ($entityItem->new_orders_sum && $entityItem->new_orders_sum !== 0 && $totalNewSumOrders && $totalNewSumOrders !== 0)
+                                                    {{ round(100 / ($totalNewSumOrders / +$entityItem->new_orders_sum), 2) }}
+                                                @else
+                                                    -
+                                                @endif
                                             @break
 
                                             @default
@@ -262,28 +286,47 @@
                                     </td>
                                 @endforeach
 
-                                {{-- Delete --}}
-                                <td class="text-nowrap px-2 py-4">
-
-                                    <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
-                                        class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="w-6 h-6 stroke-red-500 hover:stroke-white">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                            </svg>
-
-                                        </button>
-                                    </form>
-                                </td>
-
                             </tr>
                         @endforeach
+
+                        <tr class="border-b-2 bg-gray-100">
+
+                            @foreach ($resColumns as $column => $title)
+                                <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right"
+                                    @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                                    @switch($column)
+                                        @case('count_orders')
+                                            {{ $totalOrders }}
+                                        @break
+
+                                        @case('sum_orders')
+                                            {{ $totalSum }}
+                                        @break
+
+                                        @case('percent')
+                                            100%
+                                        @break
+
+                                        @case('new_orders')
+                                            {{ $totalNewOrders }}
+                                        @break
+
+                                        @case('sum_new_orders')
+                                            {{ $totalNewSumOrders }}
+                                        @break
+
+                                        @case('percent_new_orders')
+                                            100%
+                                        @break
+
+                                        @default
+                                    @endswitch
+
+                                </td>
+                            @endforeach
+
+                        </tr>
 
                     </tbody>
                 </table>
