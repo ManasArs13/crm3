@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Goods\IncomingController;
 use App\Http\Controllers\Goods\OutgoingController;
 use App\Http\Controllers\OperatorController;
@@ -73,6 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'order_positions' => OrderPositionController::class,
         'shipment_products' => ShipmentProductController::class,
         'supply'    => SupplyController::class,
+        'employee' => EmployeeController::class
     ]);
 
     Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
