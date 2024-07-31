@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\SyncMS;
 
-use App\Services\Entity\DemandServices;
+use App\Services\Entity\DemandService;
 use App\Services\Entity\OrderService;
 use Illuminate\Console\Command;
 
@@ -26,7 +26,7 @@ class CalcOfDeliveryPriceNorm extends Command
     /**
      * Execute the console command.
      */
-    public function handle(OrderService $orderService, DemandServices $demandService)
+    public function handle(OrderService $orderService, DemandService $demandService)
     {
         $orderService->calcOfDeliveryPriceNorm();
         $demandService->calcOfDeliveryPriceNorm();

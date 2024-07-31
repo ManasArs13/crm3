@@ -19,7 +19,7 @@ use App\Models\Transport;
 use App\Models\TransportType;
 use Carbon\Carbon;
 
-class DemandServices implements EntityInterface
+class DemandService implements EntityInterface
 {
     private Option $options;
 

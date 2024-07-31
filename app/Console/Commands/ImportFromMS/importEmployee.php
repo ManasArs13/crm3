@@ -4,35 +4,36 @@ namespace App\Console\Commands\ImportFromMS;
 
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
-use App\Services\Entity\DemandService;
+use App\Services\Entity\EmployeeService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class ImportDemand extends Command
+class ImportEmployee extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'ms:import-demand {--all}';
+    protected $signature = 'ms:import-employee {--all}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'import emloyees';
 
     /**
      * Execute the console command.
      */
-    public function handle(DemandService $demandService, MoySkladService $service)
+    public function handle(MoySkladService $service, EmployeeService $employeeServices)
     {
+        $url = Option::query()->where('code', '=', 'ms_employee_url')->first()?->value;
+
         $all = $this->option('all');
-        $url = Option::query()->where('code', '=', 'ms_url_demand')->first()?->value;
 
         $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
-        $service->createUrl($url, $demandService, ["updated"=>'>='.$date, "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
+        $service->createUrl($url, $employeeServices);
     }
 }
