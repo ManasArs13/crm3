@@ -2,6 +2,7 @@
 
 namespace App\Filters;
 
+use App\Models\Product;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class EmployeeFilter

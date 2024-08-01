@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
         //$schedule->command('app:check-contact-amo')->hourly();
         //$schedule->command('app:update-counterparty')->hourly();
         //$schedule->command('ms:ckeck-contacts-ms')->hourly();
-        $schedule->command('ms:import-employee')->everySixHours();
+        //$schedule->command('ms:import-employee')->everySixHours();
 
         $schedule->command('ms:import-carrier')->everySixHours();
         $schedule->command('ms:import-color')->everySixHours();
