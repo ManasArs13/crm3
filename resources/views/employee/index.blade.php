@@ -133,7 +133,7 @@
 
                                             @case('percent')
                                                 @if ($entityItem->orders_sum_sum && $entityItem->orders_sum_sum !== 0 && $totalSum && $totalSum !== 0)
-                                                    {{ round(100 / ($totalSum / +$entityItem->orders_sum_sum), 2) }}
+                                                    {{ round(100 / ($totalSum / +$entityItem->orders_sum_sum), 2) }} %
                                                 @else
                                                     -
                                                 @endif
@@ -149,7 +149,7 @@
 
                                             @case('percent_new_orders')
                                                 @if ($entityItem->new_orders_sum && $entityItem->new_orders_sum !== 0 && $totalNewSumOrders && $totalNewSumOrders !== 0)
-                                                    {{ round(100 / ($totalNewSumOrders / +$entityItem->new_orders_sum), 2) }}
+                                                    {{ round(100 / ($totalNewSumOrders / +$entityItem->new_orders_sum), 2) }} %
                                                 @else
                                                     -
                                                 @endif
@@ -168,10 +168,14 @@
                         <tr class="border-b-2 bg-gray-100">
 
                             @foreach ($resColumns as $column => $title)
-                                <td class="break-all max-w-96 overflow-auto px-2 py-4" style="text-align:right"
-                                    @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+                                <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
 
                                     @switch($column)
+                                        @case('name')
+                                            Всего:
+                                        @break
+
                                         @case('count_orders')
                                             {{ $totalOrders }}
                                         @break
@@ -193,7 +197,7 @@
                                         @break
 
                                         @case('percent_new_orders')
-                                            100%
+                                            100 %
                                         @break
 
                                         @default

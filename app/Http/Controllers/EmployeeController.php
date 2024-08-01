@@ -113,7 +113,6 @@ class EmployeeController extends Controller
             $selected = $request->columns;
         } else {
             $selected = [
-                "id",
                 "name",
                 "count_orders",
                 'sum_orders',
@@ -315,7 +314,6 @@ class EmployeeController extends Controller
             $selected = $request->columns;
         } else {
             $selected = [
-                "id",
                 "name",
                 "count_orders",
                 'sum_orders',
@@ -517,7 +515,6 @@ class EmployeeController extends Controller
             $selected = $request->columns;
         } else {
             $selected = [
-                "id",
                 "name",
                 "count_orders",
                 'sum_orders',
