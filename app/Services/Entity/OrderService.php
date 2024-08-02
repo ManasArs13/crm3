@@ -48,6 +48,7 @@ class OrderService implements EntityInterface
         $attributeLinkToAmo = $this->options::query()->where("code", '=', "ms_orders_amo_url_guid")->first()?->value;
         $guidAttrAmoContact = $this->options::where('code', '=', "ms_counterparty_amo_id_contact_guid")->first()?->value;
         $guidAttrAmoContactLink = 'bb95261f-972b-11ed-0a80-0e9300807fe0';
+        $attributeEmployee = '5acf51d7-4339-11ef-0a80-04b600053534';
 
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
@@ -155,12 +156,12 @@ class OrderService implements EntityInterface
 
                 $entity->contact_id = $entityContact->id;
 
-                if(isset($row['state'])) {
+                if (isset($row['state'])) {
                     $status_bd = Status::where('ms_id', $this->getGuidFromUrl($row['state']['meta']['href']))->first();
                     $entity->status_id = $status_bd->id;
                 } else {
                     $entity->status_id = null;
-                }              
+                }
 
                 $entity->date_plan = $datePlan;
                 $entity->date_moment = $dateCreated;
@@ -194,6 +195,13 @@ class OrderService implements EntityInterface
                                 $amoOrderLink = $attribute["value"];
                                 $amoOrder = $this->getGuidFromUrl($amoOrderLink);
                                 break;
+                            case $attributeEmployee:
+                                $employeeMS_id = $this->getGuidFromUrl($attribute['value']['meta']['href']);
+                                $employee = Employee::where('ms_id', $employeeMS_id)->first();
+                                if ($employee) {
+                                    $entity->employee_id = $employee->id;
+                                }
+                                break;
                         }
                     }
                 }
@@ -225,16 +233,16 @@ class OrderService implements EntityInterface
                     $entity->updated_at = $row['updated'];
                 }
 
-                if (Arr::exists($row, 'owner')) {
-                    $employeeMS_id = $this->getGuidFromUrl($row['owner']['meta']['href']);
+                // if (Arr::exists($row, 'owner')) {
+                //     $employeeMS_id = $this->getGuidFromUrl($row['owner']['meta']['href']);
 
-                    $employee = Employee::where('ms_id', $employeeMS_id)->first();
+                //     $employee = Employee::where('ms_id', $employeeMS_id)->first();
 
-                    if($employee) {
-                        $entity->employee_id = $employee->id;
-                    }
-                    
-                }
+                //     if($employee) {
+                //         $entity->employee_id = $employee->id;
+                //     }
+
+                // }
             }
             $entity->save();
 
