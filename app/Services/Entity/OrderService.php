@@ -233,16 +233,6 @@ class OrderService implements EntityInterface
                     $entity->updated_at = $row['updated'];
                 }
 
-                // if (Arr::exists($row, 'owner')) {
-                //     $employeeMS_id = $this->getGuidFromUrl($row['owner']['meta']['href']);
-
-                //     $employee = Employee::where('ms_id', $employeeMS_id)->first();
-
-                //     if($employee) {
-                //         $entity->employee_id = $employee->id;
-                //     }
-
-                // }
             }
             $entity->save();
 
