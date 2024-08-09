@@ -5,7 +5,7 @@ namespace App\Services\Entity;
 use App\Contracts\EntityInterface;
 use App\Models\Contact;
 use App\Models\Delivery;
-use App\Models\Employee;
+use App\Models\Manager;
 use App\Models\Option;
 use App\Models\Order;
 use App\Models\ShipingPrice;
@@ -48,7 +48,7 @@ class OrderService implements EntityInterface
         $attributeLinkToAmo = $this->options::query()->where("code", '=', "ms_orders_amo_url_guid")->first()?->value;
         $guidAttrAmoContact = $this->options::where('code', '=', "ms_counterparty_amo_id_contact_guid")->first()?->value;
         $guidAttrAmoContactLink = 'bb95261f-972b-11ed-0a80-0e9300807fe0';
-        $attributeEmployee = '5acf51d7-4339-11ef-0a80-04b600053534';
+        $attributeManager = '5acf51d7-4339-11ef-0a80-04b600053534';
 
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
@@ -195,11 +195,11 @@ class OrderService implements EntityInterface
                                 $amoOrderLink = $attribute["value"];
                                 $amoOrder = $this->getGuidFromUrl($amoOrderLink);
                                 break;
-                            case $attributeEmployee:
-                                $employeeMS_id = $this->getGuidFromUrl($attribute['value']['meta']['href']);
-                                $employee = Employee::where('ms_id', $employeeMS_id)->first();
-                                if ($employee) {
-                                    $entity->employee_id = $employee->id;
+                            case $attributeManager:
+                                $managerMS_id = $this->getGuidFromUrl($attribute['value']['meta']['href']);
+                                $manager = Manager::where('ms_id', $managerMS_id)->first();
+                                if ($manager) {
+                                    $entity->manager_id = $manager->id;
                                 }
                                 break;
                         }

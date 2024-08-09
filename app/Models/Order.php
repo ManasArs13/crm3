@@ -42,6 +42,11 @@ class Order extends Model
         return $this->hasOne(Employee::class, 'id', 'employee_id');
     }
 
+    public function manager()
+    {
+        return $this->hasOne(Manager::class, 'id', 'manager_id');
+    }
+
     public function shipments()
     {
         return $this->hasMany(Shipment::class);
