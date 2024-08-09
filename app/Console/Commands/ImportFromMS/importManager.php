@@ -5,7 +5,6 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\ManagerService;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportManager extends Command
@@ -15,7 +14,7 @@ class ImportManager extends Command
      *
      * @var string
      */
-    protected $signature = 'ms:import-manager {--all}';
+    protected $signature = 'ms:import-manager';
 
     /**
      * The console command description.
@@ -30,10 +29,6 @@ class ImportManager extends Command
     public function handle(MoySkladService $service, ManagerService $managerServices)
     {
         $url = Option::query()->where('code', '=', 'ms_manager_url')->first()?->value;
-
-        $all = $this->option('all');
-
-        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
         $service->createUrl($url, $managerServices);
     }
 }
