@@ -2,7 +2,7 @@ name: Deploy crm2
 
 on:
   push:
-    brances:
+    branches:
       - main
 
 
@@ -10,17 +10,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-  steps: 
-    - name: Install composer dependencies
-      run: composer install --no-dev --optimize-autoloader
-    - name: Run database migrations
-      run: php artisan migrate --force
-    - name: Optimize cache
-      run: |
-        php artisan config:cache
-        php artisan event:cache
-        php artisan route:cache
-        php artisan view:cache
-    - name: Minify CSS and JS files
-      run: npm run build
+    steps: 
+      - name: Install composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+      - name: Run database migrations
+        run: php artisan migrate --force
+      - name: Optimize cache
+        run: |
+          php artisan config:cache
+          php artisan event:cache
+          php artisan route:cache
+          php artisan view:cache
+      - name: Minify CSS and JS files
+        run: npm run build
     
