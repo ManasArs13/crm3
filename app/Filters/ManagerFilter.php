@@ -4,7 +4,7 @@ namespace App\Filters;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
-class EmployeeFilter
+class ManagerFilter
 {
     protected $builder;
     protected $request;

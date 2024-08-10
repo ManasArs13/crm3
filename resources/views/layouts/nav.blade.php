@@ -232,10 +232,10 @@
                         </x-nav-link>
                     </div>
 
-                    {{-- Сотрудники --}}
+                    {{-- Менеджеры --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-nav-link :href="route('employee.index')">
-                            Сотрудники
+                        <x-nav-link :href="route('manager.index')">
+                            Менеджеры
                         </x-nav-link>
                     </div>
 

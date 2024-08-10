@@ -9,6 +9,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Goods\IncomingController;
 use App\Http\Controllers\Goods\OutgoingController;
+use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
@@ -74,13 +75,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'order_positions' => OrderPositionController::class,
         'shipment_products' => ShipmentProductController::class,
         'supply'    => SupplyController::class,
-        'employee' => EmployeeController::class
+        'manager' => ManagerController::class
     ]);
 
     Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
 
-    Route::get('/employee_block', [EmployeeController::class, 'index_block'])->name('employee.index.block');
-    Route::get('/employee_concrete', [EmployeeController::class, 'index_concrete'])->name('employee.index.concrete');
+    // Менеджеры
+    Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
+    Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
+
     
     //Доп
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
