@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\ManagerFilter;
 use App\Models\Manager;
+use App\Models\Order;
 use App\Models\Product;
 use DateTime;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -49,7 +50,7 @@ class ManagerController extends Controller
         $datePrev = $date1->modify('-1 month')->format('m');
         $dateNext = $date2->modify('+1 month')->format('m');
 
-        // Orders
+        // Managers
         $builder = Manager::query()
             ->withCount(['orders as all_orders' => function (Builder $query) use ($date) {
                 $query
@@ -78,6 +79,24 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        // Orders without manager
+        $orders = Order::select('id', 'created_at', 'sum', 'manager_id')
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', date('Y'))
+            ->get();
+
+        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id')
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', date('Y'))
+            ->whereHas('contact', function (Builder $query) use ($date) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })
+            ->get();
+
         $selected = [
             "name",
             "count_orders",
@@ -99,6 +118,8 @@ class ManagerController extends Controller
 
         return view("manager.index", compact(
             'entityItems',
+            'orders',
+            'ordersNew',
             "resColumns",
             "resColumnsAll",
             "urlShow",
@@ -200,6 +221,34 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        // Orders without manager
+        $orders = Order::select('id', 'created_at', 'sum', 'manager_id')
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', date('Y'))
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })
+            ->get();
+
+        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id')
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', date('Y'))
+            ->whereHas('contact', function (Builder $query) use ($date) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })
+            ->get();
+
         $selected = [
             "name",
             "count_orders",
@@ -220,6 +269,8 @@ class ManagerController extends Controller
 
         return view("manager.index", compact(
             'entityItems',
+            'orders',
+            'ordersNew',
             "resColumns",
             "resColumnsAll",
             "urlShow",
@@ -322,6 +373,34 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        // Orders without manager
+        $orders = Order::select('id', 'created_at', 'sum', 'manager_id')
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', date('Y'))
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
+            ->get();
+
+        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id')
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', date('Y'))
+            ->whereHas('contact', function (Builder $query) use ($date) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
+            ->get();
+
         $selected = [
             "name",
             "count_orders",
@@ -342,6 +421,8 @@ class ManagerController extends Controller
 
         return view("manager.index", compact(
             'entityItems',
+            'orders',
+            'ordersNew',
             "resColumns",
             "resColumnsAll",
             "urlShow",

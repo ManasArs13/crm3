@@ -105,6 +105,17 @@
                             $totalNewSumOrders = 0;
                         @endphp
 
+                        @php
+                            if ($orders) {
+                                $totalOrders += count($orders);
+                                $totalSum += $orders->sum('sum');
+                            }
+                            if ($ordersNew) {
+                                $totalNewOrders += count($ordersNew);
+                                $totalNewSumOrders += $ordersNew->sum('sum');
+                            }
+                        @endphp
+
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalOrders += $entityItem->all_orders;
@@ -115,7 +126,6 @@
                         @endforeach
 
                         @foreach ($entityItems as $entityItem)
-
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
@@ -129,14 +139,14 @@
                                             @break
 
                                             @case('sum_orders')
-                                                {{ $entityItem->all_orders_sum ? $entityItem->all_orders_sum : '-' }}
+                                                {{ $entityItem->all_orders_sum ? $entityItem->all_orders_sum : '0' }}
                                             @break
 
                                             @case('percent')
                                                 @if ($entityItem->all_orders_sum && $entityItem->all_orders_sum !== 0 && $totalSum && $totalSum !== 0)
                                                     {{ round(100 / ($totalSum / +$entityItem->all_orders_sum), 2) }} %
                                                 @else
-                                                    -
+                                                    0%
                                                 @endif
                                             @break
 
@@ -145,14 +155,14 @@
                                             @break
 
                                             @case('sum_new_orders')
-                                                {{ $entityItem->new_orders_sum ? $entityItem->new_orders_sum : '-' }}
+                                                {{ $entityItem->new_orders_sum ? $entityItem->new_orders_sum : '0' }}
                                             @break
 
                                             @case('percent_new_orders')
                                                 @if ($entityItem->new_orders_sum && $entityItem->new_orders_sum !== 0 && $totalNewSumOrders && $totalNewSumOrders !== 0)
                                                     {{ round(100 / ($totalNewSumOrders / +$entityItem->new_orders_sum), 2) }} %
                                                 @else
-                                                    -
+                                                    0%
                                                 @endif
                                             @break
 
@@ -165,6 +175,58 @@
 
                             </tr>
                         @endforeach
+
+                        {{-- Orders without Manager --}}
+                        <tr class="border-b-2">
+
+                            @foreach ($resColumns as $column => $title)
+                                <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
+
+                                    @switch($column)
+                                        @case('name')
+                                            Не выбрано
+                                        @break
+
+                                        @case('count_orders')
+                                            {{ count($orders) }}
+                                        @break
+
+                                        @case('sum_orders')
+                                            {{ $orders ? $orders->sum('sum') : 0 }}
+                                        @break
+
+                                        @case('percent')
+                                            @if ($orders->sum('sum') && $orders->sum('sum') !== 0 && $totalSum && $totalSum !== 0)
+                                                {{ round(100 / ($totalSum / +$orders->sum('sum')), 2) }} %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @case('new_orders')
+                                            {{ count($ordersNew) }}
+                                        @break
+
+                                        @case('sum_new_orders')
+                                            {{ $ordersNew ? $ordersNew->sum('sum') : 0 }}
+                                        @break
+
+                                        @case('percent_new_orders')
+                                            @if ($ordersNew->sum('sum') && $ordersNew->sum('sum') !== 0 && $totalNewSumOrders && $totalNewSumOrders !== 0)
+                                                {{ round(100 / ($totalNewSumOrders / +$ordersNew->sum('sum')), 2) }} %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @default
+                                    @endswitch
+
+                                </td>
+                            @endforeach
+
+                        </tr>
 
                         <tr class="border-b-2 bg-gray-100">
 
@@ -186,7 +248,7 @@
                                         @break
 
                                         @case('percent')
-                                            100%
+                                            {{ $totalSum ? '100%' : '0%' }}
                                         @break
 
                                         @case('new_orders')
@@ -198,7 +260,7 @@
                                         @break
 
                                         @case('percent_new_orders')
-                                            100 %
+                                            {{ $totalNewSumOrders ? '100%' : '0%' }}
                                         @break
 
                                         @default
