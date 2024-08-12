@@ -84,6 +84,12 @@ class ManagerController extends Controller
             ->whereNull('manager_id')
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', date('Y'))
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK)
+                        ->orWhere('building_material', Product::CONCRETE);
+                });
+            })
             ->get();
 
         $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id')
@@ -94,6 +100,12 @@ class ManagerController extends Controller
                 $query
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
+            })
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK)
+                        ->orWhere('building_material', Product::CONCRETE);
+                });
             })
             ->get();
 
