@@ -54,33 +54,39 @@ class ManagerController extends Controller
         $builder = Manager::query()
             ->withCount(['orders as all_orders' => function (Builder $query) use ($date) {
                 $query
+                    ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             }])
             ->withSum(['orders as all_orders_sum' => function (Builder $query) use ($date) {
                 $query
+                    ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             }], 'sum')
             ->withCount(['orders as new_orders' => function (Builder $query) use ($date) {
-                $query->whereHas('contact', function ($queries) use ($date) {
-                    $queries
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', date('Y'));
-                });
+                $query
+                    ->whereIn('status_id', [5, 6])
+                    ->whereHas('contact', function ($queries) use ($date) {
+                        $queries
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', date('Y'));
+                    });
             }])
             ->withSum(['orders as new_orders_sum' => function (Builder $query) use ($date) {
-                $query->whereHas('contact', function ($queries) use ($date) {
-                    $queries
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', date('Y'));
-                });
+                $query
+                    ->whereIn('status_id', [5, 6])
+                    ->whereHas('contact', function ($queries) use ($date) {
+                        $queries
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', date('Y'));
+                    });
             }], 'sum');
 
         $entityItems = $builder->orderBy('id')->get();
 
         // Orders without manager
-        $orders = Order::select('id', 'created_at', 'sum', 'manager_id')
+        $orders = Order::select('id', 'created_at', 'sum', 'manager_id', 'status_id')
             ->whereNull('manager_id')
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', date('Y'))
@@ -90,9 +96,10 @@ class ManagerController extends Controller
                         ->orWhere('building_material', Product::CONCRETE);
                 });
             })
+            ->whereIn('status_id', [5, 6])
             ->get();
 
-        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id')
+        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id', 'status_id')
             ->whereNull('manager_id')
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', date('Y'))
@@ -101,6 +108,7 @@ class ManagerController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
+            ->whereIn('status_id', [5, 6])
             ->whereHas('positions', function ($query) {
                 $query->whereHas('product', function ($queries) {
                     $queries->where('building_material', Product::BLOCK)
@@ -188,6 +196,7 @@ class ManagerController extends Controller
         $builder = Manager::query()
             ->withCount(['orders as all_orders' => function (Builder $query) use ($date) {
                 $query
+                    ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'))
                     ->whereHas('positions', function ($query) {
@@ -198,6 +207,7 @@ class ManagerController extends Controller
             }])
             ->withSum(['orders as all_orders_sum' => function (Builder $query) use ($date) {
                 $query
+                    ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'))
                     ->whereHas('positions', function ($query) {
@@ -207,11 +217,13 @@ class ManagerController extends Controller
                     });
             }], 'sum')
             ->withCount(['orders as new_orders' => function (Builder $query) use ($date) {
-                $query->whereHas('contact', function ($queries) use ($date) {
-                    $queries
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', date('Y'));
-                })
+                $query
+                    ->whereIn('status_id', [5, 6])
+                    ->whereHas('contact', function ($queries) use ($date) {
+                        $queries
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', date('Y'));
+                    })
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -219,11 +231,13 @@ class ManagerController extends Controller
                     });
             }])
             ->withSum(['orders as new_orders_sum' => function (Builder $query) use ($date) {
-                $query->whereHas('contact', function ($queries) use ($date) {
-                    $queries
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', date('Y'));
-                })
+                $query
+                    ->whereIn('status_id', [5, 6])
+                    ->whereHas('contact', function ($queries) use ($date) {
+                        $queries
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', date('Y'));
+                    })
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -234,7 +248,7 @@ class ManagerController extends Controller
         $entityItems = $builder->orderBy('id')->get();
 
         // Orders without manager
-        $orders = Order::select('id', 'created_at', 'sum', 'manager_id')
+        $orders = Order::select('id', 'created_at', 'sum', 'manager_id', 'status_id')
             ->whereNull('manager_id')
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', date('Y'))
@@ -243,9 +257,10 @@ class ManagerController extends Controller
                     $queries->where('building_material', Product::BLOCK);
                 });
             })
+            ->whereIn('status_id', [5, 6])
             ->get();
 
-        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id')
+        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id', 'status_id')
             ->whereNull('manager_id')
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', date('Y'))
@@ -259,6 +274,7 @@ class ManagerController extends Controller
                     $queries->where('building_material', Product::BLOCK);
                 });
             })
+            ->whereIn('status_id', [5, 6])
             ->get();
 
         $selected = [
@@ -339,6 +355,7 @@ class ManagerController extends Controller
         $builder = Manager::query()
             ->withCount(['orders as all_orders' => function (Builder $que) use ($date) {
                 $que
+                    ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'))
                     ->whereHas('positions', function ($query) {
@@ -349,6 +366,7 @@ class ManagerController extends Controller
             }])
             ->withSum(['orders as all_orders_sum' => function (Builder $que) use ($date) {
                 $que
+                    ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'))
                     ->whereHas('positions', function ($query) {
@@ -358,11 +376,13 @@ class ManagerController extends Controller
                     });
             }], 'sum')
             ->withCount(['orders as new_orders' => function (Builder $query) use ($date) {
-                $query->whereHas('contact', function ($queries) use ($date) {
-                    $queries
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', date('Y'));
-                })
+                $query
+                    ->whereIn('status_id', [5, 6])
+                    ->whereHas('contact', function ($queries) use ($date) {
+                        $queries
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', date('Y'));
+                    })
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -370,11 +390,13 @@ class ManagerController extends Controller
                     });
             }])
             ->withSum(['orders as new_orders_sum' => function (Builder $query) use ($date) {
-                $query->whereHas('contact', function ($queries) use ($date) {
-                    $queries
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', date('Y'));
-                })
+                $query
+                    ->whereIn('status_id', [5, 6])
+                    ->whereHas('contact', function ($queries) use ($date) {
+                        $queries
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', date('Y'));
+                    })
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -386,7 +408,7 @@ class ManagerController extends Controller
         $entityItems = $builder->orderBy('id')->get();
 
         // Orders without manager
-        $orders = Order::select('id', 'created_at', 'sum', 'manager_id')
+        $orders = Order::select('id', 'created_at', 'sum', 'manager_id', 'status_id')
             ->whereNull('manager_id')
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', date('Y'))
@@ -395,9 +417,10 @@ class ManagerController extends Controller
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })
+            ->whereIn('status_id', [5, 6])
             ->get();
 
-        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id')
+        $ordersNew = Order::select('id', 'created_at', 'sum', 'manager_id', 'status_id')
             ->whereNull('manager_id')
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', date('Y'))
@@ -411,6 +434,7 @@ class ManagerController extends Controller
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })
+            ->whereIn('status_id', [5, 6])
             ->get();
 
         $selected = [
