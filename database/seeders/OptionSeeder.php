@@ -214,7 +214,7 @@ class OptionSeeder extends Seeder
             [
                 'name' => 'Организация: Гуид организации ООО "Евроблок"',
                 'code' => 'ms_organization_guid',
-                'value' => '8ff8467d-7c10-11e7-7a6c-d2a9003ab44a',
+                'value' => '03957745-4672-11ee-0a80-0dbe00139b20',
                 'module' => 'ms'
             ],
             [
@@ -451,7 +451,72 @@ class OptionSeeder extends Seeder
                 'value' => 'https://api.moysklad.ru/api/remap/1.2/report/stock/bystore/current?filter=assortmentId=',
                 'module' => 'ms'
             ],
-
+            [
+                'name' => 'Заказ: Гуид аттрибута "Цена доставки',
+                'code' => 'ms_order_delivery_price_guid',
+                'value' => '7b698710-5b0d-11ea-0a80-00f200165510',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Заказ: Гуид аттрибута "Тип доставки"',
+                'code' => 'ms_order_transport_type_guid',
+                'value' => '4a0518e1-a10a-11ec-0a80-087b00054a35',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Заказ: Url для редактирования',
+                'code' => 'ms_order_edit_url',
+                'value' => 'https://online.moysklad.ru/app/#customerorder/edit?id=',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'НДС',
+                'code' => 'ms_vat',
+                'value' => '20',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Услуга: Доставка блоков',
+                'code' => 'ms_service_delivery_block_id',
+                'value' => '351221a7-f89e-11ed-0a80-01c10035feac',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Услуга: Доставка бетона',
+                'code' => 'ms_service_delivery_beton_id',
+                'value' => 'e238288c-4678-11ee-0a80-03500014310c',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Услуга: Адрес услуг в мс',
+                'code' => 'ms_service_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/service/',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Контрагент: Адрес метаданных контграгента в мс',
+                'code' => 'ms_counterparty_meta_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/metadata',
+                'module' => 'mc'
+            ],
+            [
+                'name' => 'Перевозчик: Адрес, c которого будем забирать справочник "Перевозчик"',
+                'code' => 'ms_carrier_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/d6afeece-5ad3-11ea-0a80-05280010f6ec',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Сотрудники: Адрес, с которого будем забирать данные сотрудников',
+                'code' => 'ms_employee_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/employee/',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Менедженры: Адрес, с которого будем забирать данные менеджеров',
+                'code' => 'ms_manager_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/9ff3e917-c885-11ed-0a80-07580004cc0a',
+                'module' => 'ms'
+            ]
         ]);
     }
 }

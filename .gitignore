@@ -20,3 +20,4 @@ yarn-error.log
 /.vscode
 Envoy.blade.php
 storage
+.DS_Store
