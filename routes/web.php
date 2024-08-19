@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Report\CounterpartyController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipingPriceController;
 use App\Http\Controllers\ShipmentController;
@@ -83,6 +84,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
     Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
+
+    // Сводка
+    Route::name('report.')->group(function () {
+
+        // Контрагенты
+        Route::get('/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
+        Route::get('/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
+        Route::get('/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+
+
+    });
 
     
     //Доп

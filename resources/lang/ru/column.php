@@ -153,6 +153,8 @@
    'sum_orders' => 'Сумма заказов',
    'new_orders' => 'Новых заказов',
    'sum_new_orders' => 'Сумма новых',
-   'percent_new_orders' => 'Процент новых'
+   'percent_new_orders' => 'Процент новых',
+   'count_shipments' => 'Кол-во отгрузок',
+   'sum_shipments' => 'Сумма отгрузок',
 
 ];
