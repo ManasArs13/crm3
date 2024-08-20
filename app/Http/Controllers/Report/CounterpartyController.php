@@ -46,10 +46,15 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()
+        $builder = Contact::query()->orderBy('name')
             ->whereHas('orders', function ($query) use ($date) {
                 $query
                     ->whereIn('status_id', [5, 6])
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })
+            ->orWhereHas('shipments', function ($query) use ($date) {
+                $query
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
@@ -139,7 +144,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()
+        $builder = Contact::query()->orderBy('name')
             ->whereHas('orders', function ($query) use ($date) {
                 $query
                     ->whereHas('positions', function ($query) {
@@ -148,6 +153,11 @@ class CounterpartyController extends Controller
                         });
                     })
                     ->whereIn('status_id', [5, 6])
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })
+            ->orWhereHas('shipments', function ($query) use ($date) {
+                $query
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
@@ -237,7 +247,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()
+        $builder = Contact::query()->orderBy('name')
             ->whereHas('orders', function ($query) use ($date) {
                 $query
                     ->whereHas('positions', function ($query) {
@@ -246,6 +256,11 @@ class CounterpartyController extends Controller
                         });
                     })
                     ->whereIn('status_id', [5, 6])
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })
+            ->orWhereHas('shipments', function ($query) use ($date) {
+                $query
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
