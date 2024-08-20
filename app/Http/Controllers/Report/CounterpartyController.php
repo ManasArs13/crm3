@@ -46,15 +46,15 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()
+        $builder = Contact::query()->select('id', 'name')
             ->whereHas('orders', function ($query) use ($date) {
-                $query
+                $query->select('id')
                     ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
-                $query
+                $query->select('id')
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
@@ -81,7 +81,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->select('name', 'id')->orderBy('name')->get();
+        $entityItems = $builder->orderBy('name')->get();
 
         $selected = [
             "name",
@@ -144,9 +144,9 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()->orderBy('name')
+        $builder = Contact::query()->select('id', 'name')
             ->whereHas('orders', function ($query) use ($date) {
-                $query
+                $query->select('id')
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -157,7 +157,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
-                $query
+                $query->select('id')
                     ->whereHas('products', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -189,7 +189,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->select('name', 'id')->orderBy('name')->orderBy('id')->get();
+        $entityItems = $builder->orderBy('name')->get();
 
         $selected = [
             "name",
@@ -252,9 +252,9 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()->orderBy('name')
+        $builder = Contact::query()->select('id', 'name')
             ->whereHas('orders', function ($query) use ($date) {
-                $query
+                $query->select('id')
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -265,7 +265,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
-                $query
+                $query->select('id')
                     ->whereHas('products', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -297,7 +297,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->select('name', 'id')->orderBy('name')->orderBy('id')->get();
+        $entityItems = $builder->orderBy('name')->get();
 
         $selected = [
             "name",
