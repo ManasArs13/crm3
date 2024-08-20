@@ -46,7 +46,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()->orderBy('name')
+        $builder = Contact::query()
             ->whereHas('orders', function ($query) use ($date) {
                 $query
                     ->whereIn('status_id', [5, 6])
@@ -81,7 +81,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->orderBy('id')->get();
+        $entityItems = $builder->select('name', 'id')->orderBy('name')->get();
 
         $selected = [
             "name",
@@ -189,7 +189,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->orderBy('id')->get();
+        $entityItems = $builder->select('name', 'id')->orderBy('name')->orderBy('id')->get();
 
         $selected = [
             "name",
@@ -297,7 +297,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->orderBy('id')->get();
+        $entityItems = $builder->select('name', 'id')->orderBy('name')->orderBy('id')->get();
 
         $selected = [
             "name",
