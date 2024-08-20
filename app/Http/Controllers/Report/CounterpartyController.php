@@ -81,7 +81,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->orderBy('name')->get();
+        $entityItems = $builder->orderBy('name')->paginate(40);
 
         $selected = [
             "name",
@@ -189,7 +189,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->orderBy('name')->get();
+        $entityItems = $builder->orderBy('name')->paginate(40);
 
         $selected = [
             "name",
@@ -297,7 +297,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             }], 'suma');
 
-        $entityItems = $builder->orderBy('name')->get();
+        $entityItems = $builder->orderBy('name')->paginate(40);
 
         $selected = [
             "name",

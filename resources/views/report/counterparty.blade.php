@@ -143,32 +143,38 @@
                                     @switch($column)
 
                                     @case('name')
-                                        ВСЕГО:
+                                    ВСЕГО:
                                     @break
 
                                     @case('count_orders')
-                                        {{ $totalOrdersCount }}
+                                    {{ $totalOrdersCount }}
                                     @break
 
                                     @case('sum_orders')
-                                        {{ $totalOrdersSum }}
+                                    {{ $totalOrdersSum }}
                                     @break
 
                                     @case('count_shipments')
-                                        {{ $totalShipmentsCount }}
+                                    {{ $totalShipmentsCount }}
                                     @break
 
                                     @case('sum_shipments')
-                                        {{ $totalShipmentsSum }}
+                                    {{ $totalShipmentsSum }}
                                     @break
 
                                     @default
-                                        {{ $entityItem->$column }}
+                                    {{ $entityItem->$column }}
                                     @endswitch
 
                                 </td>
                                 @endforeach
 
+                            </tr>
+
+                            <tr class="border-b-2 bg-gray-100">
+                                <td colspan="5" class="p-2">
+                                    {{ $entityItems->appends(request()->query())->links() }}
+                                </td>
                             </tr>
 
                         </tbody>
