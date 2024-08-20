@@ -158,6 +158,11 @@ class CounterpartyController extends Controller
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
                 $query
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK);
+                        });
+                    })
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
@@ -261,6 +266,11 @@ class CounterpartyController extends Controller
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
                 $query
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::CONCRETE);
+                        });
+                    })
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
