@@ -95,10 +95,10 @@
 
                             @foreach ($entityItems as $entityItem)
                             @php
-                            $totalOrdersCount += $entityItem->orders_count;
-                            $totalOrdersSum += $entityItem->orders_sum;
-                            $totalShipmentsCount += $entityItem->shipments_count;
-                            $totalShipmentsSum += $entityItem->shipments_sum;
+                            $totalOrdersCount += $entityItem->orders->count();
+                            $totalOrdersSum += $entityItem->orders->sum('sum');
+                            $totalShipmentsCount += $entityItem->shipments->count();
+                            $totalShipmentsSum += $entityItem->shipments->sum('suma');
                             @endphp
                             @endforeach
 
@@ -110,19 +110,19 @@
 
                                     @switch($column)
                                     @case('count_orders')
-                                    {{ $entityItem->orders_count }}
+                                    {{ $entityItem->orders->count() }}
                                     @break
 
                                     @case('sum_orders')
-                                    {{ $entityItem->orders_sum ? $entityItem->orders_sum : '0' }}
+                                    {{ number_format($entityItem->orders->sum('sum') ? $entityItem->orders->sum('sum') : '0', 2, '.', ' ') }}
                                     @break
 
                                     @case('count_shipments')
-                                    {{ $entityItem->shipments_count }}
+                                    {{ $entityItem->shipments->count() }}
                                     @break
 
                                     @case('sum_shipments')
-                                    {{ $entityItem->shipments_sum ? $entityItem->shipments_sum : '0' }}
+                                    {{ number_format($entityItem->shipments->sum('suma') ? $entityItem->shipments->sum('suma') : '0', 2, '.', ' ') }}
                                     @break
 
                                     @default
@@ -151,7 +151,7 @@
                                     @break
 
                                     @case('sum_orders')
-                                    {{ $totalOrdersSum }}
+                                    {{ number_format($totalOrdersSum, 2, '.', ' ') }}
                                     @break
 
                                     @case('count_shipments')
@@ -159,7 +159,7 @@
                                     @break
 
                                     @case('sum_shipments')
-                                    {{ $totalShipmentsSum }}
+                                    {{ number_format($totalShipmentsSum, 2, '.', ' ') }}
                                     @break
 
                                     @default
@@ -169,12 +169,6 @@
                                 </td>
                                 @endforeach
 
-                            </tr>
-
-                            <tr class="border-b-2 bg-gray-100">
-                                <td colspan="5" class="p-2">
-                                    {{ $entityItems->appends(request()->query())->links() }}
-                                </td>
                             </tr>
 
                         </tbody>

@@ -47,6 +47,20 @@ class CounterpartyController extends Controller
 
         // Managers
         $builder = Contact::query()->select('id', 'name')
+            ->with([
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }, 
+                'shipments' => function (Builder $query) use ($date) {
+                        $query
+                            ->select('id', 'name', 'contact_id', 'suma')
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', date('Y'));
+                    }])
             ->whereHas('orders', function ($query) use ($date) {
                 $query->select('id')
                     ->whereIn('status_id', [5, 6])
@@ -57,31 +71,9 @@ class CounterpartyController extends Controller
                 $query->select('id')
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            })
-            ->withCount(['orders as orders_count' => function (Builder $query) use ($date) {
-                $query
-                    ->whereIn('status_id', [5, 6])
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
-            }])
-            ->withSum(['orders as orders_sum' => function (Builder $query) use ($date) {
-                $query
-                    ->whereIn('status_id', [5, 6])
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
-            }], 'sum')
-            ->withCount(['shipments as shipments_count' => function (Builder $query) use ($date) {
-                $query
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
-            }])
-            ->withSum(['shipments as shipments_sum' => function (Builder $query) use ($date) {
-                $query
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
-            }], 'suma');
+            });
 
-        $entityItems = $builder->orderBy('name')->paginate(40);
+        $entityItems = $builder->orderBy('name')->get();
 
         $selected = [
             "name",
