@@ -74,7 +74,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             });
 
-        $entityItems = $builder->get();
+        $entityItems = $builder->simplePaginate(20);
 
         $selected = [
             "name",
@@ -175,7 +175,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             });
 
-        $entityItems = $builder->get();
+        $entityItems = $builder->simplePaginate(20);
 
         $selected = [
             "name",
@@ -276,7 +276,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             });
 
-        $entityItems = $builder->get();
+        $entityItems = $builder->simplePaginate(20);
 
         $selected = [
             "name",

@@ -171,6 +171,12 @@
 
                             </tr>
 
+                            <tr class="border-b-2 bg-gray-100">
+                                <td colspan="5" class="p-2">
+                                    {{ $entityItems->appends(request()->query())->links() }}
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
