@@ -54,21 +54,22 @@ class CounterpartyController extends Controller
                         ->whereIn('status_id', [5, 6])
                         ->whereMonth('created_at', $date)
                         ->whereYear('created_at', date('Y'));
-                }, 
+                },
                 'shipments' => function (Builder $query) use ($date) {
-                        $query
-                            ->select('id', 'name', 'contact_id', 'suma')
-                            ->whereMonth('created_at', $date)
-                            ->whereYear('created_at', date('Y'));
-                    }])
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
             ->whereHas('orders', function ($query) use ($date) {
-                $query->select('id')
+                $query->select('id', 'contact_id', 'status_id', 'created_at')
                     ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
-                $query->select('id')
+                $query->select('id', 'contact_id', 'created_at')
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
             });
@@ -137,22 +138,23 @@ class CounterpartyController extends Controller
 
         // Managers
         $builder = Contact::query()->select('id', 'name')
-        ->with([
-            'orders' => function (Builder $query) use ($date) {
-                $query
-                    ->select('id', 'name', 'contact_id', 'sum')
-                    ->whereIn('status_id', [5, 6])
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
-            }, 
-            'shipments' => function (Builder $query) use ($date) {
+            ->with([
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'suma')
                         ->whereMonth('created_at', $date)
                         ->whereYear('created_at', date('Y'));
-                }])
+                }
+            ])
             ->whereHas('orders', function ($query) use ($date) {
-                $query->select('id')
+                $query->select('id', 'status_id', 'created_at', 'contact_id')
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -163,7 +165,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
-                $query->select('id')
+                $query->select('id', 'created_at', 'contact_id')
                     ->whereHas('products', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -173,7 +175,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             });
 
-        $entityItems = $builder->paginate(40);
+        $entityItems = $builder->get();
 
         $selected = [
             "name",
@@ -237,22 +239,23 @@ class CounterpartyController extends Controller
 
         // Managers
         $builder = Contact::query()->select('id', 'name')
-        ->with([
-            'orders' => function (Builder $query) use ($date) {
-                $query
-                    ->select('id', 'name', 'contact_id', 'sum')
-                    ->whereIn('status_id', [5, 6])
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
-            }, 
-            'shipments' => function (Builder $query) use ($date) {
+            ->with([
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'suma')
                         ->whereMonth('created_at', $date)
                         ->whereYear('created_at', date('Y'));
-                }])
+                }
+            ])
             ->whereHas('orders', function ($query) use ($date) {
-                $query->select('id')
+                $query->select('id', 'status_id', 'created_at', 'contact_id')
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -263,7 +266,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })
             ->orWhereHas('shipments', function ($query) use ($date) {
-                $query->select('id')
+                $query->select('id', 'created_at', 'contact_id')
                     ->whereHas('products', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -273,7 +276,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             });
 
-        $entityItems = $builder->paginate(40);
+        $entityItems = $builder->get();
 
         $selected = [
             "name",
