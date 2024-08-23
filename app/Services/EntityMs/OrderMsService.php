@@ -209,7 +209,7 @@ class OrderMsService
                     "type" => "customentity"
                 ];
         }
-return $array;
+
         if (!isset($msOrder["id"]) || $msOrder["id"] == null) {
             return $this->moySkladService->actionPostRowsFromJson($url, $array);
         } else {
