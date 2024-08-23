@@ -209,9 +209,7 @@ class OrderMsService
                     "type" => "customentity"
                 ];
         }
-        Log::error('переменная', [
-            'массив' => $array
-        ]);
+return $array;
         if (!isset($msOrder["id"]) || $msOrder["id"] == null) {
             return $this->moySkladService->actionPostRowsFromJson($url, $array);
         } else {
