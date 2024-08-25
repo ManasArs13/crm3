@@ -20,7 +20,7 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull
-            composer install --optimize-autoloader
+            composer install --no-dev --optimize-autoloader
             php artisan migrate --force
             php artisan config:cache
             php artisan event:cache
