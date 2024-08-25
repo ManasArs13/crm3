@@ -18,7 +18,7 @@ class OrderController extends Controller
     public function setOrderFromCalculator(Request $request, OrderMsService $orderMsService): Response
     {
         try {
-            $url = Option::where("code", "ms_order_url")->first()?->value;
+            $url = Option::where("code", "ms_orders_url")->first()?->value;
             $array = $request->post();
 
             if (!isset($array["agent"]["id"]) || $array["agent"]["id"] == null)
