@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 
-class ShipingPrices extends Seeder
+class ShipingPricesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
