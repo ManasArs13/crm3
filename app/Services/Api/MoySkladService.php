@@ -7,6 +7,7 @@ use App\Models\Option;
 use GuzzleHttp\Client;
 use App\Contracts\EntityInterface;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
 
 class MoySkladService
 {
@@ -192,7 +193,7 @@ class MoySkladService
             }
             return false;
         } catch (RequestException  $e) {
-            info($e->getMessage());
+            Log::info($e->getMessage());
             return false;
         }
     }

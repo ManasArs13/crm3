@@ -211,8 +211,10 @@ class OrderMsService
         }
 
         if (!isset($msOrder["id"]) || $msOrder["id"] == null) {
+            Log::info('Post', ['msOrder' => $msOrder]);
             return $this->moySkladService->actionPostRowsFromJson($url, $array);
         } else {
+            Log::info('Post', ['msOrder' => $msOrder]);
             return $this->moySkladService->actionPutRowsFromJson($url . $msOrder["guid"], $array);
         }
     }
