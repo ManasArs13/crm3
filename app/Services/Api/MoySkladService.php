@@ -6,8 +6,8 @@ namespace App\Services\Api;
 use App\Models\Option;
 use GuzzleHttp\Client;
 use App\Contracts\EntityInterface;
+use Exception;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Log;
 
 class MoySkladService
 {
@@ -111,7 +111,7 @@ class MoySkladService
             //        sleep(1);
             return $result;
         } catch (RequestException  $e) {
-            info($e->getMessage());
+            info($e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -165,7 +165,7 @@ class MoySkladService
                 return false;
             }
         } catch (RequestException  $e) {
-            info($e->getMessage());
+            info($e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -192,8 +192,8 @@ class MoySkladService
                 return ["isGood" => false, "errors" => $response->getContent(false)];
             }
             return false;
-        } catch (RequestException  $e) {
-            Log::info($e);
+        } catch (RequestException $e) {
+            info($e->getResponse()->getBody()->getContents());
             return false;
         }
     }

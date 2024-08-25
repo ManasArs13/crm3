@@ -22,7 +22,7 @@ class OrderMsService
 
     function updateOrderMs($msOrder)
     {
-        $url = Option::where('code', '=', "ms_orders_url")->first()?->value;
+        $url = 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder';
         $urlProduct = Option::where('code', '=', "ms_product_for_order_url")->first()?->value;
         $customentity = Option::where('code', '=', "ms_customentity_url")->first()?->value;
 
@@ -167,6 +167,9 @@ class OrderMsService
                         'type' => "attributemetadata",
                         "mediaType" => "application/json"
                     ],
+                    'id' => $guidAttrDeliveryPrice,
+                    'name' => 'Цена доставки',
+                    'type' => 'long',
                     'value' => (int)$msOrder["attributes"]["deliveryPrice"]
                 ];
 
@@ -183,9 +186,10 @@ class OrderMsService
                             'type' => "customentity",
                             "mediaType" => "application/json",
                         ],
-                        // "name"=>$msOrder["attributes"]["delivery"]["name"]
+                        //   "name" => $msOrder["attributes"]["delivery"]["name"]
                     ],
                     "id" => $guidAttrDelivery,
+                    "name" => "Доставка",
                     "type" => "customentity"
                 ];
 
@@ -203,12 +207,40 @@ class OrderMsService
                             'type' => "customentity",
                             "mediaType" => "application/json",
                         ],
-                        // "name"=>$msOrder["attributes"]["vehicle_type"]["name"]
+                        //         "name" => $msOrder["attributes"]["vehicle_type"]["name"]
                     ],
                     "id" => $guidAttrTransportType,
+                    "name" => "Тип доставки",
                     "type" => "customentity"
                 ];
         }
+
+        $array["attributes"][] = [
+            "meta" => [
+                "href" => "https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/attributes/6e6203f8-5a08-11ef-0a80-037e00063255",
+                "type" => "attributemetadata",
+                "mediaType" => "application/json"
+            ],
+            "id" => "6e6203f8-5a08-11ef-0a80-037e00063255",
+            "name" => "Заказ",
+            "type" => "customentity",
+            "value" => [
+                "meta" => [
+                    "href" => "https://api.moysklad.ru/api/remap/1.2/entity/customentity/4573aa45-5a08-11ef-0a80-19040006123f/58c20898-5a08-11ef-0a80-184800060a0a",
+                    "type" => "customentity",
+                    "mediaType" => "application/json",
+                ],
+                "name" => "Первый раз"
+            ]
+        ];
+
+        $array['organization'] = [
+            "meta" => [
+                "href" => "https://api.moysklad.ru/api/remap/1.2/entity/organization/03957745-4672-11ee-0a80-0dbe00139b20",
+                "type" => "organization",
+                "mediaType" => "application/json",
+            ]
+        ];
 
         if (!isset($msOrder["id"]) || $msOrder["id"] == null) {
             Log::info('Post', ['msOrder' => $array]);
@@ -219,7 +251,7 @@ class OrderMsService
         }
     }
 
-    function createOrderMs($msOrder) 
+    function createOrderMs($msOrder)
     {
         $url = Option::where('code', '=', "ms_orders_url")->first()?->value;
         $array = '';
