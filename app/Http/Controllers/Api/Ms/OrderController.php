@@ -39,7 +39,7 @@ class OrderController extends Controller
                 throw new \Exception(trans("error.noState"));
 
             $result = $orderMsService->updateOrderMs($array);
-            return new Response("<a href='" . $url . $result . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>"  . "</a>", 200);
+            return new Response("<a href='" . $url . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>"  .$result->name. "</a>", 200);
         } catch (\Exception $exception) {
             return new Response($exception->getMessage() . "-^-" . $exception->getCode() . "-^-" . $exception->getLine() . "-^-" . $exception->getFile(), 500);
         }
