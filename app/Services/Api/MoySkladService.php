@@ -193,7 +193,7 @@ class MoySkladService
             }
             return false;
         } catch (RequestException  $e) {
-            Log::info($e->getMessage());
+            Log::info($e);
             return false;
         }
     }
