@@ -169,7 +169,7 @@
                                             @break
 
                                             @case('sum_orders')
-                                                {{ number_format($entityItem->orders->sum('sum') ? $entityItem->orders->sum('sum') : '0', 2, '.', ' ') }}
+                                                {{ number_format($entityItem->orders->sum('sum') ? $entityItem->orders->sum('sum') : '0', 0, '.', ' ') }}
                                             @break
 
                                             @case('count_shipments')
@@ -177,7 +177,7 @@
                                             @break
 
                                             @case('sum_shipments')
-                                                {{ number_format($entityItem->shipments->sum('suma') ? $entityItem->shipments->sum('suma') : '0', 2, '.', ' ') }}
+                                                {{ number_format($entityItem->shipments->sum('suma') ? $entityItem->shipments->sum('suma') : '0', 0, '.', ' ') }}
                                             @break
 
                                             @default
@@ -209,7 +209,7 @@
                                         @break
 
                                         @case('sum_orders')
-                                            {{ number_format($totalOrdersSum, 2, '.', ' ') }}
+                                            {{ number_format($totalOrdersSum, 0, '.', ' ') }}
                                         @break
 
                                         @case('count_shipments')
@@ -217,7 +217,7 @@
                                         @break
 
                                         @case('sum_shipments')
-                                            {{ number_format($totalShipmentsSum, 2, '.', ' ') }}
+                                            {{ number_format($totalShipmentsSum, 0, '.', ' ') }}
                                         @break
 
                                         @default
