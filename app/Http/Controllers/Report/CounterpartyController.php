@@ -100,7 +100,90 @@ class CounterpartyController extends Controller
             }
         }
 
-        $entityItems = $contactsWithShipments->sortBy('name');
+        // Sort BY
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+
+            switch ($request->column) {
+                case "count_orders":
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
+                        return count($contact['orders']);
+                    });
+                    break;
+
+                case 'sum_orders':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') < $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+
+                case "count_shipments":
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
+                        return count($contact['shipments']);
+                    });
+                    break;
+
+                case 'sum_shipments':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->shipments->sum('suma') == $b->shipments->sum('suma')) {
+                            return 0;
+                        }
+                        return ($a->shipments->sum('suma') < $b->shipments->sum('suma')) ? -1 : 1;
+                    });
+                    break;
+                default:
+                    $entityItems = $contactsWithShipments->sortBy('name');
+                    break;
+            }
+
+            $orderBy = 'desc';
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+
+            switch ($request->column) {
+                case "count_orders":
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
+                        return count($contact['orders']);
+                    });
+                    break;
+
+                case 'sum_orders':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') > $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+
+                case "count_shipments":
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
+                        return count($contact['shipments']);
+                    });
+                    break;
+
+                case 'sum_shipments':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') > $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+                default:
+                    $entityItems = $contactsWithShipments->sortByDesc('name');
+                    break;
+            }
+
+            $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $contactsWithShipments->sortBy('name');
+            $selectColumn = null;
+        }
 
         $selected = [
             "name",
@@ -125,7 +208,9 @@ class CounterpartyController extends Controller
             'dateNext',
             'datePrev',
             'date',
-            'dateRus'
+            'dateRus',
+            'orderBy',
+            'selectColumn',
         ));
     }
 
@@ -225,7 +310,90 @@ class CounterpartyController extends Controller
             }
         }
 
-        $entityItems = $contactsWithShipments->sortBy('name');
+        // Sort BY
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+
+            switch ($request->column) {
+                case "count_orders":
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
+                        return count($contact['orders']);
+                    });
+                    break;
+
+                case 'sum_orders':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') < $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+
+                case "count_shipments":
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
+                        return count($contact['shipments']);
+                    });
+                    break;
+
+                case 'sum_shipments':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->shipments->sum('suma') == $b->shipments->sum('suma')) {
+                            return 0;
+                        }
+                        return ($a->shipments->sum('suma') < $b->shipments->sum('suma')) ? -1 : 1;
+                    });
+                    break;
+                default:
+                    $entityItems = $contactsWithShipments->sortBy('name');
+                    break;
+            }
+
+            $orderBy = 'desc';
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+
+            switch ($request->column) {
+                case "count_orders":
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
+                        return count($contact['orders']);
+                    });
+                    break;
+
+                case 'sum_orders':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') > $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+
+                case "count_shipments":
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
+                        return count($contact['shipments']);
+                    });
+                    break;
+
+                case 'sum_shipments':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') > $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+                default:
+                    $entityItems = $contactsWithShipments->sortByDesc('name');
+                    break;
+            }
+
+            $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $contactsWithShipments->sortBy('name');
+            $selectColumn = null;
+        }
 
         $selected = [
             "name",
@@ -250,7 +418,9 @@ class CounterpartyController extends Controller
             'dateNext',
             'datePrev',
             'date',
-            'dateRus'
+            'dateRus',
+            'orderBy',
+            'selectColumn',
         ));
     }
 
@@ -350,7 +520,91 @@ class CounterpartyController extends Controller
             }
         }
 
-        $entityItems = $contactsWithShipments->sortBy('name');
+
+        // Sort BY
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+
+            switch ($request->column) {
+                case "count_orders":
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
+                        return count($contact['orders']);
+                    });
+                    break;
+
+                case 'sum_orders':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') < $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+
+                case "count_shipments":
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
+                        return count($contact['shipments']);
+                    });
+                    break;
+
+                case 'sum_shipments':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->shipments->sum('suma') == $b->shipments->sum('suma')) {
+                            return 0;
+                        }
+                        return ($a->shipments->sum('suma') < $b->shipments->sum('suma')) ? -1 : 1;
+                    });
+                    break;
+                default:
+                    $entityItems = $contactsWithShipments->sortBy('name');
+                    break;
+            }
+
+            $orderBy = 'desc';
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+
+            switch ($request->column) {
+                case "count_orders":
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
+                        return count($contact['orders']);
+                    });
+                    break;
+
+                case 'sum_orders':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') > $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+
+                case "count_shipments":
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
+                        return count($contact['shipments']);
+                    });
+                    break;
+
+                case 'sum_shipments':
+                    $entityItems = $contactsWithShipments->sort(function ($a, $b) {
+                        if ($a->orders->sum('sum') == $b->orders->sum('sum')) {
+                            return 0;
+                        }
+                        return ($a->orders->sum('sum') > $b->orders->sum('sum')) ? -1 : 1;
+                    });
+                    break;
+                default:
+                    $entityItems = $contactsWithShipments->sortByDesc('name');
+                    break;
+            }
+
+            $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $entityItems = $contactsWithShipments->sortBy('name');
+            $selectColumn = null;
+        }
 
         $selected = [
             "name",
@@ -375,7 +629,9 @@ class CounterpartyController extends Controller
             'dateNext',
             'datePrev',
             'date',
-            'dateRus'
+            'dateRus',
+            'orderBy',
+            'selectColumn',
         ));
     }
 }

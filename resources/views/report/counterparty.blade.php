@@ -95,10 +95,34 @@
                             </td>
 
                             @foreach ($resColumns as $key => $column)
-                                <th scope="col" class="px-2 py-4"
-                                    @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
-                                    {{ $column }}
-                                </th>
+                                @if ($orderBy == 'asc')
+                                    <th scope="col" class="px-2 py-4"
+                                        @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
+                                        <a class="text-black"
+                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $key)
+                                            &#9660;
+                                        @endif
+                                    </th>
+                                @elseif($orderBy == 'desc')
+                                    <th scope="col" class="px-2 py-4"
+                                        @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
+                                        <a class="text-black"
+                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $key)
+                                            &#9650;
+                                        @endif
+                                    </th>
+                                @else
+                                    <th scope="col" class="px-2 py-4"
+                                        @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
+                                        <a class="text-black"
+                                            href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $key)
+                                            &#9660;
+                                        @endif
+                                    </th>
+                                @endif
                             @endforeach
                         </tr>
                     </thead>
