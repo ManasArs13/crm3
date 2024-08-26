@@ -89,18 +89,18 @@ class CounterpartyController extends Controller
                 $query->select('id', 'contact_id', 'created_at')
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            })->get();
+            })
+            ->get();
+
 
 
         foreach ($contactsWithOrders as $contact) {
-            if ($contactsWithShipments->firstWhere('id', $contact->id)) {
-
-                $newContactWithOrder = $contactsWithShipments->firstWhere('id', $contact->id);
-                $contactsWithOrders->push($newContactWithOrder);
+            if (!$contactsWithShipments->firstWhere('id', $contact->id)) {
+                $contactsWithShipments->push($contact);
             }
         }
 
-        $entityItems = $contactsWithOrders->sortBy('name');
+        $entityItems = $contactsWithShipments->sortBy('name');
 
         $selected = [
             "name",
@@ -220,14 +220,12 @@ class CounterpartyController extends Controller
 
 
         foreach ($contactsWithOrders as $contact) {
-            if ($contactsWithShipments->firstWhere('id', $contact->id)) {
-
-                $newContactWithOrder = $contactsWithShipments->firstWhere('id', $contact->id);
-                $contactsWithOrders->push($newContactWithOrder);
+            if (!$contactsWithShipments->firstWhere('id', $contact->id)) {
+                $contactsWithShipments->push($contact);
             }
         }
 
-        $entityItems = $contactsWithOrders->sortBy('name');
+        $entityItems = $contactsWithShipments->sortBy('name');
 
         $selected = [
             "name",
@@ -347,14 +345,12 @@ class CounterpartyController extends Controller
 
 
         foreach ($contactsWithOrders as $contact) {
-            if ($contactsWithShipments->firstWhere('id', $contact->id)) {
-
-                $newContactWithOrder = $contactsWithShipments->firstWhere('id', $contact->id);
-                $contactsWithOrders->push($newContactWithOrder);
+            if (!$contactsWithShipments->firstWhere('id', $contact->id)) {
+                $contactsWithShipments->push($contact);
             }
         }
 
-        $entityItems = $contactsWithOrders->sortBy('name');
+        $entityItems = $contactsWithShipments->sortBy('name');
 
         $selected = [
             "name",
