@@ -215,24 +215,24 @@ class OrderMsService
                 ];
         }
 
-        $array["attributes"][] = [
-            "meta" => [
-                "href" => "https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/attributes/6e6203f8-5a08-11ef-0a80-037e00063255",
-                "type" => "attributemetadata",
-                "mediaType" => "application/json"
-            ],
-            "id" => "6e6203f8-5a08-11ef-0a80-037e00063255",
-            "name" => "Заказ",
-            "type" => "customentity",
-            "value" => [
-                "meta" => [
-                    "href" => "https://api.moysklad.ru/api/remap/1.2/entity/customentity/4573aa45-5a08-11ef-0a80-19040006123f/58c20898-5a08-11ef-0a80-184800060a0a",
-                    "type" => "customentity",
-                    "mediaType" => "application/json",
-                ],
-                "name" => "Первый раз"
-            ]
-        ];
+        // $array["attributes"][] = [
+        //     "meta" => [
+        //         "href" => "https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/attributes/6e6203f8-5a08-11ef-0a80-037e00063255",
+        //         "type" => "attributemetadata",
+        //         "mediaType" => "application/json"
+        //     ],
+        //     "id" => "6e6203f8-5a08-11ef-0a80-037e00063255",
+        //     "name" => "Заказ",
+        //     "type" => "customentity",
+        //     "value" => [
+        //         "meta" => [
+        //             "href" => "https://api.moysklad.ru/api/remap/1.2/entity/customentity/4573aa45-5a08-11ef-0a80-19040006123f/58c20898-5a08-11ef-0a80-184800060a0a",
+        //             "type" => "customentity",
+        //             "mediaType" => "application/json",
+        //         ],
+        //         "name" => "Первый раз"
+        //     ]
+        // ];
 
         $array['organization'] = [
             "meta" => [
