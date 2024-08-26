@@ -158,6 +158,12 @@
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                                         @switch($column)
+                                            @case('name')
+                                                <a href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->ms_id }}" target="_blank" class="text-blue-700 hover:text-blue-500">
+                                                    {{ $entityItem->$column }}
+                                                </a>
+                                            @break
+
                                             @case('count_orders')
                                                 {{ $entityItem->orders->count() }}
                                             @break

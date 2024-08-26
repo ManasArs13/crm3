@@ -46,7 +46,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $contactsWithOrders = Contact::query()->select('id', 'name')
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -69,7 +69,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })->get();
 
-        $contactsWithShipments = Contact::query()->select('id', 'name')
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -248,7 +248,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $contactsWithOrders = Contact::query()->select('id', 'name')
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -276,7 +276,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })->get();
 
-        $contactsWithShipments = Contact::query()->select('id', 'name')
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -458,7 +458,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $contactsWithOrders = Contact::query()->select('id', 'name')
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -486,7 +486,7 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })->get();
 
-        $contactsWithShipments = Contact::query()->select('id', 'name')
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
