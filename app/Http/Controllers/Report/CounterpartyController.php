@@ -46,7 +46,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()->select('id', 'name')
+        $contactsWithOrders = Contact::query()->select('id', 'name')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -67,14 +67,40 @@ class CounterpartyController extends Controller
                     ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            })
-            ->orWhereHas('shipments', function ($query) use ($date) {
+            })->get();
+
+        $contactsWithShipments = Contact::query()->select('id', 'name')
+            ->with([
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->WhereHas('shipments', function ($query) use ($date) {
                 $query->select('id', 'contact_id', 'created_at')
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            });
+            })->get();
 
-        $entityItems = $builder->simplePaginate(20);
+
+        foreach ($contactsWithOrders as $contact) {
+            if ($contactsWithShipments->firstWhere('id', $contact->id)) {
+
+                $newContactWithOrder = $contactsWithShipments->firstWhere('id', $contact->id);
+                $contactsWithOrders->push($newContactWithOrder);
+            }
+        }
+
+        $entityItems = $contactsWithOrders->sortBy('name');
 
         $selected = [
             "name",
@@ -137,7 +163,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()->select('id', 'name')
+        $contactsWithOrders = Contact::query()->select('id', 'name')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -154,7 +180,7 @@ class CounterpartyController extends Controller
                 }
             ])
             ->whereHas('orders', function ($query) use ($date) {
-                $query->select('id', 'status_id', 'created_at', 'contact_id')
+                $query
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -163,9 +189,26 @@ class CounterpartyController extends Controller
                     ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            })
-            ->orWhereHas('shipments', function ($query) use ($date) {
-                $query->select('id', 'created_at', 'contact_id')
+            })->get();
+
+        $contactsWithShipments = Contact::query()->select('id', 'name')
+            ->with([
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->WhereHas('shipments', function ($query) use ($date) {
+                $query
                     ->whereHas('products', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::BLOCK);
@@ -173,9 +216,18 @@ class CounterpartyController extends Controller
                     })
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            });
+            })->get();
 
-        $entityItems = $builder->simplePaginate(20);
+
+        foreach ($contactsWithOrders as $contact) {
+            if ($contactsWithShipments->firstWhere('id', $contact->id)) {
+
+                $newContactWithOrder = $contactsWithShipments->firstWhere('id', $contact->id);
+                $contactsWithOrders->push($newContactWithOrder);
+            }
+        }
+
+        $entityItems = $contactsWithOrders->sortBy('name');
 
         $selected = [
             "name",
@@ -238,7 +290,7 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $builder = Contact::query()->select('id', 'name')
+        $contactsWithOrders = Contact::query()->select('id', 'name')
             ->with([
                 'orders' => function (Builder $query) use ($date) {
                     $query
@@ -255,7 +307,7 @@ class CounterpartyController extends Controller
                 }
             ])
             ->whereHas('orders', function ($query) use ($date) {
-                $query->select('id', 'status_id', 'created_at', 'contact_id')
+                $query
                     ->whereHas('positions', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -264,9 +316,26 @@ class CounterpartyController extends Controller
                     ->whereIn('status_id', [5, 6])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            })
-            ->orWhereHas('shipments', function ($query) use ($date) {
-                $query->select('id', 'created_at', 'contact_id')
+            })->get();
+
+        $contactsWithShipments = Contact::query()->select('id', 'name')
+            ->with([
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->WhereHas('shipments', function ($query) use ($date) {
+                $query
                     ->whereHas('products', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
@@ -274,9 +343,18 @@ class CounterpartyController extends Controller
                     })
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', date('Y'));
-            });
+            })->get();
 
-        $entityItems = $builder->simplePaginate(20);
+
+        foreach ($contactsWithOrders as $contact) {
+            if ($contactsWithShipments->firstWhere('id', $contact->id)) {
+
+                $newContactWithOrder = $contactsWithShipments->firstWhere('id', $contact->id);
+                $contactsWithOrders->push($newContactWithOrder);
+            }
+        }
+
+        $entityItems = $contactsWithOrders->sortBy('name');
 
         $selected = [
             "name",
