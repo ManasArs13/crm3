@@ -39,7 +39,7 @@ class OrderController extends Controller
                 throw new \Exception(trans("error.noState"));
 
             $result = $orderMsService->updateOrderMs($array);
-            return new Response("Ok", 200);
+            return new Response("Заказ создан", 200);
         } catch (\Exception $exception) {
             return new Response($exception->getMessage() . "-^-" . $exception->getCode() . "-^-" . $exception->getLine() . "-^-" . $exception->getFile(), 500);
         }
