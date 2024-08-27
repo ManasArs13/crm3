@@ -6,6 +6,7 @@ use App\Contracts\EntityInterface;
 use App\Models\Option;
 use App\Models\Contact;
 use App\Models\ContactCategory;
+use App\Models\Manager;
 use Illuminate\Support\Arr;
 
 class ContactMsService implements EntityInterface
@@ -21,6 +22,7 @@ class ContactMsService implements EntityInterface
     {
         $guidAttrAmoContact = $this->options::where('code', '=', "ms_counterparty_amo_id_contact_guid")->first()?->value;
         $guidAttrAmoContactLink = 'bb95261f-972b-11ed-0a80-0e9300807fe0';
+        $guidAttrManager = '5e8e447f-5efa-11ef-0a80-02870015b116';
 
         foreach ($rows['rows'] as $row) {
             if (Arr::exists($row, 'balance')) {
@@ -86,6 +88,7 @@ class ContactMsService implements EntityInterface
 
                 $amoContact = null;
                 $amoContactLink = null;
+                $managerId = null;
 
                 if (isset($row["attributes"])) {
                     foreach ($row["attributes"] as $attribute) {
@@ -96,12 +99,19 @@ class ContactMsService implements EntityInterface
                             case $guidAttrAmoContactLink:
                                 $amoContactLink = $attribute["value"];
                                 break;
+                            case $guidAttrManager:
+                                $manager = Manager::select('id')->where('ms_id', $this->getGuidFromUrl($attribute['value']['meta']['href']))->first();
+                                if ($manager) {
+                                    $managerId = $manager->id;
+                                }
+                                break;
                         }
                     }
                 }
 
                 $entity->contact_amo_id = $amoContact;
                 $entity->contact_amo_link = $amoContactLink;
+                $entity->manager_id = $managerId;
                 $entity->is_exist = 1;
 
                 if (Arr::exists($row, 'created')) {
@@ -219,5 +229,11 @@ class ContactMsService implements EntityInterface
             }
         }
         $entity->save();
+    }
+
+    public function getGuidFromUrl($url): string
+    {
+        $arUrl = explode("/", $url);
+        return $arUrl[count($arUrl) - 1];
     }
 }
