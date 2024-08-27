@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Contact extends Model
@@ -42,5 +41,10 @@ class Contact extends Model
     public function shipments()
     {
         return $this->hasMany(Shipment::class);
+    }
+
+    public function manager()
+    {
+        return $this->hasOne(Manager::class, 'id', 'manager_id');
     }
 }

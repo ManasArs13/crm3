@@ -99,33 +99,52 @@
                     <tbody>
 
                         @php
-                            $totalOrders = 0;
-                            $totalSum = 0;
-                            $totalNewOrders = 0;
-                            $totalNewSumOrders = 0;
-                        @endphp
+                            $TotalCountContacts = 0;
+                            $TotalSumShipments = 0;
 
-                        @php
-                            if ($orders) {
-                                $totalOrders += count($orders);
-                                $totalSum += $orders->sum('sum');
-                            }
-                            if ($ordersNew) {
-                                $totalNewOrders += count($ordersNew);
-                                $totalNewSumOrders += $ordersNew->sum('sum');
-                            }
+                            $TotalCountContactsNew = 0;
+                            $TotalSumShipmentsNew = 0;
                         @endphp
 
                         @foreach ($entityItems as $entityItem)
                             @php
-                                $totalOrders += $entityItem->all_orders;
-                                $totalSum += $entityItem->all_orders_sum;
-                                $totalNewOrders += $entityItem->new_orders;
-                                $totalNewSumOrders += $entityItem->new_orders_sum;
+                                $TotalCountContacts += $entityItem->all_contacts;
+                                $TotalCountContactsNew += $entityItem->new_contacts;
+
+                                $TotalSumShipments += $entityItem->contacts->sum(function ($contact) {
+                                    return $contact->shipments->sum('suma');
+                                });
+                                $TotalSumShipmentsNew += $entityItem->contacts->sum(function ($contact) use (
+                                    $date,
+                                    $dateY,
+                                ) {
+                                    if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
+                                        return $contact->shipments->sum('suma');
+                                    } else {
+                                        return 0;
+                                    }
+                                });
                             @endphp
                         @endforeach
 
                         @foreach ($entityItems as $entityItem)
+                            @php
+
+                                $sum_shipments = $entityItem->contacts->sum(function ($contact) {
+                                    return $contact->shipments->sum('suma');
+                                });
+                                $sum_shipments_new = $entityItem->contacts->sum(function ($contact) use (
+                                    $date,
+                                    $dateY,
+                                ) {
+                                    if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
+                                        return $contact->shipments->sum('suma');
+                                    } else {
+                                        return 0;
+                                    }
+                                });
+                            @endphp
+
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
@@ -134,33 +153,53 @@
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                                         @switch($column)
-                                            @case('count_orders')
-                                                {{ $entityItem->all_orders }}
+                                            @case('count_contacts')
+                                                {{ $entityItem->all_contacts }}
                                             @break
 
-                                            @case('sum_orders')
-                                                {{ $entityItem->all_orders_sum ? $entityItem->all_orders_sum : '0' }}
-                                            @break
-
-                                            @case('percent')
-                                                @if ($entityItem->all_orders_sum && $entityItem->all_orders_sum !== 0 && $totalSum && $totalSum !== 0)
-                                                    {{ round(100 / ($totalSum / +$entityItem->all_orders_sum), 2) }} %
+                                            @case('percent_contacts')
+                                                @if ($entityItem->all_contacts && $entityItem->all_contacts !== 0 && $TotalCountContacts && $TotalCountContacts !== 0)
+                                                    {{ round(100 / ($TotalCountContacts / +$entityItem->all_contacts)) }} %
                                                 @else
                                                     0%
                                                 @endif
                                             @break
 
-                                            @case('new_orders')
-                                                {{ $entityItem->new_orders }}
+                                            @case('sum_shipments')
+                                                {{ $sum_shipments }}
                                             @break
 
-                                            @case('sum_new_orders')
-                                                {{ $entityItem->new_orders_sum ? $entityItem->new_orders_sum : '0' }}
+                                            @case('percent_shipments')
+                                                @if ($sum_shipments && $sum_shipments !== 0 && $TotalSumShipments && $TotalSumShipments !== 0)
+                                                    {{ round(100 / ($TotalSumShipments / +$sum_shipments)) }} %
+                                                @else
+                                                    0%
+                                                @endif
                                             @break
 
-                                            @case('percent_new_orders')
-                                                @if ($entityItem->new_orders_sum && $entityItem->new_orders_sum !== 0 && $totalNewSumOrders && $totalNewSumOrders !== 0)
-                                                    {{ round(100 / ($totalNewSumOrders / +$entityItem->new_orders_sum), 2) }} %
+                                            @case('count_contacts_new')
+                                                {{ $entityItem->new_contacts }}
+                                            @break
+
+                                            @case('percent_contacts_new')
+                                                @if (
+                                                    $entityItem->new_contacts &&
+                                                        $entityItem->new_contacts !== 0 &&
+                                                        $TotalCountContactsNew &&
+                                                        $TotalCountContactsNew !== 0)
+                                                    {{ round(100 / ($TotalCountContactsNew / +$entityItem->new_contacts)) }} %
+                                                @else
+                                                    0%
+                                                @endif
+                                            @break
+
+                                            @case('sum_shipments_new')
+                                                {{ $sum_shipments_new }}
+                                            @break
+
+                                            @case('percent_shipments_new')
+                                                @if ($sum_shipments_new && $sum_shipments_new !== 0 && $TotalSumShipmentsNew && $TotalSumShipmentsNew !== 0)
+                                                    {{ round(100 / ($TotalSumShipmentsNew / +$sum_shipments_new)) }} %
                                                 @else
                                                     0%
                                                 @endif
@@ -176,58 +215,6 @@
                             </tr>
                         @endforeach
 
-                        {{-- Orders without Manager --}}
-                        <tr class="border-b-2">
-
-                            @foreach ($resColumns as $column => $title)
-                                <td class="break-all max-w-96 overflow-auto px-2 py-4"
-                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
-
-                                    @switch($column)
-                                        @case('name')
-                                            Не выбрано
-                                        @break
-
-                                        @case('count_orders')
-                                            {{ count($orders) }}
-                                        @break
-
-                                        @case('sum_orders')
-                                            {{ $orders ? $orders->sum('sum') : 0 }}
-                                        @break
-
-                                        @case('percent')
-                                            @if ($orders->sum('sum') && $orders->sum('sum') !== 0 && $totalSum && $totalSum !== 0)
-                                                {{ round(100 / ($totalSum / +$orders->sum('sum')), 2) }} %
-                                            @else
-                                                0%
-                                            @endif
-                                        @break
-
-                                        @case('new_orders')
-                                            {{ count($ordersNew) }}
-                                        @break
-
-                                        @case('sum_new_orders')
-                                            {{ $ordersNew ? $ordersNew->sum('sum') : 0 }}
-                                        @break
-
-                                        @case('percent_new_orders')
-                                            @if ($ordersNew->sum('sum') && $ordersNew->sum('sum') !== 0 && $totalNewSumOrders && $totalNewSumOrders !== 0)
-                                                {{ round(100 / ($totalNewSumOrders / +$ordersNew->sum('sum')), 2) }} %
-                                            @else
-                                                0%
-                                            @endif
-                                        @break
-
-                                        @default
-                                    @endswitch
-
-                                </td>
-                            @endforeach
-
-                        </tr>
-
                         <tr class="border-b-2 bg-gray-100">
 
                             @foreach ($resColumns as $column => $title)
@@ -239,28 +226,36 @@
                                             Всего:
                                         @break
 
-                                        @case('count_orders')
-                                            {{ $totalOrders }}
+                                        @case('count_contacts')
+                                            {{ $TotalCountContacts }}
                                         @break
 
-                                        @case('sum_orders')
-                                            {{ $totalSum }}
+                                        @case('percent_contacts')
+                                            {{ $TotalCountContacts ? '100%' : '0%' }}
                                         @break
 
-                                        @case('percent')
-                                            {{ $totalSum ? '100%' : '0%' }}
+                                        @case('sum_shipments')
+                                            {{ $TotalSumShipments }}
                                         @break
 
-                                        @case('new_orders')
-                                            {{ $totalNewOrders }}
+                                        @case('percent_shipments')
+                                            {{ $TotalSumShipments ? '100%' : '0%' }}
                                         @break
 
-                                        @case('sum_new_orders')
-                                            {{ $totalNewSumOrders }}
+                                        @case('count_contacts_new')
+                                            {{ $TotalCountContactsNew }}
                                         @break
 
-                                        @case('percent_new_orders')
-                                            {{ $totalNewSumOrders ? '100%' : '0%' }}
+                                        @case('percent_contacts_new')
+                                            {{ $TotalCountContactsNew ? '100%' : '0' }}
+                                        @break
+
+                                        @case('sum_shipments_new')
+                                            {{ $TotalSumShipmentsNew }}
+                                        @break
+
+                                        @case('percent_shipments_new')
+                                            {{ $TotalSumShipmentsNew ? '100%' : '0%' }}
                                         @break
 
                                         @default
