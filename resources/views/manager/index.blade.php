@@ -106,6 +106,27 @@
                             $TotalSumShipmentsNew = 0;
                         @endphp
 
+                        @php
+                            $withOutManagerCount = $contacts
+                                ->filter(function ($contact) use ($date, $dateY) {
+                                    return substr($contact->created_at, 3, -6) == $date . '-' . $dateY;
+                                })
+                                ->count();
+
+                            $withOutManagerSumNew = $contacts->sum(function ($contact) use ($date, $dateY) {
+                                if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
+                                    return $contact->shipments->sum('suma');
+                                } else {
+                                    return 0;
+                                }
+                            });
+
+                            $TotalSumShipments += $contacts->sum('shipments_sum_suma');
+                            $TotalCountContacts += $contacts->count();
+                            $TotalCountContactsNew += $withOutManagerCount;
+                            $TotalSumShipmentsNew += $withOutManagerSumNew;
+                        @endphp
+
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $TotalCountContacts += $entityItem->all_contacts;
@@ -215,6 +236,78 @@
                             </tr>
                         @endforeach
 
+                        {{-- Не выбрано --}}
+                        <tr class="border-b-2">
+
+                            @foreach ($resColumns as $column => $title)
+                                <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
+                                    @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                                    @switch($column)
+                                        @case('count_contacts')
+                                            {{ $contacts->count() }}
+                                        @break
+
+                                        @case('percent_contacts')
+                                            @if ($contacts->count() && $contacts->count() !== 0 && $TotalCountContacts && $TotalCountContacts !== 0)
+                                                {{ round(100 / ($TotalCountContacts / +$contacts->count())) }} %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @case('sum_shipments')
+                                            {{ $contacts->sum('shipments_sum_suma') }}
+                                        @break
+
+                                        @case('percent_shipments')
+                                            @if (
+                                                $contacts->sum('shipments_sum_suma') &&
+                                                    $contacts->sum('shipments_sum_suma') !== 0 &&
+                                                    $TotalSumShipments &&
+                                                    $TotalSumShipments !== 0)
+                                                {{ round(100 / ($TotalSumShipments / +$contacts->sum('shipments_sum_suma'))) }}
+                                                %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @case('count_contacts_new')
+                                            {{ $withOutManagerCount }}
+                                        @break
+
+                                        @case('percent_contacts_new')
+                                            @if ($withOutManagerCount && $withOutManagerCount !== 0 && $TotalCountContactsNew && $TotalCountContactsNew !== 0)
+                                                {{ round(100 / ($TotalCountContactsNew / +$withOutManagerCount)) }} %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @case('sum_shipments_new')
+                                            {{ $withOutManagerSumNew }}
+                                        @break
+
+                                        @case('percent_shipments_new')
+                                            @if ($withOutManagerSumNew && $withOutManagerSumNew !== 0 && $TotalSumShipmentsNew && $TotalSumShipmentsNew !== 0)
+                                                {{ round(100 / ($TotalSumShipmentsNew / +$withOutManagerSumNew)) }} %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @default
+                                            {{ 'Не выбрано' }}
+                                    @endswitch
+
+                                </td>
+                            @endforeach
+
+                        </tr>
+
+                        {{-- Всего --}}
                         <tr class="border-b-2 bg-gray-100">
 
                             @foreach ($resColumns as $column => $title)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use App\Models\Manager;
 use App\Models\Product;
 use DateTime;
@@ -81,8 +82,28 @@ class ManagerController extends Controller
                     ->select('id', 'manager_id', 'created_at');
             }]);
 
-
         $entityItems = $builder->orderBy('id')->get();
+
+        $contacts = Contact::query()
+            ->select('id', 'manager_id', 'created_at')
+            ->whereNull('manager_id')
+            ->withSum(['shipments' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }], 'suma')
+            ->whereHas('shipments', function ($que) use ($date, $dateY) {
+                $que
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            })
+            ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->select('id', 'suma', 'created_at', 'contact_id')
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->get();
 
         $selected = [
             "name",
@@ -119,6 +140,7 @@ class ManagerController extends Controller
             'date',
             'dateY',
             'dateRus',
+            'contacts'
         ));
     }
 
@@ -208,8 +230,44 @@ class ManagerController extends Controller
                     ->select('id', 'manager_id', 'created_at');
             }]);
 
-
         $entityItems = $builder->orderBy('id')->get();
+
+        $contacts = Contact::query()
+            ->select('id', 'manager_id', 'created_at')
+            ->whereNull('manager_id')
+            ->withSum(['shipments' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK);
+                        });
+                    });
+            }], 'suma')
+            ->whereHas('shipments', function ($que) use ($date, $dateY) {
+                $que
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK);
+                        });
+                    });
+            })
+            ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->select('id', 'suma', 'created_at', 'contact_id')
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK);
+                        });
+                    });
+            }])
+
+            ->get();
 
         $selected = [
             "name",
@@ -244,7 +302,8 @@ class ManagerController extends Controller
             'datePrev',
             'date',
             'dateY',
-            'dateRus'
+            'dateRus',
+            'contacts'
         ));
     }
 
@@ -334,8 +393,43 @@ class ManagerController extends Controller
                     ->select('id', 'manager_id', 'created_at');
             }]);
 
-
         $entityItems = $builder->orderBy('id')->get();
+
+        $contacts = Contact::query()
+            ->select('id', 'manager_id', 'created_at')
+            ->whereNull('manager_id')
+            ->withSum(['shipments' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::CONCRETE);
+                        });
+                    });
+            }], 'suma')
+            ->whereHas('shipments', function ($que) use ($date, $dateY) {
+                $que
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::CONCRETE);
+                        });
+                    });
+            })
+            ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->select('id', 'suma', 'created_at', 'contact_id')
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::CONCRETE);
+                        });
+                    });
+            }])
+            ->get();
 
         $selected = [
             "name",
@@ -370,7 +464,8 @@ class ManagerController extends Controller
             'datePrev',
             'date',
             'dateY',
-            'dateRus'
+            'dateRus',
+            'contacts'
         ));
     }
 }
