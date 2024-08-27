@@ -78,7 +78,7 @@ class ManagerController extends Controller
                             ->whereMonth('created_at', $date)
                             ->whereYear('created_at', $dateY);
                     }])
-                    ->select('id', 'manager_id');
+                    ->select('id', 'manager_id', 'created_at');
             }]);
 
 
@@ -205,7 +205,7 @@ class ManagerController extends Controller
                                 });
                             });
                     }])
-                    ->select('id', 'manager_id');
+                    ->select('id', 'manager_id', 'created_at');
             }]);
 
 
@@ -331,7 +331,7 @@ class ManagerController extends Controller
                                 });
                             });
                     }])
-                    ->select('id', 'manager_id');
+                    ->select('id', 'manager_id', 'created_at');
             }]);
 
 
