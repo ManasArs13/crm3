@@ -58,7 +58,13 @@ class ManagerController extends Controller
                     ->whereHas('shipments', function ($que) use ($date, $dateY) {
                         $que
                             ->whereMonth('created_at', $date)
-                            ->whereYear('created_at', $dateY);
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries->where('building_material', Product::BLOCK)
+                                        ->orWhere('building_material', Product::CONCRETE);
+                                });
+                            });
                     });
             }])
             ->withCount(['contacts as new_contacts' => function (Builder $query) use ($date, $dateY) {
@@ -68,7 +74,13 @@ class ManagerController extends Controller
                     ->whereHas('shipments', function ($que) use ($date, $dateY) {
                         $que
                             ->whereMonth('created_at', $date)
-                            ->whereYear('created_at', $dateY);
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries->where('building_material', Product::BLOCK)
+                                        ->orWhere('building_material', Product::CONCRETE);
+                                });
+                            });
                     });
             }])
             ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
@@ -77,7 +89,13 @@ class ManagerController extends Controller
                         $query
                             ->select('id', 'suma', 'created_at', 'contact_id')
                             ->whereMonth('created_at', $date)
-                            ->whereYear('created_at', $dateY);
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries->where('building_material', Product::BLOCK)
+                                        ->orWhere('building_material', Product::CONCRETE);
+                                });
+                            });
                     }])
                     ->select('id', 'manager_id', 'created_at');
             }]);
@@ -95,13 +113,25 @@ class ManagerController extends Controller
             ->whereHas('shipments', function ($que) use ($date, $dateY) {
                 $que
                     ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', $dateY);
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK)
+                                ->orWhere('building_material', Product::CONCRETE);
+                        });
+                    });
             })
             ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
                 $query
                     ->select('id', 'suma', 'created_at', 'contact_id')
                     ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', $dateY);
+                    ->whereYear('created_at', $dateY)
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK)
+                                ->orWhere('building_material', Product::CONCRETE);
+                        });
+                    });
             }])
             ->get();
 
