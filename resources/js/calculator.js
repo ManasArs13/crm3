@@ -373,14 +373,14 @@ $(document).ready(function(){
 
     });
 
-    $('form').submit(function(e){
+    $('form').submit(function(e){console.log('ddd')
         e.preventDefault();
         let classForm=$(this).attr("class");
         if (classForm=="calcBeton"){
-            let $quantity=$("."+classForm+" .change_js");
-            if ($quantity.val()<$("."+classForm+" .weight-tn").val()){
-                $quantity.val($("."+classForm+" .weight-tn").val());
-            }
+            // let $quantity=$("."+classForm+" .change_js");
+            // if ($quantity.val()<$("."+classForm+" .weight-tn").val()){
+            //     $quantity.val($("."+classForm+" .weight-tn").val());
+            // }
         }
 
         $.ajax({
