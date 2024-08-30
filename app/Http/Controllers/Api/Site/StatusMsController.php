@@ -10,7 +10,8 @@ class StatusMsController extends Controller
     {
         $states = Status::query()
         ->where('name', 'LIKE', '%'.$request->query('q').'%')
-        ->orderByDesc('id')->paginate(10,  ['*'], 'page', request()->query('page'));
+        ->whereIn('id', [3, 4])
+        ->orderByDesc('id')->paginate(10);
 
         return response()->json($states);
     }
