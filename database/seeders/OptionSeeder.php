@@ -284,12 +284,6 @@ class OptionSeeder extends Seeder
                 'module' => 'ms'
             ],
             [
-                'name' => 'Статусы заказа: Адрес, с которого будем брать статусы заказа',
-                'code' => 'ms_orders_status_url',
-                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/',
-                'module' => 'main'
-            ],
-            [
                 'name' => 'Контрагент: Гуид аттрибута "Ссылка на контакт в Amo" МС',
                 'code' => 'ms_counterparty_amo_link_guid',
                 'value' => 'bb95261f-972b-11ed-0a80-0e9300807fe0',
