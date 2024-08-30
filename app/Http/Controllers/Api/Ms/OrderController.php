@@ -38,10 +38,19 @@ class OrderController extends Controller
             if (!isset($array["state"]) || $array["state"] == null)
                 throw new \Exception(trans("error.noState"));
 
+            if (!isset($array["attributes"]["delivery"]) || $array["attributes"]["delivery"]['id'] == null)
+                throw new \Exception(trans("error.noDelivery"));
+
             $result = $orderMsService->updateOrderMs($array);
-            return new Response("Заказ создан", 200);
+
+            if (isset($result->id)) {
+                return new Response("<a href='" . 'https://online.moysklad.ru/app/#customerorder/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Заказ №' . $result->name . ' создан!' . "</a>", 200);
+            } else {
+                throw new \Exception(trans("error.Error"));
+            }
         } catch (\Exception $exception) {
-            return new Response($exception->getMessage() . "-^-" . $exception->getCode() . "-^-" . $exception->getLine() . "-^-" . $exception->getFile(), 500);
+            return new Response($exception->getMessage(), 500);
+            //return new Response($exception->getMessage() . "-^-" . $exception->getCode() . "-^-" . $exception->getLine() . "-^-" . $exception->getFile(), 500);
         }
     }
 

@@ -373,7 +373,7 @@ $(document).ready(function(){
 
     });
 
-    $('form').submit(function(e){console.log('ddd')
+    $('form').submit(function(e){
         e.preventDefault();
         let classForm=$(this).attr("class");
         if (classForm=="calcBeton"){

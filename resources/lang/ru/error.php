@@ -5,5 +5,7 @@ return [
     'noCounterparty'=>"Не заполнен контрагент",
     'noPositions'=>"Нет позиции",
     'noState'=>"Нет статуса",
-    'noPrice'=>"Нет цены"
+    'noPrice'=>"Нет цены",
+    "noDelivery" => "Отсутствует доставка",
+    "Error" => "Ошибка"
 ];
