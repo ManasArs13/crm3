@@ -77,6 +77,11 @@ class OrderMsService
 
             if ($msOrder["form"] == "calcBeton") {
                 $delivery_id = $service_delivery_beton;
+                if ($quantity <= 8) {
+                    $quantity = 8;
+                // } else if ($quantity > 8 && $quantity !== 0) {
+                //     $quantity = round($quantity/8) * 8;
+                }
             } else {
                 $quantity = 1;
             }
