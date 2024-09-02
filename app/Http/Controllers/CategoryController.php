@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\CategoryFilter;
 use App\Http\Requests\FilterRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -153,16 +154,16 @@ class CategoryController extends Controller
         $urlReset = 'category.index';
         $entity = 'products_categories';
 
-        if ($request->type == 'products') {
-            $entity = 'products_categories';
-            $entityItems = Category::query()->where('type', Category::PRODUCTS);
-        } else if ($request->type == 'materials') {
-            $entity = 'products_categories_materials';
-            $entityItems = Category::query()->where('type', Category::MATERIAL);
-        } else {
-            $entity = 'products_categories';
-            $entityItems = Category::query();
-        }
+
+        $categoryFilter = new CategoryFilter($request);
+
+
+        /* тип */
+        $typeCheck = $categoryFilter->typeCheck();
+        $entity = $typeCheck['entity'];
+        $entityItems = $typeCheck['entityItems'];
+
+
 
         /* Колонки */
         $columns = Schema::getColumnListing('products_categories');
@@ -191,30 +192,16 @@ class CategoryController extends Controller
 
         /* Фильтры для отображения */
         if (isset($request->filters)) {
-            foreach ($request->filters as $key => $value) {
-                if ($key == 'created_at' || $key == 'updated_at') {
-                    $entityItems
-                        ->where($key, '>=', $value['min'] . ' 00:00:00')
-                        ->where($key, '<=', $value['max'] . ' 23:59:59');
-                } else if ($key == 'weight_kg' || $key == 'price') {
-                    $entityItems
-                        ->where($key, '>=', $value['min'])
-                        ->where($key, '<=', $value['max']);
-                }
-            }
+            $entityItems = $categoryFilter->filters($entityItems);
         }
 
         /* Сортировка */
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->orderByDesc('sort')->paginate(50);
-            $orderBy = 'desc';
-        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->orderByDesc('sort')->paginate(50);
-            $orderBy = 'asc';
-        } else {
-            $orderBy = 'desc';
-            $entityItems =   $entityItems->paginate(50);
-        }
+        $sort = $categoryFilter->sort($entityItems);
+        $entityItems = $sort['entityItems'];
+        $orderBy = $sort['orderBy'];
+
+
+
 
         /* Фильтры для меню */
         $filters = [];
