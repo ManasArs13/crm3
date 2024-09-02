@@ -7,7 +7,6 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMApiNoContentException;
 use AmoCRM\Exceptions\AmoCRMMissedTokenException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
-use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseRangeFilter;
 use AmoCRM\Filters\ContactsFilter;
 use AmoCRM\Filters\LeadsFilter;
