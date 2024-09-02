@@ -20,6 +20,7 @@ class ContactAmoService implements EntityInterface
     {
         foreach ($datas as $data) {
             foreach ($data as $row) {
+
                 $entity = ContactAmo::firstOrNew(['id' => $row->getId()]);
                 if ($entity->id === null) {
                     $entity->id = $row->getId();
@@ -34,6 +35,7 @@ class ContactAmoService implements EntityInterface
                 $phoneNorm = null;
                 $msContactLink = null;
                 $msContact = null;
+                $contactType = false;
 
                 if ($customFields != null) {
                     //Получим значение поля по его ID
@@ -50,6 +52,14 @@ class ContactAmoService implements EntityInterface
                     $counterpartyField = $customFields->getBy('fieldId', 604475);
                     if ($counterpartyField != null) {
                         $msContactLink = $counterpartyField->getValues()[0]->getValue();
+                    }
+
+                    $contactTypeField = $customFields->getBy('fieldId', 603221);
+                    if ($contactTypeField != null) {
+                        $contactTypeValue = $contactTypeField->getValues()[0]->getValue();
+                        if ($contactTypeValue == 'Покупатель') {
+                            $contactType = true;
+                        }
                     }
 
                     $phoneField = $customFields->getBy('fieldCode', 'PHONE');
@@ -70,14 +80,14 @@ class ContactAmoService implements EntityInterface
                     }
                 }
 
-                $entity->phone = $phones;
-                $entity->phone_norm = $phoneNorm;
-                $entity->phone1 = $phone1;
-
-                $entity->email = $email;
-                $entity->contact_ms_id = $msContact;
-                $entity->contact_ms_link = $msContactLink;
-                $entity->save();
+                    $entity->phone = $phones;
+                    $entity->phone_norm = $phoneNorm;
+                    $entity->phone1 = $phone1;
+                    $entity->is_success = $contactType;
+                    $entity->email = $email;
+                    $entity->contact_ms_id = $msContact;
+                    $entity->contact_ms_link = $msContactLink;
+                    $entity->save();
             }
         }
     }
