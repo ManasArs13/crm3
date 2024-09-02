@@ -7,7 +7,7 @@
     @endif
 
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('succes'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -205,7 +205,7 @@
                                                 $column == 'В архиве' ||
                                                 $column == 'Дата создания' ||
                                                 $column == 'Дата обновления') &&
-                                                $column !== 'sostav') style="text-align:right" 
+                                                $column !== 'sostav') style="text-align:right"
                                                 @elseif($column == 'Ссылка на контакт амо')
                                                 @else style="text-align:left" @endif>
                                         <a class="text-black"
@@ -227,7 +227,7 @@
                                                 $column == 'В архиве' ||
                                                 $column == 'Дата создания' ||
                                                 $column == 'Дата обновления') &&
-                                                $column !== 'sostav') style="text-align:right" 
+                                                $column !== 'sostav') style="text-align:right"
                                     @elseif($column == 'Ссылка на контакт амо')
                                     @else style="text-align:left" @endif>
                                         <a class="text-black"
@@ -254,7 +254,7 @@
                                                 $column == 'balance' ||
                                                 $column == 'created_at' ||
                                                 $column == 'updated_at') &&
-                                                $column !== 'sostav') style="text-align:right" 
+                                                $column !== 'sostav') style="text-align:right"
                                                 @elseif($column == 'contact_amo_link') style="text-align:center"
                                                 @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
