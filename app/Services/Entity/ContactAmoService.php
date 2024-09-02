@@ -56,7 +56,7 @@ class ContactAmoService implements EntityInterface
 
                     $contactTypeField = $customFields->getBy('fieldId', 603221);
                     if ($contactTypeField != null) {
-                        $contactTypeValue = $counterpartyField->getValues()[0]->getValue();
+                        $contactTypeValue = $contactTypeField->getValues()[0]->getValue();
                         if ($contactTypeValue == 'Покупатель') {
                             $contactType = true;
                         }
