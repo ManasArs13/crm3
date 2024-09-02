@@ -80,16 +80,14 @@ class ContactAmoService implements EntityInterface
                     }
                 }
 
-                if ($contactType) {
                     $entity->phone = $phones;
                     $entity->phone_norm = $phoneNorm;
                     $entity->phone1 = $phone1;
-
+                    $entity->is_success = $contactType;
                     $entity->email = $email;
                     $entity->contact_ms_id = $msContact;
                     $entity->contact_ms_link = $msContactLink;
                     $entity->save();
-                }
             }
         }
     }
