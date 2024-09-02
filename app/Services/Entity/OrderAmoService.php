@@ -12,7 +12,7 @@ class OrderAmoService implements EntityInterface
 {
 
     public function import(array $rows)
-    {
+    {info($rows);
         foreach ($rows as $rows) {
             foreach ($rows as $row) {
 
