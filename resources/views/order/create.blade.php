@@ -13,7 +13,7 @@
     @endif
 
 
-    <div class="w-11/12 max-w-7xl mx-auto py-8">
+    <div class="w-11/12 max-w-10xl mx-auto py-8">
 
         @if (session('succes'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -26,7 +26,7 @@
         @endif
 
         <div
-            class="max-w-7xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+            class="mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                 <form action="{{ route($action) }}" method="post">
                     @csrf

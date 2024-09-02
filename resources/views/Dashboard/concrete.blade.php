@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex flex-col lg:flex-row flex-nowrap gap-3 w-11/12 mx-auto py-10">
+    <div class="max-w-10xl flex flex-col lg:flex-row flex-nowrap gap-3 w-11/12 mx-auto py-10">
         <div class="flex flex-col basis-3/4 bg-white rounded-md shadow overflow-x-auto">
             <div class="flex flex-row w-full p-3 justify-between">
                 <div class="flex gap-2">

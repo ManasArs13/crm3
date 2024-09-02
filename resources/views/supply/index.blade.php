@@ -34,7 +34,7 @@
         </script>
     </x-slot>
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
         @endif

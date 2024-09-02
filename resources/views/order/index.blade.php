@@ -34,7 +34,7 @@
         </script>
     </x-slot>
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('success'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -447,7 +447,7 @@
                                             $column == 'Дата обновления' ||
                                             $column == 'Долг' || is_int($column)) &&
                                             !preg_match('/_id\z/u', $column) &&
-                                            $column !== 'sostav') style="text-align:right" 
+                                            $column !== 'sostav') style="text-align:right"
                                     @elseif($column == 'Статус') style='text-align:center'
                                     @else style="text-align:left" @endif>
                                         <a class="text-black"
@@ -476,7 +476,7 @@
                                                 $column == 'Дата обновления' ||
                                                 $column == 'Долг' || is_int($column)) &&
                                                 !preg_match('/_id\z/u', $column) &&
-                                                $column !== 'sostav') style="text-align:right" 
+                                                $column !== 'sostav') style="text-align:right"
                                         @elseif($column == 'Статус') style='text-align:center'
                                         @else style="text-align:left" @endif>
                                         <a class="text-black"
@@ -561,7 +561,7 @@
                                                 $column == 'updated_at' ||
                                                 $column == 'debt') &&
                                                 !preg_match('/_id\z/u', $column) &&
-                                                $column !== 'sostav') style="text-align:right" 
+                                                $column !== 'sostav') style="text-align:right"
                                         @elseif($column == 'status') style='text-align:center'
                                         @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
