@@ -53,11 +53,11 @@ class CategoryFilter
 
     /* Сортировка */
     public function sort($entityItems){
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->orderByDesc('sort')->paginate(50);
+        if (isset($this->request->orderBy)  && $this->request->orderBy == 'asc') {
+            $entityItems = $entityItems->orderBy($this->request->column)->orderByDesc('sort')->paginate(50);
             $orderBy = 'desc';
-        } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->orderByDesc('sort')->paginate(50);
+        } else if (isset($this->request->orderBy)  && $this->request->orderBy == 'desc') {
+            $entityItems = $entityItems->orderByDesc($this->request->column)->orderByDesc('sort')->paginate(50);
             $orderBy = 'asc';
         } else {
             $orderBy = 'desc';
