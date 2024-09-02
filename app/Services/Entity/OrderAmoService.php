@@ -4,10 +4,8 @@ namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
 use App\Models\Manager;
-use App\Models\Option;
 use App\Models\Order;
 use App\Models\OrderAmo;
-use Carbon\Carbon;
 
 class OrderAmoService implements EntityInterface
 {
