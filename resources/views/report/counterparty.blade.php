@@ -90,7 +90,7 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
 
-                            <td class="break-all w-16 overflow-auto px-2 py-4">
+                            <td class="break-all w-16 overflow-auto px-2 py-3">
                                 №
                             </td>
 
@@ -98,7 +98,7 @@
 
                             @foreach ($resColumns as $key => $column)
                                 @if ($orderBy == 'asc')
-                                    <th scope="col" class="px-2 py-4"
+                                    <th scope="col" class="px-2 py-3"
                                         @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
@@ -107,7 +107,7 @@
                                         @endif
                                     </th>
                                 @elseif($orderBy == 'desc')
-                                    <th scope="col" class="px-2 py-4"
+                                    <th scope="col" class="px-2 py-3"
                                         @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
@@ -116,7 +116,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-2 py-4"
+                                    <th scope="col" class="px-2 py-3"
                                         @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
@@ -150,14 +150,14 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
 
-                                <td class="break-all overflow-auto px-2 py-4 text-sm">
+                                <td class="break-all overflow-auto px-2 py-3 text-sm">
                                     {{ $loop->iteration }}
                                 </td>
 
 
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-3"
                                         @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
@@ -200,7 +200,7 @@
 
                         <tr class="border-b-2 bg-gray-100">
 
-                            <td class="break-all overflow-auto px-2 py-4">
+                            <td class="break-all overflow-auto px-2 py-3">
                                 ВСЕГО:
                             </td>
 
@@ -208,7 +208,7 @@
 
 
                             @foreach ($resColumns as $column => $title)
-                                <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                <td class="break-all max-w-96 overflow-auto px-2 py-3"
                                     @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
 
                                     @switch($column)

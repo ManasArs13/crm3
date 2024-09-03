@@ -243,9 +243,9 @@
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder' || $key == 'positions_count')
-                                    <th scope="col" class="px-2 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-2 py-2">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-2 py-4">
+                                    <th scope="col" class="px-2 py-2">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -253,7 +253,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-2 py-4">
+                                    <th scope="col" class="px-2 py-2">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -292,7 +292,7 @@
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 text-right overflow-auto px-2 py-4"
+                                    <td class="break-all max-w-60 xl:max-w-44 text-right overflow-auto px-2 py-2"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'payed_sum' ||
@@ -433,19 +433,19 @@
 
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'sum')
-                                    <td class="px-2 py-4 text-right">
+                                    <td class="px-2 py-2 text-right">
                                         {{ $totalSum }}
                                     </td>
                                 @elseif($column == 'positions_count')
-                                    <td class="overflow-auto px-2 py-4 text-right">
+                                    <td class="overflow-auto px-2 py-2 text-right">
                                         {{ $totalCount }}
                                     </td>
                                 @elseif($column == 'shipped_count')
-                                    <td class="overflow-auto px-2 py-4 text-right">
+                                    <td class="overflow-auto px-2 py-2 text-right">
                                         {{ $totalShipped }}
                                     </td>
                                 @elseif($column == 'residual_count')
-                                    <td class="overflow-auto px-2 py-4 text-right">
+                                    <td class="overflow-auto px-2 py-2 text-right">
                                         {{ $totalCount - $totalShipped }}
                                     </td>
                                 @else

@@ -90,7 +90,7 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
-                                <th scope="col" class="px-2 py-4"
+                                <th scope="col" class="px-2 py-3"
                                     @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
                                     {{ $column }}</th>
                             @endforeach
@@ -169,7 +169,7 @@
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-3"
                                         @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
@@ -240,7 +240,7 @@
                         <tr class="border-b-2">
 
                             @foreach ($resColumns as $column => $title)
-                                <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                <td class="break-all max-w-96 overflow-auto px-2 py-3"
                                     @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
                                     @if (isset($entityItem->$column)) title="{{ $entityItem->$column }}" @endif>
 
@@ -311,7 +311,7 @@
                         <tr class="border-b-2 bg-gray-100">
 
                             @foreach ($resColumns as $column => $title)
-                                <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                <td class="break-all max-w-96 overflow-auto px-2 py-3"
                                     @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
 
                                     @switch($column)
