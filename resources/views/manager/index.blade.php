@@ -6,7 +6,7 @@
         </x-slot>
     @endif
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('success'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -242,7 +242,7 @@
                             @foreach ($resColumns as $column => $title)
                                 <td class="break-all max-w-96 overflow-auto px-2 py-4"
                                     @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
-                                    @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+                                    @if (isset($entityItem->$column)) title="{{ $entityItem->$column }}" @endif>
 
                                     @switch($column)
                                         @case('count_contacts')
