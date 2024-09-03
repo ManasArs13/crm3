@@ -376,9 +376,9 @@
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('shipment.index') }}">{{ __('title.shipments') }}</a>
             </div>
-            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                <a href="{{ route('shipment.index2') }}">{{ __('title.shipments2') }}</a>
-            </div>
+{{--            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">--}}
+{{--                <a href="{{ route('shipment.index2') }}">{{ __('title.shipments2') }}</a>--}}
+{{--            </div>--}}
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('residual.index') }}">Остатки</a>
             </div>
