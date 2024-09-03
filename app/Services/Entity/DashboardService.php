@@ -585,6 +585,11 @@ class DashboardService
         $shipments = Shipment::whereDate('created_at', $date)
             ->orderBy('created_at')
             ->select('id', 'created_at', 'transport_id', 'delivery_id')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })
             ->with('transport', 'delivery')
             ->get();
 
@@ -749,6 +754,11 @@ class DashboardService
 
         $shipments = Shipment::whereDate('created_at', $date)
             ->orderBy('created_at')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
             ->select('id', 'created_at', 'transport_id', 'delivery_id')
             ->with('transport', 'delivery')
             ->get();
