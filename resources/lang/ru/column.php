@@ -150,11 +150,15 @@ return [
   'short_name' => 'Краткое имя',
   "count_contacts" => 'Контактов всего',
   'percent_contacts' => '%',
-  "sum_shipments" => "Отгрузок всего",
+  "sum_shipments" => "Сумма отгрузок",
   "percent_shipments" => '%',
   "count_contacts_new"=> 'Контактов новых',
   'percent_contacts_new' => '%',
   "sum_shipments_new" => 'Отгрузок новых',
   "percent_shipments_new" => '%',
+  "manager_name" => 'Менеджер',
+  "count_orders" => 'Количество заказов',
+  "sum_orders" => 'Сумма заказов',
+  "count_shipments" => 'Количество отгрузок',
 
 ];

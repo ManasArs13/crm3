@@ -94,6 +94,8 @@
                                 №
                             </td>
 
+
+
                             @foreach ($resColumns as $key => $column)
                                 @if ($orderBy == 'asc')
                                     <th scope="col" class="px-2 py-4"
@@ -152,12 +154,17 @@
                                     {{ $loop->iteration }}
                                 </td>
 
+
+
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-96 overflow-auto px-2 py-4"
                                         @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                                         @switch($column)
+                                            @case('manager_name')
+                                            {{ $entityItem->manager->name ?? 'No Manager' }}
+                                            @break
                                             @case('name')
                                                 <a href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->ms_id }}" target="_blank" class="text-blue-700 hover:text-blue-500">
                                                     {{ $entityItem->$column }}
@@ -180,6 +187,7 @@
                                                 {{ number_format($entityItem->shipments->sum('suma') ? $entityItem->shipments->sum('suma') : '0', 0, '.', ' ') }}
                                             @break
 
+
                                             @default
                                                 {{ $entityItem->$column }}
                                         @endswitch
@@ -193,7 +201,11 @@
                         <tr class="border-b-2 bg-gray-100">
 
                             <td class="break-all overflow-auto px-2 py-4">
+                                ВСЕГО:
                             </td>
+
+
+
 
                             @foreach ($resColumns as $column => $title)
                                 <td class="break-all max-w-96 overflow-auto px-2 py-4"
@@ -201,7 +213,11 @@
 
                                     @switch($column)
                                         @case('name')
-                                            ВСЕГО:
+
+                                        @break
+
+                                        @case('manager_name')
+
                                         @break
 
                                         @case('count_orders')
