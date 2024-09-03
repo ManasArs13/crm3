@@ -27,9 +27,7 @@
                     <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*') && !request()->routeIs('shipment.index2')">
                         {{ __('title.shipments') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('shipment.index2')" :active="request()->routeIs('shipment.index2')">
-                        {{ __('title.shipments2') }}
-                    </x-nav-link>
+
 
                     <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
                         Остатки
