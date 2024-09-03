@@ -423,12 +423,12 @@
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-2 py-4"></th>
+                            <th scope="col" class="px-2 py-2"></th>
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder' || $key == 'positions_count')
-                                    <th scope="col" class="px-2 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-2 py-2">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-2 py-4"
+                                    <th scope="col" class="px-2 py-2"
                                     @if (
                                         (   $column == '№' ||
                                             $column == 'Сумма оплачено' ||
@@ -457,7 +457,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-2 py-4"
+                                    <th scope="col" class="px-2 py-2"
                                         @if (
                                             (   $column == '№' ||
                                                 $column == 'Сумма оплачено' ||
@@ -530,17 +530,17 @@
 
                             <tr class="border-b-2">
                                 @if (count($entityItem->shipments) > 0)
-                                    <td class="text-nowrap px-2 py-4">
+                                    <td class="text-nowrap px-2 py-2">
                                         <button class="buttonForOpen text-normal font-bold"
                                             data-id="{!! $entityItem->id !!}">+</button>
                                     </td>
                                 @else
-                                    <td class="text-nowrap px-2 py-4">
+                                    <td class="text-nowrap px-2 py-2">
                                     </td>
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'id' ||
@@ -685,7 +685,7 @@
                                 @endforeach
 
                                 {{-- Delete --}}
-                                <td class="text-nowrap px-2 py-4">
+                                <td class="text-nowrap px-2 py-2">
 
                                     <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
                                         class="inline">
@@ -709,11 +709,11 @@
                             @foreach ($entityItem->shipments as $shipment)
                                 <tr style="display: none"
                                     class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}">
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-2">
                                         {{ $loop->iteration }}
                                     </td>
                                     @foreach ($resColumns as $column => $title)
-                                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-4"
+                                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-2"
                                             @if (is_int($shipment->$column)) style="text-align:left" @else style="text-align:right" @endif
                                             @if ($shipment->$column) title="{{ $shipment->$column }}" @endif>
                                             @if (preg_match('/_id\z/u', $column))
@@ -785,7 +785,7 @@
                                             @endif
                                         </td>
                                     @endforeach
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-2">
                                     </td>
                                 </tr>
                             @endforeach
@@ -796,19 +796,19 @@
                             </td>
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'sum')
-                                    <td class="px-2 py-4" style="text-align:right">
+                                    <td class="px-2 py-2" style="text-align:right">
                                         {{ $totalSum }}
                                     </td>
                                 @elseif($column == 'positions_count')
-                                    <td class="overflow-auto px-2 py-4" style="text-align:right">
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
                                         {{ $totalCount }}
                                     </td>
                                 @elseif($column == 'shipped_count')
-                                    <td class="overflow-auto px-2 py-4" style="text-align:right">
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
                                         {{ $totalShipped }}
                                     </td>
                                 @elseif($column == 'residual_count')
-                                    <td class="overflow-auto px-2 py-4" style="text-align:right">
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
                                         {{ $totalCount - $totalShipped }}
                                     </td>
                                 @else

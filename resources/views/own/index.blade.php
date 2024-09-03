@@ -191,9 +191,9 @@
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder')
-                                    <th scope="col" class="px-6 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-6 py-2">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-2">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -201,7 +201,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-2">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -219,7 +219,7 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-hidden px-6 py-4"
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-hidden px-6 py-2"
                                         @if (is_int($entityItem->$column) ||
                                                 $column == 'weight_kg' ||
                                                 $column == 'category_id' ||
@@ -305,7 +305,7 @@
                                 @endforeach
 
                                 @if (isset($needMenuForItem) && $needMenuForItem)
-                                    <td class=" text-nowrap px-6 py-4">
+                                    <td class=" text-nowrap px-6 py-2">
                                         @if (isset($urlShow) && $urlShow != '')
                                             <a class="bg-green-400 p-2 rounded-l font-semibold hover:bg-green-500 hover:text-white hover:border-y-2 border-green-500"
                                                 href="{{ route($urlShow, $entityItem->id) }}">

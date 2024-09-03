@@ -19,7 +19,7 @@
                 {{ session('danger') }}
             </div>
         @endif
-        
+
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ $entity }}</h3>
         @endif
@@ -55,7 +55,7 @@
                             {{ __('label.create') }}
                         </a>
                     </div>
-                </div>              
+                </div>
             </div>
 
             {{-- body --}}
@@ -63,28 +63,28 @@
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-3">
                                 {{ __('column.id') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-3">
                                 {{ __('column.incoming') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-3">
                                 {{ __('column.product_id') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-3">
                                 {{ __('column.quantity') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-3">
                                 {{ __('column.price') }}
                             </th>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-3">
                                 {{ __('column.sum') }}
                             </td>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-3">
                                 {{ __('column.created_at') }}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-3">
                                 {{ __('column.updated_at') }}
                             </th>
                         </tr>
@@ -92,12 +92,12 @@
                     <tbody>
                         @foreach ($incoming_products as $product)
                             <tr class="border-b-2">
-                                <td class="px-6 py-4 text-blue-600  text-right">
+                                <td class="px-6 py-3 text-blue-600  text-right">
                                     <a href="{{ route('incomings.show', ['incoming' => $product->incoming_id]) }}">
                                         {{ $product->id }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-4 text-blue-600 text-right">
+                                <td class="px-6 py-3 text-blue-600 text-right">
                                     @if ($product->incoming)
                                         <a href="{{ route('incomings.show', ['incoming' => $product->incoming_id]) }}">
                                             {{ $product->incoming_id }}
@@ -106,7 +106,7 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-blue-600">
+                                <td class="px-6 py-3 text-blue-600">
                                     @if ($product->products)
                                         <a href="{{ route('product.show', ['product' => $product->product_id]) }}">
                                             {{ $product->products->name }}
@@ -115,19 +115,19 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-3 text-right">
                                     {{ $product->quantity }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-3 text-right">
                                     {{ $product->price }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-3 text-right">
                                     {{ $product->summa }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-3 text-right">
                                     {{ $product->created_at }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-3 text-right">
                                     {{ $product->updated_at }}
                                 </td>
                             </tr>
