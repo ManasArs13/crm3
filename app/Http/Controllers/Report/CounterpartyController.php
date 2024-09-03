@@ -208,8 +208,8 @@ class CounterpartyController extends Controller
         }
 
         $selected = [
-            "manager_name",
             "name",
+            "manager_name",
             "count_orders",
             'sum_orders',
             "count_shipments",
@@ -435,8 +435,8 @@ class CounterpartyController extends Controller
         }
 
         $selected = [
-            "manager_name",
             "name",
+            "manager_name",
             "count_orders",
             'sum_orders',
             "count_shipments",
@@ -663,8 +663,8 @@ class CounterpartyController extends Controller
         }
 
         $selected = [
-            "manager_name",
             "name",
+            "manager_name",
             "count_orders",
             'sum_orders',
             "count_shipments",
