@@ -30,7 +30,7 @@ class ProductService implements EntityInterface
         $colorGuid = $this->options::where('code', '=', "ms_product_color_guid")->first()?->value;
 
         foreach ($rows['rows'] as $row) {
-            $entity = Product::firstOrNew(['ms_id' => $row['id']]);
+            $entity = Product::query()->firstOrNew(['ms_id' => $row['id']]);
 
             if ($entity->ms_id === null) {
                 $entity->ms_id = $row['id'];
