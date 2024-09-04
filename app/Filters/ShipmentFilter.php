@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -23,6 +24,11 @@ class ShipmentFilter
             if (method_exists($this, $filter)) {
                 $this->$filter($value);
             }
+        }
+
+        if(!isset($this->filters()['created_at']['min']) && !isset($this->filters()['created_at']['max'])){
+            $this->builder->where('created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+                ->where('created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
         }
 
         return $this->builder;
