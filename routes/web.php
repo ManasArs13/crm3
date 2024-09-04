@@ -79,7 +79,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'manager' => ManagerController::class
     ]);
 
-    Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
+//    Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
 
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
