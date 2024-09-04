@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     });
 
-    
+
     //Доп
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
     //Route::get('/supplies/products', [SupplyController::class, 'products'])->name('supplies.products');
@@ -113,7 +113,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
     Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
-     
+
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
@@ -128,7 +128,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::resource('supplies', SupplyController::class)->only([
     //     'index', 'show'
     // ]);
-    
+
 
     // Приход
     Route::resource('incomings', IncomingController::class)->only([

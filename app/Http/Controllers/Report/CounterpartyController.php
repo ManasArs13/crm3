@@ -114,7 +114,7 @@ class CounterpartyController extends Controller
 
                 case 'manager_name':
                     $entityItems = $contactsWithShipments->sortBy(function ($contact) {
-                        return $contact->manager->id;
+                        return $contact->manager->id ?? '';
                     });
                     break;
 
@@ -160,7 +160,7 @@ class CounterpartyController extends Controller
 
                 case 'manager_name':
                     $entityItems = $contactsWithShipments->sortByDesc(function ($contact) {
-                        return $contact->manager->id;
+                        return $contact->manager->id ?? '';
                     });
                     break;
 
