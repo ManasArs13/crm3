@@ -60,7 +60,7 @@
                         @foreach ($materials as $material)
                             <tr class="border-b-2">
                                 <td class="m-2" colspan="4">
-                                    {{ $material->name }}
+                                    {{ $material->short_name }}
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
                                     {{ $material->residual }}
@@ -94,7 +94,7 @@
                             @if ($product->residual_norm)
                                 <tr class="border-b-2">
                                     <td class="m-2 justify-content-beetwen">
-                                        {{ $product->name }}
+                                        {{ $product->short_name }}
                                     </td>
                                     <td>
                                         @if ($product->residual_norm !== 0 && $product->residual_norm !== null && $product->type !== 'не выбрано')
