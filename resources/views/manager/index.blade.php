@@ -394,7 +394,9 @@
                                 $TotalSuccessOrders += $entityItem->success_orders;
                                 $TotalNoSuccessOrders += $entityItem->no_success_orders;
                             @endphp
+                        @endforeach
 
+                        @foreach ($AmoManagers as $entityItem)
                             <tr class="border-b-2">
 
                                 @foreach ($resColumnsAmo as $column => $title)
@@ -495,7 +497,6 @@
                                         @case('percent_no_success_orders')
                                             {{ $TotalNoSuccessOrders ? '100%' : '0%' }}
                                         @break
-
                                     @endswitch
 
                                 </td>
