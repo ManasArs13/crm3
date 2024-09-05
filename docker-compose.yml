@@ -1,4 +1,4 @@
-version: '3'
+version: '4'
 services:
     laravel.euroblock:
         build:
@@ -17,6 +17,7 @@ services:
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-on}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            XDEBUG_SESSION: 1
             XDEBUG_TRIGGER: 'yes'
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
             PHP_IDE_CONFIG: serverName=laravel.euroblock

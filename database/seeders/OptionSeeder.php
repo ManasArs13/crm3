@@ -178,7 +178,7 @@ class OptionSeeder extends Seeder
             [
                 'name' => "Техкарта",
                 'code' => 'ms_tech_chart_url',
-                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/processingplanfolder',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/processingplan',
                 'module' => 'ms'
             ],
             [
