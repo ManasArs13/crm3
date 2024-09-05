@@ -20,7 +20,7 @@ return [
 //  "contact_amo2_id" => "Контакт2 амо",
   "comment" => "Комментарий",
   "contact_amo_link" => "Ссылка на контакт амо",
-//  "status_amo_id" => "Статус амо",
+  "status_amo_id" => "Статус амо",
   "status_shipped" => "Отгружено",
 //  "order_id" => "Заказ МС",
   "ms_link" => "Ссылка МС",
@@ -160,5 +160,6 @@ return [
   "count_orders" => 'Количество заказов',
   "sum_orders" => 'Сумма заказов',
   "count_shipments" => 'Количество отгрузок',
-
+  'order_link' => 'Ссылка на заказ',
+  'manager_id	' => 'Менеджер',
 ];
