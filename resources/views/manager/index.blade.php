@@ -425,9 +425,9 @@
                                                 @if (
                                                     $entityItem->success_orders &&
                                                         $entityItem->success_orders !== 0 &&
-                                                        $TotalSuccessOrders &&
-                                                        $TotalSuccessOrders !== 0)
-                                                    {{ round(100 / ($TotalSuccessOrders / +$entityItem->success_orders)) }}
+                                                        $entityItem->all_orders &&
+                                                        $entityItem->all_orders !== 0)
+                                                    {{ round(100 / ($entityItem->all_orders / +$entityItem->success_orders)) }}
                                                     %
                                                 @else
                                                     0%
@@ -442,9 +442,9 @@
                                                 @if (
                                                     $entityItem->no_success_orders &&
                                                         $entityItem->no_success_orders !== 0 &&
-                                                        $TotalNoSuccessOrders &&
-                                                        $TotalNoSuccessOrders !== 0)
-                                                    {{ round(100 / ($TotalNoSuccessOrders / +$entityItem->no_success_orders)) }}
+                                                        $entityItem->all_orders &&
+                                                        $entityItem->all_orders !== 0)
+                                                    {{ round(100 / ($entityItem->all_orders / +$entityItem->no_success_orders)) }}
                                                     %
                                                 @else
                                                     0%
@@ -491,11 +491,21 @@
                                         @break
 
                                         @case('percent_success_orders')
-                                            {{ $TotalSuccessOrders ? '100%' : '0%' }}
+                                            @if ($TotalOrders && $TotalOrders !== 0 && $TotalSuccessOrders && $TotalSuccessOrders !== 0)
+                                                {{ round(100 / ($TotalOrders / +$TotalSuccessOrders)) }}
+                                                %
+                                            @else
+                                                0%
+                                            @endif
                                         @break
 
                                         @case('percent_no_success_orders')
-                                            {{ $TotalNoSuccessOrders ? '100%' : '0%' }}
+                                            @if ($TotalOrders && $TotalOrders !== 0 && $TotalNoSuccessOrders && $TotalNoSuccessOrders !== 0)
+                                                {{ round(100 / ($TotalOrders / +$TotalNoSuccessOrders)) }}
+                                                %
+                                            @else
+                                                0%
+                                            @endif
                                         @break
                                     @endswitch
 
