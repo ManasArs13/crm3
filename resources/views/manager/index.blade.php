@@ -481,7 +481,7 @@
                                         @break
 
                                         @case('no_success_orders')
-                                            {{ $TotalNoSuccrssOrders }}
+                                            {{ $TotalNoSuccessOrders }}
                                         @break
 
                                         @case('percent_all_orders')
@@ -493,7 +493,7 @@
                                         @break
 
                                         @case('percent_no_success_orders')
-                                            {{ $TotalNoSuccrssOrders ? '100%' : '0%' }}
+                                            {{ $TotalNoSuccessOrders ? '100%' : '0%' }}
                                         @break
 
                                     @endswitch
