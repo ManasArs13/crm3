@@ -499,7 +499,7 @@
                                                     $amo_orders['success_orders'] !== 0 &&
                                                     $amo_orders['all_orders'] &&
                                                     $amo_orders['all_orders'] !== 0)
-                                                {{ round(100 / ($entityItem->all_orders / +$amo_orders['success_orders'])) }}
+                                                {{ round(100 / ($amo_orders['all_orders'] / +$amo_orders['success_orders'])) }}
                                                 %
                                             @else
                                                 0%
@@ -512,7 +512,7 @@
                                                     $amo_orders['no_success_orders'] !== 0 &&
                                                     $amo_orders['all_orders'] &&
                                                     $amo_orders['all_orders'] !== 0)
-                                                {{ round(100 / ($entityItem->all_orders / +$amo_orders['no_success_orders'])) }}
+                                                {{ round(100 / ($amo_orders['all_orders'] / +$amo_orders['no_success_orders'])) }}
                                                 %
                                             @else
                                                 0%
