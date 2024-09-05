@@ -103,6 +103,7 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        // Columns
         $contacts = Contact::query()
             ->select('id', 'manager_id', 'created_at')
             ->whereNull('manager_id')
@@ -156,6 +157,7 @@ class ManagerController extends Controller
             }
         }
 
+        // Columns AMO
         $selectedAmo = [
             'name',
             "all_orders",
@@ -174,6 +176,7 @@ class ManagerController extends Controller
             }
         }
 
+        // Managers AMO
         $AmoManagers = Manager::query()
             ->whereNot('id', 4)
             ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
@@ -183,15 +186,13 @@ class ManagerController extends Controller
             }])
             ->withCount(['order_amos as success_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->where('status_amo_id', 142)
-                    ->where('status_amo_id', 143)
+                    ->whereIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])
             ->withCount(['order_amos as no_success_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->whereNot('status_amo_id', 142)
-                    ->whereNot('status_amo_id', 143)
+                    ->whereNotIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])->orderBy('id')->get();
@@ -307,6 +308,7 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        // Columns
         $contacts = Contact::query()
             ->select('id', 'manager_id', 'created_at')
             ->whereNull('manager_id')
@@ -364,6 +366,7 @@ class ManagerController extends Controller
             }
         }
 
+        // Columns AMO
         $selectedAmo = [
             'name',
             "all_orders",
@@ -382,6 +385,7 @@ class ManagerController extends Controller
             }
         }
 
+        // Managers AMO
         $AmoManagers = Manager::query()
             ->whereNot('id', 4)
             ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
@@ -391,18 +395,17 @@ class ManagerController extends Controller
             }])
             ->withCount(['order_amos as success_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->where('status_amo_id', 142)
-                    ->where('status_amo_id', 143)
+                    ->whereIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])
             ->withCount(['order_amos as no_success_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->whereNot('status_amo_id', 142)
-                    ->whereNot('status_amo_id', 143)
+                    ->whereNotIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])->orderBy('id')->get();
+
 
         return view("manager.index", compact(
             'entityItems',
@@ -550,6 +553,8 @@ class ManagerController extends Controller
             }])
             ->get();
 
+        // Columns
+
         $selected = [
             "name",
             "count_contacts",
@@ -570,6 +575,7 @@ class ManagerController extends Controller
             }
         }
 
+        // Columns AMO
         $selectedAmo = [
             'name',
             "all_orders",
@@ -588,6 +594,7 @@ class ManagerController extends Controller
             }
         }
 
+        // Managers AMO
         $AmoManagers = Manager::query()
             ->whereNot('id', 4)
             ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
@@ -597,15 +604,13 @@ class ManagerController extends Controller
             }])
             ->withCount(['order_amos as success_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->where('status_amo_id', 142)
-                    ->where('status_amo_id', 143)
+                    ->whereIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])
             ->withCount(['order_amos as no_success_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->whereNot('status_amo_id', 142)
-                    ->whereNot('status_amo_id', 143)
+                    ->whereNotIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])->orderBy('id')->get();
