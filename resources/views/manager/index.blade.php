@@ -364,6 +364,149 @@
             </div>
 
         </div>
+
+        <div
+            class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04) mt-10">
+
+            {{-- body card --}}
+            <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
+                <table class="text-left text-md text-nowrap">
+                    <thead>
+                        <tr class="bg-neutral-200 font-semibold">
+                            @foreach ($resColumnsAmo as $key => $column)
+                                <th scope="col" class="px-2 py-3"
+                                    @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
+                                    {{ $column }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @php
+                            $TotalOrders = 0;
+                            $TotalSuccessOrders = 0;
+                            $TotalNoSuccrssOrders = 0;
+                        @endphp
+
+                        @foreach ($AmoManagers as $entityItem)
+                            @php
+                                $TotalOrders += $entityItem->all_orders;
+                                $TotalSuccessOrders += $entityItem->success_orders;
+                                $TotalNoSuccrssOrders += $entityItem->no_success_orders;
+                            @endphp
+
+                            <tr class="border-b-2">
+
+                                @foreach ($resColumnsAmo as $column => $title)
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-3"
+                                        @if ($column == 'name') style="text-align:left"  @else style="text-align:right" @endif
+                                        @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                                        @switch($column)
+                                            @case('all_orders')
+                                                {{ $entityItem->all_orders }}
+                                            @break
+
+                                            @case('percent_all_orders')
+                                                @if ($entityItem->all_orders && $entityItem->all_orders !== 0 && $TotalOrders && $TotalOrders !== 0)
+                                                    {{ round(100 / ($TotalOrders / +$entityItem->all_orders)) }} %
+                                                @else
+                                                    0%
+                                                @endif
+                                            @break
+
+                                            @case('success_orders')
+                                                {{ $entityItem->success_orders }}
+                                            @break
+
+                                            @case('percent_success_orders')
+                                                @if (
+                                                    $entityItem->success_orders &&
+                                                        $entityItem->success_orders !== 0 &&
+                                                        $TotalSuccessOrders &&
+                                                        $TotalSuccessOrders !== 0)
+                                                    {{ round(100 / ($TotalSumShipments / +$entityItem->success_orders)) }}
+                                                    %
+                                                @else
+                                                    0%
+                                                @endif
+                                            @break
+
+                                            @case('no_success_orders')
+                                                {{ $entityItem->no_success_orders }}
+                                            @break
+
+                                            @case('percent_no_success_orders')
+                                                @if (
+                                                    $entityItem->no_success_orders &&
+                                                        $entityItem->no_success_orders !== 0 &&
+                                                        $TotalNoSuccessOrders &&
+                                                        $TotalNoSuccessOrders !== 0)
+                                                    {{ round(100 / ($TotalSumShipments / +$entityItem->no_success_orders)) }}
+                                                    %
+                                                @else
+                                                    0%
+                                                @endif
+                                            @break
+
+                                            @default
+                                                {{ $entityItem->$column }}
+                                        @endswitch
+
+                                    </td>
+                                @endforeach
+
+                            </tr>
+                        @endforeach
+
+
+                        {{-- Всего --}}
+                        <tr class="border-b-2 bg-gray-100">
+
+                            @foreach ($resColumnsAmo as $column => $title)
+                                <td class="break-all max-w-96 overflow-auto px-2 py-3"
+                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
+
+                                    @switch($column)
+                                        @case('name')
+                                            Всего:
+                                        @break
+
+                                        @case('all_orders')
+                                            {{ $TotalOrders }}
+                                        @break
+
+                                        @case('success_orders')
+                                            {{ $TotalSuccessOrders }}
+                                        @break
+
+                                        @case('no_success_orders')
+                                            {{ $TotalNoSuccrssOrders }}
+                                        @break
+
+                                        @case('percent_all_orders')
+                                            {{ $TotalOrders ? '100%' : '0%' }}
+                                        @break
+
+                                        @case('percent_success_orders')
+                                            {{ $TotalSuccessOrders ? '100%' : '0%' }}
+                                        @break
+
+                                        @case('percent_no_success_orders')
+                                            {{ $TotalNoSuccrssOrders ? '100%' : '0%' }}
+                                        @break
+
+                                    @endswitch
+
+                                </td>
+                            @endforeach
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
 
 

@@ -17,6 +17,11 @@ class Manager extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function order_amos()
+    {
+        return $this->hasMany(OrderAmo::class);
+    }
+
     public function contacts()
     {
         return $this->hasMany(Contact::class);

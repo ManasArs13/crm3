@@ -53,6 +53,7 @@ class ManagerController extends Controller
         // Managers
         $builder = Manager::query()
             ->select('id', 'name')
+            ->whereNot('id', 4)
             ->withCount(['contacts as all_contacts' => function (Builder $query) use ($date, $dateY) {
                 $query
                     ->whereHas('shipments', function ($que) use ($date, $dateY) {
@@ -147,7 +148,6 @@ class ManagerController extends Controller
             "percent_shipments_new",
         ];
 
-
         foreach ($selected as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
 
@@ -155,6 +155,47 @@ class ManagerController extends Controller
                 $resColumns[$column] = trans("column." . $column);
             }
         }
+
+        $selectedAmo = [
+            'name',
+            "all_orders",
+            "percent_all_orders",
+            "success_orders",
+            "percent_success_orders",
+            "no_success_orders",
+            "percent_no_success_orders",
+        ];
+
+        foreach ($selectedAmo as $column) {
+            $resColumnsAllAmo[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selectedAmo)) {
+                $resColumnsAmo[$column] = trans("column." . $column);
+            }
+        }
+
+        $AmoManagers = Manager::query()
+            ->whereNot('id', 4)
+            ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->withCount(['order_amos as success_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->where('status_amo_id', 142)
+                    ->where('status_amo_id', 143)
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->withCount(['order_amos as no_success_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereNot('status_amo_id', 142)
+                    ->whereNot('status_amo_id', 143)
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])->orderBy('id')->get();
+
 
         return view("manager.index", compact(
             'entityItems',
@@ -170,7 +211,10 @@ class ManagerController extends Controller
             'date',
             'dateY',
             'dateRus',
-            'contacts'
+            'contacts',
+            'AmoManagers',
+            "resColumnsAmo",
+            "resColumnsAllAmo",
         ));
     }
 
@@ -216,6 +260,7 @@ class ManagerController extends Controller
         // Managers
         $builder = Manager::query()
             ->select('id', 'name')
+            ->whereNot('id', 4)
             ->withCount(['contacts as all_contacts' => function (Builder $query) use ($date, $dateY) {
                 $query
                     ->whereHas('shipments', function ($que) use ($date, $dateY) {
@@ -319,6 +364,46 @@ class ManagerController extends Controller
             }
         }
 
+        $selectedAmo = [
+            'name',
+            "all_orders",
+            "percent_all_orders",
+            "success_orders",
+            "percent_success_orders",
+            "no_success_orders",
+            "percent_no_success_orders",
+        ];
+
+        foreach ($selectedAmo as $column) {
+            $resColumnsAllAmo[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selectedAmo)) {
+                $resColumnsAmo[$column] = trans("column." . $column);
+            }
+        }
+
+        $AmoManagers = Manager::query()
+            ->whereNot('id', 4)
+            ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->withCount(['order_amos as success_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->where('status_amo_id', 142)
+                    ->where('status_amo_id', 143)
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->withCount(['order_amos as no_success_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereNot('status_amo_id', 142)
+                    ->whereNot('status_amo_id', 143)
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])->orderBy('id')->get();
+
         return view("manager.index", compact(
             'entityItems',
             "resColumns",
@@ -333,7 +418,10 @@ class ManagerController extends Controller
             'date',
             'dateY',
             'dateRus',
-            'contacts'
+            'contacts',
+            'AmoManagers',
+            "resColumnsAmo",
+            "resColumnsAllAmo",
         ));
     }
 
@@ -379,6 +467,7 @@ class ManagerController extends Controller
         // Managers
         $builder = Manager::query()
             ->select('id', 'name')
+            ->whereNot('id', 4)
             ->withCount(['contacts as all_contacts' => function (Builder $query) use ($date, $dateY) {
                 $query
                     ->whereHas('shipments', function ($que) use ($date, $dateY) {
@@ -481,6 +570,46 @@ class ManagerController extends Controller
             }
         }
 
+        $selectedAmo = [
+            'name',
+            "all_orders",
+            "percent_all_orders",
+            "success_orders",
+            "percent_success_orders",
+            "no_success_orders",
+            "percent_no_success_orders",
+        ];
+
+        foreach ($selectedAmo as $column) {
+            $resColumnsAllAmo[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selectedAmo)) {
+                $resColumnsAmo[$column] = trans("column." . $column);
+            }
+        }
+
+        $AmoManagers = Manager::query()
+            ->whereNot('id', 4)
+            ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->withCount(['order_amos as success_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->where('status_amo_id', 142)
+                    ->where('status_amo_id', 143)
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->withCount(['order_amos as no_success_orders' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereNot('status_amo_id', 142)
+                    ->whereNot('status_amo_id', 143)
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])->orderBy('id')->get();
+
         return view("manager.index", compact(
             'entityItems',
             "resColumns",
@@ -495,7 +624,10 @@ class ManagerController extends Controller
             'date',
             'dateY',
             'dateRus',
-            'contacts'
+            'contacts',
+            'AmoManagers',
+            "resColumnsAmo",
+            "resColumnsAllAmo",
         ));
     }
 }

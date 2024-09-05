@@ -102,11 +102,6 @@ class CounterpartyController extends Controller
             }
         }
 
-
-
-
-
-
         // Sort BY
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
 
