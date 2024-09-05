@@ -33,6 +33,157 @@
                         Остатки
                     </x-nav-link>
 
+                    {{-- Производство --}}
+                    <div class="hidden md:flex md:items-center md:ms-1">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>Производство</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                  clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('techcharts.index')" :active="request()->routeIs('techcharts.*')">
+                                    Техкарты
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('processings.index')" :active="request()->routeIs('processings.*')">
+                                    Техоперции
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+
+                    {{-- Калькулятор --}}
+                    <div class="hidden md:flex md:items-center md:ms-1">
+                        <x-nav-link :href="route('calculator.block') . '#content-1'">
+                            Калькулятор
+                        </x-nav-link>
+                    </div>
+
+
+                    {{-- Справочник --}}
+                    <div class="hidden md:flex md:items-center md:ms-1">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>Справочник</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                  clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('contact.index')">
+                                    Контакты
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('contactAmo.index')">
+                                    Контакты АМО
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('product.index', ['type' => 'products'])">
+                                    Товары
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('product.index', ['type' => 'materials'])">
+                                    Материалы
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('transport.index')">
+                                    Весь транспорт
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('transportType.index')">
+                                    Виды ТС
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('delivery.index')">
+                                    Доставка
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('shiping_price.index')">
+                                    Прайс (доставка)
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('category.index')">
+                                    Категории товаров
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+
+                    {{-- Прочее --}}
+                    <div class="hidden md:flex md:items-center md:ms-6">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>Прочее</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                  clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('manager.index')">
+                                    Сводка - Менеджеры
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('report.counteparty')">
+                                    Сводка - контрагенты
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('summary.index')">
+                                    {{ __('title.summary') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('shipments.debtors')">
+                                    {{ __('title.debtors') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('incomings.index')">
+                                    Приход
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('outgoings.index')">
+                                    Расход
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('supply.index')">
+                                    Приёмки
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('order_positions.index')">
+                                    Позиции заказов
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('shipment_products.index')">
+                                    Позиции отгрузок
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+
                     {{-- Окно оператора --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
@@ -64,236 +215,16 @@
                         </x-dropdown>
                     </div>
 
-                    {{-- Товары --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Товары</div>
 
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
 
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('product.index', ['type' => 'products'])">
-                                    Товары
-                                </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('product.index', ['type' => 'materials'])">
-                                    Материалы
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
 
-                    {{-- Приход - расход --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Приход/Расход</div>
 
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
 
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('incomings.index')">
-                                    Приход
-                                </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('outgoings.index')">
-                                    Расход
-                                </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('supply.index')">
-                                    Приёмки
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
 
-                    {{-- Контакты --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Контакты</div>
 
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('contact.index')">
-                                    Контакты
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('contactAmo.index')">
-                                    Контакты АМО
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
-
-                    {{-- Производство --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Производство</div>
-
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('techcharts.index')" :active="request()->routeIs('techcharts.*')">
-                                    Техкарты
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('processings.index')" :active="request()->routeIs('processings.*')">
-                                    Техоперции
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
-
-                    {{-- Транспорт --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Транспорт</div>
-
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('transport.index')">
-                                    Весь транспорт
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('transportType.index')">
-                                    Виды ТС
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
-
-                    {{-- Калькулятор --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-nav-link :href="route('calculator.block') . '#content-1'">
-                            Калькулятор
-                        </x-nav-link>
-                    </div>
-
-                    {{-- Менеджеры --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-nav-link :href="route('manager.index')">
-                            Менеджеры
-                        </x-nav-link>
-                    </div>
-
-                    {{-- Сводка--}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-nav-link :href="route('report.counteparty')">
-                            Сводка - контрагенты
-                        </x-nav-link>
-                    </div>
-
-                    {{-- Прочее --}}
-                    <div class="hidden md:flex md:items-center md:ms-6">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Прочее</div>
-
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('delivery.index')">
-                                    Доставка
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('shiping_price.index')">
-                                    Прайс (доставка)
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('category.index')">
-                                    Категории товаров
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('order_positions.index')">
-                                    Позиции заказов
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('shipment_products.index')">
-                                    Позиции отгрузок
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('summary.index')">
-                                    {{ __('title.summary') }}
-                                </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('shipments.debtors')">
-                                    {{ __('title.debtors') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
 
                     {{-- Приход - расход --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
