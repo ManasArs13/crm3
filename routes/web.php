@@ -80,7 +80,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'manager' => ManagerController::class
     ]);
 
+    // Amo CRM
+    Route::resources([
+        'amo-order' => AmoOrderController::class,
+    ]);
 
+    // Amo
+    //Route::r('/orders_amo', [AmoOrderController::class, 'index'])->name('amo.order.index');
+    
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
     Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
@@ -92,8 +99,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
         Route::get('/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
         Route::get('/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
-
-
     });
 
 
@@ -132,26 +137,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Приход
     Route::resource('incomings', IncomingController::class)->only([
-        'index', 'show', 'store', 'create', 'update', 'destroy'
+        'index',
+        'show',
+        'store',
+        'create',
+        'update',
+        'destroy'
     ]);
     Route::get('/incoming/products', [IncomingController::class, 'products'])->name('incomings.products');
 
     // Расход
     Route::resource('outgoings', OutgoingController::class)->only([
-        'index', 'show', 'store', 'create', 'update', 'destroy'
+        'index',
+        'show',
+        'store',
+        'create',
+        'update',
+        'destroy'
     ]);
     Route::get('/outgoing/products', [OutgoingController::class, 'products'])->name('outgoings.products');
 
     // Техкарты
     Route::resource('techcharts', TechChartController::class)->only([
-        'index', 'show'
+        'index',
+        'show'
     ]);
     Route::get('/techchart/products', [TechChartController::class, 'products'])->name('techcharts.products');
     Route::get('/techchart/materials', [TechChartController::class, 'materials'])->name('techcharts.materials');
 
     // Техоперации
     Route::resource('processings', ProcessingController::class)->only([
-        'index', 'show'
+        'index',
+        'show'
     ]);
     Route::get('/processing/products', [ProcessingController::class, 'products'])->name('processings.products');
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
