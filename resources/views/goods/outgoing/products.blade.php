@@ -92,12 +92,12 @@
                     <tbody>
                         @foreach ($outgoing_products as $product)
                             <tr class="border-b-2">
-                                <td class="px-6 py-3 text-blue-600 text-right">
+                                <td class="text-blue-600 px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     <a href="{{ route('outgoings.show', ['outgoing' => $product->outgoing_id]) }}">
                                         {{ $product->id }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-3 text-blue-600 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     @if ($product->outgoing)
                                         <a href="{{ route('outgoings.show', ['outgoing' => $product->outgoing_id]) }}">
                                             {{ $product->outgoing_id }}
@@ -106,7 +106,7 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-3 text-blue-600">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     @if ($product->products)
                                         <a href="{{ route('product.show', ['product' => $product->product_id]) }}">
                                             {{ $product->products->name }}
@@ -115,19 +115,19 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-3 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $product->quantity }}
                                 </td>
-                                <td class="px-6 py-3 text-right">
-                                    {{ $product->price }}
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
+                                    {{ number_format((int) $product->price, 0, ',', ' ') }}
                                 </td>
-                                <td class="px-6 py-3 text-right">
-                                    {{ $product->summa }}
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
+                                    {{ number_format((int) $product->summa, 0, ',', ' ') }}
                                 </td>
-                                <td class="px-6 py-3 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $product->created_at }}
                                 </td>
-                                <td class="px-6 py-3 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $product->updated_at }}
                                 </td>
                             </tr>

@@ -284,7 +284,11 @@
                                                 {{ $entityItem->product->name }}
                                             </a>
                                         @else
-                                            {{ $entityItem->$column }}
+                                            @if($column == 'sum')
+                                                {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
+                                            @else
+                                                {{ $entityItem->$column }}
+                                            @endif
                                         @endif
                                     </td>
                                 @endforeach

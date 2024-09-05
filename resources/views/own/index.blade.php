@@ -299,7 +299,11 @@
                                                 </svg>
                                             </a>
                                         @else
-                                            {{ $entityItem->$column }}
+                                            @if($column == 'price' || $column == 'balance' || $column == 'unloading_price' || $column == 'min_price' || $column == 'ton_price')
+                                                {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
+                                            @else
+                                                {{ $entityItem->$column }}
+                                            @endif
                                         @endif
                                     </td>
                                 @endforeach

@@ -125,18 +125,18 @@
                                     <td class="text-nowrap px-3 py-2">
                                     </td>
                                 @endif
-                                <td class="px-6 py-2 text-blue-600 text-right">
+                                <td class="text-blue-600 px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     <a href="{{ route('outgoings.show', ['outgoing' => $outgoing->id]) }}">
                                         {{ $outgoing->id }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-2 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $outgoing->created_at }}
                                 </td>
-                                <td class="px-6 py-2 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $outgoing->updated_at }}
                                 </td>
-                                <td class="text-blue-600 py-2">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     @if ($outgoing->contact)
                                         <a href="{{ route('contact.show', ['contact' => $outgoing->contact->id]) }}">
                                             {{ $outgoing->contact->name }}
@@ -147,6 +147,9 @@
                                 </td>
                                 <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $outgoing->description }}
+                                </td>
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
+                                    {{ number_format((int) $outgoing->summa, 0, ',', ' ') }}
                                 </td>
 
                                 {{-- Delete --}}

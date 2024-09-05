@@ -304,7 +304,11 @@
                                                 </svg>
                                             </a>
                                         @else
-                                            {{ $entityItem->$column }}
+                                            @if($column == 'price')
+                                                {{ number_format($entityItem->$column, 0, ',', ' ') }}
+                                            @else
+                                                {{ $entityItem->$column }}
+                                            @endif
                                         @endif
                                     </td>
                                 @endforeach

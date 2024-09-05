@@ -176,7 +176,7 @@ class ProductController extends Controller
         if ($entityItem->type == Product::MATERIAL) {
             $action = '/admin/product?type=materials';
         }
-        
+
         return redirect()->to($action);
     }
 
@@ -189,7 +189,7 @@ class ProductController extends Controller
         if ($entityItem->type == Product::MATERIAL) {
             $action = '/admin/product?type=materials';
         }
-        
+
         return redirect()->to($action);
     }
 

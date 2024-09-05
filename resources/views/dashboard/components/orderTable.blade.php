@@ -193,7 +193,7 @@
                                     -
                                 @endif
                             @else
-                                {{ $entityItem->$column }}
+                                {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
                             @endif
                         </td>
                     @endforeach
@@ -300,12 +300,12 @@
             @endforeach
 
             <tr class="border-b-2 bg-gray-100">
-                <td>
+                <td class="px-2 py-2 text-right">
                 </td>
                 @foreach ($resColumns as $column => $title)
                     @if ($column == 'sum')
                         <td class="px-2 py-2 text-right">
-                            {{ $totalSum }}
+                            {{ number_format((int) $totalSum, '0', '.', ' ') }}
                         </td>
                     @elseif($column == 'positions_count')
                         <td class="overflow-auto px-2 py-2 text-right">

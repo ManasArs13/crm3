@@ -367,6 +367,8 @@
                                                 class="text-blue-500 hover:text-blue-600">
                                                 {{ $entityItem->$column }}
                                             </a>
+                                        @elseif($column == 'sum')
+                                            {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif

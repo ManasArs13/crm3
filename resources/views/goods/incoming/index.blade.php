@@ -125,18 +125,18 @@
                                     <td class="text-nowrap px-3 py-2">
                                     </td>
                                 @endif
-                                <td class="text-blue-600 break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-2 text-right">
+                                <td class="text-blue-600 px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     <a href="{{ route('incomings.show', ['incoming' => $incoming->id]) }}">
                                         {{ $incoming->id }}
                                     </a>
                                 </td>
-                                <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-2 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $incoming->created_at }}
                                 </td>
-                                <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-2 text-right">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $incoming->updated_at }}
                                 </td>
-                                <td class="text-blue-600 break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-2">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     @if ($incoming->contact)
                                         <a href="{{ route('contact.show', ['contact' => $incoming->contact->id]) }}">
                                             {{ $incoming->contact->name }}
@@ -145,11 +145,11 @@
                                         {{ __('column.no') }}
                                     @endif
                                 </td>
-                                <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-2">
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     {{ $incoming->description }}
                                 </td>
-                                <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-2 text-right">
-                                    {{ $incoming->summa }}
+                                <td class="px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
+                                    {{ number_format((int) $incoming->summa, 0, ',', ' ') }}
                                 </td>
 
                                 {{-- Delete --}}
