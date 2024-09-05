@@ -679,7 +679,11 @@
                                                 -
                                             @endif
                                         @else
-                                            {{ $entityItem->$column }}
+                                            @if($column == 'sum' || $column == 'payed_sum' || $column == 'shipped_sum' || $column == 'reserved_sum' || $column == 'delivery_price')
+                                                {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
+                                            @else
+                                                {{ $entityItem->$column }}
+                                            @endif
                                         @endif
                                     </td>
                                 @endforeach
@@ -797,7 +801,7 @@
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'sum')
                                     <td class="px-2 py-2" style="text-align:right">
-                                        {{ $totalSum }}
+                                        {{ number_format((int) $totalSum, 0, '.', ' ') }}
                                     </td>
                                 @elseif($column == 'positions_count')
                                     <td class="overflow-auto px-2 py-2" style="text-align:right">

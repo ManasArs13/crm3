@@ -314,7 +314,11 @@
                                                 </svg>
                                             </a>
                                         @else
-                                            {{ $entityItem->$column }}
+                                            @if($column == 'sum')
+                                                {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
+                                            @else
+                                                {{ $entityItem->$column }}
+                                            @endif
                                         @endif
                                     </td>
                                 @endforeach
@@ -421,7 +425,7 @@
                                     </td>
                                 @elseif($column == 'sum')
                                     <td class="overflow-auto px-3 py-3 text-right">
-                                        {{ $totalSum }}
+                                        {{ number_format((int) $totalSum, 0, ',', ' ') }}
                                     </td>
                                 @else
                                     <td>

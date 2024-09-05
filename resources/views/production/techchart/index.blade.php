@@ -79,7 +79,7 @@
                     <tbody>
                         @foreach($techcharts as $techchart)
                         <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                 <a href="{{ route('techcharts.show', ['techchart' => $techchart->id]) }}" class="text-blue-500 hover:text-blue-600">
                                     {{ $techchart->id}}
                                 </a>
@@ -87,8 +87,8 @@
                             <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                 {{ $techchart->name}}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
-                                {{ $techchart->cost}}
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                {{ number_format((int) $techchart->cost, 0, ',', ' ') }}
                             </td>
                             <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                 {{ $techchart->description}}

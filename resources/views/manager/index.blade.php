@@ -383,9 +383,9 @@
                     <tbody>
 
                         @php
-                            $TotalOrders = 0;
-                            $TotalSuccessOrders = 0;
-                            $TotalNoSuccessOrders = 0;
+                            $TotalOrders = $amo_orders['all_orders'];
+                            $TotalSuccessOrders = $amo_orders['success_orders'];
+                            $TotalNoSuccessOrders = $amo_orders['no_success_orders'];
                         @endphp
 
                         @foreach ($AmoManagers as $entityItem)
@@ -460,6 +460,70 @@
 
                             </tr>
                         @endforeach
+
+                        {{-- Не выбрано --}}
+                        <tr class="border-b-2">
+
+                            @foreach ($resColumnsAmo as $column => $title)
+                                <td class="break-all max-w-96 overflow-auto px-2 py-3"
+                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
+
+                                    @switch($column)
+                                        @case('name')
+                                            {{ $amo_orders['name'] }}
+                                        @break
+
+                                        @case('all_orders')
+                                            {{ $amo_orders['all_orders'] }}
+                                        @break
+
+                                        @case('success_orders')
+                                            {{ $amo_orders['success_orders'] }}
+                                        @break
+
+                                        @case('no_success_orders')
+                                            {{ $amo_orders['no_success_orders'] }}
+                                        @break
+
+                                        @case('percent_all_orders')
+                                            @if ($amo_orders['all_orders'] && $amo_orders['all_orders'] !== 0 && $TotalOrders && $TotalOrders !== 0)
+                                                {{ round(100 / ($TotalOrders / +$amo_orders['all_orders'])) }} %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @case('percent_success_orders')
+                                            @if (
+                                                $amo_orders['success_orders'] &&
+                                                    $amo_orders['success_orders'] !== 0 &&
+                                                    $amo_orders['all_orders'] &&
+                                                    $amo_orders['all_orders'] !== 0)
+                                                {{ round(100 / ($entityItem->all_orders / +$amo_orders['success_orders'])) }}
+                                                %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+
+                                        @case('percent_no_success_orders')
+                                            @if (
+                                                $amo_orders['no_success_orders'] &&
+                                                    $amo_orders['no_success_orders'] !== 0 &&
+                                                    $amo_orders['all_orders'] &&
+                                                    $amo_orders['all_orders'] !== 0)
+                                                {{ round(100 / ($entityItem->all_orders / +$amo_orders['no_success_orders'])) }}
+                                                %
+                                            @else
+                                                0%
+                                            @endif
+                                        @break
+                                    @endswitch
+
+                                </td>
+                            @endforeach
+
+                        </tr>
 
 
                         {{-- Всего --}}

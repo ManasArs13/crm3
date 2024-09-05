@@ -84,10 +84,10 @@
                     <tbody>
                         @foreach ($tech_chart_products as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                     {{ $product->id }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                     <a class="text-blue-700 hover:text-blue-500"
                                         href="{{ route('techcharts.show', ['techchart' => $product->tech_chart_id]) }}">
                                         {{ $product->tech_chart_id }}
@@ -99,13 +99,13 @@
                                         {{ $product->product_id }}
                                     </a>
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                     {{ $product->quantity }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                     {{ $product->created_at }}
                                 </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
+                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                     {{ $product->updated_at }}
                                 </td>
                             </tr>

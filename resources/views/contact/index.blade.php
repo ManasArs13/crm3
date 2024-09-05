@@ -333,7 +333,11 @@
                                                 </svg>
                                             </a>
                                         @else
-                                            {{ $entityItem->$column }}
+                                            @if($column == 'balance')
+                                                {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
+                                            @else
+                                                {{ $entityItem->$column }}
+                                            @endif
                                         @endif
                                     </td>
                                 @endforeach

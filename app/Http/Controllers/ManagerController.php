@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Models\Manager;
+use App\Models\OrderAmo;
 use App\Models\Product;
 use DateTime;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -103,7 +104,7 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
-        // Columns
+        // Contacts without Manager
         $contacts = Contact::query()
             ->select('id', 'manager_id', 'created_at')
             ->whereNull('manager_id')
@@ -137,6 +138,7 @@ class ManagerController extends Controller
             }])
             ->get();
 
+        // Columns
         $selected = [
             "name",
             "count_contacts",
@@ -197,6 +199,28 @@ class ManagerController extends Controller
                     ->whereYear('created_at', $dateY);
             }])->orderBy('id')->get();
 
+        // Orders Amo without managers
+        $amo_orders['name'] = "Не выбрано";
+
+        $amo_orders["all_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
+        $amo_orders["success_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereIn('status_amo_id', [142, 143])
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
+        $amo_orders["no_success_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereNotIn('status_amo_id', [142, 143])
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
 
         return view("manager.index", compact(
             'entityItems',
@@ -216,6 +240,7 @@ class ManagerController extends Controller
             'AmoManagers',
             "resColumnsAmo",
             "resColumnsAllAmo",
+            'amo_orders',
         ));
     }
 
@@ -308,7 +333,7 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
-        // Columns
+        // Contacts without Manager
         $contacts = Contact::query()
             ->select('id', 'manager_id', 'created_at')
             ->whereNull('manager_id')
@@ -346,6 +371,7 @@ class ManagerController extends Controller
 
             ->get();
 
+        // Columns
         $selected = [
             "name",
             "count_contacts",
@@ -406,6 +432,29 @@ class ManagerController extends Controller
                     ->whereYear('created_at', $dateY);
             }])->orderBy('id')->get();
 
+        // Orders Amo without managers
+        $amo_orders['name'] = "Не выбрано";
+
+        $amo_orders["all_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
+        $amo_orders["success_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereIn('status_amo_id', [142, 143])
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
+        $amo_orders["no_success_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereNotIn('status_amo_id', [142, 143])
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
 
         return view("manager.index", compact(
             'entityItems',
@@ -425,6 +474,7 @@ class ManagerController extends Controller
             'AmoManagers',
             "resColumnsAmo",
             "resColumnsAllAmo",
+            'amo_orders'
         ));
     }
 
@@ -517,6 +567,7 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        // Contacts without Manager
         $contacts = Contact::query()
             ->select('id', 'manager_id', 'created_at')
             ->whereNull('manager_id')
@@ -553,8 +604,8 @@ class ManagerController extends Controller
             }])
             ->get();
 
+            
         // Columns
-
         $selected = [
             "name",
             "count_contacts",
@@ -615,6 +666,29 @@ class ManagerController extends Controller
                     ->whereYear('created_at', $dateY);
             }])->orderBy('id')->get();
 
+        // Orders Amo without managers
+        $amo_orders['name'] = "Не выбрано";
+
+        $amo_orders["all_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
+        $amo_orders["success_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereIn('status_amo_id', [142, 143])
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
+        $amo_orders["no_success_orders"] = OrderAmo::query()
+            ->whereNull('manager_id')
+            ->whereNotIn('status_amo_id', [142, 143])
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', $dateY)
+            ->count();
+
         return view("manager.index", compact(
             'entityItems',
             "resColumns",
@@ -633,6 +707,7 @@ class ManagerController extends Controller
             'AmoManagers',
             "resColumnsAmo",
             "resColumnsAllAmo",
+            'amo_orders'
         ));
     }
 }
