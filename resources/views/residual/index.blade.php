@@ -402,14 +402,14 @@
                         <tbody>
                             @foreach ($products as $product)
                                 @if ($product->residual_norm)
-                                    <tr class="border-b-2 py-2">
-                                        <th class="text-left px-1 md:px-6 py-2 md:py-4">
+                                    <tr class="border-b-2 font-normal py-2">
+                                        <th class="font-normal text-left px-1 md:px-6 py-2 md:py-4">
                                             <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                                 {{ $product->name }}
                                             </a>
                                         </th>
 
-                                        <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4 text-right">
+                                        <th class="font-normal break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4 text-right">
                                             @if ($product->residual_norm !== 0 && $product->residual_norm !== null)
                                                 <div
                                                     @if (round(($product->residual / $product->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($product->residual / $product->residual_norm) * 100) > 30 &&
@@ -421,7 +421,7 @@
                                             @endif
                                         </th>
 
-                                        <th class="text-right px-2">
+                                        <th class="font-normal text-right px-2">
                                             @if ($product->residual_norm)
                                                 {{ $product->residual_norm }}
                                             @else
@@ -430,7 +430,7 @@
                                         </th>
 
                                         @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
-                                            <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
+                                            <th class="font-normal break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                                 @if ($product->materials == 'нет')
                                                     <div
                                                         class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center">
@@ -447,7 +447,7 @@
                                             </th>
                                         @endif
 
-                                        <th class="text-right px-2">
+                                        <th class="text-right px-2 font-normal">
                                             @if ($product->residual)
                                                 {{ $product->residual }}
                                             @else
@@ -455,7 +455,7 @@
                                             @endif
                                         </th>
 
-                                        <th class="text-right px-2">
+                                        <th class="font-normal text-right px-2">
                                             @if ($product->residual && $product->residual_norm)
                                                 @if ($product->residual - $product->residual_norm < 0)
                                                     {{ abs($product->residual - $product->residual_norm) }}
@@ -468,7 +468,7 @@
                                         </th>
 
                                         @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
-                                            <th class="text-right px-2">
+                                            <th class="font-normal text-right px-2">
                                                 @if ($product->making_day)
                                                     {{ $product->making_day }}
                                                 @else
