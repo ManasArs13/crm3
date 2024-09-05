@@ -385,14 +385,14 @@
                         @php
                             $TotalOrders = 0;
                             $TotalSuccessOrders = 0;
-                            $TotalNoSuccrssOrders = 0;
+                            $TotalNoSuccessOrders = 0;
                         @endphp
 
                         @foreach ($AmoManagers as $entityItem)
                             @php
                                 $TotalOrders += $entityItem->all_orders;
                                 $TotalSuccessOrders += $entityItem->success_orders;
-                                $TotalNoSuccrssOrders += $entityItem->no_success_orders;
+                                $TotalNoSuccessOrders += $entityItem->no_success_orders;
                             @endphp
 
                             <tr class="border-b-2">
