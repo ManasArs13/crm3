@@ -427,7 +427,7 @@
                                                         $entityItem->success_orders !== 0 &&
                                                         $TotalSuccessOrders &&
                                                         $TotalSuccessOrders !== 0)
-                                                    {{ round(100 / ($TotalSumShipments / +$entityItem->success_orders)) }}
+                                                    {{ round(100 / ($TotalSuccessOrders / +$entityItem->success_orders)) }}
                                                     %
                                                 @else
                                                     0%
@@ -444,7 +444,7 @@
                                                         $entityItem->no_success_orders !== 0 &&
                                                         $TotalNoSuccessOrders &&
                                                         $TotalNoSuccessOrders !== 0)
-                                                    {{ round(100 / ($TotalSumShipments / +$entityItem->no_success_orders)) }}
+                                                    {{ round(100 / ($TotalNoSuccessOrders / +$entityItem->no_success_orders)) }}
                                                     %
                                                 @else
                                                     0%
