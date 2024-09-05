@@ -6,13 +6,13 @@ use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Goods\IncomingController;
 use App\Http\Controllers\Goods\OutgoingController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Amo\AmoOrderController;
 use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
@@ -61,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
     Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
 
+    // Moy Sklad
     Route::resources([
         'order' => OrderController::class,
         'shipment' => ShipmentController::class,
@@ -79,8 +80,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'manager' => ManagerController::class
     ]);
 
-    Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
+    // Amo CRM
+    Route::resources([
+        'amo-order' => AmoOrderController::class,
+    ]);
 
+    // Amo
+    //Route::r('/orders_amo', [AmoOrderController::class, 'index'])->name('amo.order.index');
+    
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
     Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
@@ -92,11 +99,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
         Route::get('/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
         Route::get('/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
-
-
     });
 
-    
+
     //Доп
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
     //Route::get('/supplies/products', [SupplyController::class, 'products'])->name('supplies.products');
@@ -113,7 +118,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
     Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
-     
+
 
     // Остатки
     Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
@@ -128,30 +133,42 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::resource('supplies', SupplyController::class)->only([
     //     'index', 'show'
     // ]);
-    
+
 
     // Приход
     Route::resource('incomings', IncomingController::class)->only([
-        'index', 'show', 'store', 'create', 'update', 'destroy'
+        'index',
+        'show',
+        'store',
+        'create',
+        'update',
+        'destroy'
     ]);
     Route::get('/incoming/products', [IncomingController::class, 'products'])->name('incomings.products');
 
     // Расход
     Route::resource('outgoings', OutgoingController::class)->only([
-        'index', 'show', 'store', 'create', 'update', 'destroy'
+        'index',
+        'show',
+        'store',
+        'create',
+        'update',
+        'destroy'
     ]);
     Route::get('/outgoing/products', [OutgoingController::class, 'products'])->name('outgoings.products');
 
     // Техкарты
     Route::resource('techcharts', TechChartController::class)->only([
-        'index', 'show'
+        'index',
+        'show'
     ]);
     Route::get('/techchart/products', [TechChartController::class, 'products'])->name('techcharts.products');
     Route::get('/techchart/materials', [TechChartController::class, 'materials'])->name('techcharts.materials');
 
     // Техоперации
     Route::resource('processings', ProcessingController::class)->only([
-        'index', 'show'
+        'index',
+        'show'
     ]);
     Route::get('/processing/products', [ProcessingController::class, 'products'])->name('processings.products');
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');

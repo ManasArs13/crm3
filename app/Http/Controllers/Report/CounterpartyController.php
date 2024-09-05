@@ -46,8 +46,9 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id')
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
             ->with([
+                'manager:id,name',
                 'orders' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'sum')
@@ -69,8 +70,9 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })->get();
 
-        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id')
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
             ->with([
+                'manager:id,name',
                 'orders' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'sum')
@@ -100,10 +102,22 @@ class CounterpartyController extends Controller
             }
         }
 
+
+
+
+
+
         // Sort BY
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
 
             switch ($request->column) {
+
+                case 'manager_name':
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact) {
+                        return $contact->manager->id ?? '';
+                    });
+                    break;
+
                 case "count_orders":
                     $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
                         return count($contact['orders']);
@@ -143,6 +157,14 @@ class CounterpartyController extends Controller
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
 
             switch ($request->column) {
+
+                case 'manager_name':
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact) {
+                        return $contact->manager->id ?? '';
+                    });
+                    break;
+
+
                 case "count_orders":
                     $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
                         return count($contact['orders']);
@@ -187,6 +209,7 @@ class CounterpartyController extends Controller
 
         $selected = [
             "name",
+            "manager_name",
             "count_orders",
             'sum_orders',
             "count_shipments",
@@ -248,8 +271,9 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id')
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
             ->with([
+                'manager:id,name',
                 'orders' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'sum')
@@ -276,8 +300,9 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })->get();
 
-        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id')
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
             ->with([
+                'manager:id,name',
                 'orders' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'sum')
@@ -314,6 +339,13 @@ class CounterpartyController extends Controller
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
 
             switch ($request->column) {
+
+                case 'manager_name':
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact) {
+                        return $contact->manager->id;
+                    });
+                    break;
+
                 case "count_orders":
                     $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
                         return count($contact['orders']);
@@ -353,6 +385,13 @@ class CounterpartyController extends Controller
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
 
             switch ($request->column) {
+
+                case 'manager_name':
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact) {
+                        return $contact->manager->id;
+                    });
+                    break;
+
                 case "count_orders":
                     $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
                         return count($contact['orders']);
@@ -397,6 +436,7 @@ class CounterpartyController extends Controller
 
         $selected = [
             "name",
+            "manager_name",
             "count_orders",
             'sum_orders',
             "count_shipments",
@@ -458,8 +498,9 @@ class CounterpartyController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Managers
-        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id')
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
             ->with([
+                'manager:id,name',
                 'orders' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'sum')
@@ -486,8 +527,9 @@ class CounterpartyController extends Controller
                     ->whereYear('created_at', date('Y'));
             })->get();
 
-        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id')
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
             ->with([
+                'manager:id,name',
                 'orders' => function (Builder $query) use ($date) {
                     $query
                         ->select('id', 'name', 'contact_id', 'sum')
@@ -525,6 +567,13 @@ class CounterpartyController extends Controller
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
 
             switch ($request->column) {
+
+                case 'manager_name':
+                    $entityItems = $contactsWithShipments->sortBy(function ($contact) {
+                        return $contact->manager->id;
+                    });
+                    break;
+
                 case "count_orders":
                     $entityItems = $contactsWithShipments->sortBy(function ($contact, $key) {
                         return count($contact['orders']);
@@ -564,6 +613,13 @@ class CounterpartyController extends Controller
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
 
             switch ($request->column) {
+
+                case 'manager_name':
+                    $entityItems = $contactsWithShipments->sortByDesc(function ($contact) {
+                        return $contact->manager->id;
+                    });
+                    break;
+
                 case "count_orders":
                     $entityItems = $contactsWithShipments->sortByDesc(function ($contact, $key) {
                         return count($contact['orders']);
@@ -608,6 +664,7 @@ class CounterpartyController extends Controller
 
         $selected = [
             "name",
+            "manager_name",
             "count_orders",
             'sum_orders',
             "count_shipments",

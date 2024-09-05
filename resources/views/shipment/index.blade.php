@@ -7,7 +7,7 @@
     @endif
 
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('succes'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -248,7 +248,7 @@
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                 <table class="text-left text-md text-nowrap">
                     <thead>
-                        <tr class="bg-neutral-200 font-semibold">
+                        <tr class="bg-neutral-200 font-semibold py-2">
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder')
                                     <th scope="col" class="px-6 py-4">{{ $column }}</th>
@@ -297,9 +297,9 @@
                             @php
                                 $totalSum += $entityItem->suma;
                             @endphp
-                            <tr class="border-b-2">
+                            <tr class="border-b-2 py-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-6 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-6 py-2"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'id' ||
@@ -405,7 +405,7 @@
                                 @endforeach
 
                                 {{-- Delete --}}
-                                <td class="text-nowrap px-6 py-4">
+                                <td class="text-nowrap px-6 py-2">
 
                                     <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
                                         class="inline">
@@ -427,10 +427,10 @@
 
                             </tr>
                         @endforeach
-                        <tr class="border-b-2 bg-gray-100">
+                        <tr class="border-b-2 bg-gray-100 py-2">
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'suma')
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-2">
                                         {{ $totalSum }}
                                     </td>
                                 @elseif($column == 'products_count')

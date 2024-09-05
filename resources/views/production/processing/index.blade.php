@@ -34,7 +34,7 @@
         </script>
     </x-slot>
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('success'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -220,12 +220,12 @@
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-3 py-4"></th>
+                            <th scope="col" class="px-3 py-3"></th>
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder' || $key == 'positions_count')
-                                    <th scope="col" class="px-3 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-3 py-3">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-3 py-4">
+                                    <th scope="col" class="px-3 py-3">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -233,7 +233,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-3 py-4">
+                                    <th scope="col" class="px-3 py-3">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -265,17 +265,17 @@
 
                             <tr class="border-b-2">
                                 @if (count($entityItem->products) > 0)
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-3">
                                         <button class="buttonForOpen text-normal font-bold"
                                             data-id="{!! $entityItem->id !!}">+</button>
                                     </td>
                                 @else
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-3">
                                     </td>
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[20rem] overflow-auto px-3 py-4"
+                                    <td class="break-all max-w-[20rem] overflow-auto px-3 py-3"
                                     @if ((is_int($entityItem->$column) ||
                                             $column == 'quantity' ||
                                             $column == 'sum' ||
@@ -325,35 +325,35 @@
                             @foreach ($entityItem->products as $product)
                                 <tr style="display: none"
                                     class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}">
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-3">
                                     </td>
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-3">
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3 text-right">
                                         <a href="{{ route('processings.show', $entityItem->id) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->id }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="3">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3" colspan="3">
                                         <a href="{{ route('product.show', ['product' => $product->id]) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->name }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3 text-right">
                                         {{ $product->pivot->quantity }}
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3 text-right">
                                         {{ $product->pivot->sum }}
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="4">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3" colspan="4">
                                         {{ $entityItem->ms_id }}
                                     </td>
 
@@ -363,35 +363,35 @@
                             @foreach ($entityItem->materials as $product)
                                 <tr style="display: none"
                                     class="border-b-2 bg-red-100 position_column_{!! $entityItem->id !!}">
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-3">
                                     </td>
-                                    <td class="text-nowrap px-3 py-4">
+                                    <td class="text-nowrap px-3 py-3">
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3 text-right">
                                         <a href="{{ route('processings.show', $entityItem->id) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->id }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="3">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3" colspan="3">
                                         <a href="{{ route('product.show', ['product' => $product->id]) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $product->name }}
                                         </a>
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3 text-right">
                                         {{ $product->pivot->quantity }}
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4 text-right">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3 text-right">
                                         {{ $product->pivot->sum }}
                                     </td>
 
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-4" colspan="4">
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-3 py-3" colspan="4">
                                         {{ $entityItem->ms_id }}
                                     </td>
 
@@ -404,23 +404,23 @@
                             </td>
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'quantity')
-                                    <td class="px-3 py-4 text-right">
+                                    <td class="px-3 py-3 text-right">
                                         {{ $totalQuantity }}
                                     </td>
                                 @elseif($column == 'hours')
-                                    <td class="overflow-auto px-3 py-4 text-right">
+                                    <td class="overflow-auto px-3 py-3 text-right">
                                         {{ $totalHours }}
                                     </td>
                                 @elseif($column == 'cycles')
-                                    <td class="overflow-auto px-3 py-4 text-right">
+                                    <td class="overflow-auto px-3 py-3 text-right">
                                         {{ $totalCycles }}
                                     </td>
                                 @elseif($column == 'defective')
-                                    <td class="overflow-auto px-3 py-4 text-right">
+                                    <td class="overflow-auto px-3 py-3 text-right">
                                         {{ $totalDefective }}
                                     </td>
                                 @elseif($column == 'sum')
-                                    <td class="overflow-auto px-3 py-4 text-right">
+                                    <td class="overflow-auto px-3 py-3 text-right">
                                         {{ $totalSum }}
                                     </td>
                                 @else

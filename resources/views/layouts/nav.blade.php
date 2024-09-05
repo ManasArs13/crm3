@@ -27,9 +27,7 @@
                     <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*') && !request()->routeIs('shipment.index2')">
                         {{ __('title.shipments') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('shipment.index2')" :active="request()->routeIs('shipment.index2')">
-                        {{ __('title.shipments2') }}
-                    </x-nav-link>
+
 
                     <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
                         Остатки
@@ -297,6 +295,41 @@
                         </x-dropdown>
                     </div>
 
+                    {{-- Приход - расход --}}
+                    <div class="hidden md:flex md:items-center md:ms-1">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>AMO</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('amo-order.index')">
+                                    Заказы
+                                </x-dropdown-link>
+
+                                {{-- <x-dropdown-link :href="route('outgoings.index')">
+                                    Расход
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('supply.index')">
+                                    Приёмки
+                                </x-dropdown-link> --}}
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
                 </div>
             </div>
 
@@ -378,9 +411,9 @@
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('shipment.index') }}">{{ __('title.shipments') }}</a>
             </div>
-            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                <a href="{{ route('shipment.index2') }}">{{ __('title.shipments2') }}</a>
-            </div>
+{{--            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">--}}
+{{--                <a href="{{ route('shipment.index2') }}">{{ __('title.shipments2') }}</a>--}}
+{{--            </div>--}}
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('residual.index') }}">Остатки</a>
             </div>

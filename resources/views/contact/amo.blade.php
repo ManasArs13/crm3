@@ -7,7 +7,7 @@
     @endif
 
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('succes'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -191,9 +191,9 @@
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder')
-                                    <th scope="col" class="px-6 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-6 py-2">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-6 py-4"
+                                    <th scope="col" class="px-6 py-2"
                                         @if (
                                             ($column == '№' ||
                                                 $column == 'Телефон' ||
@@ -213,7 +213,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-6 py-4"
+                                    <th scope="col" class="px-6 py-2"
                                         @if (
                                             ($column == '№' ||
                                                 $column == 'Телефон' ||
@@ -241,7 +241,7 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-4"
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'phone' ||
@@ -336,7 +336,7 @@
                                 @endforeach
 
                                 {{-- Delete --}}
-                                <td class="text-nowrap px-6 py-4">
+                                <td class="text-nowrap px-6 py-2">
 
                                     <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
                                         class="inline">

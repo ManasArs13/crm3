@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex flex-col lg:flex-row flex-nowrap gap-3 w-11/12 mx-auto py-10">
+    <div class="flex flex-col lg:flex-row flex-nowrap gap-3 w-11/12 mx-auto py-10 max-w-10xl">
         <div class="flex flex-col basis-3/4 bg-white rounded-md shadow overflow-x-auto">
             <div class="flex flex-row w-full p-3 justify-between">
                 <div class="flex gap-2">
@@ -60,7 +60,7 @@
                         @foreach ($materials as $material)
                             <tr class="border-b-2">
                                 <td class="m-2" colspan="4">
-                                    {{ $material->name }}
+                                    {{ $material->short_name }}
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
                                     {{ $material->residual }}
@@ -94,7 +94,7 @@
                             @if ($product->residual_norm)
                                 <tr class="border-b-2">
                                     <td class="m-2 justify-content-beetwen">
-                                        {{ $product->name }}
+                                        {{ $product->short_name }}
                                     </td>
                                     <td>
                                         @if ($product->residual_norm !== 0 && $product->residual_norm !== null && $product->type !== 'не выбрано')

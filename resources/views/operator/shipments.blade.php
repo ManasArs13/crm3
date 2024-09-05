@@ -7,7 +7,7 @@
     @endif
 
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('succes'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -189,9 +189,9 @@
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
                                 @if ($key === 'remainder')
-                                    <th scope="col" class="px-6 py-4">{{ $column }}</th>
+                                    <th scope="col" class="px-6 py-2">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-2">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
@@ -199,7 +199,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-2">
                                         <a class="text-black"
                                             href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                         @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
@@ -221,7 +221,7 @@
                             @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-6 py-4"
+                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-6 py-2"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'payed_sum' ||
@@ -323,11 +323,11 @@
                         <tr class="border-b-2 bg-gray-100">
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'suma')
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-2">
                                         {{ $totalSum }}
                                     </td>
                                 @elseif($column == 'products_count')
-                                    <td class="overflow-auto px-6 py-4">
+                                    <td class="overflow-auto px-6 py-2">
                                         {{ $totalCount }}
                                     </td>
                                 @else

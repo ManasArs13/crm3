@@ -3,7 +3,7 @@ name: Deploy crm2
 on:
   push:
     branches:
-      - main
+      - PRODUCTION
 
 
 jobs:

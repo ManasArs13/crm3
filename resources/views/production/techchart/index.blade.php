@@ -8,7 +8,7 @@
     @endif
 
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
         @endif
@@ -54,7 +54,7 @@
                             @endif
                         </div>
                     </div>
-                </div>              
+                </div>
             </div>
 
             {{-- body --}}
@@ -62,16 +62,16 @@
                 <table class="text-left text-md text-nowrap">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-2">
                                 {{__("column.id")}}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-2">
                                 {{__("column.name")}}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-2">
                                 {{__("column.price")}}
                             </th>
-                            <th scope="col" class="px-6 py-4">
+                            <th scope="col" class="px-6 py-2">
                                 {{__("column.description")}}
                             </th>
                         </tr>
@@ -79,18 +79,18 @@
                     <tbody>
                         @foreach($techcharts as $techchart)
                         <tr class="border-b-2">
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
                                 <a href="{{ route('techcharts.show', ['techchart' => $techchart->id]) }}" class="text-blue-500 hover:text-blue-600">
                                     {{ $techchart->id}}
                                 </a>
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                 {{ $techchart->name}}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
                                 {{ $techchart->cost}}
                             </td>
-                            <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                 {{ $techchart->description}}
                             </td>
                         </tr>

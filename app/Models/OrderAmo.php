@@ -10,9 +10,58 @@ class OrderAmo extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'id'
+    protected $AllColumns = [
+        "id",
+        "name",
+        'status_amo_id',
+        'contact_amo_id',
+        'price',
+        'comment',
+        'is_exist',
+        'order_link',
+        'order_id',
+        'created_at',
+        'updated_at',
+        'manager_id',
+        'is_success'
     ];
+
+    protected $defaultColumn = [
+        "id",
+        "name",
+        'status_amo_id',
+        'contact_amo_id',
+        'price',
+        'comment',
+        'is_exist',
+        'order_link',
+        'order_id',
+        'created_at',
+        'updated_at',
+        'manager_id',
+        'is_success'
+    ];
+
+    protected $fillable = [
+        '*'
+    ];
+
+    public function getColumns()
+    {
+        return $this->AllColumns;
+    }
+
+    public function getDefaultColumn()
+    {
+        return $this->defaultColumn;
+    }
+
+    // Relationship
+
+    public function manager()
+    {
+        return $this->hasOne(Manager::class, 'id', 'manager_id');
+    }
 
     public function contact_amo()
     {
@@ -26,7 +75,6 @@ class OrderAmo extends Model
 
     public function orderMs(): HasOneThrough
     {
-
         return $this->hasOneThrough(
             Order::class,
             OrderAmoOrder::class,

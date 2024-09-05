@@ -149,7 +149,7 @@ class OrderController extends Controller
         }
 
         $queryMaterial = 'index';
-        $queryPlan = 'all';
+        $queryPlan = 'today';
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {

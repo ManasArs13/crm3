@@ -7,7 +7,7 @@
     @endif
 
 
-    <div class="w-11/12 mx-auto py-8">
+    <div class="w-11/12 mx-auto py-8 max-w-10xl">
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }}</h3>
         @endif
@@ -131,26 +131,26 @@
                 <div class="flex flex-col w-full p-1 bg-white overflow-x-auto">
                     <table class="text-left text-md text-nowrap">
                         <thead>
-                            <tr class="bg-neutral-200 font-semibold">
-                                <th scope="col" class="px-6 py-4">
+                            <tr class="bg-neutral-200 font-semibold py-2">
+                                <th scope="col" class="px-6 py-2">
                                     {{ __('column.id') }}
                                 </th>
-                                <th scope="col" class="px-6 py-4 text-left">
+                                <th scope="col" class="px-6 py-2 text-left">
                                     {{ __('column.name') }}
                                 </th>
-                                <th scope="col" class="px-6 py-4 text-right">
+                                <th scope="col" class="px-6 py-2 text-right">
                                     {{ __('column.date_plan') }}
                                 </th>
-                                <th scope="col" class="px-6 py-4 text-right">
+                                <th scope="col" class="px-6 py-2 text-right">
                                     {{ __('column.created_at') }}
                                 </th>
-                                <th scope="col" class="px-6 py-4 text-right">
+                                <th scope="col" class="px-6 py-2 text-right">
                                     {{ __('column.updated_at') }}
                                 </th>
-                                <th scope="col" class="px-6 py-4 text-right">
+                                <th scope="col" class="px-6 py-2 text-right">
                                     {{ __('column.price') }}
                                 </th>
-                                <th scope="col" class="px-6 py-4 text-left">
+                                <th scope="col" class="px-6 py-2 text-left">
                                     {{ __('column.description') }}
                                 </th>
                             </tr>
@@ -158,28 +158,28 @@
                         <tbody>
                             @foreach ($products as $techchart)
                                 <tr class="border-b-2">
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                         <a href="{{ route('techcharts.show', ['techchart' => $techchart->id]) }}"
                                             class="text-blue-500 hover:text-blue-600">
                                             {{ $techchart->id }}
                                         </a>
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                         {{ $techchart->name }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
                                         {{ $techchart->moment }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
                                         {{ $techchart->created_at }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
                                         {{ $techchart->updated_at }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-right">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-right">
                                         {{ $techchart->cost }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-4 text-left">
+                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2 text-left">
                                         {{ $techchart->description }}
                                     </td>
                                 </tr>
@@ -194,7 +194,7 @@
                 <div class="flex flex-col w-full p-1 bg-white overflow-x-auto">
                     <table class="text-xs md:text-base text-nowrap">
                         <thead>
-                            <tr class="bg-neutral-200 font-semibold">
+                            <tr class="bg-neutral-200 font-semibold py-2">
 
                                 @if (isset($orderBy) && $orderBy == 'desc')
                                     <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-left">
@@ -249,14 +249,14 @@
                         <tbody>
                             @foreach ($products as $product)
                                 @if ($product->residual_norm)
-                                    <tr class="border-b-2">
+                                    <tr class="border-b-2 py-2">
                                         <th class="text-left px-1 md:px-6 py-2 md:py-4">
                                             <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                                 {{ $product->name }}
                                             </a>
                                         </th>
 
-                                        <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4 text-right">
+                                        <th class="break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4 text-right py-2">
                                             @if ($product->residual_norm !== 0 && $product->residual_norm !== null)
                                                 <div
                                                     @if (round(($product->residual / $product->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($product->residual / $product->residual_norm) * 100) > 30 &&
@@ -268,7 +268,7 @@
                                             @endif
                                         </th>
 
-                                        <th class="text-right px-2">
+                                        <th class="text-right px-2 py-2">
                                             @if ($product->residual)
                                                 {{ $product->residual }}
                                             @else
@@ -276,7 +276,7 @@
                                             @endif
                                         </th>
 
-                                        <th class="text-right px-2">
+                                        <th class="text-right px-2 py-2">
                                             @if ($product->need_from_tc)
                                                 {{ $product->need_from_tc }}
                                             @else
@@ -284,7 +284,7 @@
                                             @endif
                                         </th>
 
-                                        <th class="text-right px-2">
+                                        <th class="text-right px-2 py-2">
                                             @if ($product->residual && $product->need_from_tc)
                                                 @if ($product->residual - $product->need_from_tc < 0)
                                                     {{ abs($product->residual - $product->need_from_tc) }}
@@ -306,7 +306,7 @@
                 <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                     <table class="text-xs md:text-base text-nowrap">
                         <thead>
-                            <tr class="bg-neutral-200 font-semibold">
+                            <tr class="bg-neutral-200 font-semibold py-2">
 
                                 @if (isset($orderBy) && $orderBy == 'desc')
                                     <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-left">
@@ -402,7 +402,7 @@
                         <tbody>
                             @foreach ($products as $product)
                                 @if ($product->residual_norm)
-                                    <tr class="border-b-2">
+                                    <tr class="border-b-2 py-2">
                                         <th class="text-left px-1 md:px-6 py-2 md:py-4">
                                             <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                                 {{ $product->name }}
