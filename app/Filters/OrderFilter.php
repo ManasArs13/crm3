@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class OrderFilter
@@ -26,6 +27,11 @@ class OrderFilter
 
         if ($this->request->status) {
             $this->builder->whereIn('status_id', $this->request->status);
+        }
+
+        if(!isset($this->filters()['date_plan']['min']) && !isset($this->filters()['date_plan']['max'])){
+            $this->builder->where('date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+            ->where('date_plan', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
         }
 
         return $this->builder;
@@ -62,6 +68,8 @@ class OrderFilter
         if ($value['max']) {
             $this->builder->where('date_plan', '<=', $value['max'] . ' 23:59:59');
         }
+
+
     }
 
     public function material($value)

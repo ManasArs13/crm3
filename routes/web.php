@@ -80,15 +80,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'manager' => ManagerController::class
     ]);
 
-    // Amo CRM
-    Route::resources([
-        'amo-order' => AmoOrderController::class,
-    ]);
-
-    // Amo
-    //Route::r('/orders_amo', [AmoOrderController::class, 'index'])->name('amo.order.index');
-
-    Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
 
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
