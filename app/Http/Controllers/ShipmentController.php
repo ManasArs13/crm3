@@ -47,30 +47,30 @@ class ShipmentController extends Controller
 
         // Columns
         $all_columns = [
-            "id",
             "name",
+            "ms_id",
+            "id",
             "created_at",
-            "contact_id",
-            "sostav",
+            "counterparty_link",
             "suma",
             "status",
             "products_count",
-            "delivery_id",
-            "order_id",
-            "counterparty_link",
-            "service_link",
-            "description",
-            "paid_sum",
             "shipment_address",
+            "description",
             "delivery_price",
             "delivery_price_norm",
             "delivery_fee",
-            "transport_id",
+            "delivery_id",
             "transport_type_id",
+            "transport_id",
+            "contact_id",
+            "sostav",
+            "order_id",
+            "service_link",
+            "paid_sum",
             "updated_at",
             "weight",
             'ms_link',
-            "ms_id"
         ];
 
         if (isset($request->columns)) {
@@ -78,21 +78,21 @@ class ShipmentController extends Controller
         } else {
             $selected = [
                 "name",
+                "ms_id",
+                "id",
                 "created_at",
                 "counterparty_link",
-                "contact_id",
-                "sostav",
                 "suma",
                 "status",
                 "products_count",
+                "shipment_address",
                 "description",
-                "delivery_id",
                 "delivery_price",
+                "delivery_price_norm",
                 "delivery_fee",
                 "delivery_id",
                 "transport_type_id",
                 "transport_id",
-                'ms_link',
             ];
         }
 
