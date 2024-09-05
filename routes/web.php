@@ -6,13 +6,13 @@ use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Goods\IncomingController;
 use App\Http\Controllers\Goods\OutgoingController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Amo\AmoOrderController;
 use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
@@ -61,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
     Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
 
+    // Moy Sklad
     Route::resources([
         'order' => OrderController::class,
         'shipment' => ShipmentController::class,
@@ -78,6 +79,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'supply'    => SupplyController::class,
         'manager' => ManagerController::class
     ]);
+
+    // Amo CRM
+    Route::resources([
+        'amo-order' => AmoOrderController::class,
+    ]);
+
+    // Amo
+    //Route::r('/orders_amo', [AmoOrderController::class, 'index'])->name('amo.order.index');
 
     Route::get('/shipments/index2', [ShipmentController::class, 'index2'])->name('shipment.index2');
 
