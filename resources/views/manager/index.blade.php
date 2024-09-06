@@ -24,6 +24,7 @@
             <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
         @endif
 
+        {{-- Managers MS --}}
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
@@ -365,6 +366,7 @@
 
         </div>
 
+        {{-- Managers Amo --}}
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04) mt-10">
 
@@ -577,6 +579,152 @@
                             @endforeach
 
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        {{-- Counterpaty --}}
+        <div
+            class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04) mt-10">
+
+            {{-- body card --}}
+            <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
+                <table class="text-left text-md text-nowrap">
+                    <thead>
+                        <tr class="bg-neutral-200 font-semibold">
+
+                            <td class="break-all w-16 overflow-auto px-2 py-3">
+                                №
+                            </td>
+
+
+
+                            @foreach ($resColumnsContacts as $key => $column)
+                                <th scope="col" class="px-2 py-3"
+                                    @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
+                                    {{ $column }}
+                                </th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @php
+                            $totalOrdersCount = 0;
+                            $totalOrdersSum = 0;
+                            $totalShipmentsCount = 0;
+                            $totalShipmentsSum = 0;
+                        @endphp
+
+
+                        @foreach ($contactsWithCount as $entityItem)
+                            @php
+                                $totalOrdersCount += $entityItem->orders->count();
+                                $totalOrdersSum += $entityItem->orders->sum('sum');
+                                $totalShipmentsCount += $entityItem->shipments->count();
+                                $totalShipmentsSum += $entityItem->shipments->sum('suma');
+                            @endphp
+                        @endforeach
+
+                        @foreach ($contactsWithCount as $entityItem)
+                            <tr class="border-b-2">
+
+                                <td class="break-all overflow-auto px-2 py-3 text-sm">
+                                    {{ $loop->iteration }}
+                                </td>
+
+
+
+                                @foreach ($resColumnsContacts as $column => $title)
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-3"
+                                        @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
+                                        @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                                        @switch($column)
+                                            @case('manager_name')
+                                                {{ $entityItem->manager->name ?? '-' }}
+                                            @break
+
+                                            @case('name')
+                                                <a href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->ms_id }}"
+                                                    target="_blank" class="text-blue-700 hover:text-blue-500">
+                                                    {{ $entityItem->$column }}
+                                                </a>
+                                            @break
+
+                                            @case('count_orders')
+                                                {{ $entityItem->orders->count() }}
+                                            @break
+
+                                            @case('sum_orders')
+                                                {{ number_format($entityItem->orders->sum('sum') ? $entityItem->orders->sum('sum') : '0', 0, '.', ' ') }}
+                                            @break
+
+                                            @case('count_shipments')
+                                                {{ $entityItem->shipments->count() }}
+                                            @break
+
+                                            @case('sum_shipments')
+                                                {{ number_format($entityItem->shipments->sum('suma') ? $entityItem->shipments->sum('suma') : '0', 0, '.', ' ') }}
+                                            @break
+
+                                            @default
+                                                {{ $entityItem->$column }}
+                                        @endswitch
+
+                                    </td>
+                                @endforeach
+
+                            </tr>
+                        @endforeach
+
+                        <tr class="border-b-2 bg-gray-100">
+
+                            <td class="break-all overflow-auto px-2 py-3">
+                                ВСЕГО:
+                            </td>
+
+
+
+
+                            @foreach ($resColumnsContacts as $column => $title)
+                                <td class="break-all max-w-96 overflow-auto px-2 py-3"
+                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
+
+                                    @switch($column)
+                                        @case('name')
+                                        @break
+
+                                        @case('manager_name')
+                                        @break
+
+                                        @case('count_orders')
+                                            {{ $totalOrdersCount }}
+                                        @break
+
+                                        @case('sum_orders')
+                                            {{ number_format($totalOrdersSum, 0, '.', ' ') }}
+                                        @break
+
+                                        @case('count_shipments')
+                                            {{ $totalShipmentsCount }}
+                                        @break
+
+                                        @case('sum_shipments')
+                                            {{ number_format($totalShipmentsSum, 0, '.', ' ') }}
+                                        @break
+
+                                        @default
+                                            {{ $entityItem->$column }}
+                                    @endswitch
+
+                                </td>
+                            @endforeach
+
+                        </tr>
+
                     </tbody>
                 </table>
             </div>

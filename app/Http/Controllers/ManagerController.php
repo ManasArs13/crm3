@@ -224,6 +224,83 @@ class ManagerController extends Controller
             ->whereYear('created_at', $dateY)
             ->count();
 
+        // Contacts
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
+            ->with([
+                'manager:id,name',
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->whereHas('orders', function ($query) use ($date) {
+                $query->select('id', 'contact_id', 'status_id', 'created_at')
+                    ->whereIn('status_id', [5, 6])
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })->get();
+
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
+            ->with([
+                'manager:id,name',
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->WhereHas('shipments', function ($query) use ($date) {
+                $query->select('id', 'contact_id', 'created_at')
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })
+            ->get();
+
+
+
+        foreach ($contactsWithOrders as $contact) {
+            if (!$contactsWithShipments->firstWhere('id', $contact->id)) {
+                $contactsWithShipments->push($contact);
+            }
+        }
+
+        $contactsWithCount = $contactsWithShipments->sortBy('name');
+
+        // Columns contacts
+        $selectedContacts = [
+            "name",
+            "manager_name",
+            "count_orders",
+            'sum_orders',
+            "count_shipments",
+            "sum_shipments",
+        ];
+
+        foreach ($selectedContacts as $column) {
+            $resColumnsAllContacts[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selectedContacts)) {
+                $resColumnsContacts[$column] = trans("column." . $column);
+            }
+        }
+
         return view("manager.index", compact(
             'entityItems',
             "resColumns",
@@ -243,6 +320,10 @@ class ManagerController extends Controller
             "resColumnsAmo",
             "resColumnsAllAmo",
             'amo_orders',
+            'contactsWithCount',
+            'selectedContacts',
+            "resColumnsContacts",
+            "resColumnsAllContacts",
         ));
     }
 
@@ -459,6 +540,92 @@ class ManagerController extends Controller
             ->whereYear('created_at', $dateY)
             ->count();
 
+        // Contacts
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
+            ->with([
+                'manager:id,name',
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->whereHas('orders', function ($query) use ($date) {
+                $query
+                    ->whereHas('positions', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK);
+                        });
+                    })
+                    ->whereIn('status_id', [5, 6])
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })->get();
+
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
+            ->with([
+                'manager:id,name',
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->WhereHas('shipments', function ($query) use ($date) {
+                $query
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::BLOCK);
+                        });
+                    })
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })->get();
+
+
+
+        foreach ($contactsWithOrders as $contact) {
+            if (!$contactsWithShipments->firstWhere('id', $contact->id)) {
+                $contactsWithShipments->push($contact);
+            }
+        }
+
+        $contactsWithCount = $contactsWithShipments->sortBy('name');
+
+        // Columns contacts
+        $selectedContacts = [
+            "name",
+            "manager_name",
+            "count_orders",
+            'sum_orders',
+            "count_shipments",
+            "sum_shipments",
+        ];
+
+        foreach ($selectedContacts as $column) {
+            $resColumnsAllContacts[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selectedContacts)) {
+                $resColumnsContacts[$column] = trans("column." . $column);
+            }
+        }
+
 
         return view("manager.index", compact(
             'entityItems',
@@ -478,7 +645,11 @@ class ManagerController extends Controller
             'AmoManagers',
             "resColumnsAmo",
             "resColumnsAllAmo",
-            'amo_orders'
+            'amo_orders',
+            'contactsWithCount',
+            'selectedContacts',
+            "resColumnsContacts",
+            "resColumnsAllContacts",
         ));
     }
 
@@ -695,6 +866,92 @@ class ManagerController extends Controller
             ->whereYear('created_at', $dateY)
             ->count();
 
+        // Contacts
+        $contactsWithOrders = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
+            ->with([
+                'manager:id,name',
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->whereHas('orders', function ($query) use ($date) {
+                $query
+                    ->whereHas('positions', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::CONCRETE);
+                        });
+                    })
+                    ->whereIn('status_id', [5, 6])
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })->get();
+
+        $contactsWithShipments = Contact::query()->select('id', 'name', 'ms_id', 'manager_id')
+            ->with([
+                'manager:id,name',
+                'orders' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'sum')
+                        ->whereIn('status_id', [5, 6])
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                },
+                'shipments' => function (Builder $query) use ($date) {
+                    $query
+                        ->select('id', 'name', 'contact_id', 'suma')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                }
+            ])
+            ->WhereHas('shipments', function ($query) use ($date) {
+                $query
+                    ->whereHas('products', function ($query) {
+                        $query->whereHas('product', function ($queries) {
+                            $queries->where('building_material', Product::CONCRETE);
+                        });
+                    })
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            })->get();
+
+
+
+        foreach ($contactsWithOrders as $contact) {
+            if (!$contactsWithShipments->firstWhere('id', $contact->id)) {
+                $contactsWithShipments->push($contact);
+            }
+        }
+
+        $contactsWithCount = $contactsWithShipments->sortBy('name');
+
+        // Columns contacts
+        $selectedContacts = [
+            "name",
+            "manager_name",
+            "count_orders",
+            'sum_orders',
+            "count_shipments",
+            "sum_shipments",
+        ];
+
+        foreach ($selectedContacts as $column) {
+            $resColumnsAllContacts[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selectedContacts)) {
+                $resColumnsContacts[$column] = trans("column." . $column);
+            }
+        }
+
         return view("manager.index", compact(
             'entityItems',
             "resColumns",
@@ -713,7 +970,11 @@ class ManagerController extends Controller
             'AmoManagers',
             "resColumnsAmo",
             "resColumnsAllAmo",
-            'amo_orders'
+            'amo_orders',
+            'contactsWithCount',
+            'selectedContacts',
+            "resColumnsContacts",
+            "resColumnsAllContacts",
         ));
     }
 }
