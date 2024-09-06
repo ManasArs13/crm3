@@ -162,7 +162,7 @@ return [
   "count_shipments" => 'Количество отгрузок',
   'order_link' => 'Ссылка на заказ',
   'manager_id	' => 'Менеджер',
-  "all_orders" => 'Всего сделки',
+  "all_orders" => 'Всего сделок',
   "success_orders" => 'Успешные сделки',
   "no_success_orders" => 'Не успешные сделки',
   "percent_all_orders" => '%',
