@@ -183,7 +183,7 @@ class ManagerController extends Controller
             ->whereNot('id', 4)
             ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->whereNotIn('status_amo_id', [142, 143])
+                    //->whereNotIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])
@@ -205,7 +205,7 @@ class ManagerController extends Controller
 
         $amo_orders["all_orders"] = OrderAmo::query()
             ->whereNull('manager_id')
-            ->whereNotIn('status_amo_id', [142, 143])
+            //->whereNotIn('status_amo_id', [142, 143])
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', $dateY)
             ->count();
@@ -418,7 +418,7 @@ class ManagerController extends Controller
             ->whereNot('id', 4)
             ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->whereNotIn('status_amo_id', [142, 143])
+                    //->whereNotIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])
@@ -440,7 +440,7 @@ class ManagerController extends Controller
 
         $amo_orders["all_orders"] = OrderAmo::query()
             ->whereNull('manager_id')
-            ->whereNotIn('status_amo_id', [142, 143])
+            //->whereNotIn('status_amo_id', [142, 143])
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', $dateY)
             ->count();
@@ -654,7 +654,7 @@ class ManagerController extends Controller
             ->whereNot('id', 4)
             ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
-                    ->whereNotIn('status_amo_id', [142, 143])
+                    //->whereNotIn('status_amo_id', [142, 143])
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])
@@ -676,7 +676,7 @@ class ManagerController extends Controller
 
         $amo_orders["all_orders"] = OrderAmo::query()
             ->whereNull('manager_id')
-            ->whereNotIn('status_amo_id', [142, 143])
+            //->whereNotIn('status_amo_id', [142, 143])
             ->whereMonth('created_at', $date)
             ->whereYear('created_at', $dateY)
             ->count();
