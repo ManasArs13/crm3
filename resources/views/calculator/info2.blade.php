@@ -49,9 +49,9 @@
     </div>
 
     <div class="select-popup">
-        <input type="hidden" name="state">
+        <input type="hidden" name="state" class="state_input" value="c3308ff8-b57a-11ec-0a80-03c60005472c" data-style-default="background:#a466bd">
         <select class="change_state input" style="width: 100%">
-            <option value="" selected disabled>{{ __('column.status') }}</option>
+            <option value="" select><div class="state" data-id="c3308ff8-b57a-11ec-0a80-03c60005472c" style="background:#a466bd">На брони</div></option>
         </select>
     </div>
 </div>

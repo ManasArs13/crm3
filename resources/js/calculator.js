@@ -550,6 +550,9 @@ $(document).ready(function(){
 
     $(".change_state").each(function(){
         var $this = $(this);
+        let style= $this.parent().find(".state_input").attr("data-style-default");
+        console.log(style);
+
         $this.select2({
             width: '220px',
             dropdownParent: $(this).parent(),
@@ -579,6 +582,9 @@ $(document).ready(function(){
             templateResult: formatState,
             templateSelection: formatState
         });
+
+        $(this).parent().find(".select2-selection__rendered").attr("style",style);
+
     });
 
     function formatDelivery(state) {

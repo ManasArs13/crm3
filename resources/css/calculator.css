@@ -53,7 +53,7 @@
 }
 
 .select2-search--dropdown{
-    padding-right: 20px;
+    padding-right: 22px;
 }
 
 .flex-column .flex{
@@ -988,7 +988,14 @@ input[type="number"]{
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 35px;
+    height: 33px;
+    /* background: #fff; */
+}
+select2-container .select2-selection--single .select2-selection__rendered {
+    display: block;
+    padding-left: 8px;
+    padding-right: 0px;
+    margin-right: 22px;
 }
 
 .select2-results__option{
