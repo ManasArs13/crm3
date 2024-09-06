@@ -44,7 +44,7 @@ Route::get('/processing', [WelcomeController::class, 'processing'])->name('welco
 Route::get('/calculator', [CalculatorController::class, 'block'])->name('calculator.block');
 
 
-Route::middleware(['auth', 'verified', 'role:admin|operator'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {
     // Operator windows
     Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
     Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
