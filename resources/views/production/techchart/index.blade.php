@@ -77,7 +77,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalSum = 0;
+                        @endphp
+
                         @foreach($techcharts as $techchart)
+                        @php
+                            $totalSum += $techchart->cost;
+                        @endphp
                         <tr class="border-b-2">
                             <td class="break-all max-w-96 overflow-hidden px-6 py-2">
                                 <a href="{{ route('techcharts.show', ['techchart' => $techchart->id]) }}" class="text-blue-500 hover:text-blue-600">
@@ -95,6 +102,17 @@
                             </td>
                         </tr>
                         @endforeach
+
+
+                        <tr class="border-b-2 bg-neutral-200">
+                            <td></td>
+                            <td></td>
+                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                {{ number_format((int) $totalSum, 0, ',', ' ') }}
+                            </td>
+                            <td></td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>

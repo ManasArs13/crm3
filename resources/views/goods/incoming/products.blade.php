@@ -90,7 +90,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalSum = 0;
+                            $totalPrice = 0;
+                        @endphp
                         @foreach ($incoming_products as $product)
+                            @php
+                                $totalSum += $product->summa;
+                                $totalPrice += $product->price;
+                            @endphp
                             <tr class="border-b-2">
                                 <td class="text-blue-600 px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     <a href="{{ route('incomings.show', ['incoming' => $product->incoming_id]) }}">
@@ -132,6 +140,20 @@
                                 </td>
                             </tr>
                         @endforeach
+                        <tr class="bg-neutral-100">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="px-6 py-2 font-normal">
+                                {{ number_format((int) $totalPrice, 0, ',', ' ') }}
+                            </td>
+                            <td class="px-6 py-2 font-normal">
+                                {{ number_format((int) $totalSum, 0, ',', ' ') }}
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

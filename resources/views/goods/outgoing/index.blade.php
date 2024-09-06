@@ -114,7 +114,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $totalPrice = 0;
+                        @endphp
                         @foreach ($outgoings as $outgoing)
+                            @php
+                                $totalPrice += $outgoing->summa;
+                            @endphp
                             <tr class="border-b-2">
                                 @if (count($outgoing->products) > 0)
                                     <td class="text-nowrap px-3 py-2">
@@ -199,6 +205,16 @@
                                 </tr>
                             @endforeach
                         @endforeach
+                        <tr class="bg-neutral-100">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="px-6 py-2">{{ number_format((int) $totalPrice, 0, ',', ' ') }}</td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

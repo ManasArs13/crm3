@@ -248,12 +248,18 @@
 
                         @php
                             $totalQuantity = 0;
+                            $totalSum = 0;
                         @endphp
 
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalQuantity += $entityItem->quantity;
                             @endphp
+
+                            @php
+                                $totalSum += $entityItem->sum;
+                            @endphp
+
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
@@ -304,6 +310,10 @@
                                 @if ($column == 'quantity')
                                     <td class="px-3 py-4 text-right">
                                         {{ $totalQuantity }}
+                                    </td>
+                                @elseif ($column == 'sum')
+                                    <td class="px-3 py-4 text-right">
+                                        {{ number_format((int) $totalSum, 0, ',', ' ') }}
                                     </td>
                                 @else
                                     <td>

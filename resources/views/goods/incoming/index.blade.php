@@ -114,7 +114,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                    @php
+                    $totalSum = 0;
+                    @endphp
                         @foreach ($incomings as $incoming)
+                            @php
+                                $totalSum += $incoming->summa;
+                            @endphp
                             <tr class="border-b-2">
                                 @if (count($incoming->products) > 0)
                                     <td class="text-nowrap px-3 py-2">
@@ -200,6 +206,18 @@
                                 </tr>
                             @endforeach
                         @endforeach
+                        <tr class="bg-neutral-100">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="px-6 py-2 font-normal">
+                                {{ number_format((int) $totalSum, 0, ',', ' ') }}
+                            </td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
