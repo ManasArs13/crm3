@@ -296,9 +296,9 @@ $(document).ready(function(){
         if (numberType == 1) {
             quantity = 0;
         } else if (numberType == 2) {
-            quantity =  Math.ceil(lengthWalls / 0.19) * 2;
+            quantity =  Math.ceil(lengthWalls / 0.19);
         } else if (numberType == 3) {
-            quantity =  Math.ceil(lengthWalls / 0.19) * 2;
+            quantity =  Math.ceil(lengthWalls / 0.19);
         };
 
         quantity=Math.ceil(quantity+quantity*0.004);
