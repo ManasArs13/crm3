@@ -320,7 +320,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalSum = 0;
+                        @endphp
                         @foreach ($entityItems as $entityItem)
+                            @php
+                                $totalSum += $entityItem->sum;
+                            @endphp
                             <tr class="border-b-2">
 
                                 @if (count($entityItem->products) > 0)
@@ -422,6 +428,17 @@
                                 </tr>
                             @endforeach
                         @endforeach
+                            <tr class="bg-neutral-100">
+                                <td class="px-2 py-2"></td>
+                                @foreach($resColumns as $column => $title)
+                                    @if($column == 'sum')
+                                        <td class="px-2 py-2 text-right">{{ number_format((int) $totalSum, 0, ',', ' ') }}</td>
+                                    @else
+                                        <td class="px-2 py-2"></td>
+                                    @endif
+                                @endforeach
+                                    <td class="px-2 py-2"></td>
+                            </tr>
                     </tbody>
                 </table>
             </div>

@@ -214,7 +214,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalPrice = 0;
+                        @endphp
                         @foreach ($entityItems as $entityItem)
+                            @php
+                                $totalPrice += $entityItem->price;
+                            @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-60 xl:max-w-44 overflow-x-auto px-6 py-2"
@@ -335,6 +341,16 @@
 
                             </tr>
                         @endforeach
+                        <tr class="bg-neutral-200">
+                            @foreach($resColumns as $key => $column)
+                                @if($key == 'price')
+                                    <td class="px-6 py-2">{{ number_format((int) $totalPrice, 0, ',', ' ') }}</td>
+                                @else
+                                    <td class="px-6 py-2"></td>
+                                @endif
+                            @endforeach
+                            <th></th>
+                        </tr>
                     </tbody>
                 </table>
             </div>

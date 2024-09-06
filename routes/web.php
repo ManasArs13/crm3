@@ -44,7 +44,13 @@ Route::get('/processing', [WelcomeController::class, 'processing'])->name('welco
 Route::get('/calculator', [CalculatorController::class, 'block'])->name('calculator.block');
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {
+    // Operator windows
+    Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
+    Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -57,9 +63,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
 
-    // Operator windows
-    Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
-    Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
 
     // Moy Sklad
     Route::resources([
@@ -87,7 +90,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Amo
     //Route::r('/orders_amo', [AmoOrderController::class, 'index'])->name('amo.order.index');
-    
+
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
     Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');

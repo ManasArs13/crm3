@@ -39,7 +39,7 @@ class DateSeeder extends Seeder
 
             END;
 
-            CALL filldates('2024-06-05','2024-06-15');
+            CALL filldates('2024-09-06','2024-12-31');
 
         SQL;
 

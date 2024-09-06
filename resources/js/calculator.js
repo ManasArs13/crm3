@@ -296,9 +296,9 @@ $(document).ready(function(){
         if (numberType == 1) {
             quantity = 0;
         } else if (numberType == 2) {
-            quantity =  Math.ceil(lengthWalls / 0.19) * 2;
+            quantity =  Math.ceil(lengthWalls / 0.19);
         } else if (numberType == 3) {
-            quantity =  Math.ceil(lengthWalls / 0.19) * 2;
+            quantity =  Math.ceil(lengthWalls / 0.19);
         };
 
         quantity=Math.ceil(quantity+quantity*0.004);
@@ -550,6 +550,9 @@ $(document).ready(function(){
 
     $(".change_state").each(function(){
         var $this = $(this);
+        let style= $this.parent().find(".state_input").attr("data-style-default");
+        console.log(style);
+
         $this.select2({
             width: '220px',
             dropdownParent: $(this).parent(),
@@ -579,6 +582,9 @@ $(document).ready(function(){
             templateResult: formatState,
             templateSelection: formatState
         });
+
+        $(this).parent().find(".select2-selection__rendered").attr("style",style);
+
     });
 
     function formatDelivery(state) {

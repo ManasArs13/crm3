@@ -45,7 +45,6 @@
         <div class="flex flex-col gap-4 basis-1/4">
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
                 <table>
-                    <caption class="text-lg font-semibold">Материалы</caption>
                     <thead>
                         <tr class="font-light">
                             <th colspan="4" class="font-light"></th>
@@ -83,7 +82,7 @@
                     <thead>
                         <tr>
                             <th class="justify-content-center items-center mb-2">
-                                <span class="text-lg font-semibold">Категории - блок</span>
+                                <span class="text-lg font-semibold"></span>
                             </th>
                         </tr>
                     </thead>
@@ -114,7 +113,7 @@
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
-                    <caption class="text-lg font-semibold ">Отгрузки</caption>
+                    <caption class="text-lg font-semibold "></caption>
                     <thead>
                         <tr class="font-light border-b-2 text-sm">
                             <th class="font-semibold border-r-2">Время</th>

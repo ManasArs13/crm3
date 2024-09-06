@@ -292,11 +292,32 @@
                         @php
                             $totalSum = 0;
                             $totalCount = 0;
+                            $totalDeliveryPrice = 0;
+                            $totalDeliveryPriceNorm = 0;
+                            $totalDeliverySum = 0;
+                            $totalPaidSum = 0;
                         @endphp
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalSum += $entityItem->suma;
                             @endphp
+
+                            @php
+                                $totalDeliveryPrice += $entityItem->delivery_price;
+                            @endphp
+
+                            @php
+                                $totalDeliveryPriceNorm += $entityItem->delivery_price_norm;
+                            @endphp
+
+                            @php
+                                $totalDeliverySum += $entityItem->delivery_fee;
+                            @endphp
+
+                            @php
+                                $totalPaidSum += $entityItem->paid_sum;
+                            @endphp
+
                             <tr class="border-b-2 py-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-96 overflow-auto px-6 py-2"
@@ -440,6 +461,22 @@
                                 @elseif($column == 'products_count')
                                     <td class="overflow-auto px-6 py-4">
                                         {{ $totalCount }}
+                                    </td>
+                                @elseif($column == 'delivery_price')
+                                    <td class="overflow-auto px-6 py-4 text-right">
+                                        {{ number_format((int) $totalDeliveryPrice, 0, ',', ' ') }}
+                                    </td>
+                                @elseif($column == 'delivery_price_norm')
+                                    <td class="overflow-auto px-6 py-4 text-right">
+                                        {{ number_format((int) $totalDeliveryPriceNorm, 0, ',', ' ') }}
+                                    </td>
+                                @elseif($column == 'delivery_fee')
+                                    <td class="overflow-auto px-6 py-4 text-right">
+                                        {{ number_format((int) $totalDeliverySum, 0, ',', ' ') }}
+                                    </td>
+                                @elseif($column == 'paid_sum')
+                                    <td class="overflow-auto px-6 py-4 text-right">
+                                        {{ number_format((int) $totalPaidSum, 0, ',', ' ') }}
                                     </td>
                                 @else
                                     <td>

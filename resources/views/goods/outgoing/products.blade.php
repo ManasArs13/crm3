@@ -90,7 +90,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalPrice = 0;
+                            $totalSum = 0;
+                        @endphp
                         @foreach ($outgoing_products as $product)
+                            @php
+                                $totalPrice += $product->price;
+                                $totalSum += $product->summa;
+                            @endphp
                             <tr class="border-b-2">
                                 <td class="text-blue-600 px-6 py-2 break-all max-w-60 xl:max-w-44 overflow-auto">
                                     <a href="{{ route('outgoings.show', ['outgoing' => $product->outgoing_id]) }}">
@@ -132,6 +140,16 @@
                                 </td>
                             </tr>
                         @endforeach
+                        <tr class="bg-neutral-100">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="px-6 py-3">{{ number_format((int) $totalPrice, 0, ',', ' ') }}</td>
+                            <td class="px-6 py-3">{{ number_format((int) $totalSum, 0, ',', ' ') }}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
