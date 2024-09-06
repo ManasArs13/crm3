@@ -214,7 +214,19 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $totalQuantity = 0;
+                            $totalShipped = 0;
+                            $totalReserve = 0;
+                            $totalPrice = 0;
+                        @endphp
                         @foreach ($entityItems as $entityItem)
+                            @php
+                                $totalQuantity += $entityItem->quantity;
+                                $totalShipped += $entityItem->shipped;
+                                $totalReserve += $entityItem->reserve;
+                                $totalPrice += $entityItem->price;
+                            @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-60 xl:max-w-44 overflow-x-auto px-6 py-2"
@@ -336,6 +348,22 @@
 
                             </tr>
                         @endforeach
+                        <tr class="bg-neutral-100">
+                            @foreach ($resColumns as $key => $column)
+                                @if($key == 'quantity')
+                                    <td class="px-6 py-2">{{ number_format((int) $totalQuantity, 0, ',', ' ') }}</td>
+                                @elseif($key == 'shipped')
+                                    <td class="px-6 py-2">{{ number_format((int) $totalShipped, 0, ',', ' ') }}</td>
+                                @elseif($key == 'reserve')
+                                    <td class="px-6 py-2">{{ number_format((int) $totalReserve, 0, ',', ' ') }}</td>
+                                @elseif($key == 'price')
+                                    <td class="px-6 py-2">{{ number_format((int) $totalPrice, 0, ',', ' ') }}</td>
+                                @else
+                                    <td class="px-6 py-2"></td>
+                                @endif
+                            @endforeach
+                                <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

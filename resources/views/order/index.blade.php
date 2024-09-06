@@ -495,12 +495,38 @@
                             $totalSum = 0;
                             $totalCount = 0;
                             $totalShipped = 0;
+                            $totalDeliveryPrice = 0;
+                            $totalPayedSum = 0;
+                            $totalShippedSum = 0;
+                            $totalReservedSum = 0;
+                            $totalDebt = 0;
                         @endphp
 
                         @foreach ($entityItems as $entityItem)
                             @php
                                 $totalSum += $entityItem->sum;
                             @endphp
+
+                            @php
+                                $totalReservedSum += $entityItem->reserved_sum;
+                            @endphp
+
+                            @php
+                                $totalDeliveryPrice += $entityItem->delivery_price;
+                            @endphp
+
+                            @php
+                                $totalShippedSum += $entityItem->shipped_sum;
+                            @endphp
+
+                            @php
+                                $totalPayedSum += $entityItem->payed_sum;
+                            @endphp
+
+                            @php
+                                $totalDebt += $entityItem->debt;
+                            @endphp
+
 
                             @php
                                 $total_quantity = 0;
@@ -679,7 +705,7 @@
                                                 -
                                             @endif
                                         @else
-                                            @if($column == 'sum' || $column == 'payed_sum' || $column == 'shipped_sum' || $column == 'reserved_sum' || $column == 'delivery_price')
+                                            @if($column == 'sum' || $column == 'payed_sum' || $column == 'shipped_sum' || $column == 'reserved_sum' || $column == 'delivery_price' || $column == 'debt')
                                                 {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
                                             @else
                                                 {{ $entityItem->$column }}
@@ -814,6 +840,26 @@
                                 @elseif($column == 'residual_count')
                                     <td class="overflow-auto px-2 py-2" style="text-align:right">
                                         {{ $totalCount - $totalShipped }}
+                                    </td>
+                                @elseif($column == 'delivery_price')
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
+                                        {{ number_format((int) $totalDeliveryPrice, 0, ',', ' ') }}
+                                    </td>
+                                @elseif($column == 'payed_sum')
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
+                                        {{ number_format((int) $totalPayedSum, 0, ',', ' ') }}
+                                    </td>
+                                @elseif($column == 'shipped_sum')
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
+                                        {{ number_format((int) $totalShippedSum, 0, ',', ' ') }}
+                                    </td>
+                                @elseif($column == 'reserved_sum')
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
+                                        {{ number_format((int) $totalReservedSum, 0, ',', ' ') }}
+                                    </td>
+                                @elseif($column == 'debt')
+                                    <td class="overflow-auto px-2 py-2" style="text-align:right">
+                                        {{ number_format((int) $totalDebt, 0, ',', ' ') }}
                                     </td>
                                 @else
                                     <td>

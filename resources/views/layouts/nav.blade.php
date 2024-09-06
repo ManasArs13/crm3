@@ -96,9 +96,6 @@
                                 <x-dropdown-link :href="route('contact.index')">
                                     Контакты
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('contactAmo.index')">
-                                    Контакты АМО
-                                </x-dropdown-link>
                                 <x-dropdown-link :href="route('product.index', ['type' => 'products'])">
                                     Товары
                                 </x-dropdown-link>
@@ -249,14 +246,9 @@
                                 <x-dropdown-link :href="route('amo-order.index')">
                                     Заказы
                                 </x-dropdown-link>
-
-                                {{-- <x-dropdown-link :href="route('outgoings.index')">
-                                    Расход
+                                <x-dropdown-link :href="route('contactAmo.index')">
+                                    Контакты АМО
                                 </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('supply.index')">
-                                    Приёмки
-                                </x-dropdown-link> --}}
                             </x-slot>
                         </x-dropdown>
                     </div>

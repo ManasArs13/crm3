@@ -29,11 +29,11 @@ class DashboardService
             "sostav",
             "sum",
             "date_plan",
-            "status_id",
-            "comment",
+//            "status_id",
             "positions_count",
             'is_demand',
             "residual_count",
+            "comment",
             "delivery_id",
             "ms_link",
         ];
