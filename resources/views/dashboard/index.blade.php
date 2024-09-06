@@ -46,7 +46,6 @@
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
-                    <caption class="text-lg font-semibold">Материалы</caption>
                     <thead>
                         <tr class="font-light">
                             <th colspan="4" class="font-light"></th>
@@ -85,7 +84,7 @@
                     <thead>
                         <tr>
                             <th class="justify-content-center items-center mb-2">
-                                <span class="text-lg font-semibold">Товары</span>
+                                <span class="text-lg font-semibold"></span>
                             </th>
                         </tr>
                     </thead>

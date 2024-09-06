@@ -46,7 +46,6 @@
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
-                    <caption class="text-lg font-semibold">Материалы</caption>
                     <thead>
                         <tr class="font-light border-b-2">
                             <th colspan="4" class="font-light"></th>
@@ -84,7 +83,6 @@
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
-                    <caption class="text-lg font-semibold ">Отгрузки</caption>
                     <thead>
                         <tr class="font-light border-b-2 text-sm">
                             <th class="font-semibold border-r-2">Время</th>
