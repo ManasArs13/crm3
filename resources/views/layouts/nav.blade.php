@@ -13,7 +13,7 @@
 
                 <!-- main Links -->
                 <div class="hidden space-x-3 lg:flex">
-
+                @role('admin')
                     <x-nav-link :href="route('dashboard-3')" :active="request()->routeIs('dashboard') ||
                         request()->routeIs('dashboard-2') ||
                         request()->routeIs('dashboard-3')">
@@ -181,6 +181,7 @@
                     </div>
 
 
+
                     {{-- Окно оператора --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
@@ -211,6 +212,19 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
+                    @endrole
+
+
+
+                    @role('operator')
+                    <x-nav-link :href="route('operator.orders')" :active="request()->routeIs('operator.orders')">
+                        Заказы
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('operator.shipments')" :active="request()->routeIs('operator.shipments')">
+                        {{ __('title.shipments') }}
+                    </x-nav-link>
+                    @endrole
 
 
 
@@ -218,11 +232,7 @@
 
 
 
-
-
-
-
-
+                    @role('admin')
                     {{-- Приход - расход --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
@@ -252,6 +262,7 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
+                    @endrole
 
                 </div>
             </div>
@@ -277,10 +288,11 @@
                         </x-slot>
 
                         <x-slot name="content">
-
+                            @role('admin')
                             <x-dropdown-link :href="route('option.index')">
                                 Опции
                             </x-dropdown-link>
+                            @endrole
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
