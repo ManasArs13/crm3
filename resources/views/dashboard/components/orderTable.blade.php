@@ -187,8 +187,17 @@
                                     <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
                                 @endif
                             @elseif($column == 'sostav')
-                                @if (isset($entityItem->positions[0]) && isset($entityItem->positions[0]->product))
-                                    {{ $entityItem->positions[0]->product->building_material == 'бетон' ? $entityItem->positions[0]->product->short_name : '-' }}
+                                @if (
+                                    $entityItem->positions->first(function ($value, $key) {
+                                        if ($value->product->building_material == 'бетон') {
+                                            return $value->product->short_name;
+                                        }
+                                    }))
+                                   {{ $entityItem->positions->first(function ($value, $key) {
+                                    if ($value->product->building_material == 'бетон') {
+                                    return $value->product->short_name;
+                                    }
+                                    })->product->short_name }}
                                 @else
                                     -
                                 @endif
@@ -248,7 +257,8 @@
                                         {{ null }}
                                     @endif
                                 @elseif($column == 'ms_link')
-                                    <a href="{{ $shipment->service_link }}" target="_blank" class="flex justify-center">
+                                    <a href="{{ $shipment->service_link }}" target="_blank"
+                                        class="flex justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -265,7 +275,7 @@
                                         {{ $shipment->id }}
                                     </a>
                                 @elseif($column == 'date_moment' || $column == 'date_plan')
-                                    {{  \Illuminate\Support\Carbon::parse($shipment->created_at)->format('H:i') }}
+                                    {{ \Illuminate\Support\Carbon::parse($shipment->created_at)->format('H:i') }}
                                 @elseif($column == 'name')
                                     <a href="{{ route('shipment.show', $shipment->id) }}"
                                         class="text-blue-500 hover:text-blue-600">
