@@ -13,7 +13,7 @@
 
                 <!-- main Links -->
                 <div class="hidden space-x-3 lg:flex">
-
+                @role('admin')
                     <x-nav-link :href="route('dashboard-3')" :active="request()->routeIs('dashboard') ||
                         request()->routeIs('dashboard-2') ||
                         request()->routeIs('dashboard-3')">
@@ -181,36 +181,19 @@
                     </div>
 
 
-                    {{-- Окно оператора --}}
-                    <div class="hidden md:flex md:items-center md:ms-1">
-                        <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Оператор</div>
+                    @endrole
 
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
 
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('operator.orders')">
-                                    Заказы
-                                </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('operator.shipments')">
-                                    {{ __('title.shipments') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
+                    @role('operator')
+                    <x-nav-link :href="route('operator.orders')" :active="request()->routeIs('operator.orders')">
+                        Заказы
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('operator.shipments')" :active="request()->routeIs('operator.shipments')">
+                        {{ __('title.shipments') }}
+                    </x-nav-link>
+                    @endrole
 
 
 
@@ -218,11 +201,7 @@
 
 
 
-
-
-
-
-
+                    @role('admin')
                     {{-- Приход - расход --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
@@ -252,6 +231,7 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
+                    @endrole
 
                 </div>
             </div>
@@ -277,10 +257,11 @@
                         </x-slot>
 
                         <x-slot name="content">
-
+                            @role('admin')
                             <x-dropdown-link :href="route('option.index')">
                                 Опции
                             </x-dropdown-link>
+                            @endrole
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
