@@ -591,7 +591,7 @@
 
             {{-- body card --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-left text-md text-nowrap">
+                <table class="text-left text-md text-nowrap" id="ContactsTable">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
 
@@ -599,14 +599,14 @@
                                 №
                             </td>
 
-
-
                             @foreach ($resColumnsContacts as $key => $column)
-                                <th scope="col" class="px-2 py-3"
+                                <th scope="col" class="px-2 py-3 hover:cursor-pointer" id="th_{{ $key }}"
+                                    onclick="orderBy(`{{ $key }}`)"
                                     @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
                                     {{ $column }}
                                 </th>
                             @endforeach
+
                         </tr>
                     </thead>
                     <tbody>
@@ -634,8 +634,6 @@
                                 <td class="break-all overflow-auto px-2 py-3 text-sm">
                                     {{ $loop->iteration }}
                                 </td>
-
-
 
                                 @foreach ($resColumnsContacts as $column => $title)
                                     <td class="break-all max-w-96 overflow-auto px-2 py-3"
@@ -680,47 +678,43 @@
                             </tr>
                         @endforeach
 
+                    </tbody>
+                </table>
+                <table class="text-left text-md text-nowrap">
+                    <tbody>
                         <tr class="border-b-2 bg-gray-100">
 
-                            <td class="break-all overflow-auto px-2 py-3">
+                            <td class="break-all text-right overflow-auto px-2 py-3">
                                 ВСЕГО:
                             </td>
 
-
-
-
                             @foreach ($resColumnsContacts as $column => $title)
-                                <td class="break-all max-w-96 overflow-auto px-2 py-3"
-                                    @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif>
-
-                                    @switch($column)
-                                        @case('name')
-                                        @break
-
-                                        @case('manager_name')
-                                        @break
-
-                                        @case('count_orders')
+                                @switch($column)
+                                    @case('count_orders')
+                                        <td class="break-all text-right max-w-96 overflow-auto px-2 py-3 w-[14rem]">
                                             {{ $totalOrdersCount }}
-                                        @break
+                                        </td>
+                                        </td>
+                                    @break
 
-                                        @case('sum_orders')
+                                    @case('sum_orders')
+                                        <td class="break-all text-right max-w-96 overflow-auto px-2 py-3 w-[12rem]">
                                             {{ number_format($totalOrdersSum, 0, '.', ' ') }}
-                                        @break
+                                        </td>
+                                    @break
 
-                                        @case('count_shipments')
+                                    @case('count_shipments')
+                                        <td class="break-all text-right max-w-96 overflow-auto px-2 py-3 w-[15rem]">
                                             {{ $totalShipmentsCount }}
-                                        @break
+                                        </td>
+                                    @break
 
-                                        @case('sum_shipments')
+                                    @case('sum_shipments')
+                                        <td class="break-all text-right max-w-96 overflow-auto px-2 py-3 w-[12rem]">
                                             {{ number_format($totalShipmentsSum, 0, '.', ' ') }}
-                                        @break
-
-                                        @default
-                                            {{ $entityItem->$column }}
-                                    @endswitch
-
-                                </td>
+                                        </td>
+                                    @break
+                                @endswitch
                             @endforeach
 
                         </tr>
@@ -728,6 +722,133 @@
                     </tbody>
                 </table>
             </div>
+
+            <script type="text/javascript">
+                function orderBy(column) {
+
+                    let sortedRows = Array.from(ContactsTable.rows).slice(1)
+
+                    let th_column_name = document.getElementById('th_name');
+                    let th_column_manager = document.getElementById('th_manager_name');
+                    let th_column_count_orders = document.getElementById('th_count_orders');
+                    let th_column_sum_orders = document.getElementById('th_sum_orders');
+                    let th_column_count_shipments = document.getElementById('th_count_shipments');
+                    let th_column_sum_shipments = document.getElementById('th_sum_shipments');
+
+                    switch (column) {
+                        case 'name':
+                            if (th_column_name.innerText == `Имя ↓`) {
+                                th_column_name.innerText = `Имя ↑`
+                                sortedRows.sort((rowA, rowB) => rowA.cells[0].innerText > rowB.cells[0].innerText ? 1 : -
+                                    1);
+                            } else {
+                                th_column_name.innerText = `Имя ↓`;
+                                sortedRows.sort((rowA, rowB) => rowA.cells[0].innerText < rowB.cells[0].innerText ? 1 : -
+                                    1);
+                            }
+
+                            th_column_manager.innerText = `Менеджер`;
+                            th_column_count_orders.innerText = `Количество заказов`;
+                            th_column_sum_orders.innerText = `Сумма заказов`;
+                            th_column_count_shipments.innerText = `Количество отгрузок`;
+                            th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                            break;
+
+
+                        case 'manager_name':
+                            if (th_column_manager.innerText == `Менеджер ↓`) {
+                                th_column_manager.innerText = `Менеджер ↑`
+                                sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText > rowB.cells[1].innerText ? 1 : -
+                                    1);
+                            } else {
+                                th_column_manager.innerText = `Менеджер ↓`;
+                                sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText < rowB.cells[1].innerText ? 1 : -
+                                    1);
+                            }
+
+                            th_column_name.innerText = `Имя`;
+                            th_column_count_orders.innerText = `Количество заказов`;
+                            th_column_sum_orders.innerText = `Сумма заказов`;
+                            th_column_count_shipments.innerText = `Количество отгрузок`;
+                            th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                            break;
+
+                        case 'count_orders':
+                            if (th_column_count_orders.innerText == `Количество заказов ↓`) {
+                                th_column_count_orders.innerText = `Количество заказов ↑`
+                                sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText > rowB.cells[2].innerText ? 1 : -
+                                    1);
+                            } else {
+                                th_column_count_orders.innerText = `Количество заказов ↓`;
+                                sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText < rowB.cells[2].innerText ? 1 : -
+                                    1);
+                            }
+
+                            th_column_manager.innerText = `Менеджер`;
+                            th_column_name.innerText = `Имя`;
+                            th_column_sum_orders.innerText = `Сумма заказов`;
+                            th_column_count_shipments.innerText = `Количество отгрузок`;
+                            th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                            break;
+
+                        case 'sum_orders':
+                            if (th_column_sum_orders.innerText == `Сумма заказов ↓`) {
+                                th_column_sum_orders.innerText = `Сумма заказов ↑`
+                                sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText > rowB.cells[3].innerText ? 1 : -
+                                    1);
+                            } else {
+                                th_column_sum_orders.innerText = `Сумма заказов ↓`;
+                                sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText < rowB.cells[3].innerText ? 1 : -
+                                    1);
+                            }
+
+                            th_column_manager.innerText = `Менеджер`;
+                            th_column_count_orders.innerText = `Количество заказов`;
+                            th_column_name.innerText = `Имя`;
+                            th_column_count_shipments.innerText = `Количество отгрузок`;
+                            th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                            break;
+
+                        case 'count_shipments':
+                            if (th_column_count_shipments.innerText == `Количество отгрузок ↓`) {
+                                th_column_count_shipments.innerText = `Количество отгрузок ↑`
+                                sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText > rowB.cells[4].innerText ? 1 : -
+                                    1);
+                            } else {
+                                th_column_count_shipments.innerText = `Количество отгрузок ↓`;
+                                sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText < rowB.cells[4].innerText ? 1 : -
+                                    1);
+                            }
+
+                            th_column_manager.innerText = `Менеджер`;
+                            th_column_count_orders.innerText = `Количество заказов`;
+                            th_column_sum_orders.innerText = `Сумма заказов`;
+                            th_column_name.innerText = `Имя`;
+                            th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                            break;
+
+                        case 'sum_shipments':
+                            if (th_column_sum_shipments.innerText == `Сумма отгрузок ↓`) {
+                                th_column_sum_shipments.innerText = `Сумма отгрузок ↑`
+                                sortedRows.sort((rowA, rowB) => rowA.cells[5].innerText > rowB.cells[5].innerText ? 1 : -
+                                    1);
+                            } else {
+                                th_column_sum_shipments.innerText = `Сумма отгрузок ↓`;
+                                sortedRows.sort((rowA, rowB) => rowA.cells[5].innerText < rowB.cells[5].innerText ? 1 : -
+                                    1);
+                            }
+
+                            th_column_manager.innerText = `Менеджер`;
+                            th_column_count_orders.innerText = `Количество заказов`;
+                            th_column_sum_orders.innerText = `Сумма заказов`;
+                            th_column_name.innerText = `Имя`;
+                            th_column_count_shipments.innerText = `Количество отгрузок`;
+                            break;
+                    }
+
+                    ContactsTable.tBodies[0].append(...sortedRows);
+                }
+            </script>
 
         </div>
     </div>
