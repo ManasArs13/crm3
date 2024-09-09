@@ -255,7 +255,7 @@
                                 @if (count($productsByGroup) > 0)
                                     <table class="CEB__table">
                                         <tr>
-                                            <td>{{ __('calculator.position') }}</td>
+                                            <td class="td-name">{{ __('calculator.position') }}</td>
                                             <td @if ($form == 'calcBeton') class="td-weight" @endif>
                                                 {{ __('calculator.quantity') }}</td>
 

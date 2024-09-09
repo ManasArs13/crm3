@@ -193,6 +193,10 @@ $(document).ready(function(){
             let palletPrice=palletForm.attr("data-price")*countPallets;
             $(formClass+"#price_total_pallet").text(palletPrice);
             price_total+=palletPrice;
+        }else{
+            $(".service:checked").each(function(){
+                price_total+=parseFloat($(this).val());
+            });
         }
 
 
@@ -878,6 +882,11 @@ $(document).ready(function(){
         calculation0(".calcFence ");
     });
 
+    $("body").on("change", ".service", function() {
+        let id=$(this).attr("id");
+        $('[data-type="'+id+'"]').toggleClass("hidden");
+        calculation(".calcBeton ");
+    });
 
     $("body").on("click", ".CMR__input_calc_js", function() {
         let block=$(this).attr("data-content");
@@ -903,6 +912,8 @@ $(document).ready(function(){
         if ($(window).width()>1473){
             let itogo=$(formClass+" .td-sum").outerWidth()+$(formClass+" .td-sum").siblings(".td-price").outerWidth()+$(formClass+" .td-sum").siblings(".td-price").siblings(".td-weight").outerWidth();
             $(formClass+' .sim').css("width", itogo+"px");
+            let width=$(formClass+" .td-name").outerWidth()-10;
+            $(formClass+" .input-delivery").css("width", width+"px");
             $(formClass+" .input-sum").css("width",$(formClass+" .td-sum").outerWidth()+"px");
             $(formClass+" .input-price").css("width",$(formClass+" .td-price").outerWidth()+"px");
             $(formClass+" .input-weight").css("width",$(formClass+" .td-weight").outerWidth()+"px");

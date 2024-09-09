@@ -167,6 +167,8 @@ class CalculatorController extends Controller
             $productsByBeton[$product->id]["product"] = $product->ms_id;
         }
 
+        $servicesByBeton=Product::select("id", "ms_id", "name", "price")->whereIn("ms_id", ['06fc57e5-1454-11ef-0a80-03d600151c37','a21b0df3-5c55-11ee-0a80-0c81000d5f04','ac929382-6e7d-11ef-0a80-0680003a6a7e'])->orderBy("name", "asc")->get();
+
         $contacts = Contact::whereDoesntHave('contact_categories', function ($q) {
             $q->where('contact_category_id', '=', '9');
         })
@@ -260,6 +262,7 @@ class CalculatorController extends Controller
                 'vehicleTypes',
                 'productsByGroup',
                 'productsByBeton',
+                'servicesByBeton',
                 'vehicleTypesBeton',
                 'shipments',
                 'dates',

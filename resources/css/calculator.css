@@ -1073,6 +1073,27 @@ select2-container .select2-selection--single .select2-selection__rendered {
     text-wrap: wrap;
 }
 
+.CEB__row.flex.itogo{
+    align-items: center;
+    justify-content: space-between;
+}
+
+.CEB_block.services{
+    margin-top: 10px;
+}
+
+.flex.text-center {
+    align-items: center;
+}
+
+.input-sim.input.input2{
+    width: 100%;
+}
+
+.CEB_block.hidden{
+    display: none;
+}
+
 @media only screen and (max-width : 1473px) {
 
     .sim{
