@@ -47,12 +47,12 @@
 
                 <table>
                     <thead>
-                        <tr class="font-light">
+                        <tr class="font-light bg-neutral-200">
                             <th colspan="4" class="font-light"></th>
-                            <th class="font-normal border-l-2">Начало</th>
-                            <th class="font-normal border-x-2">Приход</th>
-                            <th class="font-normal border-r-2">Расход</th>
-                            <th class="font-normal">Конец</th>
+                            <th class="border-l-2">Начало</th>
+                            <th class="border-x-2">Приход</th>
+                            <th class="border-r-2">Расход</th>
+                            <th>Конец</th>
                         </tr>
                     </thead>
                     <tbody>
