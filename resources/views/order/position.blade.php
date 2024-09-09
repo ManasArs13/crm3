@@ -238,7 +238,7 @@
                                             @elseif ($column == 'product_id')
                                                 <a href="{{ route('product.show', $entityItem->product_id) }}"
                                                     class="text-blue-500 hover:text-blue-600">
-                                                    {{ $entityItem->product ? $entityItem->product->name : '-' }}
+                                                    {{ $entityItem->product ? $entityItem->product->short_name : '-' }}
                                                 </a>
                                             @elseif ($column == 'order_id')
                                                 <a href="{{ route('order.show', $entityItem->order_id) }}"
