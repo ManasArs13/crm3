@@ -95,7 +95,8 @@
                             </td>
 
                             @foreach ($resColumns as $key => $column)
-                                <th scope="col" class="px-2 py-3">{{ $column }}
+                                <th scope="col" class="px-2 py-3  hover:cursor-pointer" id="th_{{ $key }}"
+                                    onclick="orderBy(`{{ $key }}`)">{{ $column }}
                                 </th>
                             @endforeach
                         </tr>
@@ -202,9 +203,13 @@
                             </tr>
                         @endforeach
 
+                    </tbody>
+                </table>
+                <table class="text-left text-md text-nowrap">
+                    <tbody>
                         <tr class="border-b-2 bg-gray-100">
 
-                            <td class="break-all overflow-auto px-2 py-3">
+                            <td class="break-all text-right overflow-auto px-2 py-3">
                                 ВСЕГО:
                             </td>
 
@@ -236,122 +241,247 @@
 
             let sortedRows = Array.from(transportsTable.rows).slice(1)
 
-            let th_column_name = document.getElementById('th_name');
-            let th_column_manager = document.getElementById('th_manager_name');
-            let th_column_count_orders = document.getElementById('th_count_orders');
-            let th_column_sum_orders = document.getElementById('th_sum_orders');
-            let th_column_count_shipments = document.getElementById('th_count_shipments');
-            let th_column_sum_shipments = document.getElementById('th_sum_shipments');
+            let th_name = document.getElementById('th_name');
+            let th_contact_name = document.getElementById('th_contact_name');
+            let th_count_shipments = document.getElementById('th_count_shipments');
+            let th_price_norm = document.getElementById('th_price_norm');
+            let th_price = document.getElementById('th_price');
+            let th_delivery_fee = document.getElementById('th_delivery_fee');
+            let th_difference_norm = document.getElementById('th_difference_norm');
+            let th_difference_norm_percent = document.getElementById('th_difference_norm_percent');
+            let th_difference_price = document.getElementById('th_difference_price');
+            let th_difference_price_percent = document.getElementById('th_difference_price_percent');
 
             switch (column) {
                 case 'name':
-                    if (th_column_name.innerText == `Имя ↓`) {
-                        th_column_name.innerText = `Имя ↑`
+                    if (th_name.innerText == `Имя ↓`) {
+                        th_name.innerText = `Имя ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[0].innerText > rowB.cells[0].innerText ? 1 : -
                             1);
                     } else {
-                        th_column_name.innerText = `Имя ↓`;
+                        th_name.innerText = `Имя ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[0].innerText < rowB.cells[0].innerText ? 1 : -
                             1);
                     }
 
-                    th_column_manager.innerText = `Менеджер`;
-                    th_column_count_orders.innerText = `Количество заказов`;
-                    th_column_sum_orders.innerText = `Сумма заказов`;
-                    th_column_count_shipments.innerText = `Количество отгрузок`;
-                    th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
                     break;
 
-
-                case 'manager_name':
-                    if (th_column_manager.innerText == `Менеджер ↓`) {
-                        th_column_manager.innerText = `Менеджер ↑`
+                case 'contact_name':
+                    if (th_contact_name.innerText == `Перевозчик ↓`) {
+                        th_contact_name.innerText = `Перевозчик ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText > rowB.cells[1].innerText ? 1 : -
                             1);
                     } else {
-                        th_column_manager.innerText = `Менеджер ↓`;
+                        th_contact_name.innerText = `Перевозчик ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText < rowB.cells[1].innerText ? 1 : -
                             1);
                     }
 
-                    th_column_name.innerText = `Имя`;
-                    th_column_count_orders.innerText = `Количество заказов`;
-                    th_column_sum_orders.innerText = `Сумма заказов`;
-                    th_column_count_shipments.innerText = `Количество отгрузок`;
-                    th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                    th_name.innerText = `Имя`;
+                    //    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = `Количество отгрузок`;
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
                     break;
 
-                case 'count_orders':
-                    if (th_column_count_orders.innerText == `Количество заказов ↓`) {
-                        th_column_count_orders.innerText = `Количество заказов ↑`
+                case 'count_shipments':
+                    if (th_count_shipments.innerText == `Количество отгрузок ↓`) {
+                        th_count_shipments.innerText = `Количество отгрузок ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText > rowB.cells[2].innerText ? 1 : -
                             1);
                     } else {
-                        th_column_count_orders.innerText = `Количество заказов ↓`;
+                        th_count_shipments.innerText = `Количество отгрузок ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText < rowB.cells[2].innerText ? 1 : -
                             1);
                     }
 
-                    th_column_manager.innerText = `Менеджер`;
-                    th_column_name.innerText = `Имя`;
-                    th_column_sum_orders.innerText = `Сумма заказов`;
-                    th_column_count_shipments.innerText = `Количество отгрузок`;
-                    th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    // th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
                     break;
 
-                case 'sum_orders':
-                    if (th_column_sum_orders.innerText == `Сумма заказов ↓`) {
-                        th_column_sum_orders.innerText = `Сумма заказов ↑`
+                case 'price_norm':
+                    if (th_price_norm.innerText == `Норма перевозки ↓`) {
+                        th_price_norm.innerText = `Норма перевозки ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText > rowB.cells[3].innerText ? 1 : -
                             1);
                     } else {
-                        th_column_sum_orders.innerText = `Сумма заказов ↓`;
+                        th_price_norm.innerText = `Норма перевозки ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText < rowB.cells[3].innerText ? 1 : -
                             1);
                     }
 
-                    th_column_manager.innerText = `Менеджер`;
-                    th_column_count_orders.innerText = `Количество заказов`;
-                    th_column_name.innerText = `Имя`;
-                    th_column_count_shipments.innerText = `Количество отгрузок`;
-                    th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    //th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
                     break;
 
-                case 'count_shipments':
-                    if (th_column_count_shipments.innerText == `Количество отгрузок ↓`) {
-                        th_column_count_shipments.innerText = `Количество отгрузок ↑`
+                case 'price':
+                    if (th_price.innerText == `Цена ↓`) {
+                        th_price.innerText = `Цена ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText > rowB.cells[4].innerText ? 1 : -
                             1);
                     } else {
-                        th_column_count_shipments.innerText = `Количество отгрузок ↓`;
+                        th_price.innerText = `Цена ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText < rowB.cells[4].innerText ? 1 : -
                             1);
                     }
 
-                    th_column_manager.innerText = `Менеджер`;
-                    th_column_count_orders.innerText = `Количество заказов`;
-                    th_column_sum_orders.innerText = `Сумма заказов`;
-                    th_column_name.innerText = `Имя`;
-                    th_column_sum_shipments.innerText = `Сумма отгрузок`;
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    //th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
                     break;
 
-                case 'sum_shipments':
-                    if (th_column_sum_shipments.innerText == `Сумма отгрузок ↓`) {
-                        th_column_sum_shipments.innerText = `Сумма отгрузок ↑`
+                case 'delivery_fee':
+                    if (th_delivery_fee.innerText == `Стоимость доставки ↓`) {
+                        th_delivery_fee.innerText = `Стоимость доставки ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[5].innerText > rowB.cells[5].innerText ? 1 : -
                             1);
                     } else {
-                        th_column_sum_shipments.innerText = `Сумма отгрузок ↓`;
+                        th_delivery_fee.innerText = `Стоимость доставки ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[5].innerText < rowB.cells[5].innerText ? 1 : -
                             1);
                     }
 
-                    th_column_manager.innerText = `Менеджер`;
-                    th_column_count_orders.innerText = `Количество заказов`;
-                    th_column_sum_orders.innerText = `Сумма заказов`;
-                    th_column_name.innerText = `Имя`;
-                    th_column_count_shipments.innerText = `Количество отгрузок`;
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    //th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
                     break;
+
+                case 'difference_norm':
+                    if (th_difference_norm.innerText == `Отклонение от нормы ↓`) {
+                        th_difference_norm.innerText = `Отклонение от нормы ↑`
+                        sortedRows.sort((rowA, rowB) => rowA.cells[6].innerText > rowB.cells[6].innerText ? 1 : -
+                            1);
+                    } else {
+                        th_difference_norm.innerText = `Отклонение от нормы ↓`;
+                        sortedRows.sort((rowA, rowB) => rowA.cells[6].innerText < rowB.cells[6].innerText ? 1 : -
+                            1);
+                    }
+
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    //th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    break;
+
+                case 'difference_norm_percent':
+                    if (th_difference_norm_percent.innerText == `Отклонение от нормы % ↓`) {
+                        th_difference_norm_percent.innerText = `Отклонение от нормы % ↑`
+                        sortedRows.sort((rowA, rowB) => rowA.cells[7].innerText > rowB.cells[7].innerText ? 1 : -
+                            1);
+                    } else {
+                        th_difference_norm_percent.innerText = `Отклонение от нормы % ↓`;
+                        sortedRows.sort((rowA, rowB) => rowA.cells[7].innerText < rowB.cells[7].innerText ? 1 : -
+                            1);
+                    }
+
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    //th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    break;
+
+                case 'difference_price':
+                    if (th_difference_price.innerText == `Отклонение от цены ↓`) {
+                        th_difference_price.innerText = `Отклонение от цены ↑`
+                        sortedRows.sort((rowA, rowB) => rowA.cells[8].innerText > rowB.cells[8].innerText ? 1 : -
+                            1);
+                    } else {
+                        th_difference_price.innerText = `Отклонение от цены ↓`;
+                        sortedRows.sort((rowA, rowB) => rowA.cells[8].innerText < rowB.cells[8].innerText ? 1 : -
+                            1);
+                    }
+
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    //th_difference_price.innerText = 'Отклонение от цены';
+                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    break;
+
+                case 'difference_price_percent':
+                    if (th_difference_price_percent.innerText == `Отклонение от цены % ↓`) {
+                        th_difference_price_percent.innerText = `Отклонение от цены % ↑`
+                        sortedRows.sort((rowA, rowB) => rowA.cells[9].innerText > rowB.cells[9].innerText ? 1 : -
+                            1);
+                    } else {
+                        th_difference_price_percent.innerText = `Отклонение от цены % ↓`;
+                        sortedRows.sort((rowA, rowB) => rowA.cells[9].innerText < rowB.cells[9].innerText ? 1 : -
+                            1);
+                    }
+
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Количество отгрузок';
+                    th_price_norm.innerText = 'Норма перевозки';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость доставки';
+                    th_difference_norm.innerText = 'Отклонение от нормы';
+                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
+                    th_difference_price.innerText = 'Отклонение от цены';
+                    //th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    break;
+
             }
 
             transportsTable.tBodies[0].append(...sortedRows);
