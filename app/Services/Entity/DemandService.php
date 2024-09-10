@@ -17,6 +17,7 @@ use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Transport;
 use App\Models\TransportType;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class DemandService implements EntityInterface
@@ -154,6 +155,7 @@ class DemandService implements EntityInterface
 
                 $delivery_bd = Delivery::where('ms_id', $delivery)->first();
                 $entity->delivery_id = $delivery_bd ? $delivery_bd->id : null;
+                $distance = $delivery_bd ? $delivery_bd->distance : null;
 
                 $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
                 $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
@@ -200,6 +202,11 @@ class DemandService implements EntityInterface
                 }
 
                 $entity->weight = $shipmentWeight;
+                if ($entity->transport_type_id!=null && $distance!=null){
+                    $weight_tn=($entity->transport_type_id==2)?round($shipmentWeight/1000,1):ceil($shipmentWeight/1000);
+                    $entity->delivery_price_norm=$this->getPrice(["distance"=>$distance, "weightTn"=>$weight_tn, "vehicleType" =>$entity->transport_type_id]);
+                    $entity->saldo=$entity->delivery_price_norm-$entity->delivery_price;
+                }
                 $entity->update();
             }
         }
@@ -209,6 +216,73 @@ class DemandService implements EntityInterface
     public function deleteDeletedPositionsFromMS($shipment, $guids)
     {
         ShipmentProduct::where("shipment_id", $shipment)->whereNotIn('ms_id', $guids)->delete();
+    }
+
+    public function getPrice($data)
+    {
+            $distance = $data["distance"];
+            $vehicleType = $data["vehicleType"];
+            $weightTn = $data["weightTn"];
+
+            $price=0;
+            $deliveryPrice=0;
+
+            $innerQuery=DB::table('shiping_prices')
+                    ->selectRaw('transport_type_id, min(distance) as minDistance')
+                    ->where('transport_type_id', $vehicleType)
+                    ->where('distance','>=',$distance);
+
+            $mainQuery0 = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
+                    ->mergeBindings($innerQuery)
+                    ->selectRaw("sh.distance, min(sh.tonnage) as tonnage, sh.transport_type_id")
+                    ->join("shiping_prices as sh", function($join){
+                        $join->on('tab.minDistance', '=', 'sh.distance');
+                        $join->on("tab.transport_type_id","=","sh.transport_type_id");
+                    })
+                    ->where("sh.tonnage",'>=',$weightTn);
+
+            $mainQuery = DB::table(DB::raw('(' .$mainQuery0->toSql() . ') as tab0'))
+                    ->mergeBindings($mainQuery0)
+                    ->selectRaw("sh2.price, sh2.tonnage as ton, sh2.distance")
+                    ->join("shiping_prices as sh2", function($join){
+                        $join->on('tab0.distance', '=', 'sh2.distance');
+                        $join->on("tab0.transport_type_id","=","sh2.transport_type_id");
+                        $join->on("tab0.tonnage","=","sh2.tonnage");
+                    })->first();
+
+
+            if($mainQuery==null){
+                $mainQuery = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
+                    ->mergeBindings($innerQuery)
+                    ->selectRaw("sh2.tonnage as ton, sh2.distance, sh2.price")
+                    ->join("shiping_prices as sh2", function($join){
+                        $join->on('tab.minDistance', '=', 'sh2.distance');
+                        $join->on("tab.transport_type_id","=","sh2.transport_type_id");
+                    })
+                    ->orderBy("sh2.tonnage","desc")
+                    ->first();
+
+                if ($mainQuery==null){
+                    return 0;
+                }else{
+                    $price = $mainQuery->price;
+                }
+            }else{
+                $price = $mainQuery->price;
+            }
+
+            if ($mainQuery->ton>$weightTn){
+                $weightTn=$mainQuery->ton;
+            }
+
+            $deliveryPrice = $price * $weightTn;
+
+            if ($vehicleType==5 || $vehicleType==3)
+                $deliveryPrice=round($deliveryPrice/100)*100;
+            else if ($vehicleType==4 && $weightTn<=14)
+                $deliveryPrice=round($deliveryPrice/500)*500;
+
+            return $deliveryPrice;
     }
 
     /**

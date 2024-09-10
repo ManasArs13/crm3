@@ -10,7 +10,14 @@ class Transport extends Model
 {
     use HasFactory;
 
-    protected $guarded = false;
+    protected $guarded = [];
+
+    protected $fillable = ['name', 'description', 'tonnage', 'contact_id', 'car_number'];
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
 
     public function getCreatedAtAttribute($value)
     {
