@@ -41,6 +41,6 @@ class ImportOrderMs extends Command
         $all = $this->option('all');
         $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
 
-        $service->createUrl($url, $orderService, ["updated" => '>=' . $date, "isDeleted" => ["true", "false"]], 'positions.assortment,attributes.value,agent,state');
+        $service->createUrl($url, $orderService, ["updated" => '>=' . $date], 'positions.assortment,attributes.value,agent,state');
     }
 }

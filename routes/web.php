@@ -20,6 +20,7 @@ use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Report\CounterpartyController;
+use App\Http\Controllers\Report\TransportController as ReportTransportController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipingPriceController;
 use App\Http\Controllers\ShipmentController;
@@ -142,9 +143,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::name('report.')->group(function () {
 
         // Контрагенты
-        Route::get('/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
-        Route::get('/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
-        Route::get('/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+        Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
+        Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
+        Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+
+        // Транспорт
+        Route::get('/report/transport', [ReportTransportController::class, 'index'])->name('transport');
+        Route::get('/report/transport_block', [ReportTransportController::class, 'block'])->name('transport.block');
+        Route::get('/report/transport_concrete', [ReportTransportController::class, 'concrete'])->name('transport.concrete');
     });
 
 
