@@ -158,10 +158,16 @@
 
                                 @role('admin')
                                 <x-dropdown-link :href="route('report.counteparty')">
-                                    Сводка - контрагенты
+                                    Сводка - Контрагенты
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('summary.index')">
                                     {{ __('title.summary') }}
+                                </x-dropdown-link>
+                                @endrole
+
+                                @role('admin')
+                                <x-dropdown-link :href="route('report.transport')">
+                                    Сводка - Транспорт
                                 </x-dropdown-link>
                                 @endrole
 
