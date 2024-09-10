@@ -61,16 +61,16 @@
                                     {{ $material->short_name }}
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
-                                    {{ $material->residual }}
+                                    {{ $material->residual / 1000 }}
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
                                     -
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
-                                    {{ $material->rashod ? $material->rashod : 0 }}
+                                    {{ $material->rashod ? $material->rashod / 1000 : 0 }}
                                 </td>
                                 <td class="m-2 text-right" colspan="1">
-                                    {{ $material->residual - ($material->rashod ? $material->rashod : 0) }}
+                                    {{ ($material->residual - ($material->rashod ? $material->rashod : 0)) / 1000 }}
                                 </td>
                             </tr>
                         @endforeach
