@@ -28,9 +28,45 @@
                 </div>
             </div>
     </div>
+    @if ($form=="calcBeton")
+        @foreach ($servicesByBeton as $type)
+            <div class="CEB_block services hidden" data-type="service_{{$type->id}}">
+                <div class="input-delivery">
+                    <input type="text" value="{{$type->name}}" class="input-sim input input2" readonly>
+                </div>
+                <div class="sim">
+                    <div class="input-sim input-weight">
+                        <input type="text" class="weight-t input input2" readonly value="1">
+                    </div>
+                    <div class="input-sim input-price">
+                        <input type="text" class="price-t input input2" readonly value="{{$type->price}}">
+                    </div>
+                    <div class="input-sim input-sum">
+
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
+</div>
+<div class="CEB__row {{($form=="calcBeton")?"flex itogo":""}}">
+    @if ($form=="calcBeton")
+        <div class="CEB_block">
+            @foreach ($servicesByBeton as $type)
+            <div class="flex text-center">
+                    <input name="services[{{$type->ms_id}}]" id="service_{{$type->id}}" class="service border border-solid border-neutral-300 rounded" type="checkbox" value="{{$type->price}}">
+                    {{-- <input name="services1[{{$type->ms_id}}]" id="service_{{$type->id}}" class="border border-solid border-neutral-300 rounded" type="checkbox" value="{{ json_encode(["price"=> $type->price, "quantity"=>1]) }}"> --}}
+                    <label for="service_{{$type->id}}">{{$type->name}}</label>
+            </div>
+            @endforeach
+        </div>
+        
+    @endif   
+
     <div class="font-weight-bolder">
         {{__("calculator.total")}} <span class="total">0</span> {{__("calculator.rub")}}
     </div>
+    
 </div>
 
 <div role="status" class="preloader">

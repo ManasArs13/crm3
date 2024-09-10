@@ -46,12 +46,12 @@
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
                 <table>
                     <thead>
-                        <tr class="font-light">
+                        <tr class="font-light bg-neutral-200">
                             <th colspan="4" class="font-light"></th>
-                            <th class="font-normal border-l-2">Начало</th>
-                            <th class="font-normal border-x-2">Приход</th>
-                            <th class="font-normal border-r-2">Расход</th>
-                            <th class="font-normal">Конец</th>
+                            <th class="border-l-2">Начало</th>
+                            <th class="border-x-2">Приход</th>
+                            <th class="border-r-2">Расход</th>
+                            <th>Конец</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,12 +115,12 @@
                 <table>
                     <caption class="text-lg font-semibold "></caption>
                     <thead>
-                        <tr class="font-light border-b-2 text-sm">
-                            <th class="font-semibold border-r-2">Время</th>
-                            <th class="font-semibold border-l-2 text-center">Транспорт</th>
-                            <th class="font-semibold border-r-2">На обьекте</th>
-                            <th class="font-semibold border-r-2">Конец рейса</th>
-                            <th class="font-semibold">Возврат</th>
+                        <tr class="font-light border-b-2 text-sm bg-neutral-200">
+                            <th class="border-r-2">Время</th>
+                            <th class="border-l-2 text-center">Транспорт</th>
+                            <th class="border-r-2">На обьекте</th>
+                            <th class="border-r-2">Конец рейса</th>
+                            <th class="">Возврат</th>
                         </tr>
                     </thead>
                     <tbody>
