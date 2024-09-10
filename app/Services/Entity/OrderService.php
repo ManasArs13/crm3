@@ -53,10 +53,8 @@ class OrderService implements EntityInterface
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
             if (Arr::exists($row, 'deleted')) {
-                if ($entity->ms_id === null) {
-                    $entity->positions()->delete();
-                    $entity->delete();
-                }
+                $entity->positions()->delete();
+                $entity->delete();
             } else {
                 if ($entity->ms_id === null) {
                     $entity->ms_id = $row['id'];
@@ -232,7 +230,6 @@ class OrderService implements EntityInterface
                 if (Arr::exists($row, 'updated')) {
                     $entity->updated_at = $row['updated'];
                 }
-
             }
             $entity->save();
 
@@ -273,8 +270,7 @@ class OrderService implements EntityInterface
             ->whereDate('date_plan', '<=', Carbon::now()->addDays($reserve_period))
             ->where('status_id', 'c3308ff8-b57a-11ec-0a80-03c60005472c')
             ->orWhere('status_id', '2ff7dd14-5b1e-11ea-0a80-012400161237')
-            ->whereHas('positions', function (Builder $query) {
-            })->with('positions')->get();
+            ->whereHas('positions', function (Builder $query) {})->with('positions')->get();
 
         foreach ($orders as $order) {
             $positions = $order->positions;
