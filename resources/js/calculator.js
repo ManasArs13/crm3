@@ -324,6 +324,26 @@ $(document).ready(function(){
         $(formClass+'[name="state"]').val($val.find('.state').attr("data-id"));
     });
 
+    $("body").on("change", ".price-t",function(){
+        let $parent=$(this).parents(".CEB_block.services");
+        let price=$(this).val();
+        let id=$parent.attr("data-type");
+
+        $("#"+id).val(price);
+        $parent.find(".deliveryPrice_t").val(price);
+        calculation(".calcBeton ");
+    });
+
+    $("body").on("change", ".deliveryPrice_t",function(){
+        let $parent=$(this).parents(".CEB_block.services");
+        let price=$(this).val();
+        let id=$parent.attr("data-type");
+
+        $("#"+id).val(price);
+        $parent.find(".price-t").val(price);
+        calculation(".calcBeton ");
+    });
+
     function calcDelivery(formClass) {
         if (!$(formClass+'.deliveryPrice').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
