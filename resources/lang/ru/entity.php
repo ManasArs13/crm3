@@ -11,6 +11,8 @@ return [
     'products_categories_materials' => 'Категории Материал',
     'shiping_prices' => 'Прайс (доставка)',
     'users'=>'Пользователи',
+    'user'=>'Пользовател',
+    'add_user'=>'Добавить пользователя',
     "vehicle_types"=>'Типы ТС',
     "walls"=>"Высоты стенки",
     "options"=>"Опции",

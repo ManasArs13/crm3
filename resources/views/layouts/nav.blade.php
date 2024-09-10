@@ -13,7 +13,7 @@
 
                 <!-- main Links -->
                 <div class="hidden space-x-3 lg:flex">
-                @role('admin')
+                @role('admin|manager|dispatcher')
                     <x-nav-link :href="route('dashboard-3')" :active="request()->routeIs('dashboard') ||
                         request()->routeIs('dashboard-2') ||
                         request()->routeIs('dashboard-3')">
@@ -32,7 +32,9 @@
                     <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
                         Остатки
                     </x-nav-link>
+                @endrole
 
+                @role('admin')
                     {{-- Производство --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
@@ -63,16 +65,18 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
+                @endrole
 
-
+                @role('admin|manager|dispatcher')
                     {{-- Калькулятор --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-nav-link :href="route('calculator.block') . '#content-1'">
                             Калькулятор
                         </x-nav-link>
                     </div>
+                @endrole
 
-
+                @role('admin')
                     {{-- Справочник --}}
                     <div class="hidden md:flex md:items-center md:ms-1">
                         <x-dropdown align="left" width="48">
@@ -121,9 +125,11 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
+                @endrole
 
 
                     {{-- Прочее --}}
+                    @role('admin|manager|dispatcher')
                     <div class="hidden md:flex md:items-center md:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -143,20 +149,29 @@
                             </x-slot>
 
                             <x-slot name="content">
+
+                                @role('admin|manager')
                                 <x-dropdown-link :href="route('manager.index')">
                                     Сводка - Менеджеры
                                 </x-dropdown-link>
+                                @endrole
+
+                                @role('admin')
                                 <x-dropdown-link :href="route('report.counteparty')">
                                     Сводка - контрагенты
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('summary.index')">
                                     {{ __('title.summary') }}
                                 </x-dropdown-link>
+                                @endrole
 
+                                @role('admin|manager|dispatcher')
                                 <x-dropdown-link :href="route('debtors')">
                                     {{ __('title.debtors') }}
                                 </x-dropdown-link>
+                                @endrole
 
+                                @role('admin')
                                 <x-dropdown-link :href="route('incomings.index')">
                                     Приход
                                 </x-dropdown-link>
@@ -176,12 +191,14 @@
                                 <x-dropdown-link :href="route('shipment_products.index')">
                                     Позиции отгрузок
                                 </x-dropdown-link>
+                                @endrole
                             </x-slot>
                         </x-dropdown>
                     </div>
-
-
                     @endrole
+
+
+
 
 
 
@@ -231,6 +248,9 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
+                    <x-nav-link :href="route('users.all')" :active="request()->routeIs('users')">
+                        Пользователи
+                    </x-nav-link>
                     @endrole
 
                 </div>
@@ -296,6 +316,7 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden">
+        @role('admin|manager|dispatcher')
         <div class="py-1 px-2 flex flex-row border-b border-gray-200">
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('dashboard') }}">Главная</a>
@@ -307,6 +328,7 @@
                 <a href="{{ route('dashboard-3') }}">Бетон</a>
             </div>
         </div>
+
 
         <div class="py-1 px-2 flex flex-row border-b border-gray-200">
             <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
@@ -322,7 +344,9 @@
                 <a href="{{ route('residual.index') }}">Остатки</a>
             </div>
         </div>
+        @endrole
 
+        @role('operator')
         <div class="py-1 px-2 flex flex-row border-b border-gray-200">
             <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('operator.orders') }}">Оператор (Заказы)</a>
@@ -331,7 +355,9 @@
                 <a href="{{ route('operator.shipments') }}">Оператор (Отгрузки)</a>
             </div>
         </div>
+        @endrole
 
+        @role('admin')
         <div class="py-1 px-2 flex flex-row border-b border-gray-200">
             <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('product.index', ['type' => 'products']) }}">Товары</a>
@@ -379,13 +405,17 @@
                 <a href="{{ route('transportType.index') }}">Виды ТС</a>
             </div>
         </div>
+        @endrole
 
+        @role('admin|manager|dispatcher')
         <div class="py-1 px-2 flex flex-row border-b border-gray-200">
             <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
                 <a href="{{ route('calculator.block') }}">Калькулятор</a>
             </div>
         </div>
+        @endrole
 
+        @role('admin')
         <div class="py-1 px-2 flex flex-col border-b border-gray-200">
             <div class="flex flex-row my-1">
                 <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
@@ -407,16 +437,19 @@
                 </div>
             </div>
         </div>
+        @endrole
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
 
             <div class="py-1 px-2 flex flex-col border-b border-gray-200">
+                @role('admin')
                 <div class="flex flex-row">
                     <div class="basis-1/2  text-center mx-1 rounded-sm">
                         <a href="{{ route('option.index') }}">Опции</a>
                     </div>
                 </div>
+                @endrole
 
                 <div class="basis-full text-center mx-auto rounded-sm">
                     <form method="POST" action="{{ route('logout') }}">
