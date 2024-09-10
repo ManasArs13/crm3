@@ -59,6 +59,7 @@ class ShipmentController extends Controller
             "description",
             "delivery_price",
             "delivery_price_norm",
+            "saldo",
             "delivery_fee",
             "delivery_id",
             "transport_type_id",
@@ -70,7 +71,7 @@ class ShipmentController extends Controller
             "paid_sum",
             "updated_at",
             "weight",
-            'ms_link',
+            'ms_link'
         ];
 
         if (isset($request->columns)) {
