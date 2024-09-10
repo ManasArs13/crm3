@@ -13,6 +13,7 @@ use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Amo\AmoOrderController;
+use App\Http\Controllers\DebtorController;
 use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
@@ -177,7 +178,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
 
     Route::get('/summary', [SummaryController::class, 'index'])->name('summary.index');
-    Route::get('/shipments/debtors', [ShipmentController::class, 'getDebtors'])->name('shipments.debtors');
+    Route::get('/shipments/debtors', [DebtorController::class, 'index'])->name('debtors');
 });
 
 
