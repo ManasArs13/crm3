@@ -36,13 +36,13 @@
                 </div>
                 <div class="sim">
                     <div class="input-sim input-weight">
-                        <input type="text" class="weight-t input input2" readonly value="1">
+                        <input type="text" class="weight-t input input2"  readonly value="1">
                     </div>
                     <div class="input-sim input-price">
-                        <input type="text" class="price-t input input2" readonly value="{{$type->price}}">
+                        <input type="text" class="price-t input input2" value="{{$type->price}}">
                     </div>
                     <div class="input-sim input-sum">
-
+                        <input type="text"  class="input input2 deliveryPrice_t" value={{$type->price}} >
                     </div>
                 </div>
             </div>
@@ -55,7 +55,6 @@
             @foreach ($servicesByBeton as $type)
             <div class="flex text-center">
                     <input name="services[{{$type->ms_id}}]" id="service_{{$type->id}}" class="service border border-solid border-neutral-300 rounded" type="checkbox" value="{{$type->price}}">
-                    {{-- <input name="services1[{{$type->ms_id}}]" id="service_{{$type->id}}" class="border border-solid border-neutral-300 rounded" type="checkbox" value="{{ json_encode(["price"=> $type->price, "quantity"=>1]) }}"> --}}
                     <label for="service_{{$type->id}}">{{$type->name}}</label>
             </div>
             @endforeach

@@ -153,7 +153,7 @@
                                     {{ __('title.summary') }}
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('shipments.debtors')">
+                                <x-dropdown-link :href="route('debtors')">
                                     {{ __('title.debtors') }}
                                 </x-dropdown-link>
 
