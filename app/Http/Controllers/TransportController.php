@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterRequest;
+use App\Http\Requests\Transport\TransportStoreRequest;
+use App\Http\Requests\Transport\TransportUpdateRequest;
 use App\Models\Transport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -12,16 +14,38 @@ class TransportController extends Controller
     public function index(FilterRequest $request)
     {
         $entityItems = Transport::query();
-        $columns = Schema::getColumnListing('transports');
         $needMenuForItem = true;
         $urlEdit = "transport.edit";
-        $urlShow = "transport.show";
         $urlDelete = "transport.destroy";
         $urlCreate = "transport.create";
-        $urlFilter = 'transport.filter';
-        $entity = 'transports';
+        $urlFilter = 'transport.index';
+        $entityName = 'transports';
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
+
+        // Columns
+        $all_columns = [
+            "id",
+            "name",
+            'description',
+            'created_at',
+            'updated_at',
+            'tonnage',
+            'contact_id',
+            'ms_id'
+        ];
+
+        if (isset($request->columns)) {
+            $selected = $request->columns;
+        } else {
+            $selected = [
+                "id",
+                "name",
+                'description',
+                'tonnage',
+                'contact_id',
+            ];
+        }
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
@@ -38,24 +62,26 @@ class TransportController extends Controller
         $resColumns = [];
         $resColumnsAll = [];
 
-        foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
+        foreach ($all_columns as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
         }
 
         $filters = [];
 
-        return view("own.index", compact(
+        return view("transport.index", compact(
             'entityItems',
             'filters',
             "resColumns",
             "resColumnsAll",
             "needMenuForItem",
-            "urlShow",
             "urlDelete",
             "urlEdit",
             "urlCreate",
-            "entity",
+            "entityName",
             'urlFilter',
             'orderBy',
             'selectColumn'
@@ -64,145 +90,78 @@ class TransportController extends Controller
 
     public function create()
     {
-        $entityItem = new Transport();
-        $columns = Schema::getColumnListing('transports');
-
-
-        $entity = 'transports';
+        $entity = 'Транспорт';
         $action = "transport.store";
 
-        return view('own.create', compact('entityItem', 'columns', 'action', 'entity'));
+        $searchContacts = "api.get.contact";
+
+        return view('transport.create', compact('action', 'entity', 'searchContacts'));
     }
 
-    public function store(Request $request)
+    public function store(TransportStoreRequest $request)
     {
-        Transport::create($request->post());
-        return redirect()->route("transport.index");
+        $validated = $request->validated();
+
+        $transport = new Transport($validated);
+
+        $transport->save();
+
+        return redirect()->route("transport.index")
+            ->with('success', "Транспорт $transport->name добавлен");
     }
 
     public function show(string $id)
     {
-        $entityItem = Transport::findOrFail($id);
-        $columns = Schema::getColumnListing('transports');
-        return view("own.show", compact('entityItem', 'columns'));
+        return redirect()->route('transport.edit', ['transport' => $id]);
     }
 
     public function edit(string $id)
     {
-        $entityItem = Transport::find($id);
-        $columns = Schema::getColumnListing('transports');
-        $entity = 'transports';
-        $action = "transport.update";
+        $transport = Transport::find($id);
 
-        return view("own.edit", compact('entityItem', 'columns', 'action', 'entity'));
+        if (!$transport) {
+            return redirect()->route("transport.index")
+                ->with('warning', "Транспорт не найден");
+        }
+        $entity = "Транспорт $transport->name";
+        $action = "transport.update";
+        $searchContacts = "api.get.contact";
+
+        return view("transport.edit", compact('transport', 'entity', 'action', 'searchContacts'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(TransportUpdateRequest $request, string $id)
     {
-        $entityItem = Transport::find($id);
-        $entityItem->fill($request->post())->save();
+        $validated = $request->validated();
 
-        return redirect()->route('transport.index');
+        $transport = Transport::find($id);
+
+        if (!$transport) {
+            return redirect()->route("transport.index")
+                ->with('warning', "Транспорт не найден");
+        }
+
+        $transport->update($validated);
+
+        $transport->save();
+
+        return redirect()->route("transport.edit", ['transport' => $transport->id])
+            ->with('success', "Транспорт $transport->name обнавлён");
     }
 
     public function destroy(string $id)
     {
-        $entityItem = Transport::find($id);
-        $entityItem->delete();
+        $transport = Transport::find($id);
 
-        return redirect()->route('transports.index');
-    }
-    public function filter(FilterRequest $request)
-    {
-        $needMenuForItem = true;
-        $urlEdit = "transport.edit";
-        $urlShow = "transport.show";
-        $urlDelete = "transport.destroy";
-        $urlCreate = "transport.create";
-        $urlFilter = 'transport.filter';
-        $urlReset = 'transport.index';
-        $entity = 'transports';
-        $entityItems = Transport::query();
-        $orderBy  = $request->orderBy;
-        $selectColumn = $request->column;
-
-        /* Колонки */
-        $columns = Schema::getColumnListing('transports');
-        $resColumns = [];
-        $resColumnsAll = [];
-
-        /* Колонки для меню */
-        foreach ($columns as $column) {
-            $resColumnsAll[$column] = [
-                'name_rus' => trans("column." . $column),
-                'checked' => in_array($column, $request->columns ? $request->columns : []) ? true : false
-            ];
+        if (!$transport) {
+            return redirect()->route("transport.index")
+                ->with('warning', "Транспорт не найден");
         }
 
-        /* Колонки для отображения */
-        if (isset($request->columns)) {
-            $requestColumns = $request->columns;
-            $requestColumns[] = "id";
-            $columns = $requestColumns;
-            $entityItems = $entityItems->select($requestColumns);
-        }
+        $deletedName = $transport->name;
+        $transport->delete();
 
-        foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-        }
-
-        /* Фильтры для отображения */
-        $categoryFilterValue = 'all';
-
-        if (isset($request->filters)) {
-            foreach ($request->filters as $key => $value) {
-                if ($key == 'category_id') {
-                    if ($value !== 'all') {
-                        $entityItems
-                            ->where($key, $value);
-                    }
-                    $categoryFilterValue = $value;
-                } else if ($key == 'created_at' || $key == 'updated_at') {
-                    $entityItems
-                        ->where($key, '>=', $value['min'] . ' 00:00:00')
-                        ->where($key, '<=', $value['max'] . ' 23:59:59');
-                } else if ($key == 'weight_kg' || $key == 'price') {
-                    $entityItems
-                        ->where($key, '>=', $value['min'])
-                        ->where($key, '<=', $value['max']);
-                }
-            }
-        }
-
-        /* Сортировка */
-        if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
-            $orderBy = 'desc';
-        } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
-            $orderBy = 'asc';
-        } else {
-            $orderBy = 'desc';
-            $entityItems =   $entityItems->paginate(50);
-        }
-        
-
-        $filters = [];
-
-        return view("own.index", compact(
-            'entityItems',
-            'filters',
-            "resColumns",
-            "resColumnsAll",
-            "needMenuForItem",
-            "urlShow",
-            "urlDelete",
-            "urlEdit",
-            "urlCreate",
-            "entity",
-            'urlFilter',
-            'urlReset',
-            'orderBy'
-        ));
+        return redirect()->route("transport.index")
+            ->with('success', "Транспорт $deletedName удалён");
     }
 }

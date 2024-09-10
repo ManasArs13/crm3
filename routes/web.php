@@ -112,7 +112,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
     // Фильтры
     Route::get('/products/filter', [ProductController::class, 'filter'])->name('product.filter');
-    Route::get('/transports/filter', [TransportController::class, 'filter'])->name('transport.filter');
     Route::get('/transportTypes/filter', [TransportTypeController::class, 'filter'])->name('transportType.filter');
     Route::get('/contactAmos/filter', [ContactAmoController::class, 'filter'])->name('contactAmo.filter');
     Route::get('/contacts/filter', [ContactController::class, 'filter'])->name('contact.filter');

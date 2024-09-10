@@ -47,4 +47,9 @@ class Contact extends Model
     {
         return $this->hasOne(Manager::class, 'id', 'manager_id');
     }
+
+    public function transport()
+    {
+        return $this->hasOne(Transport::class);
+    }
 }
