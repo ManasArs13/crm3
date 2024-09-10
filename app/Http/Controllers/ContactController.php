@@ -285,8 +285,8 @@ class ContactController extends Controller
         $contacts = Contact::query()
             ->where('name', 'LIKE', '%' . $request->query('term') . '%')
             ->orWhere('id', 'LIKE',  '%' . $request->query('term') . '%')
-            ->orWhere('phone', 'LIKE',  '%' . $request->query('term') . '%')
-            ->orWhere('email', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orWhere('description', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orWhere('ms_id', 'LIKE',  '%' . $request->query('term') . '%')
             ->orderByDesc('id')->take(10)->get();
 
         return response()->json($contacts);
