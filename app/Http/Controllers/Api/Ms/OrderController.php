@@ -34,11 +34,6 @@ class OrderController extends Controller
                 unset($array["agent"]["name"]);
             }
 
-            if (count($array["services"])>0){
-
-
-            }
-
 
             if (!isset($array["state"]) || $array["state"] == null)
                 throw new \Exception(trans("error.noState"));

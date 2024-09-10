@@ -106,20 +106,22 @@ class OrderMsService
                 ]
             ];
 
-            foreach($msOrder["services"] as $key=>$service){
-                
-                $array["positions"][] = [
-                    "quantity" => 1.0,
-                    "price" => (float)$service*100,
-                    'vat' => (int)$vat,
-                    "assortment" => [
-                        "meta" => [
-                            "href" => $urlService . $key,
-                            "type" => "service",
-                            "mediaType" => "application/json"
+            if (\Arr::exists($msOrder, "services")){
+                foreach($msOrder["services"] as $key=>$service){
+                    
+                    $array["positions"][] = [
+                        "quantity" => 1.0,
+                        "price" => (float)$service*100,
+                        'vat' => (int)$vat,
+                        "assortment" => [
+                            "meta" => [
+                                "href" => $urlService . $key,
+                                "type" => "service",
+                                "mediaType" => "application/json"
+                            ]
                         ]
-                    ]
-                ];
+                    ];
+                }
             }
         }
 
