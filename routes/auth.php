@@ -17,10 +17,14 @@ Route::middleware('guest')->group(function () {
 
     // Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
+    Route::get('{any?}', [AuthenticatedSessionController::class, 'create'])
+        ->whereIn('any', ['login', null])  // null позволяет обработать '/'
+        ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('{any?}', [AuthenticatedSessionController::class, 'store'])
+        ->whereIn('any', ['login', null])  // null позволяет обработать '/'
+        ->name('login');
+
 
     // Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
     //             ->name('password.request');

@@ -53,8 +53,10 @@ class OrderService implements EntityInterface
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
             if (Arr::exists($row, 'deleted')) {
-                $entity->positions()->delete();
-                $entity->delete();
+                if ($entity->ms_id === null) {
+                    $entity->positions()->delete();
+                    $entity->delete();
+                }
             } else {
                 if ($entity->ms_id === null) {
                     $entity->ms_id = $row['id'];
