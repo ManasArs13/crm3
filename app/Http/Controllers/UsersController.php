@@ -32,7 +32,7 @@ class UsersController extends Controller
     public function store(UserUpdateRequest $request){
         $user = User::Create([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => $request->login,
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole($request->role);
@@ -49,7 +49,7 @@ class UsersController extends Controller
         $user = User::find($request->managment);
         $user->Update([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => $request->login,
         ]);
         $user->syncRoles($request->role);
         return redirect()->route('users.all');

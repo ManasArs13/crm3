@@ -23,9 +23,9 @@
                             </div>
                         </div>
                         <div class="flex flex-row mb-1">
-                            <label for="input_email" class="font-bold flex basis-1/3">Email</label>
+                            <label for="input_email" class="font-bold flex basis-1/3">Login</label>
                             <div class="flex basis-2/3">
-                                <input type="text" class="rounded w-full" id="input_email" name="email" placeholder="example@gmail.com">
+                                <input type="text" class="rounded w-full" id="input_email" name="login" placeholder="Operator05">
                             </div>
                         </div>
                         <div class="flex flex-row mb-1">
