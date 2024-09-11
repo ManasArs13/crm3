@@ -285,6 +285,22 @@ class DemandService implements EntityInterface
             return $deliveryPrice;
     }
 
+    public function calcLateAndNoShipmentForTheOrder($date){
+        $orders=Order::leftJoin(DB::raw('(select order_id , min(created_at) as moment from shipments where order_id is not null group by order_id) as t0'),'t0.order_id', '=', 'orders.id')
+              ->whereNotIn("orders.status_id",[1,7])
+              ->whereNotNull("date_plan")
+              ->whereRaw("date_plan<now()")
+              ->where("date_plan",">", $date)
+              ->where(function($query) {
+                $query->whereRaw("t0.moment>orders.date_plan or t0.moment is null");
+            })->get();
+
+        foreach ($orders as $order){
+            $order->late=1;
+            $order->save();
+        }
+    }
+
     /**
      * @param $url
      * @return string
