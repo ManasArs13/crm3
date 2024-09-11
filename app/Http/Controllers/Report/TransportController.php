@@ -76,8 +76,8 @@ class TransportController extends Controller
             'price_norm',
             "price",
             "delivery_fee",
-            "difference_norm",
-            'difference_norm_percent',
+            // "difference_norm",
+            // 'difference_norm_percent',
             "difference_price",
             'difference_price_percent',
         ];
@@ -183,8 +183,8 @@ class TransportController extends Controller
             'price_norm',
             "price",
             "delivery_fee",
-            "difference_norm",
-            'difference_norm_percent',
+            // "difference_norm",
+            // 'difference_norm_percent',
             "difference_price",
             'difference_price_percent',
         ];
@@ -291,8 +291,8 @@ class TransportController extends Controller
             'price_norm',
             "price",
             "delivery_fee",
-            "difference_norm",
-            'difference_norm_percent',
+            // "difference_norm",
+            // 'difference_norm_percent',
             "difference_price",
             'difference_price_percent',
         ];

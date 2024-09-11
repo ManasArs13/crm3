@@ -96,6 +96,16 @@
 
                             @foreach ($resColumns as $key => $column)
                                 <th scope="col" class="px-2 py-3  hover:cursor-pointer" id="th_{{ $key }}"
+                                    @switch($key)
+                                        @case('name')
+                                            style="text-align:left"
+                                            @break
+                                        @case('contact_name')
+                                            style="text-align:left"
+                                            @break
+                                        @default
+                                            style="text-align:right"
+                                    @endswitch
                                     onclick="orderBy(`{{ $key }}`)">{{ $column }}
                                 </th>
                             @endforeach
