@@ -48,29 +48,29 @@
                 <table>
                     <thead>
                         <tr class="font-light bg-neutral-200">
-                            <th colspan="4" class="font-light px-2 py-3"></th>
-                            <th class="border-l-2 px-2 py-3">Начало</th>
-                            <th class="border-x-2 px-2 py-3">Приход</th>
-                            <th class="border-r-2 px-2 py-3">Расход</th>
-                            <th class="px-2">Конец</th>
+                            <th colspan="4" class="font-light px-1 py-3"></th>
+                            <th class="border-l-2 px-1 py-3">Начало</th>
+                            <th class="border-x-2 px-1 py-3">Приход</th>
+                            <th class="border-r-2 px-1 py-3">Расход</th>
+                            <th class="px-1">Конец</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($materials as $material)
                             <tr class="border-b-2">
-                                <td class="px-2 m-2 py-2 max-w-[210px] truncate" colspan="4">
+                                <td class="px-1 m-2 py-2 max-w-[150px] truncate" colspan="4">
                                     {{ $material->short_name }}
                                 </td>
-                                <td class="px-2 m-2 border-x-2 text-right py-2" colspan="1">
+                                <td class="px-1 m-2 border-x-2 text-right py-2" colspan="1">
                                     {{ round($material->residual / 1000) }}
                                 </td>
-                                <td class="px-2 m-2 border-x-2 text-right py-2" colspan="1">
+                                <td class="px-1 m-2 border-x-2 text-right py-2" colspan="1">
                                     -
                                 </td>
-                                <td class="px-2 m-2 border-x-2 text-right py-2" colspan="1">
+                                <td class="px-1 m-2 border-x-2 text-right py-2" colspan="1">
                                     {{ $material->rashod ? round($material->rashod / 1000) : 0 }}
                                 </td>
-                                <td class="px-2 m-2 text-right py-2" colspan="1">
+                                <td class="px-1 m-2 text-right py-2" colspan="1">
                                     {{ round(($material->residual -  ($material->rashod ? $material->rashod : 0) ) / 1000) }}
                                 </td>
                             </tr>
