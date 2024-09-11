@@ -20,6 +20,7 @@ use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Report\CounterpartyController;
+use App\Http\Controllers\Report\TransportController as ReportTransportController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipingPriceController;
 use App\Http\Controllers\ShipmentController;
@@ -29,20 +30,20 @@ use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\SummaryController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
-Route::get('/blocks_materials', [WelcomeController::class, 'blocksMaterials'])->name('welcome.blocksMaterials');
-Route::get('/blocks_categories', [WelcomeController::class, 'blocksCategories'])->name('welcome.blocksCategories');
-Route::get('/blocks_products', [WelcomeController::class, 'blocksProducts'])->name('welcome.blocksProducts');
-Route::get('/concretes_materials', [WelcomeController::class, 'concretesMaterials'])->name('welcome.concretesMaterials');
-Route::get('/paint', [WelcomeController::class, 'paint'])->name('welcome.paint');
-Route::get('/processing', [WelcomeController::class, 'processing'])->name('welcome.processing');
+//Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
+//Route::get('/blocks_materials', [WelcomeController::class, 'blocksMaterials'])->name('welcome.blocksMaterials');
+//Route::get('/blocks_categories', [WelcomeController::class, 'blocksCategories'])->name('welcome.blocksCategories');
+//Route::get('/blocks_products', [WelcomeController::class, 'blocksProducts'])->name('welcome.blocksProducts');
+//Route::get('/concretes_materials', [WelcomeController::class, 'concretesMaterials'])->name('welcome.concretesMaterials');
+//Route::get('/paint', [WelcomeController::class, 'paint'])->name('welcome.paint');
+//Route::get('/processing', [WelcomeController::class, 'processing'])->name('welcome.processing');
 
-// Калькулятор
-Route::get('/calculator', [CalculatorController::class, 'block'])->name('calculator.block');
+
 
 
 Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {
@@ -51,15 +52,60 @@ Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {
     Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
 });
 
+Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function () {
+    // Moy Sklad
+    Route::resources([
+        'manager' => ManagerController::class
+    ]);
+});
+
+Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard-2', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-2');
+    Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
+
+    // Moy Sklad
+    Route::resources([
+        'order' => OrderController::class,
+        'shipment' => ShipmentController::class,
+    ]);
+
+    // Остатки
+    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
+    Route::get('/residuals/blocks_materials', [ResidualController::class, 'blocksMaterials'])->name('residual.blocksMaterials');
+    Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
+    Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
+    Route::get('/residuals/concretes_materials', [ResidualController::class, 'concretesMaterials'])->name('residual.concretesMaterials');
+    Route::get('/residuals/paint', [ResidualController::class, 'paint'])->name('residual.paint');
+    Route::get('/residuals/processing', [ResidualController::class, 'processing'])->name('residual.processing');
+
+    // Калькулятор
+    Route::get('/calculator', [CalculatorController::class, 'block'])->name('calculator.block');
+
+    // Должники
+    Route::get('/shipments/debtors', [DebtorController::class, 'index'])->name('debtors');
+});
+
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard-2', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-2');
-    Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
+    // Users
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [UsersController::class, 'users'])->name('all');
+        Route::get('/{role}', [UsersController::class, 'users'])->where('role', 'operator|manager|dispatcher|carrier')->name('roles');
+
+
+        Route::resource('managment', UsersController::class)->only([
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy'
+        ]);
+    });
 
     Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
@@ -67,8 +113,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
     // Moy Sklad
     Route::resources([
-        'order' => OrderController::class,
-        'shipment' => ShipmentController::class,
         'product' => ProductController::class,
         'transport' => TransportController::class,
         'transportType' => TransportTypeController::class,
@@ -81,7 +125,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         'order_positions' => OrderPositionController::class,
         'shipment_products' => ShipmentProductController::class,
         'supply'    => SupplyController::class,
-        'manager' => ManagerController::class
     ]);
 
     // Amo CRM
@@ -100,9 +143,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::name('report.')->group(function () {
 
         // Контрагенты
-        Route::get('/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
-        Route::get('/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
-        Route::get('/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+        Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
+        Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
+        Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+
+        // Транспорт
+        Route::get('/report/transport', [ReportTransportController::class, 'index'])->name('transport');
+        Route::get('/report/transport_block', [ReportTransportController::class, 'block'])->name('transport.block');
+        Route::get('/report/transport_concrete', [ReportTransportController::class, 'concrete'])->name('transport.concrete');
     });
 
 
@@ -123,14 +171,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
 
 
-    // Остатки
-    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
-    Route::get('/residuals/blocks_materials', [ResidualController::class, 'blocksMaterials'])->name('residual.blocksMaterials');
-    Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
-    Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
-    Route::get('/residuals/concretes_materials', [ResidualController::class, 'concretesMaterials'])->name('residual.concretesMaterials');
-    Route::get('/residuals/paint', [ResidualController::class, 'paint'])->name('residual.paint');
-    Route::get('/residuals/processing', [ResidualController::class, 'processing'])->name('residual.processing');
 
     // Приёмки
     // Route::resource('supplies', SupplyController::class)->only([
@@ -177,7 +217,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
 
     Route::get('/summary', [SummaryController::class, 'index'])->name('summary.index');
-    Route::get('/shipments/debtors', [DebtorController::class, 'index'])->name('debtors');
 });
 
 

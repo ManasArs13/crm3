@@ -169,4 +169,10 @@ return [
   "percent_all_orders" => '%',
   "percent_success_orders" => '%',
   "percent_no_success_orders" => '%',
+  'contact_name' => 'Перевозчик',
+  'price_norm' => 'Норма перевозки',
+  'difference_norm' => 'Отклонение от нормы',
+  "difference_norm_percent" => 'Отклонение от нормы %',
+  'difference_price' => 'Отклонение от цены',
+  "difference_price_percent" => 'Отклонение от цены %',
 ];
