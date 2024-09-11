@@ -148,9 +148,29 @@ class DashboardService
         $entity = 'orders';
         $resColumns = [];
 
+        $categories = Category::query()->where('building_material', Category::BLOCK)->get();
+
+        foreach ($categories as $category) {
+            $sum_residual =  Product::query()->where('type', Product::PRODUCTS)->where('category_id', $category->id)->get()->sum('residual');
+            $residual_norm = Product::query()->where('type', Product::PRODUCTS)->where('category_id', $category->id)->get()->sum('residual_norm');
+            if ($residual_norm !== 0) {
+                $remainder = $sum_residual / $residual_norm * 100;
+                $category->remainder = round($remainder, 1);
+            }
+        }
+
         foreach ($this->columns as $column) {
             $resColumns[$column] = trans("column." . $column);
         }
+
+
+
+
+
+
+
+
+
 
         return view('dashboard.index', compact(
             'urlShow',
@@ -158,6 +178,7 @@ class DashboardService
             "resColumns",
             "entity",
             'products',
+            'categories',
             'materials',
             'dateNext',
             'datePrev',

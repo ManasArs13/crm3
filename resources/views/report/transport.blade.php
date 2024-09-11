@@ -96,6 +96,16 @@
 
                             @foreach ($resColumns as $key => $column)
                                 <th scope="col" class="px-2 py-3  hover:cursor-pointer" id="th_{{ $key }}"
+                                    @switch($key)
+                                        @case('name')
+                                            style="text-align:left"
+                                            @break
+                                        @case('contact_name')
+                                            style="text-align:left"
+                                            @break
+                                        @default
+                                            style="text-align:right"
+                                    @endswitch
                                     onclick="orderBy(`{{ $key }}`)">{{ $column }}
                                 </th>
                             @endforeach
@@ -103,12 +113,20 @@
                     </thead>
                     <tbody>
                         @php
-                            $TotalCountShipments = 0;
+                            $total_count_shipments = 0;
+                            $total_price_norm = 0;
+                            $total_price = 0;
+                            $total_delivery_fee = 0;
+                            $total_difference_norm = 0;
+                            $total_difference_price = 0;
                         @endphp
 
                         @foreach ($entityItems as $entityItem)
                             @php
-                                $TotalCountShipments += $entityItem->shipments_count ?? 0;
+                                $total_count_shipments += $entityItem->shipments_count;
+                                $total_price_norm += $entityItem->price_norm;
+                                $total_price += $entityItem->price;
+                                $total_delivery_fee += $entityItem->delivery_fee;
                             @endphp
                         @endforeach
 
@@ -123,13 +141,13 @@
                                 @foreach ($resColumns as $column => $title)
                                     @switch($column)
                                         @case('contact_name')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-3 text-left">
+                                            <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-left">
                                                 {{ $entityItem->contact->name ?? '-' }}
                                             </td>
                                         @break
 
                                         @case('name')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-3 text-left">
+                                            <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-left">
                                                 <a href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->ms_id }}"
                                                     target="_blank" class="text-blue-700 hover:text-blue-500">
                                                     {{ $entityItem->$column }}
@@ -151,7 +169,7 @@
 
                                         @case('price')
                                             <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                                {{ $entityItem->delivery_price ?? 0 }}
+                                                {{ $entityItem->price ?? 0 }}
                                             </td>
                                         @break
 
@@ -163,14 +181,18 @@
 
                                         @case('difference_norm')
                                             <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                                {{ $entityItem->saldo ?? 0 }}
-                                            </td>
+                                                {{ $entityItem->delivery_fee - $entityItem->price_norm ?? 0 }}</td>
                                         @break
 
                                         @case('difference_norm_percent')
                                             <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                                @if ($entityItem->saldo && $entityItem->saldo !== 0 && $entityItem->price_norm && $entityItem->price_norm !== 0)
-                                                    {{ round(100 / ($entityItem->price_norm / +$entityItem->saldo)) }} %
+                                                @if (
+                                                    $entityItem->delivery_fee &&
+                                                        $entityItem->delivery_fee !== 0 &&
+                                                        $entityItem->price_norm &&
+                                                        $entityItem->price_norm !== 0 &&
+                                                        abs($entityItem->delivery_fee - $entityItem->price_norm) !== 0)
+                                                    {{ round((abs($entityItem->delivery_fee - $entityItem->price_norm) / $entityItem->delivery_fee) * 100) }}%
                                                 @else
                                                     0%
                                                 @endif
@@ -179,8 +201,7 @@
 
                                         @case('difference_price')
                                             <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                                {{ abs($entityItem->delivery_price - $entityItem->delivery_fee) ?? 0 }}
-                                            </td>
+                                                {{ $entityItem->delivery_fee - $entityItem->price ?? 0 }}</td>
                                         @break
 
                                         @case('difference_price_percent')
@@ -188,10 +209,10 @@
                                                 @if (
                                                     $entityItem->delivery_fee &&
                                                         $entityItem->delivery_fee !== 0 &&
-                                                        $entityItem->pdelivery_price &&
-                                                        $entityItem->delivery_price !== 0)
-                                                    {{ round(100 / ($entityItem->delivery_price / abs($entityItem->delivery_price - $entityItem->delivery_fee))) }}
-                                                    %
+                                                        $entityItem->price &&
+                                                        $entityItem->price !== 0 &&
+                                                        abs($entityItem->delivery_fee - $entityItem->price) !== 0)
+                                                    {{ round((abs($entityItem->delivery_fee - $entityItem->price) / $entityItem->delivery_fee) * 100) }}%
                                                 @else
                                                     0%
                                                 @endif
@@ -209,21 +230,53 @@
                     <tbody>
                         <tr class="border-b-2 bg-gray-100">
 
-                            <td class="break-all text-right overflow-auto px-2 py-3">
+                            <td class="break-all text-right overflow-auto px-6 py-3">
                                 ВСЕГО:
                             </td>
 
                             @foreach ($resColumns as $column => $title)
                                 @switch($column)
                                     @case('count_shipments')
-                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                            {{ $TotalCountShipments ?? 0 }}
+                                        <td class="break-all w-[5rem] overflow-auto px-2 py-3 text-left">
+                                            {{ $total_count_shipments ?? 0 }}
                                         </td>
                                     @break
 
-                                    @default
-                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
+                                    @case('price_norm')
+                                        <td class="break-all w-[4rem] overflow-auto px-2 py-3 text-left">
+                                            {{ $total_price_norm ?? 0 }}
                                         </td>
+                                    @break
+
+                                    @case('price')
+                                        <td class="break-all w-[8rem] overflow-auto px-2 py-3 text-left">
+                                            {{ $total_price ?? 0 }}
+                                        </td>
+                                    @break
+
+                                    @case('delivery_fee')
+                                        <td class="break-all w-[8rem] overflow-auto px-2 py-3 text-left">
+                                            {{ $total_delivery_fee ?? 0 }}
+                                        </td>
+                                    @break
+
+                                    @case('difference_norm')
+                                        <td class="break-all w-[16rem] overflow-auto px-2 py-3 text-left">
+                                            {{ $total_delivery_fee - $total_price_norm ?? 0 }}</td>
+                                    @break
+
+                                    @case('difference_price_norm_percent')
+                                    @break
+
+                                    @case('difference_price')
+                                        <td class="break-all w-[11rem] overflow-auto px-2 py-3 text-left">
+                                            {{ $total_delivery_fee - $total_price ?? 0 }}</td>
+                                    @break
+
+                                    @case('difference_price_percent')
+                                    @break
+
+                                    @default
                                 @endswitch
                             @endforeach
 
@@ -247,8 +300,6 @@
             let th_price_norm = document.getElementById('th_price_norm');
             let th_price = document.getElementById('th_price');
             let th_delivery_fee = document.getElementById('th_delivery_fee');
-            let th_difference_norm = document.getElementById('th_difference_norm');
-            let th_difference_norm_percent = document.getElementById('th_difference_norm_percent');
             let th_difference_price = document.getElementById('th_difference_price');
             let th_difference_price_percent = document.getElementById('th_difference_price_percent');
 
@@ -256,230 +307,174 @@
                 case 'name':
                     if (th_name.innerText == `Имя ↓`) {
                         th_name.innerText = `Имя ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[0].innerText > rowB.cells[0].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText > rowB.cells[1].innerText ? 1 : -
                             1);
                     } else {
                         th_name.innerText = `Имя ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[0].innerText < rowB.cells[0].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText < rowB.cells[1].innerText ? 1 : -
                             1);
                     }
 
                     th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
+                    th_count_shipments.innerText = 'Отгрузок';
+                    th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    th_delivery_fee.innerText = 'Стоимость';
+                    th_difference_price.innerText = '- от цены';
+                    th_difference_price_percent.innerText = '- от цены %';
                     break;
 
                 case 'contact_name':
                     if (th_contact_name.innerText == `Перевозчик ↓`) {
                         th_contact_name.innerText = `Перевозчик ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText > rowB.cells[1].innerText ? 1 : -
-                            1);
-                    } else {
-                        th_contact_name.innerText = `Перевозчик ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText < rowB.cells[1].innerText ? 1 : -
-                            1);
-                    }
-
-                    th_name.innerText = `Имя`;
-                    //    th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = `Количество отгрузок`;
-                    th_price_norm.innerText = 'Норма перевозки';
-                    th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
-                    break;
-
-                case 'count_shipments':
-                    if (th_count_shipments.innerText == `Количество отгрузок ↓`) {
-                        th_count_shipments.innerText = `Количество отгрузок ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText > rowB.cells[2].innerText ? 1 : -
                             1);
                     } else {
-                        th_count_shipments.innerText = `Количество отгрузок ↓`;
+                        th_contact_name.innerText = `Перевозчик ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText < rowB.cells[2].innerText ? 1 : -
                             1);
                     }
 
-                    th_name.innerText = "Имя";
-                    th_contact_name.innerText = 'Перевозчик';
-                    // th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
+                    th_name.innerText = `Имя`;
+                    th_count_shipments.innerText = `Отгрузок`;
+                    th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    th_delivery_fee.innerText = 'Стоимость';
+                    th_difference_price.innerText = '- от цены';
+                    th_difference_price_percent.innerText = '- от цены %';
                     break;
 
-                case 'price_norm':
-                    if (th_price_norm.innerText == `Норма перевозки ↓`) {
-                        th_price_norm.innerText = `Норма перевозки ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText > rowB.cells[3].innerText ? 1 : -
+                case 'count_shipments':
+                    if (th_count_shipments.innerText == `Отгрузок ↓`) {
+                        th_count_shipments.innerText = `Отгрузок ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3]
+                                .innerText) ? 1 : -
                             1);
                     } else {
-                        th_price_norm.innerText = `Норма перевозки ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText < rowB.cells[3].innerText ? 1 : -
+                        th_count_shipments.innerText = `Отгрузок ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3]
+                                .innerText) ? 1 : -
                             1);
                     }
 
                     th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    //th_price_norm.innerText = 'Норма перевозки';
+                    th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    th_delivery_fee.innerText = 'Стоимость';
+                    th_difference_price.innerText = '- от цены';
+                    th_difference_price_percent.innerText = '- от цены %';
+                    break;
+
+                case 'price_norm':
+                    if (th_price_norm.innerText == `Норма ↓`) {
+                        th_price_norm.innerText = `Норма ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) > parseInt(rowB.cells[4]
+                                .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_price_norm.innerText = `Норма ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) < parseInt(rowB.cells[4]
+                                .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_name.innerText = "Имя";
+                    th_contact_name.innerText = 'Перевозчик';
+                    th_count_shipments.innerText = 'Отгрузок';
+                    th_price.innerText = 'Цена';
+                    th_delivery_fee.innerText = 'Стоимость';
+                    th_difference_price.innerText = '- от цены';
+                    th_difference_price_percent.innerText = '- от цены %';
                     break;
 
                 case 'price':
                     if (th_price.innerText == `Цена ↓`) {
                         th_price.innerText = `Цена ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText > rowB.cells[4].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) > parseInt(rowB.cells[5]
+                                .innerText) ? 1 : -
                             1);
                     } else {
                         th_price.innerText = `Цена ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText < rowB.cells[4].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) < parseInt(rowB.cells[5]
+                                .innerText) ? 1 : -
                             1);
                     }
 
                     th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
-                    //th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    th_count_shipments.innerText = 'Отгрузок';
+                    th_price_norm.innerText = 'Норма';
+                    th_delivery_fee.innerText = 'Стоимость';
+                    th_difference_price.innerText = '- от цены';
+                    th_difference_price_percent.innerText = '- от цены %';
                     break;
 
                 case 'delivery_fee':
-                    if (th_delivery_fee.innerText == `Стоимость доставки ↓`) {
-                        th_delivery_fee.innerText = `Стоимость доставки ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[5].innerText > rowB.cells[5].innerText ? 1 : -
+                    if (th_delivery_fee.innerText == `Стоимость ↓`) {
+                        th_delivery_fee.innerText = `Стоимость ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[6].innerText) > parseInt(rowB.cells[6]
+                                .innerText) ? 1 : -
                             1);
                     } else {
-                        th_delivery_fee.innerText = `Стоимость доставки ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[5].innerText < rowB.cells[5].innerText ? 1 : -
+                        th_delivery_fee.innerText = `Стоимость ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[6].innerText) < parseInt(rowB.cells[6]
+                                .innerText) ? 1 : -
                             1);
                     }
 
                     th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
+                    th_count_shipments.innerText = 'Отгрузок';
+                    th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
-                    //th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    th_difference_price.innerText = '- от цены';
+                    th_difference_price_percent.innerText = '- от цены %';
                     break;
 
-                case 'difference_norm':
-                    if (th_difference_norm.innerText == `Отклонение от нормы ↓`) {
-                        th_difference_norm.innerText = `Отклонение от нормы ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[6].innerText > rowB.cells[6].innerText ? 1 : -
-                            1);
-                    } else {
-                        th_difference_norm.innerText = `Отклонение от нормы ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[6].innerText < rowB.cells[6].innerText ? 1 : -
-                            1);
-                    }
-
-                    th_name.innerText = "Имя";
-                    th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
-                    th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    //th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
-                    break;
-
-                case 'difference_norm_percent':
-                    if (th_difference_norm_percent.innerText == `Отклонение от нормы % ↓`) {
-                        th_difference_norm_percent.innerText = `Отклонение от нормы % ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[7].innerText > rowB.cells[7].innerText ? 1 : -
-                            1);
-                    } else {
-                        th_difference_norm_percent.innerText = `Отклонение от нормы % ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[7].innerText < rowB.cells[7].innerText ? 1 : -
-                            1);
-                    }
-
-                    th_name.innerText = "Имя";
-                    th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
-                    th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    //th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
-                    break;
-
+               
                 case 'difference_price':
-                    if (th_difference_price.innerText == `Отклонение от цены ↓`) {
-                        th_difference_price.innerText = `Отклонение от цены ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[8].innerText > rowB.cells[8].innerText ? 1 : -
+                    if (th_difference_price.innerText == `- от цены ↓`) {
+                        th_difference_price.innerText = `- от цены ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) > parseInt(rowB.cells[7]
+                                .innerText) ? 1 : -
                             1);
                     } else {
-                        th_difference_price.innerText = `Отклонение от цены ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[8].innerText < rowB.cells[8].innerText ? 1 : -
+                        th_difference_price.innerText = `- от цены ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) < parseInt(rowB.cells[7]
+                                .innerText) ? 1 : -
                             1);
                     }
 
                     th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
+                    th_count_shipments.innerText = 'Отгрузок';
+                    th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    //th_difference_price.innerText = 'Отклонение от цены';
-                    th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    th_delivery_fee.innerText = 'Стоимость';
+                    th_difference_price_percent.innerText = '- от цены %';
                     break;
 
                 case 'difference_price_percent':
-                    if (th_difference_price_percent.innerText == `Отклонение от цены % ↓`) {
-                        th_difference_price_percent.innerText = `Отклонение от цены % ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[9].innerText > rowB.cells[9].innerText ? 1 : -
+                    if (th_difference_price_percent.innerText == `- от цены % ↓`) {
+                        th_difference_price_percent.innerText = `- от цены % ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) > parseInt(rowB.cells[8]
+                                .innerText) ? 1 : -
                             1);
                     } else {
-                        th_difference_price_percent.innerText = `Отклонение от цены % ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[9].innerText < rowB.cells[9].innerText ? 1 : -
+                        th_difference_price_percent.innerText = `- от цены % ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) < parseInt(rowB.cells[8]
+                                .innerText) ? 1 : -
                             1);
                     }
 
                     th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Количество отгрузок';
-                    th_price_norm.innerText = 'Норма перевозки';
+                    th_count_shipments.innerText = 'Отгрузок';
+                    th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость доставки';
-                    th_difference_norm.innerText = 'Отклонение от нормы';
-                    th_difference_norm_percent.innerText = 'Отклонение от нормы %';
-                    th_difference_price.innerText = 'Отклонение от цены';
-                    //th_difference_price_percent.innerText = 'Отклонение от цены %';
+                    th_delivery_fee.innerText = 'Стоимость';
+                    th_difference_price.innerText = '- от цены';
                     break;
 
             }
