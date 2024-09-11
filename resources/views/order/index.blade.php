@@ -601,50 +601,49 @@
                                             @elseif($column == 'status_id')
                                                 @switch($entityItem->$column)
                                                     @case(1)
-                                                        <div id="status"
-                                                            class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                        <div id="status" class=" px-2 py-1 text-center">
                                                             <span>[N] Новый</span>
                                                         </div>
                                                     @break
 
                                                     @case(2)
                                                         <div id="status"
-                                                            class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                            class=" px-2 py-1 text-center">
                                                             <span>Думают</span>
                                                         </div>
                                                     @break
 
                                                     @case(3)
                                                         <div id="status"
-                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            class=" px-2 py-1 text-center">
                                                             <span>[DN] Подтвержден</span>
                                                         </div>
                                                     @break
 
                                                     @case(4)
                                                         <div id="status"
-                                                            class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                            class=" px-2 py-1 text-center">
                                                             <span>На брони</span>
                                                         </div>
                                                     @break
 
                                                     @case(5)
                                                         <div id="status"
-                                                            class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                            class=" px-2 py-1 text-center">
                                                             <span>[DD] Отгружен с долгом</span>
                                                         </div>
                                                     @break
 
                                                     @case(6)
                                                         <div id="status"
-                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            class=" px-2 py-1 text-center">
                                                             <span>[DF] Отгружен и закрыт</span>
                                                         </div>
                                                     @break
 
                                                     @case(7)
                                                         <div id="status"
-                                                            class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                            class=" px-2 py-1 text-center">
                                                             <span>[C] Отменен</span>
                                                         </div>
                                                     @break
