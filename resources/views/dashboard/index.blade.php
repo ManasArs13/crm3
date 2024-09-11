@@ -43,35 +43,35 @@
             </div>
         </div>
         <div class="flex flex-col gap-4 basis-1/4">
-            <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
+            <div class="flex flex-col bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
                     <thead>
                         <tr class="font-light bg-neutral-200">
-                            <th colspan="4" class="font-light"></th>
-                            <th class="border-l-2">Начало</th>
-                            <th class="border-x-2">Приход</th>
-                            <th class="border-r-2">Расход</th>
-                            <th>Конец</th>
+                            <th colspan="4" class="font-light px-2 py-3"></th>
+                            <th class="border-l-2 px-2 py-3">Начало</th>
+                            <th class="border-x-2 px-2 py-3">Приход</th>
+                            <th class="border-r-2 px-2 py-3">Расход</th>
+                            <th class="px-2">Конец</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($materials as $material)
                             <tr class="border-b-2">
-                                <td class="m-2" colspan="4">
+                                <td class="px-2 m-2 py-2 max-w-[210px] truncate" colspan="4">
                                     {{ $material->short_name }}
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
-                                    {{ $material->residual / 1000 }}
+                                <td class="px-2 m-2 border-x-2 text-right py-2" colspan="1">
+                                    {{ round($material->residual / 1000) }}
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
+                                <td class="px-2 m-2 border-x-2 text-right py-2" colspan="1">
                                     -
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
-                                    {{ $material->rashod ? ceil($material->rashod) / 1000 : 0 }}
+                                <td class="px-2 m-2 border-x-2 text-right py-2" colspan="1">
+                                    {{ $material->rashod ? round($material->rashod / 1000) : 0 }}
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
-                                    {{ ceil($material->residual -  ($material->rashod ? $material->rashod : 0) ) / 1000 }}
+                                <td class="px-2 m-2 text-right py-2" colspan="1">
+                                    {{ round(($material->residual -  ($material->rashod ? $material->rashod : 0) ) / 1000) }}
                                 </td>
                             </tr>
                         @endforeach
@@ -82,36 +82,37 @@
             <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
                 <table>
                     <thead>
-                        <tr>
-                            <th class="justify-content-center items-center mb-2">
-                                <span class="text-lg font-semibold"></span>
-                            </th>
-                        </tr>
+                    <tr>
+                        <th class="justify-content-center items-center mb-2">
+                            <span class="text-lg font-semibold"></span>
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
-                            @if ($product->residual_norm)
-                                <tr class="border-b-2">
-                                    <td class="m-2 justify-content-beetwen">
-                                        {{ $product->short_name }}
-                                    </td>
-                                    <td>
-                                        @if ($product->residual_norm !== 0 && $product->residual_norm !== null && $product->type !== 'не выбрано')
-                                            <div
-                                                @if (round(($product->residual / $product->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($product->residual / $product->residual_norm) * 100) > 30 &&
-                                                        round(($product->residual / $product->residual_norm) * 100) <= 70) class="bg-yellow-300 rounded-sm p-1 h-6 flex justify-center items-center" @else class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center" @endif>
-                                                {{ round(($product->residual / $product->residual_norm) * 100) }}%
-                                            </div>
+                    @foreach ($categories as $category)
+                        @if (isset($category->remainder))
+                            <tr class="border-b-2">
+                                <td class="px-2 m-2 py-2 justify-content-beetwen">
+                                    {{ $category->name }}
+                                </td>
+                                <td>
+                                    <div
+                                        @if (round($category->remainder) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center"
+                                        @elseif(round($category->remainder) > 30 && round($category->remainder) <= 70)
+                                        class="bg-yellow-300 rounded-sm p-1 h-6 flex justify-center items-center"
                                         @else
-                                            {{ null }}
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
+                                        class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center" @endif>
+                                        {{ round($category->remainder) }}%
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
                     </tbody>
                 </table>
             </div>
+
+
         </div>
     </div>
 </x-app-layout>

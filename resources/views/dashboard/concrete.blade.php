@@ -43,35 +43,35 @@
             </div>
         </div>
         <div class="flex flex-col gap-4 basis-1/4">
-            <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
+            <div class="flex flex-col bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
                     <thead>
                         <tr class="font-light border-b-2 bg-neutral-200">
-                            <th colspan="4" class="font-light"></th>
-                            <th class="border-l-2">Начало</th>
-                            <th class="border-x-2">Приход</th>
-                            <th class="border-r-2">Расход</th>
-                            <th>Конец</th>
+                            <th colspan="4" class="font-light px-2 py-3"></th>
+                            <th class="border-l-2 px-2 py-3">Начало</th>
+                            <th class="border-x-2 px-2 py-3">Приход</th>
+                            <th class="border-r-2 px-2 py-3">Расход</th>
+                            <th class="px-2 py-3">Конец</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($materials as $material)
                             <tr class="border-b-2">
-                                <td class="m-2" colspan="4">
+                                <td class="px-2 m-2 py-2 max-w-[210px] truncate" colspan="4">
                                     {{ $material->short_name }}
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
-                                    {{ $material->residual / 1000 }}
+                                <td class="px-2 m-2 py-2 border-x-2 text-right" colspan="1">
+                                    {{ round($material->residual / 1000) }}
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
+                                <td class="px-2 m-2 py-2 border-x-2 text-right" colspan="1">
                                     -
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
-                                    {{ $material->rashod ? $material->rashod / 1000 : 0 }}
+                                <td class="px-2 m-2 py-2 border-x-2 text-right" colspan="1">
+                                    {{ $material->rashod ? round($material->rashod / 1000) : 0 }}
                                 </td>
-                                <td class="m-2 text-right" colspan="1">
-                                    {{ ($material->residual - ($material->rashod ? $material->rashod : 0)) / 1000 }}
+                                <td class="px-2 m-2 py-2 text-right" colspan="1">
+                                    {{ round(($material->residual - ($material->rashod ? $material->rashod : 0)) / 1000) }}
                                 </td>
                             </tr>
                         @endforeach
@@ -80,34 +80,34 @@
 
             </div>
 
-            <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
+            <div class="flex flex-col bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
                     <thead>
                         <tr class="font-light border-b-2 text-sm bg-neutral-200">
-                            <th class="border-r-2">Время</th>
-                            <th class="border-l-2 text-center">Транспорт</th>
-                            <th class="border-r-2">На обьекте</th>
-                            <th class="border-r-2">Конец рейса</th>
-                            <th>Возврат</th>
+                            <th class="border-r-2 py-2 px-2">Время</th>
+                            <th class="border-l-2 py-2 px-2 text-center">Транспорт</th>
+                            <th class="border-r-2 py-2 px-2">На обьекте</th>
+                            <th class="border-r-2 py-2 px-2">Конец рейса</th>
+                            <th class="py-2 px-2">Возврат</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($shipments as $shipment)
                             <tr class="border-b-2 text-sm">
-                                <td class="m-2 border-r-2 text-center">
+                                <td class="px-2 m-2 border-r-2 py-3 text-center">
                                     {{ Carbon\Carbon::parse($shipment->created_at)->format('H:i') }}
                                 </td>
-                                <td class="m-2 text-left">
+                                <td class="px-2 m-2 text-left py-3 px-2 max-w-[210px] truncate">
                                     {{ $shipment->transport ? $shipment->transport->name : 'не указано' }}
                                 </td>
-                                <td class="m-2 border-x-2 text-center">
+                                <td class="px-2 m-2 border-x-2 py-3 text-center">
                                     {{ Carbon\Carbon::parse($shipment->time_to_come)->format('H:i') }}
                                 </td>
-                                <td class="m-2 text-center">
+                                <td class="px-2 m-2 border-x-2 text-center py-3">
                                     {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:i') }}
                                 </td>
-                                <td class="m-2 text-center">
+                                <td class="px-2 m-2 text-center py-3">
                                     {{ Carbon\Carbon::parse($shipment->time_to_return)->format('H:i') }}
                                 </td>
                             </tr>
