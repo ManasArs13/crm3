@@ -57,7 +57,7 @@ class TransportController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_price_norm')
-            ->withSum(['shipments as delivery_price' => function (Builder $query) use ($date, $dateY) {
+            ->withSum(['shipments as price' => function (Builder $query) use ($date, $dateY) {
                 $query
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
@@ -67,11 +67,7 @@ class TransportController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_fee')
-            ->withSum(['shipments as saldo' => function (Builder $query) use ($date, $dateY) {
-                $query
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', $dateY);
-            }], 'saldo')->get();
+            ->get();
 
         $selected = [
             "name",
@@ -160,7 +156,7 @@ class TransportController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_price_norm')
-            ->withSum(['shipments as delivery_price' => function (Builder $query) use ($date, $dateY) {
+            ->withSum(['shipments as price' => function (Builder $query) use ($date, $dateY) {
                 $query->whereHas('products', function ($query) {
                     $query->whereHas('product', function ($queries) {
                         $queries->where('building_material', Product::BLOCK);
@@ -178,15 +174,6 @@ class TransportController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_fee')
-            ->withSum(['shipments as saldo' => function (Builder $query) use ($date, $dateY) {
-                $query->whereHas('products', function ($query) {
-                    $query->whereHas('product', function ($queries) {
-                        $queries->where('building_material', Product::BLOCK);
-                    });
-                })
-                    ->whereMonth('created_at', $date)
-                    ->whereYear('created_at', $dateY);
-            }], 'saldo')
             ->get();
 
         $selected = [
@@ -256,55 +243,46 @@ class TransportController extends Controller
         $datePrev = $date1->modify('-1 month')->format('m');
         $dateNext = $date2->modify('+1 month')->format('m');
 
-                // Transport
-                $entityItems = Transport::query()
-                ->withCount(['shipments as shipments_count' => function (Builder $query) use ($date, $dateY) {
-                    $query
-                        ->whereHas('products', function ($query) {
-                            $query->whereHas('product', function ($queries) {
-                                $queries->where('building_material', Product::CONCRETE);
-                            });
-                        })
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', $dateY);
-                }])
-                ->withSum(['shipments as price_norm' => function (Builder $query) use ($date, $dateY) {
-                    $query->whereHas('products', function ($query) {
+        // Transport
+        $entityItems = Transport::query()
+            ->withCount(['shipments as shipments_count' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->whereHas('products', function ($query) {
                         $query->whereHas('product', function ($queries) {
                             $queries->where('building_material', Product::CONCRETE);
                         });
                     })
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', $dateY);
-                }], 'delivery_price_norm')
-                ->withSum(['shipments as delivery_price' => function (Builder $query) use ($date, $dateY) {
-                    $query->whereHas('products', function ($query) {
-                        $query->whereHas('product', function ($queries) {
-                            $queries->where('building_material', Product::CONCRETE);
-                        });
-                    })
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', $dateY);
-                }], 'delivery_price')
-                ->withSum(['shipments as delivery_fee' => function (Builder $query) use ($date, $dateY) {
-                    $query->whereHas('products', function ($query) {
-                        $query->whereHas('product', function ($queries) {
-                            $queries->where('building_material', Product::CONCRETE);
-                        });
-                    })
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', $dateY);
-                }], 'delivery_fee')
-                ->withSum(['shipments as saldo' => function (Builder $query) use ($date, $dateY) {
-                    $query->whereHas('products', function ($query) {
-                        $query->whereHas('product', function ($queries) {
-                            $queries->where('building_material', Product::CONCRETE);
-                        });
-                    })
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', $dateY);
-                }], 'saldo')
-                ->get();
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }])
+            ->withSum(['shipments as price_norm' => function (Builder $query) use ($date, $dateY) {
+                $query->whereHas('products', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::CONCRETE);
+                    });
+                })
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }], 'delivery_price_norm')
+            ->withSum(['shipments as price' => function (Builder $query) use ($date, $dateY) {
+                $query->whereHas('products', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::CONCRETE);
+                    });
+                })
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }], 'delivery_price')
+            ->withSum(['shipments as delivery_fee' => function (Builder $query) use ($date, $dateY) {
+                $query->whereHas('products', function ($query) {
+                    $query->whereHas('product', function ($queries) {
+                        $queries->where('building_material', Product::CONCRETE);
+                    });
+                })
+                    ->whereMonth('created_at', $date)
+                    ->whereYear('created_at', $dateY);
+            }], 'delivery_fee')
+            ->get();
 
         $selected = [
             "name",
