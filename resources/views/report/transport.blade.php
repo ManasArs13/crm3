@@ -300,8 +300,6 @@
             let th_price_norm = document.getElementById('th_price_norm');
             let th_price = document.getElementById('th_price');
             let th_delivery_fee = document.getElementById('th_delivery_fee');
-            let th_difference_norm = document.getElementById('th_difference_norm');
-            let th_difference_norm_percent = document.getElementById('th_difference_norm_percent');
             let th_difference_price = document.getElementById('th_difference_price');
             let th_difference_price_percent = document.getElementById('th_difference_price_percent');
 
@@ -322,8 +320,6 @@
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
                     th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price.innerText = '- от цены';
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
@@ -344,8 +340,6 @@
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
                     th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price.innerText = '- от цены';
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
@@ -368,8 +362,6 @@
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
                     th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price.innerText = '- от цены';
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
@@ -392,8 +384,6 @@
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price.innerText = 'Цена';
                     th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price.innerText = '- от цены';
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
@@ -416,8 +406,6 @@
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price_norm.innerText = 'Норма';
                     th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price.innerText = '- от цены';
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
@@ -440,20 +428,19 @@
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price.innerText = '- от цены';
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
 
-                case 'difference_norm':
-                    if (th_difference_norm.innerText == `- от нормы ↓`) {
-                        th_difference_norm.innerText = `- от нормы ↑`
+               
+                case 'difference_price':
+                    if (th_difference_price.innerText == `- от цены ↓`) {
+                        th_difference_price.innerText = `- от цены ↑`
                         sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) > parseInt(rowB.cells[7]
                                 .innerText) ? 1 : -
                             1);
                     } else {
-                        th_difference_norm.innerText = `- от нормы ↓`;
+                        th_difference_price.innerText = `- от цены ↓`;
                         sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) < parseInt(rowB.cells[7]
                                 .innerText) ? 1 : -
                             1);
@@ -465,66 +452,18 @@
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
                     th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm_percent.innerText = '- от нормы %';
-                    th_difference_price.innerText = '- от цены';
-                    th_difference_price_percent.innerText = '- от цены %';
-                    break;
-
-                case 'difference_norm_percent':
-                    if (th_difference_norm_percent.innerText == `- от нормы % ↓`) {
-                        th_difference_norm_percent.innerText = `- от нормы % ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) > parseInt(rowB.cells[8]
-                            .innerText) ? 1 : -1);
-                    } else {
-                        th_difference_norm_percent.innerText = `- от нормы % ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) < parseInt(rowB.cells[8]
-                            .innerText) ? 1 : -1);
-                    }
-
-                    th_name.innerText = "Имя";
-                    th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Отгрузок';
-                    th_price_norm.innerText = 'Норма';
-                    th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_price.innerText = '- от цены';
-                    th_difference_price_percent.innerText = '- от цены %';
-                    break;
-
-                case 'difference_price':
-                    if (th_difference_price.innerText == `- от цены ↓`) {
-                        th_difference_price.innerText = `- от цены ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[9].innerText) > parseInt(rowB.cells[9]
-                                .innerText) ? 1 : -
-                            1);
-                    } else {
-                        th_difference_price.innerText = `- от цены ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[9].innerText) < parseInt(rowB.cells[9]
-                                .innerText) ? 1 : -
-                            1);
-                    }
-
-                    th_name.innerText = "Имя";
-                    th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Отгрузок';
-                    th_price_norm.innerText = 'Норма';
-                    th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
 
                 case 'difference_price_percent':
                     if (th_difference_price_percent.innerText == `- от цены % ↓`) {
                         th_difference_price_percent.innerText = `- от цены % ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[10].innerText) > parseInt(rowB.cells[10]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) > parseInt(rowB.cells[8]
                                 .innerText) ? 1 : -
                             1);
                     } else {
                         th_difference_price_percent.innerText = `- от цены % ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[10].innerText) < parseInt(rowB.cells[10]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) < parseInt(rowB.cells[8]
                                 .innerText) ? 1 : -
                             1);
                     }
@@ -535,8 +474,6 @@
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
                     th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_norm.innerText = '- от нормы';
-                    th_difference_norm_percent.innerText = '- от нормы %';
                     th_difference_price.innerText = '- от цены';
                     break;
 
