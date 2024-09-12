@@ -169,6 +169,12 @@
                                     @endrole
 
                                     @role('admin')
+                                        <x-dropdown-link :href="route('report.transporter_fee')">
+                                            Сводка - Перевозчик (оплата)
+                                        </x-dropdown-link>
+                                    @endrole
+
+                                    @role('admin')
                                         <x-dropdown-link :href="route('report.counteparty')">
                                             Сводка - Контрагенты
                                         </x-dropdown-link>
