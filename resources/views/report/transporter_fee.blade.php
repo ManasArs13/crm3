@@ -170,11 +170,11 @@
                 case 'debt':
                     if (th_debt.innerText == `Долг (сейчас) ↓`) {
                         th_debt.innerText = `Долг (сейчас) ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText > rowB.cells[2].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) > parseInt(rowB.cells[2].innerText) ? 1 : -
                             1);
                     } else {
                         th_debt.innerText = `Долг (сейчас) ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText < rowB.cells[2].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) < parseInt(rowB.cells[2].innerText) ? 1 : -
                             1);
                     }
 
@@ -186,11 +186,11 @@
                 case 'current month':
                     if (th_current_month.innerText == `Текущий месяц ↓`) {
                         th_current_month.innerText = `Текущий месяц ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText > rowB.cells[3].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3].innerText) ? 1 : -
                             1);
                     } else {
                         th_current_month.innerText = `Текущий месяц ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[3].innerText < rowB.cells[3].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3].innerText) ? 1 : -
                             1);
                     }
 
@@ -202,11 +202,11 @@
                 case 'total':
                     if (th_total.innerText == `Итого ↓`) {
                         th_total.innerText = `Итого ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText > rowB.cells[4].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) > parseInt(rowB.cells[4].innerText) ? 1 : -
                             1);
                     } else {
                         th_total.innerText = `Итого ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[4].innerText < rowB.cells[4].innerText ? 1 : -
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) < parseInt(rowB.cells[4].innerText) ? 1 : -
                             1);
                     }
 
