@@ -91,6 +91,7 @@ return [
   'sort' => 'Сорт',
   'blocks_materials' => 'Материалы (БЛОК)',
   'blocks_categories' => 'Категории (БЛОК)',
+  'categories' => 'Категории',
   'blocks_products' => 'Товары (БЛОК)',
   'concretes_materials' => 'Материалы (БЕТОН)',
   'all' => 'Все',
