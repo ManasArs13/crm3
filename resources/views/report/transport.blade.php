@@ -224,10 +224,6 @@
                             </tr>
                         @endforeach
 
-                    </tbody>
-                </table>
-                <table class="text-left text-md text-nowrap">
-                    <tbody>
                         <tr class="border-b-2 bg-gray-100">
 
                             <td class="break-all text-right overflow-auto px-6 py-3">
@@ -237,31 +233,31 @@
                             @foreach ($resColumns as $column => $title)
                                 @switch($column)
                                     @case('count_shipments')
-                                        <td class="break-all w-[5rem] overflow-auto px-2 py-3 text-left">
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
                                             {{ $total_count_shipments ?? 0 }}
                                         </td>
                                     @break
 
                                     @case('price_norm')
-                                        <td class="break-all w-[4rem] overflow-auto px-2 py-3 text-left">
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
                                             {{ $total_price_norm ?? 0 }}
                                         </td>
                                     @break
 
                                     @case('price')
-                                        <td class="break-all w-[8rem] overflow-auto px-2 py-3 text-left">
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
                                             {{ $total_price ?? 0 }}
                                         </td>
                                     @break
 
                                     @case('delivery_fee')
-                                        <td class="break-all w-[8rem] overflow-auto px-2 py-3 text-left">
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
                                             {{ $total_delivery_fee ?? 0 }}
                                         </td>
                                     @break
 
                                     @case('difference_norm')
-                                        <td class="break-all w-[16rem] overflow-auto px-2 py-3 text-left">
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
                                             {{ $total_delivery_fee - $total_price_norm ?? 0 }}</td>
                                     @break
 
@@ -269,14 +265,12 @@
                                     @break
 
                                     @case('difference_price')
-                                        <td class="break-all w-[11rem] overflow-auto px-2 py-3 text-left">
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
                                             {{ $total_delivery_fee - $total_price ?? 0 }}</td>
                                     @break
 
-                                    @case('difference_price_percent')
-                                    @break
-
                                     @default
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right"></td>
                                 @endswitch
                             @endforeach
 
@@ -292,7 +286,8 @@
     <script type="text/javascript">
         function orderBy(column) {
 
-            let sortedRows = Array.from(transportsTable.rows).slice(1)
+            let sortedRows = Array.from(transportsTable.rows).slice(1, -1);
+            let totalRow = Array.from(transportsTable.rows).slice(transportsTable.rows.length - 1);
 
             let th_name = document.getElementById('th_name');
             let th_contact_name = document.getElementById('th_contact_name');
@@ -432,7 +427,7 @@
                     th_difference_price_percent.innerText = '- от цены %';
                     break;
 
-               
+
                 case 'difference_price':
                     if (th_difference_price.innerText == `- от цены ↓`) {
                         th_difference_price.innerText = `- от цены ↑`
@@ -479,6 +474,7 @@
 
             }
 
+            sortedRows.push(totalRow[0])
             transportsTable.tBodies[0].append(...sortedRows);
         }
     </script>
