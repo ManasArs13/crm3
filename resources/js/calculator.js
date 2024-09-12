@@ -194,9 +194,7 @@ $(document).ready(function(){
             $(formClass+"#price_total_pallet").text(palletPrice);
             price_total+=palletPrice;
         }else{
-            $(".service:checked").each(function(){
-                price_total+=parseFloat($(this).val());
-            });
+
         }
 
 
@@ -324,34 +322,37 @@ $(document).ready(function(){
         $(formClass+'[name="state"]').val($val.find('.state').attr("data-id"));
     });
 
-    $("body").on("change", ".price-t",function(){
+    $("body").on("change", ".price-tt",function(){
         let $parent=$(this).parents(".CEB_block.services");
+        let quantity=$parent.find(".quantity-tt").val();
         let price=$(this).val();
-        let id=$parent.attr("data-type");
 
-        $("#"+id).val(price);
-        $parent.find(".deliveryPrice_t").val(price);
+        $parent.find(".deliveryPrice-tt").val(price*quantity);
         calculation(".calcBeton ");
     });
 
-    $("body").on("change", ".deliveryPrice_t",function(){
+    $("body").on("change", ".deliveryPrice-tt",function(){
         let $parent=$(this).parents(".CEB_block.services");
-        let price=$(this).val();
-        let id=$parent.attr("data-type");
+        let deliveryPrice=$(this).val();
+        let quantity=$parent.find(".quantity-tt").val();
 
-        $("#"+id).val(price);
-        $parent.find(".price-t").val(price);
+        $parent.find(".price-tt").val(deliveryPrice/quantity);
+        calculation(".calcBeton ");
+    });
+
+    $("body").on("change", ".quantity-tt",function(){
+        let $parent=$(this).parents(".CEB_block.services");
+        let quantity=parseInt($(this).val());
+        let price=$parent.find(".price-tt").val();
+
+        $parent.find(".deliveryPrice-tt").val(price*quantity);
         calculation(".calcBeton ");
     });
 
     function calcDelivery(formClass) {
         if (!$(formClass+'.deliveryPrice').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
-            // let distanceValue = $(formClass+' .distance').val();
-
-            // if (distanceValue!='')
-            //     deliveryValue=distanceValue;
-
+        
             $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"));
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
             let weight = $(formClass+".weight-tn").val();
@@ -368,6 +369,13 @@ $(document).ready(function(){
                     $(formClass+".weight-tn").val(data.weightTn);
                     $(formClass+'.deliveryPrice').val(data.deliveryPrice);
                     priceTotal=priceTotal+data.deliveryPrice;
+                    if (formClass==".calcBeton "){
+                        $(".service:checked").each(function(){
+                            let id=$(this).attr("id");
+                            let deliveryPrice=$('[data-type="'+id+'"]').find(".deliveryPrice-tt").val();
+                            priceTotal+=parseFloat(deliveryPrice);
+                        });
+                    }
                     $(formClass+'#message').text('');
                     $(formClass+'.total').html(priceTotal);
                 },
@@ -380,8 +388,17 @@ $(document).ready(function(){
             });
 
 
+
+
         }
     };
+
+
+    $("body").on("change", ".service", function() {
+        let id=$(this).attr("id");
+        $('[data-type="'+id+'"]').toggleClass("hidden");
+        calculation(".calcBeton ");
+    });
 
     $('body').on('click','.print', function(){
         let pdf = new jsPDF('p','pt','a4');
@@ -902,11 +919,6 @@ $(document).ready(function(){
         calculation0(".calcFence ");
     });
 
-    $("body").on("change", ".service", function() {
-        let id=$(this).attr("id");
-        $('[data-type="'+id+'"]').toggleClass("hidden");
-        calculation(".calcBeton ");
-    });
 
     $("body").on("click", ".CMR__input_calc_js", function() {
         let block=$(this).attr("data-content");

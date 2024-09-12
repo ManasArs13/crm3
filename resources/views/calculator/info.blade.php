@@ -36,13 +36,13 @@
                 </div>
                 <div class="sim">
                     <div class="input-sim input-weight">
-                        <input type="text" class="weight-t input input2"  readonly value="1">
+                        <input type="text" name="services[{{$type->id}}][quantity]" class="quantity-tt input input2"  value="{{ ($type->id==594)?2:1 }}">
                     </div>
                     <div class="input-sim input-price">
-                        <input type="text" class="price-t input input2" value="{{$type->price}}">
+                        <input type="text" name="services[{{$type->id}}][price]" class="price-tt input input2" value="{{$type->price}}">
                     </div>
                     <div class="input-sim input-sum">
-                        <input type="text"  class="input input2 deliveryPrice_t" value={{$type->price}} >
+                        <input type="text" class="input input2 deliveryPrice-tt" value={{($type->id==594)?$type->price*2:$type->price }} >
                     </div>
                 </div>
             </div>
@@ -54,18 +54,18 @@
         <div class="CEB_block">
             @foreach ($servicesByBeton as $type)
             <div class="flex text-center">
-                    <input name="services[{{$type->ms_id}}]" id="service_{{$type->id}}" class="service border border-solid border-neutral-300 rounded" type="checkbox" value="{{$type->price}}">
-                    <label for="service_{{$type->id}}">{{$type->name}}</label>
+                <input name="services[{{$type->id}}][product_id]" id="service_{{$type->id}}" class="service border border-solid border-neutral-300 rounded" type="checkbox" value="{{ $type->ms_id }}">
+                <label for="service_{{$type->id}}">{{$type->name}}</label>
             </div>
             @endforeach
         </div>
-        
-    @endif   
+
+    @endif
 
     <div class="font-weight-bolder">
         {{__("calculator.total")}} <span class="total">0</span> {{__("calculator.rub")}}
     </div>
-    
+
 </div>
 
 <div role="status" class="preloader">
