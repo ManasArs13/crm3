@@ -1,4 +1,5 @@
 <x-app-layout>
+
     @if (isset($entityName) && $entityName != '')
         <x-slot:title>
             {{ $entityName }}
@@ -31,52 +32,52 @@
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex gap-2">
                         <div class="">
-                            @if (request()->routeIs('report.transport'))
-                                <a href="{{ route('report.transport', ['date' => $date]) }}"
+                            @if (request()->routeIs('report.transporter'))
+                                <a href="{{ route('report.transporter', ['date' => $date]) }}"
                                     class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
                             @else
-                                <a href="{{ route('report.transport', ['date' => $date]) }}"
+                                <a href="{{ route('report.transporter', ['date' => $date]) }}"
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
                             @endif
                         </div>
                         <div>
-                            @if (request()->routeIs('report.transport.block'))
-                                <a href="{{ route('report.transport.block', ['date' => $date]) }}"
+                            @if (request()->routeIs('report.transporter.block'))
+                                <a href="{{ route('report.transporter.block', ['date' => $date]) }}"
                                     class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
                             @else
-                                <a href="{{ route('report.transport.block', ['date' => $date]) }}"
+                                <a href="{{ route('report.transporter.block', ['date' => $date]) }}"
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
                             @endif
                         </div>
                         <div>
-                            @if (request()->routeIs('report.transport.concrete'))
-                                <a href="{{ route('report.transport.concrete', ['date' => $date]) }}"
+                            @if (request()->routeIs('report.transporter.concrete'))
+                                <a href="{{ route('report.transporter.concrete', ['date' => $date]) }}"
                                     class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
                             @else
-                                <a href="{{ route('report.transport.concrete', ['date' => $date]) }}"
+                                <a href="{{ route('report.transporter.concrete', ['date' => $date]) }}"
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
                             @endif
                         </div>
                     </div>
 
                     <div class="flex px-3 text-center font-bold">
-                        @if (request()->routeIs('report.transport.block'))
-                            <a href="{{ route('report.transport.block', ['date' => $datePrev]) }}"
+                        @if (request()->routeIs('report.transporter.block'))
+                            <a href="{{ route('report.transporter.block', ['date' => $datePrev]) }}"
                                 class="mx-2 text-lg">&#9668;</a>
                             <p class="mx-2 text-lg">{{ $dateRus }}</p>
-                            <a href="{{ route('report.transport.block', ['date' => $dateNext]) }}"
+                            <a href="{{ route('report.transporter.block', ['date' => $dateNext]) }}"
                                 class="mx-2 text-lg">&#9658;</a>
-                        @elseif(request()->routeIs('report.transport.concrete'))
-                            <a href="{{ route('report.transport.concrete', ['date' => $datePrev]) }}"
+                        @elseif(request()->routeIs('report.transporter.concrete'))
+                            <a href="{{ route('report.transporter.concrete', ['date' => $datePrev]) }}"
                                 class="mx-2 text-lg">&#9668;</a>
                             <p class="mx-2 text-lg">{{ $dateRus }}</p>
-                            <a href="{{ route('report.transport.concrete', ['date' => $dateNext]) }}"
+                            <a href="{{ route('report.transporter.concrete', ['date' => $dateNext]) }}"
                                 class="mx-2 text-lg">&#9658;</a>
                         @else
-                            <a href="{{ route('report.transport', ['date' => $datePrev]) }}"
+                            <a href="{{ route('report.transporter', ['date' => $datePrev]) }}"
                                 class="mx-2 text-lg">&#9668;</a>
                             <p class="mx-2 text-lg">{{ $dateRus }}</p>
-                            <a href="{{ route('report.transport', ['date' => $dateNext]) }}"
+                            <a href="{{ route('report.transporter', ['date' => $dateNext]) }}"
                                 class="mx-2 text-lg">&#9658;</a>
                         @endif
                     </div>
@@ -285,17 +286,7 @@
 
                                     @case('difference_price_percent')
                                         <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                            @if (
-                                                $total_delivery_fee &&
-                                                    $total_delivery_fee !== 0 &&
-                                                    $total_price &&
-                                                    $total_price !== 0 &&
-                                                    abs($total_delivery_fee - $total_price) !== 0)
-                                                {{ round((abs($total_delivery_fee - $total_price) / $total_delivery_fee) * 100) }}%
-                                            @else
-                                                0%
-                                            @endif
-                                        </td>
+                                            {{ $total_difference_price_percent ?? 0 }}%</td>
                                     @break
 
                                     @default
@@ -318,7 +309,6 @@
             let sortedRows = Array.from(transportsTable.rows).slice(1, -1);
             let totalRow = Array.from(transportsTable.rows).slice(transportsTable.rows.length - 1);
 
-            let th_name = document.getElementById('th_name');
             let th_contact_name = document.getElementById('th_contact_name');
             let th_count_shipments = document.getElementById('th_count_shipments');
             let th_price_norm = document.getElementById('th_price_norm');
@@ -328,38 +318,17 @@
             let th_difference_price_percent = document.getElementById('th_difference_price_percent');
 
             switch (column) {
-                case 'name':
-                    if (th_name.innerText == `Имя ↓`) {
-                        th_name.innerText = `Имя ↑`
+                case 'contact_name':
+                    if (th_contact_name.innerText == `Перевозчик ↓`) {
+                        th_contact_name.innerText = `Перевозчик ↑`
                         sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText > rowB.cells[1].innerText ? 1 : -
                             1);
                     } else {
-                        th_name.innerText = `Имя ↓`;
+                        th_contact_name.innerText = `Перевозчик ↓`;
                         sortedRows.sort((rowA, rowB) => rowA.cells[1].innerText < rowB.cells[1].innerText ? 1 : -
                             1);
                     }
 
-                    th_contact_name.innerText = 'Перевозчик';
-                    th_count_shipments.innerText = 'Отгрузок';
-                    th_price_norm.innerText = 'Норма';
-                    th_price.innerText = 'Цена';
-                    th_delivery_fee.innerText = 'Стоимость';
-                    th_difference_price.innerText = '- от цены';
-                    th_difference_price_percent.innerText = '- от цены %';
-                    break;
-
-                case 'contact_name':
-                    if (th_contact_name.innerText == `Перевозчик ↓`) {
-                        th_contact_name.innerText = `Перевозчик ↑`
-                        sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText > rowB.cells[2].innerText ? 1 : -
-                            1);
-                    } else {
-                        th_contact_name.innerText = `Перевозчик ↓`;
-                        sortedRows.sort((rowA, rowB) => rowA.cells[2].innerText < rowB.cells[2].innerText ? 1 : -
-                            1);
-                    }
-
-                    th_name.innerText = `Имя`;
                     th_count_shipments.innerText = `Отгрузок`;
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
@@ -371,17 +340,16 @@
                 case 'count_shipments':
                     if (th_count_shipments.innerText == `Отгрузок ↓`) {
                         th_count_shipments.innerText = `Отгрузок ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) > parseInt(rowB.cells[2]
                                 .innerText) ? 1 : -
                             1);
                     } else {
                         th_count_shipments.innerText = `Отгрузок ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) < parseInt(rowB.cells[2]
                                 .innerText) ? 1 : -
                             1);
                     }
 
-                    th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
                     th_price_norm.innerText = 'Норма';
                     th_price.innerText = 'Цена';
@@ -393,17 +361,16 @@
                 case 'price_norm':
                     if (th_price_norm.innerText == `Норма ↓`) {
                         th_price_norm.innerText = `Норма ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) > parseInt(rowB.cells[4]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3]
                                 .innerText) ? 1 : -
                             1);
                     } else {
                         th_price_norm.innerText = `Норма ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) < parseInt(rowB.cells[4]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3]
                                 .innerText) ? 1 : -
                             1);
                     }
 
-                    th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price.innerText = 'Цена';
@@ -415,17 +382,16 @@
                 case 'price':
                     if (th_price.innerText == `Цена ↓`) {
                         th_price.innerText = `Цена ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) > parseInt(rowB.cells[5]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) > parseInt(rowB.cells[4]
                                 .innerText) ? 1 : -
                             1);
                     } else {
                         th_price.innerText = `Цена ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) < parseInt(rowB.cells[5]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) < parseInt(rowB.cells[4]
                                 .innerText) ? 1 : -
                             1);
                     }
 
-                    th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price_norm.innerText = 'Норма';
@@ -437,17 +403,16 @@
                 case 'delivery_fee':
                     if (th_delivery_fee.innerText == `Стоимость ↓`) {
                         th_delivery_fee.innerText = `Стоимость ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[6].innerText) > parseInt(rowB.cells[6]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) > parseInt(rowB.cells[5]
                                 .innerText) ? 1 : -
                             1);
                     } else {
                         th_delivery_fee.innerText = `Стоимость ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[6].innerText) < parseInt(rowB.cells[6]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) < parseInt(rowB.cells[5]
                                 .innerText) ? 1 : -
                             1);
                     }
 
-                    th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price_norm.innerText = 'Норма';
@@ -460,17 +425,16 @@
                 case 'difference_price':
                     if (th_difference_price.innerText == `- от цены ↓`) {
                         th_difference_price.innerText = `- от цены ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) > parseInt(rowB.cells[7]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[6].innerText) > parseInt(rowB.cells[6]
                                 .innerText) ? 1 : -
                             1);
                     } else {
                         th_difference_price.innerText = `- от цены ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) < parseInt(rowB.cells[7]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[6].innerText) < parseInt(rowB.cells[6]
                                 .innerText) ? 1 : -
                             1);
                     }
 
-                    th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price_norm.innerText = 'Норма';
@@ -482,17 +446,16 @@
                 case 'difference_price_percent':
                     if (th_difference_price_percent.innerText == `- от цены % ↓`) {
                         th_difference_price_percent.innerText = `- от цены % ↑`
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) > parseInt(rowB.cells[8]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) > parseInt(rowB.cells[7]
                                 .innerText) ? 1 : -
                             1);
                     } else {
                         th_difference_price_percent.innerText = `- от цены % ↓`;
-                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[8].innerText) < parseInt(rowB.cells[8]
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[7].innerText) < parseInt(rowB.cells[7]
                                 .innerText) ? 1 : -
                             1);
                     }
 
-                    th_name.innerText = "Имя";
                     th_contact_name.innerText = 'Перевозчик';
                     th_count_shipments.innerText = 'Отгрузок';
                     th_price_norm.innerText = 'Норма';
