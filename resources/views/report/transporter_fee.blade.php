@@ -93,7 +93,7 @@
 
                                         @case('total')
                                             <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                                {{ $entityItem->delivery_fee - $entityItem->contact->balance ?? 0 }}</td>
+                                                {{ $entityItem->delivery_fee + $entityItem->contact->balance ?? 0 }}</td>
                                         @break
                                     @endswitch
                                 @endforeach
@@ -122,7 +122,7 @@
 
                                     @case('total')
                                         <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                            {{ $total_fee - $total_balance ?? 0 }}</td>
+                                            {{ $total_fee + $total_balance ?? 0 }}</td>
                                     @break
 
                                     @default
