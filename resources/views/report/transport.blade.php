@@ -119,6 +119,7 @@
                             $total_delivery_fee = 0;
                             $total_difference_norm = 0;
                             $total_difference_price = 0;
+                            $total_difference_price_percent = 0;
                         @endphp
 
                         @foreach ($entityItems as $entityItem)
@@ -127,6 +128,20 @@
                                 $total_price_norm += $entityItem->price_norm;
                                 $total_price += $entityItem->price;
                                 $total_delivery_fee += $entityItem->delivery_fee;
+
+                                if (
+                                    $entityItem->delivery_fee &&
+                                    $entityItem->delivery_fee !== 0 &&
+                                    $entityItem->price &&
+                                    $entityItem->price !== 0 &&
+                                    abs($entityItem->delivery_fee - $entityItem->price) !== 0
+                                ) {
+                                    $total_difference_price_percent += round(
+                                        (abs($entityItem->delivery_fee - $entityItem->price) /
+                                            $entityItem->delivery_fee) *
+                                            100,
+                                    );
+                                }
                             @endphp
                         @endforeach
 
@@ -267,6 +282,11 @@
                                     @case('difference_price')
                                         <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
                                             {{ $total_delivery_fee - $total_price ?? 0 }}</td>
+                                    @break
+
+                                    @case('difference_price_percent')
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
+                                            {{ $total_difference_price_percent ?? 0 }}%</td>
                                     @break
 
                                     @default
