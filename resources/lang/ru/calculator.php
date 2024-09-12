@@ -28,5 +28,9 @@
    "price"=> "цена",
    "sum"=> "сумма",
    "total"=> "Итого с доставкой",
-   "orders" => "Заказы"
+   "orders" => "Заказы",
+   "download_text"=>"скачать текст",
+   "download_pdf"=>"скачать PDF",
+   "send_to_ms" =>"Отправить в мс",
+   "reservation" => "На брони"
  ];

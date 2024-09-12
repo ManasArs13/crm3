@@ -51,27 +51,26 @@
     <div class="select-popup">
         <input type="hidden" name="state" class="state_input" value="c3308ff8-b57a-11ec-0a80-03c60005472c" data-style-default="background:#a466bd">
         <select class="change_state input" style="width: 100%">
-            <option value="" select><div class="state" data-id="c3308ff8-b57a-11ec-0a80-03c60005472c" style="background:#a466bd">На брони</div></option>
+            <option value="" select><div class="state" data-id="c3308ff8-b57a-11ec-0a80-03c60005472c" style="background:#a466bd">{{ __('calculator.reservation') }}</div></option>
         </select>
     </div>
 </div>
 <div>
     <button type="submit"
-        class="rounded bg-green-400 px-6 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 submit">Отправить
-        в мс</button>
+        class="rounded bg-green-400 px-6 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 submit">   {{ __('calculator.send_to_ms') }}</button>
 </div>
 <div class="flex flex-row ">
     <div class="flex basis-1/2">
         <button type="button" onclick="exportHTMLtoPDF()"
             class="exportButton rounded bg-green-100 uppercase px-1 text-xs font-semibold text-green-800 hover:bg-green-200 w-full text-center py-1">
-            скачать PDF
+            {{ __('calculator.download_pdf') }}
         </button>
     </div>
 
     <div class="flex basis-1/2">
         <button type="button" onclick="copyText()"
             class="copyTextButton rounded bg-green-100 uppercase px-1 text-xs font-semibold text-green-800 hover:bg-green-200 w-full text-center py-1">
-            скопировать в буфер обмена
+            {{ __('calculator.download_text') }}
         </button>
     </div>
 </div>
