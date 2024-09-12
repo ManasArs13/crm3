@@ -354,58 +354,7 @@
                         @endif
                     </div>
 
-                    {{-- Status --}}
-                    <div class="flex flex-row gap-1">
-                        <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
-                            <div>
-                                <x-dropdown align="left" width="17" outside='false'>
-                                    <x-slot name="trigger">
-                                        <button type="button"
-                                            class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-1 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
-                                            статус
-                                            <div class="ms-1 mt-1">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    </x-slot>
 
-                                    <x-slot name="content">
-                                        <div class="p-4">
-                                            @foreach ($filters as $filter)
-                                                @if ($filter['type'] == 'checkbox')
-                                                    <div class="flex flex-col gap-1 w-100">
-                                                        @foreach ($filter['values'] as $value)
-                                                            <div class="basis-full text-left">
-                                                                <input name="{{ $filter['name'] }}[]"
-                                                                    @if ($value['checked'] == true) checked=checked @endif
-                                                                    class="border border-solid border-neutral-300 rounded"
-                                                                    type="checkbox" value="{{ $value['value'] }}" />
-                                                                <p
-                                                                    class="inline-block ps-[0.15rem] hover:cursor-pointer">
-                                                                    {{ $value['name'] }}
-                                                                </p>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        </div>
-                                    </x-slot>
-                                </x-dropdown>
-                            </div>
-                            <div>
-                                <button type="submit"
-                                    class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
-                                    применить
-                                </button>
-                            </div>
-                        </form>
-                    </div>
 
                     @if (isset($urlCreate) && $urlCreate != '')
                         <div class="flex px-3 text-center font-bold">
