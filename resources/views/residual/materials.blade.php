@@ -32,19 +32,19 @@
                                 <div>
                                     @if (url()->current() == route('residual.blocksMaterials'))
                                         <a href="{{ route('residual.blocksMaterials') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.materials') }}</a>
                                     @else
                                         <a href="{{ route('residual.blocksMaterials') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.materials') }}</a>
                                     @endif
                                 </div>
                                 <div>
                                     @if (url()->current() == route('residual.blocksCategories'))
                                         <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.categories') }}</a>
                                     @else
                                         <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.categories') }}</a>
                                     @endif
                                 </div>
                             </div>
@@ -104,6 +104,7 @@
                                             <a class="text-black"
                                                href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'desc']) }}">{{ __('column.materials') }}</a>
                                             @if (isset($column) && $column == 'materials' && $orderBy == 'desc')
+                                                &#9650;
                                                 &#9650;
                                             @endif
                                         </th>
@@ -251,7 +252,7 @@
 
 
                 <div
-                    class="mt-5 block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+                    class="mt-10 block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
 
 

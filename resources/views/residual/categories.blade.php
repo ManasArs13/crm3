@@ -32,74 +32,23 @@
                                 <div>
                                     @if (url()->current() == route('residual.blocksMaterials'))
                                         <a href="{{ route('residual.blocksMaterials') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.materials') }}</a>
                                     @else
                                         <a href="{{ route('residual.blocksMaterials') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
+                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.materials') }}</a>
                                     @endif
                                 </div>
                                 <div>
                                     @if (url()->current() == route('residual.blocksCategories'))
                                         <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.categories') }}</a>
                                     @else
                                         <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
+                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.categories') }}</a>
                                     @endif
                                 </div>
-                                <div x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-                                    @if (url()->current() == route('residual.blocksProducts'))
-                                        <button @click="open = ! open"
-                                                class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                            {{ __('column.blocks_products') }} &#9660;
-                                        </button>
-                                    @else
-                                        <button @click="open = ! open"
-                                                class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                            {{ __('column.blocks_products') }} &#9660;
-                                        </button>
-                                    @endif
-                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                                         x-transition:enter-start="opacity-0 scale-95"
-                                         x-transition:enter-end="opacity-100 scale-100"
-                                         x-transition:leave="transition ease-in duration-75"
-                                         x-transition:leave-start="opacity-100 scale-100"
-                                         x-transition:leave-end="opacity-0 scale-95"
-                                         class="absolute z-500 mt-2 w-48 rounded-md shadow-lg ltr:origin-top-right rtl:origin-top-left"
-                                         style="display: none;">
-                                        <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
 
-                                            <x-dropdown-link :href="route('residual.blocksProducts')">
-                                                Все товары
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'columns'])">
-                                                Колонны
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'covers'])">
-                                                Крышки
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'parapets'])">
-                                                Парапеты
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'blocks'])">
-                                                Блоки
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'dekors'])">
-                                                Декор
-                                            </x-dropdown-link>
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    @if (url()->current() == route('residual.concretesMaterials'))
-                                        <a href="{{ route('residual.concretesMaterials') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
-                                    @else
-                                        <a href="{{ route('residual.concretesMaterials') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
-                                    @endif
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -109,7 +58,7 @@
                         <table class="text-xs md:text-base text-nowrap">
                             <thead>
                             <tr class="bg-neutral-200 font-semibold py-2">
-
+                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-left"></th>
                                 @if (isset($orderBy) && $orderBy == 'desc')
                                     <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-left">
                                         <a class="text-black"
@@ -205,6 +154,9 @@
                             @foreach ($products as $product)
                                 @if ($product->residual_norm)
                                     <tr class="border-b-2 font-normal py-2">
+                                        <td class="text-nowrap px-2 py-2">
+                                            <button class="buttonForOpen text-normal font-bold" data-id="{{ $product->id }}">+</button>
+                                        </td>
                                         <th class="font-normal text-left px-1 md:px-6 py-2 md:py-4">
                                             <a href="{{ route('product.show', ['product' => $product->id]) }}">
                                                 {{ $product->name }}
@@ -288,298 +240,88 @@
                                         @endif
 
                                     </tr>
-                                @endif
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-                <div
-                    class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
-
-                    {{-- header --}}
-                    <div class="border-b-2 border-neutral-100 overflow-x-auto">
-                        <div class="flex flex-row w-full p-3 justify-between">
-                            <div class="flex flex-row gap-1">
-                                <div>
-                                    @if (url()->current() == route('residual.index'))
-                                        <a href="{{ route('residual.index') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все
-                                            остатки</a>
-                                    @else
-                                        <a href="{{ route('residual.index') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все
-                                            остатки</a>
-                                    @endif
-                                </div>
-                                <div>
-                                    @if (url()->current() == route('residual.blocksMaterials'))
-                                        <a href="{{ route('residual.blocksMaterials') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
-                                    @else
-                                        <a href="{{ route('residual.blocksMaterials') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_materials') }}</a>
-                                    @endif
-                                </div>
-                                <div>
-                                    @if (url()->current() == route('residual.blocksCategories'))
-                                        <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
-                                    @else
-                                        <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.blocks_categories') }}</a>
-                                    @endif
-                                </div>
-                                <div x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-                                    @if (url()->current() == route('residual.blocksProducts'))
-                                        <button @click="open = ! open"
-                                                class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                            {{ __('column.blocks_products') }} &#9660;
-                                        </button>
-                                    @else
-                                        <button @click="open = ! open"
-                                                class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                            {{ __('column.blocks_products') }} &#9660;
-                                        </button>
-                                    @endif
-                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                                         x-transition:enter-start="opacity-0 scale-95"
-                                         x-transition:enter-end="opacity-100 scale-100"
-                                         x-transition:leave="transition ease-in duration-75"
-                                         x-transition:leave-start="opacity-100 scale-100"
-                                         x-transition:leave-end="opacity-0 scale-95"
-                                         class="absolute z-500 mt-2 w-48 rounded-md shadow-lg ltr:origin-top-right rtl:origin-top-left"
-                                         style="display: none;">
-                                        <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
-
-                                            <x-dropdown-link :href="route('residual.blocksProducts')">
-                                                Все товары
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'columns'])">
-                                                Колонны
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'covers'])">
-                                                Крышки
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'parapets'])">
-                                                Парапеты
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'blocks'])">
-                                                Блоки
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('residual.blocksProducts', ['type' => 'dekors'])">
-                                                Декор
-                                            </x-dropdown-link>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    @if (url()->current() == route('residual.concretesMaterials'))
-                                        <a href="{{ route('residual.concretesMaterials') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
-                                    @else
-                                        <a href="{{ route('residual.concretesMaterials') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.concretes_materials') }}</a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                        <table class="text-xs md:text-base text-nowrap">
-                            <thead>
-                            <tr class="bg-neutral-200 font-semibold py-2">
-
-                                @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-left">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'name', 'orderBy' => 'desc']) }}">{{ __('column.name') }}</a>
-                                        @if (isset($column) && $column == 'name' && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-left">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'name', 'orderBy' => 'asc']) }}">{{ __('column.name') }}</a>
-                                        @if (isset($column) && $column == 'name' && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
-                                    </th>
-                                @endif
-
-                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4">
-                                    {{ __('column.status_id') }}
-                                </th>
-
-                                @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'residual_norm', 'orderBy' => 'desc']) }}">{{ __('column.residual_norm') }}</a>
-                                        @if (isset($column) && $column == 'residual_norm' && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'residual_norm', 'orderBy' => 'asc']) }}">{{ __('column.residual_norm') }}</a>
-                                        @if (isset($column) && $column == 'residual_norm' && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
-                                    </th>
-                                @endif
-
-                                @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
-
-                                    @if (isset($orderBy) && $orderBy == 'desc')
-                                        <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
-                                            <a class="text-black"
-                                               href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'desc']) }}">{{ __('column.materials') }}</a>
-                                            @if (isset($column) && $column == 'materials' && $orderBy == 'desc')
-                                                &#9650;
-                                            @endif
-                                        </th>
-                                    @else
-                                        <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
-                                            <a class="text-black"
-                                               href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'asc']) }}">{{ __('column.materials') }}</a>
-                                            @if (isset($column) && $column == 'materials' && $orderBy == 'asc')
-                                                &#9660;
-                                            @endif
-                                        </th>
-                                    @endif
-
-                                @endif
-
-                                @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'residual', 'orderBy' => 'desc']) }}">{{ __('column.residual') }}</a>
-                                        @if (isset($column) && $column == 'residual' && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'residual', 'orderBy' => 'asc']) }}">{{ __('column.residual') }}</a>
-                                        @if (isset($column) && $column == 'residual' && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
-                                    </th>
-                                @endif
-
-                                <th scope="col" class="px-1 md:px-6 py-2 md:py-4  text-right">
-                                    {{ __('column.need') }}
-                                </th>
-
-                                @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
-                                        {{ __('column.making_dais') }}
-                                    </th>
-                                @endif
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($products as $product)
-                                @if ($product->residual_norm)
-                                    <tr class="border-b-2 font-normal py-2">
-                                        <th class="font-normal text-left px-1 md:px-6 py-2 md:py-4">
-                                            <a href="{{ route('product.show', ['product' => $product->id]) }}">
-                                                {{ $product->name }}
-                                            </a>
-                                        </th>
-
+                                    @foreach($product->pre_products as $pre_product)
+                                    <tr style="display: none" class="border-b-2 bg-green-100 position_column_{{ $product->id }}">
+                                        <td class="px-1 py-2">{{ $pre_product->id }}</td>
+                                        <td class="font-normal text-left px-1 md:px-6 py-2 md:py-4">{{ $pre_product->short_name }}</td>
                                         <th class="font-normal break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4 text-right">
-                                            @if ($product->residual_norm !== 0 && $product->residual_norm !== null)
+                                            @if ($pre_product->residual_norm !== 0 && $pre_product->residual_norm !== null)
                                                 <div
-                                                    @if (round(($product->residual / $product->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($product->residual / $product->residual_norm) * 100) > 30 &&
-                                                            round(($product->residual / $product->residual_norm) * 100) <= 70) class="bg-yellow-300 rounded-sm p-1 h-6 flex justify-center items-center" @else class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center" @endif>
-                                                    {{ round(($product->residual / $product->residual_norm) * 100) }}%
+                                                    @if (round(($pre_product->residual / $pre_product->residual_norm) * 100) <= 30) class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center" @elseif(round(($pre_product->residual / $pre_product->residual_norm) * 100) > 30 &&
+                                                            round(($pre_product->residual / $pre_product->residual_norm) * 100) <= 70) class="bg-yellow-300 rounded-sm p-1 h-6 flex justify-center items-center" @else class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center" @endif>
+                                                    {{ round(($pre_product->residual / $pre_product->residual_norm) * 100) }}%
                                                 </div>
                                             @else
                                                 {{ __('column.no') }}
                                             @endif
                                         </th>
-
-                                        <th class="font-normal text-right px-2">
-                                            @if ($product->residual_norm)
-                                                {{ $product->residual_norm }}
+                                        <td class="font-normal text-right px-2">
+                                            @if ($pre_product->residual_norm)
+                                                {{ $pre_product->residual_norm }}
                                             @else
                                                 {{ __('column.no') }}
                                             @endif
-                                        </th>
-
-                                        @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
-                                            <th class="font-normal break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
-                                                @if ($product->materials == 'нет')
-                                                    <div
-                                                        class="bg-red-300 rounded-sm p-1 h-6 flex justify-center items-center">
-                                                        {{ $product->materials }}
-                                                    </div>
-                                                @elseif ($product->materials == 'да')
-                                                    <div
-                                                        class="bg-green-300 rounded-sm p-1 h-6 flex justify-center items-center">
-                                                        {{ $product->materials }}
-                                                    </div>
-                                                @else
-                                                    {{ $product->materials }}
-                                                @endif
-                                            </th>
-                                        @endif
-
-                                        <th class="text-right px-2 font-normal">
-                                            @if ($product->residual)
-                                                {{ $product->residual }}
-                                            @else
-                                                {{ __('column.no') }}
-                                            @endif
-                                        </th>
-
-                                        <th class="font-normal text-right px-2">
-                                            @if ($product->residual && $product->residual_norm)
-                                                @if ($product->residual - $product->residual_norm < 0)
-                                                    {{ abs($product->residual - $product->residual_norm) }}
+                                        </td>
+                                        <td class="font-normal text-right px-2">{{ $pre_product->residual }}</td>
+                                        <td class="px-1 py-2 text-right">
+                                            @if ($pre_product->residual && $pre_product->residual_norm)
+                                                @if ($pre_product->residual - $pre_product->residual_norm < 0)
+                                                    {{ abs($pre_product->residual - $pre_product->residual_norm) }}
                                                 @else
                                                     {{ 0 }}
                                                 @endif
                                             @else
                                                 {{ __('column.no') }}
                                             @endif
-                                        </th>
-
-                                        @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
-                                            <th class="font-normal text-right px-2">
-                                                @if ($product->making_day)
-                                                    {{ $product->making_day }}
+                                        </td>
+                                        <td class="font-normal text-right px-2">
+                                            @if ($pre_product->residual && $pre_product->residual_norm && $pre_product->release)
+                                                @if ($pre_product->residual - $pre_product->residual_norm >= 0)
+                                                    {{ 0 }}
                                                 @else
-                                                    @if ($product->residual && $product->residual_norm && $product->release)
-                                                        @if ($product->residual - $product->residual_norm >= 0)
-                                                            {{ 0 }}
-                                                        @else
-                                                            {{ abs(round(($product->residual - $product->residual_norm) / $product->release, 0)) }}
-                                                        @endif
-                                                    @else
-                                                        {{ 0 }}
-                                                    @endif
+                                                    {{ abs(round(($pre_product->residual - $pre_product->residual_norm) / $pre_product->release, 0)) }}
                                                 @endif
-                                            </th>
-                                        @endif
-
+                                            @else
+                                                {{ 0 }}
+                                            @endif
+                                        </td>
                                     </tr>
+                                    @endforeach
+
                                 @endif
                             @endforeach
                             </tbody>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function(event) {
+
+                                    let buttons = document.querySelectorAll(".buttonForOpen")
+                                    for (var i = 0; i < buttons.length; i++) {
+                                        let attrib = buttons[i].getAttribute("data-id");
+                                        let but = buttons[i];
+
+                                        function cl(attr, b) {
+                                            let positions = document.querySelectorAll(".position_column_" + attr, b);
+                                            for (var i = 0; i < positions.length; i++) {
+                                                console.log(positions[i].style.display)
+                                                if (positions[i].style.display === 'none') {
+                                                    positions[i].style.display = ''
+                                                    b.textContent = '-'
+                                                } else {
+                                                    positions[i].style.display = 'none'
+                                                    b.textContent = '+'
+                                                }
+                                            }
+                                        }
+                                        buttons[i].addEventListener("click", cl.bind(null, attrib, but));
+                                    }
+                                });
+                            </script>
                         </table>
                     </div>
 
                 </div>
+
+
             </div>
 
 </x-app-layout>
