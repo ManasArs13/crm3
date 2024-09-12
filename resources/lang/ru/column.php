@@ -92,6 +92,7 @@ return [
   'blocks_materials' => 'Материалы (БЛОК)',
   'blocks_categories' => 'Категории (БЛОК)',
   'categories' => 'Категории',
+  'products' => 'Товары',
   'blocks_products' => 'Товары (БЛОК)',
   'concretes_materials' => 'Материалы (БЕТОН)',
   'all' => 'Все',

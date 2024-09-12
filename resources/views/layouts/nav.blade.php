@@ -29,7 +29,7 @@
                         </x-nav-link>
 
 
-                        <x-nav-link :href="route('residual.index')" :active="request()->routeIs('residual.*')">
+                        <x-nav-link :href="route('residual.blocksMaterials')" :active="request()->routeIs('residual.*')">
                             Остатки
                         </x-nav-link>
                     @endrole
@@ -260,17 +260,16 @@
 
                             <x-slot name="content">
 
-                                @role('admin|manager')
+                                @role('admin|manager|dispatcher')
                                 <x-dropdown-link :href="route('manager.index')">
                                     Сводка - Менеджеры
                                 </x-dropdown-link>
-                                @endrole
-
-                                @role('admin')
                                 <x-dropdown-link :href="route('report.transport')">
                                     Сводка - Транспорт
                                 </x-dropdown-link>
+                                @endrole
 
+                                @role('admin|manager|dispatcher|carrier')
                                 <x-dropdown-link :href="route('report.transporter')">
                                     Сводка - Перевозчик
                                 </x-dropdown-link>
@@ -278,10 +277,15 @@
                                 <x-dropdown-link :href="route('report.transporter_fee')">
                                     Сводка - Перевозчик (оплата)
                                 </x-dropdown-link>
+                                @endrole
 
+                                @role('admin|manager|dispatcher')
                                 <x-dropdown-link :href="route('report.counteparty')">
                                     Сводка - Контрагенты
                                 </x-dropdown-link>
+                                @endrole
+
+                                @role('admin')
                                 <x-dropdown-link :href="route('summary.index')">
                                     {{ __('title.summary') }}
                                 </x-dropdown-link>
@@ -403,7 +407,7 @@
 
                         <a href="{{ route('order.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Заказы</a>
                         <a href="{{ route('shipment.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.shipments') }}</a>
-                        <a href="{{ route('residual.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Остатки</a>
+                        <a href="{{ route('residual.blocksMaterials') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Остатки</a>
                         @endrole
 
                         @role('operator')
@@ -516,18 +520,21 @@
                             </button>
                             <!-- 'Product' sub-menu, show/hide based on menu state. -->
                             <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
-                                @role('admin|manager')
+                                @role('admin|manager|dispatcher')
                                 <a href="{{ route('manager.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры</a>
+                                <a href="{{ route('report.transport') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Транспорт</a>
                                 @endrole
 
-                                @role('admin')
-                                <a href="{{ route('report.transport') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Транспорт</a>
+                                @role('admin|manager|dispatcher|carrier')
                                 <a href="{{ route('report.transporter') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик</a>
                                 <a href="{{ route('report.transporter_fee') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик (оплата)</a>
                                 @endrole
 
-                                @role('admin')
+                                @role('admin|manager|dispatcher')
                                 <a href="{{ route('report.counteparty') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Контрагенты</a>
+                                @endrole
+
+                                @role('admin')
                                 <a href="{{ route('summary.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.summary') }}</a>
                                 @endrole
                             </div>

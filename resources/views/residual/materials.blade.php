@@ -19,17 +19,6 @@
                         <div class="flex flex-row w-full p-3 justify-between">
                             <div class="flex flex-row gap-1">
                                 <div>
-                                    @if (url()->current() == route('residual.index'))
-                                        <a href="{{ route('residual.index') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все
-                                            остатки</a>
-                                    @else
-                                        <a href="{{ route('residual.index') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">Все
-                                            остатки</a>
-                                    @endif
-                                </div>
-                                <div>
                                     @if (url()->current() == route('residual.blocksMaterials'))
                                         <a href="{{ route('residual.blocksMaterials') }}"
                                            class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.materials') }}</a>
@@ -41,10 +30,10 @@
                                 <div>
                                     @if (url()->current() == route('residual.blocksCategories'))
                                         <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.categories') }}</a>
+                                           class="block rounded bg-blue-600 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.products') }}</a>
                                     @else
                                         <a href="{{ route('residual.blocksCategories') }}"
-                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.categories') }}</a>
+                                           class="block rounded bg-blue-300 px-1 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">{{ __('column.products') }}</a>
                                     @endif
                                 </div>
                             </div>
@@ -97,7 +86,7 @@
                                     </th>
                                 @endif
 
-                                @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
+                                @if (url()->current() == route('residual.blocksProducts'))
 
                                     @if (isset($orderBy) && $orderBy == 'desc')
                                         <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
@@ -179,7 +168,7 @@
                                             @endif
                                         </th>
 
-                                        @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
+                                        @if (url()->current() == route('residual.blocksProducts'))
                                             <th class="font-normal break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                                 @if ($product->materials == 'нет')
                                                     <div
@@ -302,7 +291,7 @@
                                     </th>
                                 @endif
 
-                                @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
+                                @if (url()->current() == route('residual.blocksProducts'))
 
                                     @if (isset($orderBy) && $orderBy == 'desc')
                                         <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
@@ -383,7 +372,7 @@
                                             @endif
                                         </th>
 
-                                        @if (url()->current() == route('residual.blocksProducts') || url()->current() == route('residual.index'))
+                                        @if (url()->current() == route('residual.blocksProducts'))
                                             <th class="font-normal break-all max-w-32 overflow-hidden px-1 md:px-6 py-2 md:py-4">
                                                 @if ($product->materials == 'нет')
                                                     <div
