@@ -13,7 +13,7 @@ class TransportController extends Controller
 {
     public function index(Request $request)
     {
-        $entityName = 'Сводка "Транспорт"';
+        $entityName = 'Сводка - Транспорт';
 
         $month_list = array(
             '01'  => 'январь',
@@ -92,6 +92,7 @@ class TransportController extends Controller
 
         return view("report.transport", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',
@@ -103,7 +104,7 @@ class TransportController extends Controller
 
     public function block(Request $request)
     {
-        $entityName = 'Сводка "Транспорт"';
+        $entityName = 'Сводка - Транспорт';
 
         $month_list = array(
             '01'  => 'январь',
@@ -199,6 +200,7 @@ class TransportController extends Controller
 
         return view("report.transport", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',
@@ -211,7 +213,7 @@ class TransportController extends Controller
 
     public function concrete(Request $request)
     {
-        $entityName = 'Сводка "Транспорт"';
+        $entityName = 'Сводка - Транспорт';
 
         $month_list = array(
             '01'  => 'январь',
@@ -307,6 +309,7 @@ class TransportController extends Controller
 
         return view("report.transport", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',

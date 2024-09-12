@@ -22,6 +22,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Report\CounterpartyController;
 use App\Http\Controllers\Report\TransportController as ReportTransportController;
 use App\Http\Controllers\Report\TransporterController;
+use App\Http\Controllers\Report\TransporterFeeController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ShipingPriceController;
 use App\Http\Controllers\ShipmentController;
@@ -157,6 +158,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         Route::get('/report/transporter', [TransporterController::class, 'index'])->name('transporter');
         Route::get('/report/transporter_block', [TransporterController::class, 'block'])->name('transporter.block');
         Route::get('/report/transporter_concrete', [TransporterController::class, 'concrete'])->name('transporter.concrete');
+
+        // Оплата
+        Route::get('/report/transporter_fee', [TransporterFeeController::class, 'index'])->name('transporter_fee');
     });
 
 

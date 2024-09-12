@@ -13,7 +13,7 @@ class TransporterController extends Controller
 {
     public function index(Request $request)
     {
-        $entityName = 'Сводка "Транспорт"';
+        $entityName = 'Сводка - Перевозчик';
 
         $month_list = array(
             '01'  => 'январь',
@@ -94,6 +94,7 @@ class TransporterController extends Controller
 
         return view("report.transporter", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',
@@ -105,7 +106,7 @@ class TransporterController extends Controller
 
     public function block(Request $request)
     {
-        $entityName = 'Сводка "Транспорт"';
+        $entityName = 'Сводка - Перевозчик';
 
         $month_list = array(
             '01'  => 'январь',
@@ -203,6 +204,7 @@ class TransporterController extends Controller
 
         return view("report.transporter", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',
@@ -215,7 +217,7 @@ class TransporterController extends Controller
 
     public function concrete(Request $request)
     {
-        $entityName = 'Сводка "Транспорт"';
+        $entityName = 'Сводка - Перевозчик';
 
         $month_list = array(
             '01'  => 'январь',
@@ -313,6 +315,7 @@ class TransporterController extends Controller
 
         return view("report.transporter", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',

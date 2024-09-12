@@ -1,6 +1,5 @@
 <x-app-layout>
-
-    @if (isset($entity) && $entity != '')
+    @if (isset($entityName) && $entityName != '')
         <x-slot:title>
             {{ $entityName }}
         </x-slot>
@@ -20,7 +19,7 @@
             </div>
         @endif
 
-        @if (isset($entity) && $entity != '')
+        @if (isset($entityName) && $entityName != '')
             <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
         @endif
 
@@ -286,7 +285,17 @@
 
                                     @case('difference_price_percent')
                                         <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
-                                            {{ $total_difference_price_percent ?? 0 }}%</td>
+                                            @if (
+                                                $total_delivery_fee &&
+                                                    $total_delivery_fee !== 0 &&
+                                                    $total_price &&
+                                                    $total_price !== 0 &&
+                                                    abs($total_delivery_fee - $total_price) !== 0)
+                                                {{ round((abs($total_delivery_fee - $total_price) / $total_delivery_fee) * 100) }}%
+                                            @else
+                                                0%
+                                            @endif
+                                        </td>
                                     @break
 
                                     @default
