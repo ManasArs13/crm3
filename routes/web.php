@@ -104,13 +104,18 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
         Route::get('/report/transport_block', [ReportTransportController::class, 'block'])->name('transport.block');
         Route::get('/report/transport_concrete', [ReportTransportController::class, 'concrete'])->name('transport.concrete');
 
+
+        // Оплата
+        Route::get('/report/transporter_fee', [TransporterFeeController::class, 'index'])->name('transporter_fee');
+    });
+});
+
+Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|carrier'])->group(function () {
+    Route::name('report.')->group(function () {
         // Перевозчик
         Route::get('/report/transporter', [TransporterController::class, 'index'])->name('transporter');
         Route::get('/report/transporter_block', [TransporterController::class, 'block'])->name('transporter.block');
         Route::get('/report/transporter_concrete', [TransporterController::class, 'concrete'])->name('transporter.concrete');
-
-        // Оплата
-        Route::get('/report/transporter_fee', [TransporterFeeController::class, 'index'])->name('transporter_fee');
     });
 });
 
