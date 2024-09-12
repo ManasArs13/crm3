@@ -3,7 +3,8 @@
 namespace App\Console\Commands\Processing;
 
 use Illuminate\Console\Command;
-use App\Services\Entity\DemandService;
+use App\Services\Entity\OrderService;
+use Carbon\Carbon;
 
 class LateAndNoShipmentForTheOrder extends Command
 {
@@ -24,11 +25,11 @@ class LateAndNoShipmentForTheOrder extends Command
     /**
      * Execute the console command.
      */
-    public function handle(DemandService $demandService)
+    public function handle(OrderService $orderService)
     {
         $all = $this->option('all');
         $date = $all?"2024-01-01 00:00:00": Carbon::now()->subDays(3);
 
-        $demandService->calcLateAndNoShipmentForTheOrder($date);
+        $orderService->calcLateAndNoShipmentForTheOrder($date);
     }
 }
