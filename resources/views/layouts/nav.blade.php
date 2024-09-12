@@ -1,11 +1,11 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="w-11/12 mx-auto max-w-10xl">
-        <div class="flex justify-between h-16">
-            <div class="flex">
+        <div class="flex !flex-row justify-between h-16">
+            <div class="flex !flex-row">
 
                 <!-- Logo -->
-                <div class="shrink-0 flex lg:hidden items-center">
+                <div class="shrink-0 flex !flex-row lg:hidden items-center">
                     <a href="{{ route('dashboard') }}" class="uppercase fond-semibold text-indigo-400">
                         crm-euroblock
                     </a>
@@ -317,7 +317,7 @@
             @endif
 
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center lg:hidden">
+            <div class="-me-2 flex !flex-row items-center lg:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -334,154 +334,209 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden">
-        @role('admin|manager|dispatcher')
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('dashboard') }}">Главная</a>
-                </div>
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('dashboard-2') }}">Блок</a>
-                </div>
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('dashboard-3') }}">Бетон</a>
+        <div class="fixed inset-0 z-10"></div>
+        <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 z-50">
+
+            <div class="flex !flex-row items-center justify-between">
+                <a href="#" class="-m-1.5 p-1.5">
+                    <div class="text-lg font-bold">CRM</div>
+                </a>
+                <div class="-me-2 flex items-center lg:hidden">
+                    <button @click="open = ! open"
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
+                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                                  stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
 
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('order.index') }}">Заказы</a>
-                </div>
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('shipment.index') }}">{{ __('title.shipments') }}</a>
-                </div>
-                {{--            <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm"> --}}
-                {{--                <a href="{{ route('shipment.index2') }}">{{ __('title.shipments2') }}</a> --}}
-                {{--            </div> --}}
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('residual.index') }}">Остатки</a>
-                </div>
-            </div>
-        @endrole
 
-        @role('operator')
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('operator.orders') }}">Оператор (Заказы)</a>
-                </div>
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('operator.shipments') }}">Оператор (Отгрузки)</a>
-                </div>
-            </div>
-        @endrole
 
-        @role('admin')
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('product.index', ['type' => 'products']) }}">Товары</a>
-                </div>
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('product.index', ['type' => 'materials']) }}">Материалы</a>
-                </div>
-            </div>
+            <div class="mt-6 flow-root">
+                <div class="-my-6 divide-y divide-gray-500/10">
+                    <div class="space-y-2 py-6">
 
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('incomings.index') }}">Приход</a>
-                </div>
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('outgoings.index') }}">Расход</a>
-                </div>
-                <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('supply.index') }}">Приёмки</a>
-                </div>
-            </div>
+                        @role('admin|manager|dispatcher')
+                        <div class="-mx-3">
+                            <button type="button" class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                Главная
 
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('contact.index') }}">Контакты</a>
-                </div>
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('contactAmo.index') }}">Контакты АМО</a>
-                </div>
-            </div>
-
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('techcharts.index') }}">Техкарты</a>
-                </div>
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('processings.index') }}">Техоперции</a>
-                </div>
-            </div>
-
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('transport.index') }}">Транспорт</a>
-                </div>
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('transportType.index') }}">Виды ТС</a>
-                </div>
-            </div>
-        @endrole
-
-        @role('admin|manager|dispatcher')
-            <div class="py-1 px-2 flex flex-row border-b border-gray-200">
-                <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                    <a href="{{ route('calculator.block') }}">Калькулятор</a>
-                </div>
-            </div>
-        @endrole
-
-        @role('admin')
-            <div class="py-1 px-2 flex flex-col border-b border-gray-200">
-                <div class="flex flex-row my-1">
-                    <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                        <a href="{{ route('delivery.index') }}">Доставка</a>
-                    </div>
-                    <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                        <a href="{{ route('shiping_price.index') }}">Прайс (доставка)</a>
-                    </div>
-                    <div class="basis-1/3 bg-slate-200 text-center mx-1 rounded-sm">
-                        <a href="{{ route('category.index') }}">Категории товаров</a>
-                    </div>
-                </div>
-                <div class="flex flex-row">
-                    <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                        <a href="{{ route('order_positions.index') }}">Позиции заказов</a>
-                    </div>
-                    <div class="basis-1/2 bg-slate-200 text-center mx-1 rounded-sm">
-                        <a href="{{ route('shipment_products.index') }}">Позиции отгрузок</a>
-                    </div>
-                </div>
-            </div>
-        @endrole
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-
-            <div class="py-1 px-2 flex flex-col border-b border-gray-200">
-                @role('admin')
-                    <div class="flex flex-row">
-                        <div class="basis-1/2  text-center mx-1 rounded-sm">
-                            <a href="{{ route('option.index') }}">Опции</a>
+                                <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <!-- 'Product' sub-menu, show/hide based on menu state. -->
+                            <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                <a href="{{ route('dashboard') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Все</a>
+                                <a href="{{ route('dashboard-2') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Блок</a>
+                                <a href="{{ route('dashboard-3') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Бетон</a>
+                            </div>
                         </div>
+
+                        <a href="{{ route('order.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Заказы</a>
+                        <a href="{{ route('shipment.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.shipments') }}</a>
+                        <a href="{{ route('residual.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Остатки</a>
+                        @endrole
+
+                        @role('operator')
+                        <a href="{{ route('operator.orders') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Заказы</a>
+                        <a href="{{ route('operator.shipments') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Отгрузки</a>
+                        @endrole
+
+
+                        @role('admin')
+                        <div class="-mx-3">
+                            <button type="button" class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                Производство
+
+                                <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <!-- 'Product' sub-menu, show/hide based on menu state. -->
+                            <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                <a href="{{ route('techcharts.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Техкарты</a>
+                                <a href="{{ route('processings.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Техоперации</a>
+                            </div>
+                        </div>
+                        @endrole
+
+
+                        @role('admin|manager|dispatcher')
+                        <a href="{{ route('calculator.block') . '#content-1' }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Калькулятор</a>
+                        @endrole
+
+
+                        @role('admin')
+                        <div class="-mx-3">
+                            <button type="button" class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                Справочник
+
+                                <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+
+
+                            <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                <a href="{{ route('contact.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты</a>
+                                <a href="{{ route('product.index', ['type' => 'products']) }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Товары</a>
+                                <a href="{{ route('product.index', ['type' => 'materials']) }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Материалы</a>
+                                <a href="{{ route('transport.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Весь транспорт</a>
+                                <a href="{{ route('transportType.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Виды ТС</a>
+                                <a href="{{ route('delivery.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Доставка</a>
+                                <a href="{{ route('shiping_price.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Прайс (доставка)</a>
+                                <a href="{{ route('category.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Категории товаров</a>
+                            </div>
+                        </div>
+                        @endrole
+                        <div class="-mx-3">
+                            <button type="button" class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                Прочее
+
+                                <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <!-- 'Product' sub-menu, show/hide based on menu state. -->
+                            <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                @role('admin|manager')
+                                <a href="{{ route('manager.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры</a>
+                                @endrole
+
+                                @role('admin')
+                                <a href="{{ route('report.transport') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Транспорт</a>
+                                <a href="{{ route('report.transporter') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик</a>
+                                <a href="{{ route('report.transporter_fee') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик (оплата)</a>
+                                @endrole
+
+                                @role('admin')
+                                <a href="{{ route('report.counteparty') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Контрагенты</a>
+                                <a href="{{ route('summary.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.summary') }}</a>
+                                @endrole
+
+                                @role('admin|manager|dispatcher')
+                                <a href="{{ route('debtors') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.debtors') }}</a>
+                                @endrole
+
+                                @role('admin')
+                                <a href="{{ route('incomings.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Приход</a>
+                                <a href="{{ route('outgoings.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Расход</a>
+                                <a href="{{ route('supply.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Приемки</a>
+                                <a href="{{ route('order_positions.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции заказов</a>
+                                <a href="{{ route('shipment_products.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции отгрузок</a>
+                                @endrole
+                            </div>
+                        </div>
+
+
+
+                        @role('admin')
+                        <div class="-mx-3">
+                            <button type="button" class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                АМО
+
+                                <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+
+                            <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                <a href="{{ route('amo-order.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Заказы</a>
+                                <a href="{{ route('contactAmo.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты АМО</a>
+                            </div>
+                        </div>
+                        <a href="{{ route('users.all') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Пользователи</a>
+
+                        <a href="{{ route('option.index') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Опции</a>
+                        @endrole
+
+
                     </div>
-                @endrole
+                    <div class="py-6">
 
-                <div class="basis-full text-center mx-auto rounded-sm">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
 
-                        <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-responsive-nav-link>
-                    </form>
+                            <x-dropdown-link class="text-base -mx-3 block rounded-lg px-3 py-2.5 font-semibold leading-7 text-gray-900 hover:bg-gray-50" :href="route('logout')"
+                                             onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                <div class="text-base">Выйти</div>
+                            </x-dropdown-link>
+                        </form>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
+
+
+
+    <script>
+        // Находим все кнопки меню
+        const menuToggles = document.querySelectorAll('.menu-toggle');
+
+        // Перебираем каждую кнопку
+        menuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const menuContent = this.nextElementSibling; // Ищем следующий блок меню (sibling)
+                const icon = this.querySelector('.menu-icon'); // Ищем иконку внутри кнопки
+
+                menuContent.classList.toggle('hidden'); // Показываем/скрываем меню
+                const expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+
+                // Поворачиваем стрелку
+                icon.classList.toggle('rotate-180');
+            });
+        });
+    </script>
+
 </nav>
