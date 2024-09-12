@@ -264,9 +264,6 @@
                                 <x-dropdown-link :href="route('manager.index')">
                                     Сводка - Менеджеры
                                 </x-dropdown-link>
-                                @endrole
-
-                                @role('admin')
                                 <x-dropdown-link :href="route('report.transport')">
                                     Сводка - Транспорт
                                 </x-dropdown-link>
@@ -282,6 +279,9 @@
                                 <x-dropdown-link :href="route('report.counteparty')">
                                     Сводка - Контрагенты
                                 </x-dropdown-link>
+                                @endrole
+
+                                @role('admin')
                                 <x-dropdown-link :href="route('summary.index')">
                                     {{ __('title.summary') }}
                                 </x-dropdown-link>
@@ -518,16 +518,13 @@
                             <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
                                 @role('admin|manager')
                                 <a href="{{ route('manager.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры</a>
-                                @endrole
-
-                                @role('admin')
                                 <a href="{{ route('report.transport') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Транспорт</a>
                                 <a href="{{ route('report.transporter') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик</a>
                                 <a href="{{ route('report.transporter_fee') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик (оплата)</a>
+                                <a href="{{ route('report.counteparty') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Контрагенты</a>
                                 @endrole
 
                                 @role('admin')
-                                <a href="{{ route('report.counteparty') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Контрагенты</a>
                                 <a href="{{ route('summary.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.summary') }}</a>
                                 @endrole
                             </div>
