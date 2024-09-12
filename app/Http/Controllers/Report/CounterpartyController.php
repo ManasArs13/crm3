@@ -14,7 +14,7 @@ class CounterpartyController extends Controller
 {
     public function index(Request $request)
     {
-        $entityName = 'Сводка "контрагенты"';
+        $entityName = 'Сводка - контрагенты';
 
         $month_list = array(
             '01'  => 'январь',
@@ -221,6 +221,7 @@ class CounterpartyController extends Controller
 
         return view("report.counterparty", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',
@@ -234,7 +235,7 @@ class CounterpartyController extends Controller
 
     public function block(Request $request)
     {
-        $entityName = 'Сводка "контрагенты"';
+        $entityName = 'Сводка - контрагенты';
 
         $month_list = array(
             '01'  => 'январь',
@@ -448,6 +449,7 @@ class CounterpartyController extends Controller
 
         return view("report.counterparty", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',
@@ -461,7 +463,7 @@ class CounterpartyController extends Controller
 
     public function concrete(Request $request)
     {
-        $entityName = 'Сводка "контрагенты"';
+        $entityName = 'Сводка - контрагенты';
 
         $month_list = array(
             '01'  => 'январь',
@@ -676,6 +678,7 @@ class CounterpartyController extends Controller
 
         return view("report.counterparty", compact(
             'entityItems',
+            'entityName',
             "resColumns",
             "resColumnsAll",
             'dateNext',

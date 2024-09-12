@@ -34,6 +34,17 @@ class OrderController extends Controller
                 unset($array["agent"]["name"]);
             }
 
+            if (isset($array["services"])){
+                $servicesNew=[];
+                foreach ($array["services"] as $service){
+                    if (isset($service["product_id"])){
+                        $servicesNew[]=$service;
+                    }
+                }
+
+                $array["services"]=$servicesNew;
+            }
+
 
             if (!isset($array["state"]) || $array["state"] == null)
                 throw new \Exception(trans("error.noState"));

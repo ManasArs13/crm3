@@ -9,11 +9,11 @@ use DateTime;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class TransportController extends Controller
+class TransporterController extends Controller
 {
     public function index(Request $request)
     {
-        $entityName = 'Сводка - Транспорт';
+        $entityName = 'Сводка - Перевозчик';
 
         $month_list = array(
             '01'  => 'январь',
@@ -67,10 +67,12 @@ class TransportController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_fee')
+            ->groupBy('contact_id')
+            ->havingNotNull('contact_id')
             ->get();
 
         $selected = [
-            "name",
+            //"name",
             "contact_name",
             "count_shipments",
             'price_norm',
@@ -90,7 +92,7 @@ class TransportController extends Controller
             }
         }
 
-        return view("report.transport", compact(
+        return view("report.transporter", compact(
             'entityItems',
             'entityName',
             "resColumns",
@@ -104,7 +106,7 @@ class TransportController extends Controller
 
     public function block(Request $request)
     {
-        $entityName = 'Сводка - Транспорт';
+        $entityName = 'Сводка - Перевозчик';
 
         $month_list = array(
             '01'  => 'январь',
@@ -175,10 +177,12 @@ class TransportController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_fee')
+            ->groupBy('contact_id')
+            ->havingNotNull('contact_id')
             ->get();
 
         $selected = [
-            "name",
+            //"name",
             "contact_name",
             "count_shipments",
             'price_norm',
@@ -198,7 +202,7 @@ class TransportController extends Controller
             }
         }
 
-        return view("report.transport", compact(
+        return view("report.transporter", compact(
             'entityItems',
             'entityName',
             "resColumns",
@@ -213,7 +217,7 @@ class TransportController extends Controller
 
     public function concrete(Request $request)
     {
-        $entityName = 'Сводка - Транспорт';
+        $entityName = 'Сводка - Перевозчик';
 
         $month_list = array(
             '01'  => 'январь',
@@ -284,10 +288,12 @@ class TransportController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_fee')
+            ->groupBy('contact_id')
+            ->havingNotNull('contact_id')
             ->get();
 
         $selected = [
-            "name",
+            //"name",
             "contact_name",
             "count_shipments",
             'price_norm',
@@ -307,7 +313,7 @@ class TransportController extends Controller
             }
         }
 
-        return view("report.transport", compact(
+        return view("report.transporter", compact(
             'entityItems',
             'entityName',
             "resColumns",
