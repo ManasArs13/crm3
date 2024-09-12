@@ -150,39 +150,6 @@
 
                                 <x-slot name="content">
 
-                                    @role('admin|manager')
-                                        <x-dropdown-link :href="route('manager.index')">
-                                            Сводка - Менеджеры
-                                        </x-dropdown-link>
-                                    @endrole
-
-                                    @role('admin')
-                                        <x-dropdown-link :href="route('report.transport')">
-                                            Сводка - Транспорт
-                                        </x-dropdown-link>
-                                    @endrole
-
-                                    @role('admin')
-                                        <x-dropdown-link :href="route('report.transporter')">
-                                            Сводка - Перевозчик
-                                        </x-dropdown-link>
-                                    @endrole
-
-                                    @role('admin')
-                                        <x-dropdown-link :href="route('report.transporter_fee')">
-                                            Сводка - Перевозчик (оплата)
-                                        </x-dropdown-link>
-                                    @endrole
-
-                                    @role('admin')
-                                        <x-dropdown-link :href="route('report.counteparty')">
-                                            Сводка - Контрагенты
-                                        </x-dropdown-link>
-                                        <x-dropdown-link :href="route('summary.index')">
-                                            {{ __('title.summary') }}
-                                        </x-dropdown-link>
-                                    @endrole
-
                                     @role('admin|manager|dispatcher')
                                         <x-dropdown-link :href="route('debtors')">
                                             {{ __('title.debtors') }}
@@ -269,6 +236,61 @@
                         <x-nav-link :href="route('users.all')" :active="request()->routeIs('users')">
                             Пользователи
                         </x-nav-link>
+                    @endrole
+
+
+                    @role('admin|manager|dispatcher')
+                    <div class="hidden md:flex md:items-center md:ms-6">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>Сводка</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                  clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+
+                                @role('admin|manager')
+                                <x-dropdown-link :href="route('manager.index')">
+                                    Сводка - Менеджеры
+                                </x-dropdown-link>
+                                @endrole
+
+                                @role('admin')
+                                <x-dropdown-link :href="route('report.transport')">
+                                    Сводка - Транспорт
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('report.transporter')">
+                                    Сводка - Перевозчик
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('report.transporter_fee')">
+                                    Сводка - Перевозчик (оплата)
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('report.counteparty')">
+                                    Сводка - Контрагенты
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('summary.index')">
+                                    {{ __('title.summary') }}
+                                </x-dropdown-link>
+                                @endrole
+
+
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                     @endrole
 
                 </div>
@@ -446,20 +468,6 @@
                             </button>
                             <!-- 'Product' sub-menu, show/hide based on menu state. -->
                             <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
-                                @role('admin|manager')
-                                <a href="{{ route('manager.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры</a>
-                                @endrole
-
-                                @role('admin')
-                                <a href="{{ route('report.transport') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Транспорт</a>
-                                <a href="{{ route('report.transporter') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик</a>
-                                <a href="{{ route('report.transporter_fee') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик (оплата)</a>
-                                @endrole
-
-                                @role('admin')
-                                <a href="{{ route('report.counteparty') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Контрагенты</a>
-                                <a href="{{ route('summary.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.summary') }}</a>
-                                @endrole
 
                                 @role('admin|manager|dispatcher')
                                 <a href="{{ route('debtors') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.debtors') }}</a>
@@ -474,6 +482,7 @@
                                 @endrole
                             </div>
                         </div>
+
 
 
 
@@ -496,6 +505,33 @@
 
                         <a href="{{ route('option.index') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Опции</a>
                         @endrole
+
+                        <div class="-mx-3">
+                            <button type="button" class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                Сводка
+
+                                <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <!-- 'Product' sub-menu, show/hide based on menu state. -->
+                            <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                @role('admin|manager')
+                                <a href="{{ route('manager.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры</a>
+                                @endrole
+
+                                @role('admin')
+                                <a href="{{ route('report.transport') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Транспорт</a>
+                                <a href="{{ route('report.transporter') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик</a>
+                                <a href="{{ route('report.transporter_fee') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Перевозчик (оплата)</a>
+                                @endrole
+
+                                @role('admin')
+                                <a href="{{ route('report.counteparty') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Контрагенты</a>
+                                <a href="{{ route('summary.index') }}" class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.summary') }}</a>
+                                @endrole
+                            </div>
+                        </div>
 
 
                     </div>
