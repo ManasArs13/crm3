@@ -74,7 +74,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
     ]);
 
     // Остатки
-    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
+//    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
     Route::get('/residuals/blocks_materials', [ResidualController::class, 'blocksMaterials'])->name('residual.blocksMaterials');
     Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
     Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
