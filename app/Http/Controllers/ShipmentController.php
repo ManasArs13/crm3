@@ -79,8 +79,6 @@ class ShipmentController extends Controller
         } else {
             $selected = [
                 "name",
-                "ms_id",
-                "id",
                 "created_at",
                 "counterparty_link",
                 "suma",
