@@ -202,7 +202,7 @@ class DemandService implements EntityInterface
                 }
 
                 $entity->weight = $shipmentWeight;
-                if ($entity->transport_type_id!=null && $distance!=null){
+                if ($entity->transport_type_id!=null && $distance!=null && in_array($entity->transport_type_id, [2,3,4,5,6])){
                     $weight_tn=($entity->transport_type_id==2)?round($shipmentWeight/1000,1):ceil($shipmentWeight/1000);
                     $entity->delivery_price_norm=$this->getPrice(["distance"=>$distance, "weightTn"=>$weight_tn, "vehicleType" =>$entity->transport_type_id]);
                     $entity->saldo=$entity->delivery_price-$entity->delivery_price_norm;
@@ -285,20 +285,31 @@ class DemandService implements EntityInterface
             return $deliveryPrice;
     }
 
-    public function calcLateAndNoShipmentForTheOrder($date){
-        $orders=Order::leftJoin(DB::raw('(select order_id , min(created_at) as moment from shipments where order_id is not null group by order_id) as t0'),'t0.order_id', '=', 'orders.id')
-              ->whereNotIn("orders.status_id",[1,7])
-              ->whereNotNull("date_plan")
-              ->whereRaw("date_plan<now()")
-              ->where("date_plan",">", $date)
-              ->where(function($query) {
-                $query->whereRaw("t0.moment>orders.date_plan or t0.moment is null");
-            })->get();
+    public function DeliveryPriceNormAndSaldoForShipments($date){
+        $count=Shipment::whereIn("transport_type_id",[2,3,4,5,6])
+        ->whereNotNull("delivery_id")->where("updated_at",">", $date)->count();
 
-        foreach ($orders as $order){
-            $order->late=1;
-            $order->save();
-        }
+        $skip=0;
+        $take=10;
+
+        // while ($count>0){
+            $count=$count-$skip;
+            $demands=Shipment::whereIn("transport_type_id",[2,3,4,5,6])
+            ->whereNotNull("delivery_id")->where("updated_at",">", $date)
+                // ->skip($skip)
+                // ->take($take)
+                ->with("delivery")
+                ->get();
+
+            foreach ($demands as $demand){
+                $weight_tn=($demand->transport_type_id==2)?round($demand->weight/1000,1):ceil($demand->weight/1000);
+                $distance=$demand->delivery->distance;
+                $demand->delivery_price_norm=$this->getPrice(["distance"=>$distance, "weightTn"=>$weight_tn, "vehicleType" =>$demand->transport_type_id]);
+                $demand->saldo=$demand->delivery_price-$demand->delivery_price_norm;
+                $demand->save();
+            }
+            $skip= $skip+$take;
+        // }
     }
 
     /**
