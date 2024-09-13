@@ -201,6 +201,8 @@ class DemandService implements EntityInterface
                     }
                 }
 
+                $entity->delivery_price_norm=0;
+                $entity->saldo=$entity->delivery_price;
                 $entity->weight = $shipmentWeight;
                 if ($entity->transport_type_id!=null && $distance!=null && in_array($entity->transport_type_id, [2,3,4,5,6])){
                     $weight_tn=($entity->transport_type_id==2)?round($shipmentWeight/1000,1):ceil($shipmentWeight/1000);
