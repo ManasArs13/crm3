@@ -34,6 +34,11 @@ class Product extends Model
         return $this->hasMany(OrderPosition::class);
     }
 
+    public function price_lists()
+    {
+        return $this->hasMany(PriceListPosition::class);
+    }
+
     public function shipments()
     {
         return $this->hasMany(ShipmentProduct::class);
@@ -41,7 +46,7 @@ class Product extends Model
 
     public function tech_charts()
     {
-        return 
+        return
             $this->belongsToMany(TechChart::class, 'tech_chart_materials');
     }
 
