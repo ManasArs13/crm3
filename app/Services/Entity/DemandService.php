@@ -288,20 +288,23 @@ class DemandService implements EntityInterface
     }
 
     public function DeliveryPriceNormAndSaldoForShipments($date){
-        $count=Shipment::whereIn("transport_type_id",[2,3,4,5,6])
-        ->whereNotNull("delivery_id")->where("updated_at",">", $date)->count();
+        Shipment::where("updated_at",">", $date)
+                ->update(['delivery_price_norm' => 0, 'saldo'=>0]);
 
         $skip=0;
-        $take=10;
+        $take=100;
 
-        // while ($count>0){
-            $count=$count-$skip;
+        while (true){
             $demands=Shipment::whereIn("transport_type_id",[2,3,4,5,6])
             ->whereNotNull("delivery_id")->where("updated_at",">", $date)
-                // ->skip($skip)
-                // ->take($take)
+                ->skip($skip)
+                ->take($take)
                 ->with("delivery")
                 ->get();
+
+            if (count($demands)===0){
+                break;
+            }
 
             foreach ($demands as $demand){
                 $weight_tn=($demand->transport_type_id==2)?round($demand->weight/1000,1):ceil($demand->weight/1000);
@@ -311,7 +314,7 @@ class DemandService implements EntityInterface
                 $demand->save();
             }
             $skip= $skip+$take;
-        // }
+        }
     }
 
     /**
