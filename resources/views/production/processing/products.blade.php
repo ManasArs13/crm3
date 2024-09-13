@@ -95,7 +95,7 @@
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
                                                                 value="{{ $filter['minChecked'] }}"
-                                                                class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
+                                                                class="date-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
                                                     <div class="basis-2/5">
@@ -107,7 +107,7 @@
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
                                                                 value="{{ $filter['maxChecked'] }}"
-                                                                class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
+                                                                class="date-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -120,7 +120,7 @@
                                                     </div>
                                                     <div class="basis-4/5">
                                                         <select
-                                                            class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                            class="select-default border border-solid border-neutral-300 rounded w-full py-2 mb-4"
                                                             name="filters[{{ $filter['name'] }}]">
                                                             @foreach ($filter['values'] as $value)
                                                                 <option
@@ -155,16 +155,42 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                            <div class="mt-4 flex justify-end">
+                                                <button type="submit"
+                                                        class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                                    поиск
+                                                </button>
+                                                <button id="reset-button" type="button"
+                                                        class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
+                                                    Сбросить
+                                                </button>
+                                            </div>
                                     </div>
                                 </x-slot>
                             </x-dropdown>
                         </div>
-                        <div>
-                            <button type="submit"
-                                class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
-                                поиск
-                            </button>
-                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function(event) {
+
+                                document.getElementById('reset-button').addEventListener('click', function() {
+
+
+                                    const dateInputs = document.querySelectorAll('.date-default');
+                                    dateInputs.forEach(dateInput => {
+                                        dateInput.value = '';
+                                    });
+
+                                    const selects = document.querySelectorAll('.select-default');
+                                    selects.forEach(select => {
+                                        if (select.options.length > 0) {
+                                            select.selectedIndex = 0;
+                                        }
+                                    });
+
+                                });
+
+                            });
+                        </script>
                     </form>
 
                     {{-- Nav --}}

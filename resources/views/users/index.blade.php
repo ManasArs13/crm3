@@ -97,7 +97,7 @@
                                     {{__("column.name")}}
                                 </th>
                                 <th scope="col" class="px-6 py-2">
-                                    {{__("column.email")}}
+                                    {{__("column.login")}}
                                 </th>
                                 <th scope="col" class="px-6 py-2">
                                     Роль

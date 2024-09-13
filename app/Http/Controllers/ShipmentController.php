@@ -74,26 +74,25 @@ class ShipmentController extends Controller
             'ms_link'
         ];
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = [
-                "name",
-                "created_at",
-                "counterparty_link",
-                "suma",
-                "status",
-                "products_count",
-                "shipment_address",
-                "description",
-                "delivery_price",
-                "delivery_price_norm",
-                "delivery_fee",
-                "delivery_id",
-                "transport_type_id",
-                "transport_id",
-            ];
-        }
+
+        $select = [
+            "name",
+            "created_at",
+            "counterparty_link",
+            "suma",
+            "status",
+            "products_count",
+            "shipment_address",
+            "description",
+            "delivery_price",
+            "delivery_price_norm",
+            "delivery_fee",
+            "delivery_id",
+            "transport_type_id",
+            "transport_id",
+        ];
+
+        $selected = $request->columns ?? $select;
 
         foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
@@ -238,6 +237,7 @@ class ShipmentController extends Controller
         ];
 
         return view("shipment.index", compact(
+            'select',
             'entityItems',
             "resColumns",
             "resColumnsAll",

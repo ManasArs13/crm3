@@ -35,17 +35,16 @@ class TransportController extends Controller
             'ms_id'
         ];
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = [
-                "id",
-                "name",
-                'description',
-                'tonnage',
-                'contact_id',
-            ];
-        }
+
+        $select = [
+            "id",
+            "name",
+            'description',
+            'tonnage',
+            'contact_id',
+        ];
+
+        $selected = $request->columns ?? $select;
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
@@ -73,6 +72,7 @@ class TransportController extends Controller
         $filters = [];
 
         return view("transport.index", compact(
+            'select',
             'entityItems',
             'filters',
             "resColumns",

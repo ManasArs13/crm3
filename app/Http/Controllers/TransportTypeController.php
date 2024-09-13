@@ -24,7 +24,8 @@ class TransportTypeController extends Controller
         $selectColumn = $request->column;
 
         // Колонки
-        $columns = Schema::getColumnListing('transport_types');
+        $columns =  Schema::getColumnListing('transport_types');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -69,6 +70,7 @@ class TransportTypeController extends Controller
         ];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -152,6 +154,7 @@ class TransportTypeController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('transport_types');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -224,6 +227,7 @@ class TransportTypeController extends Controller
 
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
