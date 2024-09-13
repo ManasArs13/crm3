@@ -82,24 +82,22 @@ class OrderController extends Controller
             "ms_id"
         ];
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = [
-                "name",
-                "contact_id",
-                "sostav",
-                'status_shipped',
-                "sum",
-                "date_plan",
-                "status_id",
-                "comment",
-                "positions_count",
-                "residual_count",
-                "delivery_id",
-                "ms_link",
-            ];
-        }
+        $select = [
+            "name",
+            "contact_id",
+            "sostav",
+            'status_shipped',
+            "sum",
+            "date_plan",
+            "status_id",
+            "comment",
+            "positions_count",
+            "residual_count",
+            "delivery_id",
+            "ms_link",
+        ];
+
+        $selected = $request->columns ?? $select;
 
         foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
@@ -247,7 +245,7 @@ class OrderController extends Controller
                 //    'checked_value' => $queryMaterial,
             ],
         ];
-
+//dd($resColumns);
         return view("order.index", compact(
             'entityItems',
             "resColumns",
@@ -265,7 +263,8 @@ class OrderController extends Controller
             'dateWeek',
             'dateAll',
             'queryMaterial',
-            'queryPlan'
+            'queryPlan',
+            'select'
         ));
     }
 

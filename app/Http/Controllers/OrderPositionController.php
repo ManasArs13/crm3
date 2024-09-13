@@ -109,6 +109,7 @@ class OrderPositionController extends Controller
         ];
 
         return view("order.position", compact(
+            'all_columns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
