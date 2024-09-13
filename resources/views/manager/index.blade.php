@@ -91,9 +91,11 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
-                                <th scope="col" class="px-2 py-3"
-                                    @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
-                                    {{ $column }}</th>
+                                @if ($column == 'Имя')
+                                    <th scope="col" class="px-2 py-3 text-left">МОЙ СКЛАД</th>
+                                @else
+                                    <th scope="col" class="px-2 py-3 text-right">{{ $column }}</th>
+                                @endif
                             @endforeach
                         </tr>
                     </thead>
@@ -376,9 +378,11 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumnsAmo as $key => $column)
-                                <th scope="col" class="px-2 py-3"
-                                    @if ($column == 'Имя') style="text-align:left" @else style="text-align:right" @endif>
-                                    {{ $column }}</th>
+                                @if ($column == 'Имя')
+                                    <th scope="col" class="px-2 py-3 text-left">АМО СРМ</th>
+                                @else
+                                    <th scope="col" class="px-2 py-3 text-right">{{ $column }}</th>
+                                @endif
                             @endforeach
                         </tr>
                     </thead>

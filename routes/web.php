@@ -59,6 +59,9 @@ Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function ()
     Route::resources([
         'manager' => ManagerController::class
     ]);
+    // Менеджеры
+    Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
+    Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(function () {
@@ -74,7 +77,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
     ]);
 
     // Остатки
-    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
+//    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
     Route::get('/residuals/blocks_materials', [ResidualController::class, 'blocksMaterials'])->name('residual.blocksMaterials');
     Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
     Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
@@ -87,6 +90,33 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
 
     // Должники
     Route::get('/shipments/debtors', [DebtorController::class, 'index'])->name('debtors');
+
+    // Сводка
+    Route::name('report.')->group(function () {
+
+        // Контрагенты
+        Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
+        Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
+        Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+
+        // Транспорт
+        Route::get('/report/transport', [ReportTransportController::class, 'index'])->name('transport');
+        Route::get('/report/transport_block', [ReportTransportController::class, 'block'])->name('transport.block');
+        Route::get('/report/transport_concrete', [ReportTransportController::class, 'concrete'])->name('transport.concrete');
+
+
+        // Оплата
+        Route::get('/report/transporter_fee', [TransporterFeeController::class, 'index'])->name('transporter_fee');
+    });
+});
+
+Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|carrier'])->group(function () {
+    Route::name('report.')->group(function () {
+        // Перевозчик
+        Route::get('/report/transporter', [TransporterController::class, 'index'])->name('transporter');
+        Route::get('/report/transporter_block', [TransporterController::class, 'block'])->name('transporter.block');
+        Route::get('/report/transporter_concrete', [TransporterController::class, 'concrete'])->name('transporter.concrete');
+    });
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
@@ -137,31 +167,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     // Amo
     //Route::r('/orders_amo', [AmoOrderController::class, 'index'])->name('amo.order.index');
 
-    // Менеджеры
-    Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
-    Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
 
-    // Сводка
-    Route::name('report.')->group(function () {
-
-        // Контрагенты
-        Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
-        Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
-        Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
-
-        // Транспорт
-        Route::get('/report/transport', [ReportTransportController::class, 'index'])->name('transport');
-        Route::get('/report/transport_block', [ReportTransportController::class, 'block'])->name('transport.block');
-        Route::get('/report/transport_concrete', [ReportTransportController::class, 'concrete'])->name('transport.concrete');
-
-        // Перевозчик
-        Route::get('/report/transporter', [TransporterController::class, 'index'])->name('transporter');
-        Route::get('/report/transporter_block', [TransporterController::class, 'block'])->name('transporter.block');
-        Route::get('/report/transporter_concrete', [TransporterController::class, 'concrete'])->name('transporter.concrete');
-
-        // Оплата
-        Route::get('/report/transporter_fee', [TransporterFeeController::class, 'index'])->name('transporter_fee');
-    });
 
 
     //Доп
