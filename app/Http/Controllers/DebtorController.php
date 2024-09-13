@@ -11,6 +11,8 @@ class DebtorController extends Controller
 {
     public function index(Request $request)
     {
+        $entityName = 'Должники';
+
         $contacts = Contact::whereDoesntHave('contact_categories', function ($q) {
             $q->where('contact_category_id', '=', '9');
         })
@@ -48,43 +50,12 @@ class DebtorController extends Controller
                 $join->on('tab1.carrier_id', '=', 'shipments.carrier_id');
                 $join->on("tab1.moment", "<", "shipments.created_at");
             })
-            ->mergeBindings($shipments0);
-        // ->orderBy('days', 'asc')
-        // ->orderBy('moment', 'asc')
-        //->groupBy("shipments.carrier_id", "tab1.id");
+            ->mergeBindings($shipments0)
+            ->orderBy('days', 'asc')
+            ->orderBy('moment', 'asc')
+            ->groupBy("shipments.carrier_id", "tab1.id")
+            ->get();
 
-        // Columns
-        $all_columns = ['name', 'moment', 'days', 'balance', 'description', 'ship'];
-
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = ['name', 'moment', 'days', 'balance', 'description', 'ship'];
-        }
-
-        foreach ($all_columns as $column) {
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
-
-            if (in_array($column, $selected)) {
-                $resColumns[$column] = trans("column." . $column);
-            }
-        }
-
-        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $shipments->orderBy($request->column)->groupBy("shipments.carrier_id", "tab1.id")->get();
-            $orderBy = 'desc';
-            $selectColumn = $request->column;
-        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $shipments->orderByDesc($request->column)->groupBy("shipments.carrier_id", "tab1.id")->get();
-            $orderBy = 'asc';
-            $selectColumn = $request->column;
-        } else {
-            $entityItems = $shipments->orderBy('days', 'asc')
-                ->orderBy('moment', 'asc')->groupBy("shipments.carrier_id", "tab1.id")->get();
-            $orderBy = 'desc';
-            $selectColumn = null;
-        }
-
-        return view('debtor.index', compact('shipments', 'entityItems', 'resColumns', 'orderBy', 'selectColumn'));
+        return view('debtor.index', compact('shipments', 'entityName'));
     }
 }
