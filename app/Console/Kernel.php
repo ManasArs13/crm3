@@ -71,6 +71,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ms:import-tech-chart')->hourly();
         $schedule->command('ms:import-processing')->hourly();
         $schedule->command('processing:late-and-no-shipment-for-the-order')->daily();
+        $schedule->command('processing:deviation')->daily();
     }
 
     protected function commands(): void
