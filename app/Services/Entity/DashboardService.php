@@ -64,7 +64,7 @@ class DashboardService
             'transport_type'
         )
             ->whereDate('date_plan', $date)
-            ->whereIn('status_id', [3, 4, 5, 6])
+            ->whereIn('status_id', [3, 4, 5, 6, 7])
             ->orderBy('date_plan')
             ->get();
 
@@ -579,7 +579,7 @@ class DashboardService
                     $queries->where('building_material', Product::BLOCK);
                 });
             })
-            ->whereIn('status_id', [3, 4, 5, 6])
+            ->whereIn('status_id', [3, 4, 5, 6, 7])
             ->orderBy('date_plan')
             ->get();
 
