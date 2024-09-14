@@ -15,7 +15,7 @@ class PriceListPositionService
         $this->options = $options;
     }
 
-    public function import($data, $priceList)
+    public function import($data, $priceList, $date)
     {
         $count = 0;
         $guids = [];
@@ -35,6 +35,7 @@ class PriceListPositionService
 
                 $entity->price_list_id = $priceList;
                 $entity->product_id = $product->id;
+                $entity->created_at =$date;
 
                 $entity->save();
             } else {
