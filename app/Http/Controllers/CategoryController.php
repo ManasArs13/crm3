@@ -45,6 +45,7 @@ class CategoryController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('categories');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -56,6 +57,7 @@ class CategoryController extends Controller
         $filters = [];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -167,6 +169,7 @@ class CategoryController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('products_categories');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -207,6 +210,7 @@ class CategoryController extends Controller
         $filters = [];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",

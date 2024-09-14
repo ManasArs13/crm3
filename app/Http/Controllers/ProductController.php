@@ -45,6 +45,7 @@ class ProductController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('products');
+        $selectedColumns = [];
         //    $columns[] = 'remainder';
         $resColumns = [];
         $resColumnsAll = [];
@@ -109,6 +110,7 @@ class ProductController extends Controller
         ];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -217,6 +219,7 @@ class ProductController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('products');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -339,6 +342,7 @@ class ProductController extends Controller
         ];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             'filters',
             "resColumns",

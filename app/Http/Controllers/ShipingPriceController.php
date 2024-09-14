@@ -37,6 +37,7 @@ class ShipingPriceController extends Controller
 
         $resColumns = [];
         $resColumnsAll = [];
+        $selectedColumns = [];
 
         foreach ($columns as $column) {
             $resColumns[$column] = trans("column." . $column);
@@ -46,6 +47,7 @@ class ShipingPriceController extends Controller
         $filters = [];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -130,6 +132,7 @@ class ShipingPriceController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('shiping_prices');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -189,6 +192,7 @@ class ShipingPriceController extends Controller
         $filters = [];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",

@@ -62,11 +62,22 @@
                                                 <p>
                                                     <input name="columns[]" class="columns_all" type="checkbox"
                                                         value="{{ $key }}"
+                                                        id="checkbox-{{ $key }}"
                                                         @if ($column['checked'] == true) checked @endif>
                                                     {{ $column['name_rus'] }}
                                                 </p>
                                             </div>
                                         @endforeach
+                                    </div>
+                                    <div class="mt-4 flex justify-start mb-4 ml-4">
+                                        <button type="submit"
+                                                class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                            поиск
+                                        </button>
+                                        <button type="button" id="reset-button"
+                                                class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
+                                            Сбросить
+                                        </button>
                                     </div>
                                     <script>
                                         document.addEventListener("DOMContentLoaded", function(event) {
@@ -83,6 +94,28 @@
                                                         element.checked = false
                                                     });
                                                 }
+                                            });
+
+                                            document.getElementById('reset-button').addEventListener('click', function() {
+
+                                                // Список ID чекбоксов, которые нужно отметить
+                                                const checkedCheckboxes = [{!! '"' . implode('", "', array_values($all_columns)) . '"' !!}];
+
+                                                // Сбрасываем все чекбоксы
+                                                const allCheckboxes = document.querySelectorAll('.columns_all');
+                                                allCheckboxes.forEach(checkbox => {
+                                                    checkbox.checked = false;
+                                                });
+
+                                                // Включаем нужные чекбоксы
+                                                checkedCheckboxes.forEach(id => {
+                                                    const checkbox = document.getElementById(`checkbox-${id}`);
+                                                    if (checkbox) {
+                                                        checkbox.checked = true;
+                                                    }
+                                                });
+
+
                                             });
 
                                         });
@@ -190,12 +223,7 @@
                                 </x-slot>
                             </x-dropdown>
                         </div> --}}
-                        <div>
-                            <button type="submit"
-                                class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
-                                поиск
-                            </button>
-                        </div>
+
                     </form>
 
                 </div>

@@ -287,6 +287,48 @@ class DemandService implements EntityInterface
             return $deliveryPrice;
     }
 
+    public function DeviationForShipments($date){
+
+        ShipmentProduct::where("created_at",">=", $date)
+        ->update(['deviation_price' => 0]);
+
+
+        $skip=0;
+        $take=200;
+
+        while (true){
+            $innerQuery=DB::table('shipments as sh')
+            ->selectRaw('max(pl.created_at) as min ,sh.created_at, sh.id as shipment')
+            ->join("price_lists as pl", "sh.created_at",">=","pl.created_at")
+            ->where("sh.created_at", ">=",$date)->groupBy("sh.id")
+            ->skip($skip)
+            ->take($take)
+            ;
+
+            $positions = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
+            ->selectRaw("plp.price as priceList, sp.price, sp.id  as position")
+            ->mergeBindings($innerQuery)
+            ->join("shipment_products as sp", "tab.shipment","=", "sp.shipment_id")
+            ->join("price_list_positions as plp", function($join){
+                $join->on("plp.created_at","=","tab.min");
+                $join->on("plp.product_id","=","sp.product_id");
+            })->get();
+
+            if (count($positions)===0){
+                break;
+            }
+
+            foreach($positions as $pos){
+                $shipmentPos=ShipmentProduct::where('id','=',$pos->position)->first();
+                $shipmentPos->deviation_price=$pos->priceList-$pos->price;
+                $shipmentPos->save();
+            }
+            $skip= $skip+$take;
+        }
+    }
+
+
+
     public function DeliveryPriceNormAndSaldoForShipments($date){
         Shipment::where("updated_at",">", $date)
                 ->update(['delivery_price_norm' => 0, 'saldo'=>0]);

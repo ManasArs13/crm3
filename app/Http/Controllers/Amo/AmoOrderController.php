@@ -7,6 +7,7 @@ use App\Helpers\Columns;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Amo\AmoOrderRequest;
 use App\Models\OrderAmo;
+use Illuminate\Support\Facades\Schema;
 
 class AmoOrderController extends Controller
 {
@@ -17,6 +18,8 @@ class AmoOrderController extends Controller
         $orderBy = $request->orderBy == 'asc' ? 'desc' : 'asc';
         $selectColumn = $request->column;
 
+        $all_columns = Schema::getColumnListing('order_amos');
+
         $entityItems = AmoOrderEntity::getForIndex($request, $request->column, $request->orderBy, 50);
 
         $columns = Columns::get(new OrderAmo, $request->columns);
@@ -24,6 +27,7 @@ class AmoOrderController extends Controller
         $filtersBy = [];
 
         return view('amo.order.index', compact(
+            'all_columns',
             'entityName',
             'entityItems',
             'columns',

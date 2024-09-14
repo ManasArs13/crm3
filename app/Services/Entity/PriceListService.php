@@ -52,7 +52,7 @@ class PriceListService implements EntityInterface
 
             $entity->save();
 
-            $needDelete = $this->priceListPositionService->import($row["positions"], $entity->id);
+            $needDelete = $this->priceListPositionService->import($row["positions"], $entity->id, $entity->created_at);
 
             if ($needDelete["needDelete"]) {
                 $entity->positions()->delete();
