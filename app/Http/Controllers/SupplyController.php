@@ -50,21 +50,20 @@ class SupplyController extends Controller
             'ms_id'
         ];
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = [
-                "id",
-                "created_at",
-                "updated_at",
-                "name",
-                "contact_id",
-                "moment",
-                'description',
-                'sum',
-                'description',
-            ];
-        }
+        $select = [
+            "id",
+            "created_at",
+            "updated_at",
+            "name",
+            "contact_id",
+            "moment",
+            'description',
+            'sum',
+            'description',
+        ];
+
+        $selected = $request->columns ?? $select;
+
 
         foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
@@ -188,6 +187,7 @@ class SupplyController extends Controller
         ];
 
         return view("supply.index", compact(
+            'select',
             'entityItems',
             "resColumns",
             "resColumnsAll",

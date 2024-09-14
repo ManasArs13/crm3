@@ -36,6 +36,7 @@ class DeliveryController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('deliveries');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -69,6 +70,7 @@ class DeliveryController extends Controller
         ];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -153,6 +155,7 @@ class DeliveryController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('deliveries');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -205,7 +208,7 @@ class DeliveryController extends Controller
          $maxCreated = Delivery::query()->max('created_at');
          $minUpdated = Delivery::query()->min('updated_at');
          $maxUpdated = Delivery::query()->max('updated_at');
- 
+
          $filters = [
              [
                  'type' => 'date',
@@ -224,6 +227,7 @@ class DeliveryController extends Controller
          ];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",

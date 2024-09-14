@@ -107,6 +107,7 @@ class ContactAmoController extends Controller
         ];
 
         return view("contact.amo", compact(
+            'all_columns',
             'entityItems',
             "resColumns",
             "resColumnsAll",

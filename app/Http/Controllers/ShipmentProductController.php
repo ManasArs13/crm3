@@ -109,6 +109,7 @@ class ShipmentProductController extends Controller
         ];
 
         return view("shipment.position", compact(
+            'all_columns',
             'entityItems',
             "resColumns",
             "resColumnsAll",

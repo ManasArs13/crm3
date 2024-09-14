@@ -62,6 +62,16 @@ Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function ()
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
     Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
+
+    // Сводка
+    Route::name('report.')->group(function () {
+
+        // Контрагенты
+        Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
+        Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
+        Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+
+    });
 });
 
 Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(function () {
@@ -93,11 +103,6 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
 
     // Сводка
     Route::name('report.')->group(function () {
-
-        // Контрагенты
-        Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
-        Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
-        Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
 
         // Транспорт
         Route::get('/report/transport', [ReportTransportController::class, 'index'])->name('transport');

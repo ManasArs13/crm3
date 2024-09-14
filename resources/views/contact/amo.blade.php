@@ -56,11 +56,22 @@
                                                 <label>
                                                     <input name="columns[]" class="columns_all" type="checkbox"
                                                         value="{{ $key }}"
+                                                        id="checkbox-{{ $key }}"
                                                         @if ($column['checked'] == true) checked @endif>
                                                     {{ $column['name_rus'] }}
                                                 </label>
                                             </div>
                                         @endforeach
+                                    </div>
+                                    <div class="mt-4 flex justify-start mb-4 ml-4">
+                                        <button type="submit"
+                                                class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                            поиск
+                                        </button>
+                                        <button type="button" id="reset-button"
+                                                class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
+                                            Сбросить
+                                        </button>
                                     </div>
                                     <script>
                                         document.addEventListener("DOMContentLoaded", function(event) {
@@ -121,7 +132,8 @@
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
                                                                 value="{{ $filter['min'] }}"
-                                                                class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
+                                                                data-default="{{ $filter['min'] }}"
+                                                                class="inp-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
                                                     <div class="basis-2/5">
@@ -133,7 +145,8 @@
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
                                                                 value="{{ $filter['max'] }}"
-                                                                class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
+                                                                data-default="{{ $filter['max'] }}"
+                                                                class="inp-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -146,8 +159,8 @@
                                                     </div>
                                                     <div class="basis-4/5">
                                                         <select
-                                                            class="border border-solid border-neutral-300 rounded w-full py-2 mb-4"
-                                                            , name="filters[{{ $filter['name'] }}]"
+                                                            class="select-default border border-solid border-neutral-300 rounded w-full py-2 mb-4"
+                                                            name="filters[{{ $filter['name'] }}]"
                                                             data-offset="false">
                                                             <option @if ($filter['checked_value'] == 'all') selected @endif
                                                                 value="all">Все</option>
@@ -162,16 +175,66 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                            <div class="mt-4 flex justify-end">
+                                                <button type="submit"
+                                                        class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                                    поиск
+                                                </button>
+                                                <button id="reset-button2" type="button"
+                                                        class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
+                                                    Сбросить
+                                                </button>
+                                            </div>
                                     </div>
                                 </x-slot>
                             </x-dropdown>
                         </div>
-                        <div>
-                            <button type="submit"
-                                class="inline-flex rounded bg-blue-600 border-2 border-blue-600 px-4 py-2 text-md font-medium leading-normal text-white hover:bg-blue-700">
-                                поиск
-                            </button>
-                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function(event) {
+
+                                document.getElementById('reset-button').addEventListener('click', function() {
+                                    // Список ID чекбоксов, которые нужно отметить
+                                    const checkedCheckboxes = [{!! '"' . implode('", "', array_values($all_columns)) . '"' !!}];
+
+                                    // Сбрасываем все чекбоксы
+                                    const allCheckboxes = document.querySelectorAll('.columns_all');
+                                    allCheckboxes.forEach(checkbox => {
+                                        checkbox.checked = false;
+                                    });
+
+                                    // Включаем нужные чекбоксы
+                                    checkedCheckboxes.forEach(id => {
+                                        const checkbox = document.getElementById(`checkbox-${id}`);
+                                        if (checkbox) {
+                                            checkbox.checked = true;
+                                        }
+                                    });
+                                });
+
+                                document.getElementById('reset-button2').addEventListener('click', function() {
+
+
+                                    const dateInputs = document.querySelectorAll('.inp-default');
+                                    dateInputs.forEach(dateInput => {
+                                        dateInput.value = dateInput.getAttribute('data-default');
+                                    });
+
+                                    const selects = document.querySelectorAll('.select-default');
+                                    selects.forEach(select => {
+                                        if (select.options.length > 0) {
+                                            select.selectedIndex = 0;
+                                        }
+                                    });
+
+                                    // const allCheckboxes = document.querySelectorAll('.columns_all2');
+                                    // allCheckboxes.forEach(checkbox => {
+                                    //     checkbox.checked = true;
+                                    // });
+
+                                });
+
+                            });
+                        </script>
                     </form>
                     @if (isset($urlCreate) && $urlCreate != '')
                         <div class="flex px-3 text-center font-bold">

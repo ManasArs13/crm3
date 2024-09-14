@@ -37,7 +37,7 @@ class ContactController extends Controller
 
         /* Колонки */
         $all_columns = Schema::getColumnListing('contacts');
-        
+
         if (isset($request->columns)) {
             $selected = $request->columns;
         } else {
@@ -62,7 +62,7 @@ class ContactController extends Controller
         $minUpdatedCheck = '';
         $maxUpdated = Contact::query()->max('updated_at');
         $maxUpdatedCheck = '';
-        
+
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 if ($key == 'created_at') {
@@ -106,6 +106,7 @@ class ContactController extends Controller
         ];
 
         return view("contact.index", compact(
+            'all_columns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -192,7 +193,7 @@ class ContactController extends Controller
         $entityItems = Contact::query();
 
         /* Колонки */
-        $columns = Schema::getColumnListing('contacts');
+        $columns = $selectedColumns = Schema::getColumnListing('contacts');
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -244,7 +245,7 @@ class ContactController extends Controller
         $maxCreated = Contact::query()->max('created_at');
         $minUpdated = Contact::query()->min('updated_at');
         $maxUpdated = Contact::query()->max('updated_at');
-        
+
         $filters = [
             [
                 'type' => 'date',
@@ -263,6 +264,7 @@ class ContactController extends Controller
         ];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",

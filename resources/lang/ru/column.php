@@ -41,6 +41,7 @@ return [
   "transport_type_id" => "Тип ТС",
   "balance" => "Баланс",
   'email' => "Почта",
+  'login' => "Логин",
   'fence_length' => "Длина забора",
   'number_of_columns' => "Кол-во столбов",
   'fence_type_id' => "Тип забора",
