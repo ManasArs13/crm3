@@ -23,23 +23,24 @@
             <div class="flex justify-between">
                 <fieldset class="CEB__wrapParams1">
                     <label class="labelCustomRadio labelCustomRadio_js1">
+                        <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
+                               value="{{ __('calculator.type_3') }}" data-content="calcBeton">
+                        <span class="labelCustomRadio__psevdo_border"></span>
+                        <p class="labelCustomRadio__text2">{{ __('calculator.calc_beton') }}</p>
+                    </label>
+                    <label class="labelCustomRadio labelCustomRadio_js1">
+                        <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
+                               value="{{ __('calculator.type_2') }}" data-content="calcBlock">
+                        <span class="labelCustomRadio__psevdo_border"></span>
+                        <p class="labelCustomRadio__text2">{{ __('calculator.calc_block') }}</p>
+                    </label>
+                    <label class="labelCustomRadio labelCustomRadio_js1">
                         <input checked="" class="labelCustomRadio__input CMR__input_calc_js" type="radio"
                             name="typeFence" value="{{ __('calculator.type_1') }}" data-content="calcFence">
                         <span class="labelCustomRadio__psevdo_border"></span>
                         <p class="labelCustomRadio__text2">{{ __('calculator.calc_fence') }}</p>
                     </label>
-                    <label class="labelCustomRadio labelCustomRadio_js1">
-                        <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
-                            value="{{ __('calculator.type_2') }}" data-content="calcBlock">
-                        <span class="labelCustomRadio__psevdo_border"></span>
-                        <p class="labelCustomRadio__text2">{{ __('calculator.calc_block') }}</p>
-                    </label>
-                    <label class="labelCustomRadio labelCustomRadio_js1">
-                        <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
-                            value="{{ __('calculator.type_3') }}" data-content="calcBeton">
-                        <span class="labelCustomRadio__psevdo_border"></span>
-                        <p class="labelCustomRadio__text2">{{ __('calculator.calc_beton') }}</p>
-                    </label>
+
 
                     <label class="labelCustomRadio labelCustomRadio_js1">
                         <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
@@ -48,32 +49,11 @@
                         <p class="labelCustomRadio__text2">{{ __('calculator.mixers') }}</p>
                     </label>
 
-                    <label class="labelCustomRadio labelCustomRadio_js1">
-                        <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
-                            value="{{ __('calculator.orders') }}" data-content="calcOrders">
-                        <span class="labelCustomRadio__psevdo_border"></span>
-                        <p class="labelCustomRadio__text2">{{ __('calculator.orders') }}</p>
-                    </label>
+
 
 
                 </fieldset>
 
-                @php
-                    $Totalsum = 0;
-                    if (count($shipments) > 0) {
-                        foreach ($shipments as $shipment) {
-                            $Totalsum += $shipment->balance;
-                        }
-                    }
-                @endphp
-
-                <label class="labelCustomRadio labelCustomRadio_js1"
-                    @if ($Totalsum < -3000000) style="background-color: #ff836e;" @endif>
-                    <input class="labelCustomRadio__input CMR__input_calc_js" type="radio" name="typeFence"
-                        value="{{ __('title.debtors') }}" data-content="calcDebt">
-                    <span class="labelCustomRadio__psevdo_border"></span>
-                    <p class="labelCustomRadio__text2">{{ __('title.debtors') }}</p>
-                </label>
 
 
             </div>
