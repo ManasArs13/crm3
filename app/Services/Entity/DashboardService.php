@@ -235,7 +235,7 @@ class DashboardService
         ];
 
 
-        $orders = Order::select('id', 'sum', 'date_plan')->withCount('positions')
+        $orders = Order::select('id', 'sum', 'date_plan')->with('positions')
             ->with('positions')
             ->whereIn('status_id', [3, 4, 5, 6])
             ->whereDate('date_plan', $date);
@@ -305,7 +305,7 @@ class DashboardService
                     if ($position_count <= $this->plant_capacity) {
                         $positions_count[$key] += $position_count;
                     } else {
-                        $count_cycle = (int) $position_count / $this->plant_capacity;
+                        $count_cycle = (int) ($position_count / $this->plant_capacity);
 
                         for ($i = 0; $i < $count_cycle; $i++) {
                             if (isset($positions_count[$key + $i])) {
@@ -314,8 +314,8 @@ class DashboardService
                         }
 
                         if ($position_count % $this->plant_capacity) {
-                            if (isset($positions_count[$count_cycle + 1])) {
-                                $positions_count[$count_cycle + 1] += $position_count % $this->plant_capacity;
+                            if (isset($positions_count[$key + $count_cycle +1])) {
+                                $positions_count[$key + $count_cycle + 1] += $position_count % $this->plant_capacity;
                             }
                         }
                     }
