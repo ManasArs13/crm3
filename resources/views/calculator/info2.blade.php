@@ -59,8 +59,10 @@
     <button formaction="/api/order_ms/create"
         class="rounded bg-green-400 px-6 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 submit">   {{ __('calculator.send_to_ms') }}</button>
 
+        @role('admin')
     <button formaction="/api/order_site/create"
         class="rounded bg-green-400 px-6 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700 submit">   {{ __('calculator.send_to_site') }}</button>
+        @endrole
 
 </div>
 <div class="flex flex-row ">
