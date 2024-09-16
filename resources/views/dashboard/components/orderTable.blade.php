@@ -192,7 +192,7 @@
                                     @break
 
                                     @case('residual_count')
-                                        {{ $products_shipped_count }}
+                                        {{ $products_quantity - $products_shipped_count }}
                                     @break
 
                                     @case($column == 'ms_link' && $entityItem->ms_id)
@@ -385,7 +385,7 @@
                                         @break
 
                                         @case('residual_count')
-                                            {{ $products_shipped_count }}
+                                            {{ $products_quantity - $products_shipped_count }}
                                         @break
 
                                         @case($column == 'ms_link' && $entityItem->ms_id)
@@ -580,7 +580,7 @@
                                             @break
 
                                             @case('residual_count')
-                                                {{ $products_shipped_count }}
+                                                {{ $products_quantity - $products_shipped_count }}
                                             @break
 
                                             @case($column == 'ms_link' && $entityItem->ms_id)
@@ -775,7 +775,7 @@
                                             @break
 
                                             @case('residual_count')
-                                                {{ $products_shipped_count }}
+                                                {{ $products_quantity - $products_shipped_count }}
                                             @break
 
                                             @case($column == 'ms_link' && $entityItem->ms_id)
