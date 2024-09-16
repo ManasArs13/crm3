@@ -245,7 +245,7 @@ class OrderController extends Controller
                 //    'checked_value' => $queryMaterial,
             ],
         ];
-//dd($resColumns);
+
         return view("order.index", compact(
             'entityItems',
             "resColumns",
