@@ -314,8 +314,8 @@ class DashboardService
                         }
 
                         if ($position_count % $this->plant_capacity) {
-                            if (isset($positions_count[$key + $count_cycle +1])) {
-                                $positions_count[$key + $count_cycle + 1] += $position_count % $this->plant_capacity;
+                            if (isset($positions_count[$key + $count_cycle])) {
+                                $positions_count[$key + $count_cycle] += $position_count % $this->plant_capacity;
                             }
                         }
                     }
