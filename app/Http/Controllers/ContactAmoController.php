@@ -53,16 +53,12 @@ class ContactAmoController extends Controller
             }
         }
 
+        list($minCreatedCheck, $maxCreatedCheck, $minUpdatedCheck, $maxUpdatedCheck) = '';
         // Filters
         $minCreated = ContactAmo::query()->min('created_at');
-        $minCreatedCheck = '';
         $maxCreated = ContactAmo::query()->max('created_at');
-        $maxCreatedCheck = '';
-
         $minUpdated = ContactAmo::query()->min('updated_at');
-        $minUpdatedCheck = '';
         $maxUpdated = ContactAmo::query()->max('updated_at');
-        $maxUpdatedCheck = '';
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
@@ -247,20 +243,47 @@ class ContactAmoController extends Controller
         $minUpdated = ContactAmo::query()->min('updated_at');
         $maxUpdated = ContactAmo::query()->max('updated_at');
 
+        list($minCreatedCheck, $maxCreatedCheck, $minUpdatedCheck, $maxUpdatedCheck) = '';
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                }
+                if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+            }
+        }
+
         $filters = [
             [
                 'type' => 'date',
                 'name' =>  'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
+                'minChecked' => $minCreatedCheck,
                 'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck,
             ],
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
             ],
         ];
 
