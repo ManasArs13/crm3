@@ -144,6 +144,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         ]);
     });
 
+    // Aou for dashboard
     Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
     Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
 

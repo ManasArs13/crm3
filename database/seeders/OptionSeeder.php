@@ -510,6 +510,18 @@ class OptionSeeder extends Seeder
                 'code' => 'ms_manager_url',
                 'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/9ff3e917-c885-11ed-0a80-07580004cc0a',
                 'module' => 'ms'
+            ],
+            [
+                'name' => 'мощность завода',
+                'code' => 'plant_capacity',
+                'value' => '20',
+                'module' => 'main'
+            ],
+            [
+                'name' => 'Длина забора',
+                'code' => 'ms_price_lists_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/pricelist/',
+                'module' => 'ms'
             ]
         ]);
     }

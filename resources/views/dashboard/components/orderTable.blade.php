@@ -191,8 +191,8 @@
                                         {{ $products_quantity }}
                                     @break
 
-                                    @case('shipped_count')
-                                        {{ $products_shipped_count }}
+                                    @case('residual_count')
+                                        {{ $products_quantity - $products_shipped_count }}
                                     @break
 
                                     @case($column == 'ms_link' && $entityItem->ms_id)
@@ -384,8 +384,8 @@
                                             {{ $products_quantity }}
                                         @break
 
-                                        @case('shipped_count')
-                                            {{ $products_shipped_count }}
+                                        @case('residual_count')
+                                            {{ $products_quantity - $products_shipped_count }}
                                         @break
 
                                         @case($column == 'ms_link' && $entityItem->ms_id)
@@ -579,8 +579,8 @@
                                                 {{ $products_quantity }}
                                             @break
 
-                                            @case('shipped_count')
-                                                {{ $products_shipped_count }}
+                                            @case('residual_count')
+                                                {{ $products_quantity - $products_shipped_count }}
                                             @break
 
                                             @case($column == 'ms_link' && $entityItem->ms_id)
@@ -774,8 +774,8 @@
                                                 {{ $products_quantity }}
                                             @break
 
-                                            @case('shipped_count')
-                                                {{ $products_shipped_count }}
+                                            @case('residual_count')
+                                                {{ $products_quantity - $products_shipped_count }}
                                             @break
 
                                             @case($column == 'ms_link' && $entityItem->ms_id)
