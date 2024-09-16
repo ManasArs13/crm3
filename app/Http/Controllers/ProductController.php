@@ -71,27 +71,55 @@ class ProductController extends Controller
         $minPrices = Product::query()->where('type', $request->type == 'materials' ? Product::MATERIAL : Product::PRODUCTS)->min('price');
         $maxPrices = Product::query()->where('type', $request->type == 'materials' ? Product::MATERIAL : Product::PRODUCTS)->max('price');
 
+        list($minCreatedCheck, $maxCreatedCheck, $minUpdatedCheck, $maxUpdatedCheck) = '';
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                } else if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+            }
+        }
+
         $filters = [
             [
                 'type' => 'date',
                 'name' =>  'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
-                'max' => substr($maxCreated, 0, 10)
+                'minChecked' => $minCreatedCheck,
+                'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck
             ],
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
             ],
             [
                 'type' => 'number',
                 'name' =>  'weight_kg',
                 'name_rus' => 'Вес',
                 'min' => $minWeight,
-                'max' => $maxWeigth
+                'minChecked' => $minWeight,
+                'max' => $maxWeigth,
+                'maxChecked' => $maxWeigth
             ],
             [
                 'type' => 'select',
@@ -105,7 +133,9 @@ class ProductController extends Controller
                 'name' =>  'price',
                 'name_rus' => 'Цена',
                 'min' => $minPrices,
-                'max' => $maxPrices
+                'minChecked' => $minPrices,
+                'max' => $maxPrices,
+                'maxChecked' => $maxPrices
             ],
         ];
 
@@ -303,27 +333,55 @@ class ProductController extends Controller
         $minPrices = Product::query()->where('type', $request->type == 'materials' ? Product::MATERIAL : Product::PRODUCTS)->min('price');
         $maxPrices = Product::query()->where('type', $request->type == 'materials' ? Product::MATERIAL : Product::PRODUCTS)->max('price');
 
+        list($minCreatedCheck, $maxCreatedCheck, $minUpdatedCheck, $maxUpdatedCheck) = '';
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                } else if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                }
+            }
+        }
+
         $filters = [
             [
                 'type' => 'date',
                 'name' =>  'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
+                'minChecked' => $minCreatedCheck,
                 'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck,
             ],
             [
                 'type' => 'date',
                 'name' =>  'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
-                'max' => substr($maxUpdated, 0, 10)
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck,
             ],
             [
                 'type' => 'number',
                 'name' =>  'weight_kg',
                 'name_rus' => 'Вес',
                 'min' => $minWeight,
-                'max' => $maxWeigth
+                'minChecked' => $minWeight,
+                'max' => $maxWeigth,
+                'maxChecked' => $maxWeigth,
             ],
             [
                 'type' => 'select',
@@ -337,7 +395,9 @@ class ProductController extends Controller
                 'name' =>  'price',
                 'name_rus' => 'Цена',
                 'min' => $minPrices,
-                'max' => $maxPrices
+                'minChecked' => $minPrices,
+                'max' => $maxPrices,
+                'maxChecked' => $maxPrices,
             ],
         ];
 
