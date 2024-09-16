@@ -79,13 +79,12 @@
                 </table>
 
             </div>
-            <div class="flex flex-col p-1 bg-white rounded-md shadow overflow-x-auto">
+            <div class="flex flex-col bg-white rounded-md shadow overflow-x-auto">
                 <table>
                     <thead>
-                    <tr>
-                        <th class="justify-content-center items-center mb-2">
-                            <span class="text-lg font-semibold"></span>
-                        </th>
+                    <tr class="font-light bg-neutral-200">
+                        <th class="border-r-2 px-2 py-3 text-left">Категория</th>
+                        <th class="px-1">Остаток</th>
                     </tr>
                     </thead>
                     <tbody>

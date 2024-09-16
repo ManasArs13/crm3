@@ -29,9 +29,9 @@ class DashboardService
             "sostav",
             "sum",
             "date_plan",
-//            "status_id",
+            // "status_id",
             "positions_count",
-            'is_demand',
+            //'is_demand',
             "residual_count",
             "comment",
             "delivery_id",
@@ -64,7 +64,7 @@ class DashboardService
             'transport_type'
         )
             ->whereDate('date_plan', $date)
-            ->whereIn('status_id', [3, 4, 5, 6])
+            ->whereIn('status_id', [3, 4, 5, 6, 7])
             ->orderBy('date_plan')
             ->get();
 
@@ -162,15 +162,6 @@ class DashboardService
         foreach ($this->columns as $column) {
             $resColumns[$column] = trans("column." . $column);
         }
-
-
-
-
-
-
-
-
-
 
         return view('dashboard.index', compact(
             'urlShow',
@@ -588,7 +579,7 @@ class DashboardService
                     $queries->where('building_material', Product::BLOCK);
                 });
             })
-            ->whereIn('status_id', [3, 4, 5, 6])
+            ->whereIn('status_id', [3, 4, 5, 6, 7])
             ->orderBy('date_plan')
             ->get();
 
@@ -755,7 +746,8 @@ class DashboardService
             'delivery',
             'transport',
             'contact',
-            'transport_type'
+            'transport_type',
+            'shipments'
         )
             ->whereDate('date_plan', $date)
             ->whereHas('positions', function ($query) {
@@ -763,7 +755,7 @@ class DashboardService
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })
-            ->whereIn('status_id', [3, 4, 5, 6])
+            ->whereIn('status_id', [3, 4, 5, 6, 7])
             ->orderBy('date_plan')
             ->get();
 
