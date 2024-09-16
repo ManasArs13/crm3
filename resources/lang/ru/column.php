@@ -27,7 +27,7 @@ return [
   "order_amo_id" => "Заказ амо",
   //  "order_amo_link" => "Ссылка на заказ aмо",
   "status_id" => "Статус",
-  "date_plan" => "Плановая дата",
+  "date_plan" => "Время",
   "date_fact" => "Фактическая дата",
   "date_moment" => "Дата документа",
   "debt" => "Долг",

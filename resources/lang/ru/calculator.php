@@ -32,5 +32,6 @@
    "download_text"=>"скачать текст",
    "download_pdf"=>"скачать PDF",
    "send_to_ms" =>"Отправить в мс",
+   "send_to_site"=>"Отправить на сайт",
    "reservation" => "На брони"
  ];
