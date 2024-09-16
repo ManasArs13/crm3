@@ -85,32 +85,88 @@
                 <table>
                     <thead>
                         <tr class="font-light border-b-2 text-sm bg-neutral-200">
-                            <th class="border-r-2 py-2 px-1">Время</th>
+                            <th></th>
+                            <th class="border-r-2 py-2 px-1">№ Авто</th>
                             <th class="border-l-2 py-2 px-1 text-center">Транспорт</th>
-                            <th class="border-r-2 py-2 px-1">На обьекте</th>
-                            <th class="border-r-2 py-2 px-1">Конец рейса</th>
-                            <th class="py-2 px-1">Возврат</th>
+                            <th class="border-r-2 py-2 px-1">ГП</th>
+                            <th class="border-r-2 py-2 px-1">Статус</th>
+                            <th class="py-2 px-1">На базе</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($shipments as $shipment)
+                        @foreach ($shipments as $key => $shipment)
+                            @php
+                                $transportName = $shipment->first()->transport->name;
+                                $transportNumber = $shipment->first()->transport->car_number;
+
+                                $currentTime = Carbon\Carbon::now();
+                                $firstCreatedAt = Carbon\Carbon::parse($shipment->first()->created_at);
+                                $firstTimeToCome = Carbon\Carbon::parse($shipment->first()->time_to_come);
+                                $firstTimeToOut = Carbon\Carbon::parse($shipment->first()->time_to_out);
+                                $firstToReturn = Carbon\Carbon::parse($shipment->first()->time_to_return);
+
+                                if($currentTime->between($firstCreatedAt, $firstTimeToCome)){
+                                    $statusInfo = 'Отгружен';
+                                } elseif($currentTime->between($firstTimeToCome, $firstTimeToOut)){
+                                    $statusInfo = 'На объекте';
+                                } elseif($currentTime->between($firstTimeToOut, $firstToReturn)){
+                                    $statusInfo = 'Обратно';
+                                } else{
+                                    $statusInfo = 'На базе';
+                                }
+                            @endphp
                             <tr class="border-b-2">
-                                <td class="px-1 m-2 border-r-2 py-3 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->created_at)->format('H:i') }}
+                                <td class="border-r-2 text-nowrap px-2 py-2">
+                                    <button class="buttonForOpen text-normal font-bold"
+                                            data-id="{{ $key }}">+</button>
                                 </td>
-                                <td class="px-1 m-2 text-left py-3 max-w-[150px] truncate">
-                                    {{ $shipment->transport ? $shipment->transport->name : 'не указано' }}
+                                <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transportNumber }}</td>
+                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
+                                    {{ $transportName ? $transportName : 'не указано' }}
                                 </td>
-                                <td class="px-1 m-2 border-x-2 py-3 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_come)->format('H:i') }}
-                                </td>
-                                <td class="px-1 m-2 border-x-2 text-center py-3">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:i') }}
-                                </td>
-                                <td class="px-1 m-2 text-center py-3">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_return)->format('H:i') }}
-                                </td>
+                                <td class="px-1 m-2 border-x-2 py-3 text-center"></td>
+                                <td class="px-1 m-2 border-x-2 text-center py-3 truncate">{{ $statusInfo }}</td>
+                                <td class="px-1 m-2 text-center py-3">{{ $firstTimeToCome->format('H:i') }}</td>
                             </tr>
+                            <tr style="display: none;" class="position_column_{{ $key }} bg-neutral-100 text-sm">
+                                <th></th>
+                                <th class="border-r-2 border-l-2 text-center">Отгружен</th>
+                                <th class="border-r-2 text-center">На объекте</th>
+                                <th class="border-r-2 text-center">Обратно</th>
+                                <th class="py-2 px-1 text-center" colspan="2">На базе</th>
+                            </tr>
+                            @foreach($shipment as $num => $transport)
+                                @php
+                                    $createdAt = Carbon\Carbon::parse($transport->created_at);
+                                    $timeToCome = Carbon\Carbon::parse($transport->time_to_come);
+                                    $timeToOut = Carbon\Carbon::parse($transport->time_to_out);
+                                    $timeToReturn = Carbon\Carbon::parse($transport->time_to_return);
+                                @endphp
+                                <tr style="display: none;" class="border-b-2 position_column_{{ $key }}
+                                @if($currentTime->between($createdAt, $timeToCome))
+                                    bg-yellow-100
+                                @elseif($currentTime->between($timeToCome, $timeToOut))
+                                    bg-green-200
+                                @elseif($currentTime->between($timeToOut, $timeToReturn))
+                                    bg-sky-100
+                                @else bg-sky-300 @endif">
+                                    <td class="border-r-2 text-nowrap px-2 py-2">
+                                        {{ $num+1 }}
+                                    </td>
+                                    <td class="px-1 m-2 border-r-2 py-3 text-center">
+                                        {{ $createdAt->format('H:i') }}
+                                    </td>
+                                    <td class="px-1 m-2 border-x-2 py-3 text-center">
+                                        {{ $timeToCome->format('H:i') }}
+                                    </td>
+                                    <td class="px-1 m-2 border-x-2 text-center py-3">
+                                        {{ $timeToOut->format('H:i') }}
+                                    </td>
+                                    <td class="px-1 m-2 text-center py-3" colspan="2">
+                                        {{ $timeToReturn->format('H:i') }}
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endforeach
                     </tbody>
                 </table>

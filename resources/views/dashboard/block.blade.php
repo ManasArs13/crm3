@@ -112,36 +112,71 @@
             <div class="flex flex-col bg-white rounded-md shadow overflow-x-auto">
 
                 <table>
-                    <caption class="text-lg font-semibold "></caption>
                     <thead>
-                        <tr class="font-light border-b-2 bg-neutral-200">
-                            <th class="px-1 border-r-2 py-3">Время</th>
-                            <th class="px-1 border-l-2 py-3 text-center">Транспорт</th>
-                            <th class="px-1 border-r-2 py-3">На обьекте</th>
-                            <th class="px-1 border-r-2 py-3">Конец рейса</th>
-                            <th class="px-1 py-3">Возврат</th>
-                        </tr>
+                    <tr class="font-light border-b-2 text-sm bg-neutral-200">
+                        <th></th>
+                        <th class="border-r-2 py-2 px-1">Время</th>
+                        <th class="border-l-2 py-2 px-1 text-center">Транспорт</th>
+                        <th class="border-r-2 py-2 px-1">На обьекте</th>
+                        <th class="border-r-2 py-2 px-1">Конец рейса</th>
+                        <th class="py-2 px-1">Возврат</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach ($shipments as $shipment)
-                            <tr class="border-b-2">
-                                <td class="px-1 py-3 m-2 border-r-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->created_at)->format('H:i') }}
+                    @foreach ($shipments as $key => $shipment)
+                        @php
+                            $transportName = $shipment->first()->transport->name;
+                        @endphp
+                        <tr class="border-b-2">
+                            <td class="border-r-2 text-nowrap px-2 py-2">
+                                <button class="buttonForOpen text-normal font-bold"
+                                        data-id="{{ $key }}">+</button>
+                            </td>
+                            <td class="px-1 m-2 border-r-2 py-3 text-center"></td>
+                            <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
+                                {{ $transportName ? $transportName : 'не указано' }}
+                            </td>
+                            <td class="px-1 m-2 border-x-2 py-3 text-center"></td>
+                            <td class="px-1 m-2 border-x-2 text-center py-3"></td>
+                            <td class="px-1 m-2 text-center py-3"></td>
+                        </tr>
+                        @foreach($shipment as $transport)
+                            @php
+                                $currentTime = Carbon\Carbon::now();
+
+                                $createdAt = Carbon\Carbon::parse($transport->created_at);
+                                $timeToCome = Carbon\Carbon::parse($transport->time_to_come);
+                                $timeToOut = Carbon\Carbon::parse($transport->time_to_out);
+                                $timeToReturn = Carbon\Carbon::parse($transport->time_to_return);
+                            @endphp
+                            <tr style="display: none;" class="border-b-2 position_column_{{ $key }}
+                            @if($currentTime->between($createdAt, $timeToCome))
+                                bg-yellow-100
+                            @elseif($currentTime->between($timeToCome, $timeToOut))
+                                bg-green-200
+                            @elseif($currentTime->between($timeToOut, $timeToReturn))
+                                bg-sky-100
+                            @else bg-sky-300 @endif">
+                                <td class="border-r-2 text-nowrap px-2 py-2">
                                 </td>
-                                <td class="px-1 py-3 m-2 text-left max-w-[150px] truncate">
-                                    {{ $shipment->transport ? $shipment->transport->name : 'не указано' }}
+                                <td class="px-1 m-2 border-r-2 py-3 text-center">
+                                    {{ $createdAt->format('H:i') }}
                                 </td>
-                                <td class="px-1 py-3 m-2 border-x-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_come)->format('H:i') }}
+                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
+
                                 </td>
-                                <td class="px-1 py-3 m-2 border-x-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_out)->format('H:i') }}
+                                <td class="px-1 m-2 border-x-2 py-3 text-center">
+                                    {{ $timeToCome->format('H:i') }}
                                 </td>
-                                <td class="px-1 py-3 m-2 text-center">
-                                    {{ Carbon\Carbon::parse($shipment->time_to_return)->format('H:i') }}
+                                <td class="px-1 m-2 border-x-2 text-center py-3">
+                                    {{ $timeToOut->format('H:i') }}
+                                </td>
+                                <td class="px-1 m-2 text-center py-3">
+                                    {{ $timeToReturn->format('H:i') }}
                                 </td>
                             </tr>
                         @endforeach
+                    @endforeach
                     </tbody>
                 </table>
 
