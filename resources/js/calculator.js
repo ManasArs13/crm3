@@ -413,36 +413,63 @@ $(document).ready(function(){
 
 
     });
-
-    $('form').submit(function(e){
+    
+    $('body').on('click','.submit', function(e){
         e.preventDefault();
-        let classForm=$(this).attr("class");
-        if (classForm=="calcBeton"){
-            // let $quantity=$("."+classForm+" .change_js");
-            // if ($quantity.val()<$("."+classForm+" .weight-tn").val()){
-            //     $quantity.val($("."+classForm+" .weight-tn").val());
-            // }
-        }
+        let $form =$(this).parents("form");
+        let url=$(this).attr("formaction");
 
         $.ajax({
-          url: "api/order_ms/create",
-          type: "POST",
-          data: $(this).serialize(),
-          beforeSend: function() {
-            $(".preloader").addClass("active");
-          },
-          success: function(data) {
-            $("#message").html(data);
-          },
-          error: function(response) {
-            $("#message").html(response.responseText);
-          },
-          complete: function() {
-            $(".preloader").removeClass("active");
-          }
-        });
-
+            url: url,
+            type: "POST",
+            data: $form.serialize(),
+            beforeSend: function() {
+              $(".preloader").addClass("active");
+            },
+            success: function(data) {
+              $("#message").html(data);
+            },
+            error: function(response) {
+              $("#message").html(response.responseText);
+            },
+            complete: function() {
+              $(".preloader").removeClass("active");
+            }
+          });
     });
+
+
+    // $('form').submit(function(e){
+    //     e.preventDefault();
+    //     let classForm=$(this).attr("class");
+    //     if (classForm=="calcBeton"){
+    //         // let $quantity=$("."+classForm+" .change_js");
+    //         // if ($quantity.val()<$("."+classForm+" .weight-tn").val()){
+    //         //     $quantity.val($("."+classForm+" .weight-tn").val());
+    //         // }
+    //     }
+    //     let url=$(this).attr("formaction");
+    //     console.log(url);
+
+    //     $.ajax({
+    //       url: "api/order_ms/create",
+    //       type: "POST",
+    //       data: $(this).serialize(),
+    //       beforeSend: function() {
+    //         $(".preloader").addClass("active");
+    //       },
+    //       success: function(data) {
+    //         $("#message").html(data);
+    //       },
+    //       error: function(response) {
+    //         $("#message").html(response.responseText);
+    //       },
+    //       complete: function() {
+    //         $(".preloader").removeClass("active");
+    //       }
+    //     });
+
+    // });
 
     $("body").on("click", "#button-modal", function(){
         $(".agent").toggleClass("active");
