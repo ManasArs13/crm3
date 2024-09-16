@@ -362,7 +362,7 @@ class OrderController extends Controller
                     $position->order_id = $order->id;
                     $position->quantity = $product['count'];
                     $position->price = $product_bd->price;
-                    $position->weight_kg = $product_bd->price * $product['count'];
+                    $position->weight_kg = $product_bd->weight_kg * $product['count'];
                     $position->shipped = 0;
                     $position->reserve = 0;
 
