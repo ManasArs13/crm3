@@ -352,7 +352,7 @@ $(document).ready(function(){
     function calcDelivery(formClass) {
         if (!$(formClass+'.deliveryPrice').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
-        
+
             $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"));
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
             let weight = $(formClass+".weight-tn").val();
@@ -949,6 +949,12 @@ $(document).ready(function(){
             $(formClass+" .input-sum").css("width",$(formClass+" .td-sum").outerWidth()+"px");
             $(formClass+" .input-price").css("width",$(formClass+" .td-price").outerWidth()+"px");
             $(formClass+" .input-weight").css("width",$(formClass+" .td-weight").outerWidth()+"px");
+        }else{
+            $(formClass+' .sim').removeAttr("style");
+            $(formClass+" .input-delivery").removeAttr("style");
+            $(formClass+" .input-sum").removeAttr("style");
+            $(formClass+" .input-price").removeAttr("style");
+            $(formClass+" .input-weight").removeAttr("style");
         }
     }
 
