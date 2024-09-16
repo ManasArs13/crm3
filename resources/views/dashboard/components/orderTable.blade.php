@@ -191,7 +191,7 @@
                                         {{ $products_quantity }}
                                     @break
 
-                                    @case('shipped_count')
+                                    @case('residual_count')
                                         {{ $products_shipped_count }}
                                     @break
 
@@ -384,7 +384,7 @@
                                             {{ $products_quantity }}
                                         @break
 
-                                        @case('shipped_count')
+                                        @case('residual_count')
                                             {{ $products_shipped_count }}
                                         @break
 
@@ -579,7 +579,7 @@
                                                 {{ $products_quantity }}
                                             @break
 
-                                            @case('shipped_count')
+                                            @case('residual_count')
                                                 {{ $products_shipped_count }}
                                             @break
 
@@ -774,7 +774,7 @@
                                                 {{ $products_quantity }}
                                             @break
 
-                                            @case('shipped_count')
+                                            @case('residual_count')
                                                 {{ $products_shipped_count }}
                                             @break
 

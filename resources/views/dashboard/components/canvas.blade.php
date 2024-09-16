@@ -6,8 +6,7 @@
     <script>
         window.addEventListener("DOMContentLoaded", async function() {
 
-            let sum = [];
-            let orders_count = [];
+            let residual_count = [];
             let positions_count = [];
             let shipped_count = [];
             let labels = [];
@@ -23,12 +22,8 @@
             await fetch('/get-orders/{!! $date !!}')
                 .then((response) => response.json())
                 .then((data) => {
-                    for (let item in data.sum) {
-                        sum.push(data.sum[item]);
-                    }
-
-                    for (let item in data.orders_count) {
-                        orders_count.push(data.orders_count[item])
+                    for (let item in data.residual_count) {
+                        residual_count.push(data.residual_count[item]);
                     }
 
                     for (let item in data.positions_count) {
@@ -59,22 +54,7 @@
                 type: "line",
                 data: {
                     labels: labels,
-                    datasets: [{
-                            label: "Сумма заказов " + ' (' + count(sum) + ' р.)',
-                            hidden: true,
-                            data: sum,
-                            backgroundColor: "rgb(145,202,246)",
-                            borderColor: "rgb(145,202,246)",
-                            borderWidth: 4,
-                        },
-                        {
-                            label: "Кол-во заказов" + ' (' + count(orders_count) + ' шт.)',
-                            data: orders_count,
-                            hidden: true,
-                            backgroundColor: "rgb(236,112,112)",
-                            borderColor: "rgb(236,112,112)",
-                            borderWidth: 4,
-                        },
+                    datasets: [
                         {
                             label: "Кол-во продуктов" + ' (' + count(positions_count) + ' шт.)',
                             data: positions_count,
@@ -83,11 +63,19 @@
                             borderWidth: 4,
                         },
                         {
-                            label: "Кол-во отгружено" + ' (' + count(shipped_count) + ' шт.)',
+                            label: "Отгружено" + ' (' + count(shipped_count) + ' шт.)',
                             data: shipped_count,
                             backgroundColor: "rgb(134 239 172)",
                             borderColor: "rgb(134 239 172)",
                             borderWidth: 4,
+                        },
+                        {
+                            label: "Осталось" + ' (' + count(residual_count) + ' шт.)',
+                            data: shipped_count,
+                            backgroundColor: "rgb(236,112,112)",
+                            borderColor: "rgb(236,112,112)",
+                            borderWidth: 4,
+                            hidden: true,
                         }
                     ],
                 },
