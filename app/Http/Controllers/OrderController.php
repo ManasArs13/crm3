@@ -368,7 +368,7 @@ class OrderController extends Controller
 
                     $position->save();
 
-                    $sum += $position->price;
+                    $sum += $position->price*$product['quantity'];
                     $weight += $position->weight_kg;
                 }
             }
