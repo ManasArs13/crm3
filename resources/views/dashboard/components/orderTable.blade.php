@@ -56,158 +56,782 @@
                     @endforeach
                 @endforeach
 
-                <tr class="border-b-2">
+                @if ($entityItem->is_demand)
+                    <tr class="border-b-2 bg-green-100">
+                        @if (count($entityItem->shipments) > 0)
+                            <td class="text-nowrap px-2 py-2">
+                                <button class="buttonForOpen text-normal font-bold"
+                                    data-id="{!! $entityItem->id !!}">+</button>
+                            </td>
+                        @else
+                            <td class="text-nowrap px-2 py-2">
+                            </td>
+                        @endif
+
+                        @foreach ($resColumns as $column => $title)
+                            <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                @switch($column)
+                                            @case('contact_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('delivery_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('comment')
+                                                style="text-align:left"
+                                                @break
+                                            @case('status')
+                                                style="text-align:center"
+                                                @break
+                                            @default
+                                                style="text-align:right"
+                                        @endswitch
+                                @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                                @switch($column)
+                                    @case('contact_id')
+                                        {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                    @break
+
+                                    @case('delivery_id')
+                                        {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                    @break
+
+                                    @case('transport_type_id')
+                                        {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                    @break
+
+                                    @case('status_id')
+                                        @switch($entityItem->$column)
+                                            @case(1)
+                                                <div id="status"
+                                                    class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                    <span>[N] Новый</span>
+                                                </div>
+                                            @break
+
+                                            @case(2)
+                                                <div id="status" class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                    <span>Думают</span>
+                                                </div>
+                                            @break
+
+                                            @case(3)
+                                                <div id="status" class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                    <span>[DN] Подтвержден</span>
+                                                </div>
+                                            @break
+
+                                            @case(4)
+                                                <div id="status"
+                                                    class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                    <span>На брони</span>
+                                                </div>
+                                            @break
+
+                                            @case(5)
+                                                <div id="status"
+                                                    class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                    <span>[DD] Отгружен с долгом</span>
+                                                </div>
+                                            @break
+
+                                            @case(6)
+                                                <div id="status" class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                    <span>[DF] Отгружен и закрыт</span>
+                                                </div>
+                                            @break
+
+                                            @case(7)
+                                                <div id="status" class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                    <span>[C] Отменен</span>
+                                                </div>
+                                            @break
+
+                                            @default
+                                                -
+                                        @endswitch
+                                    @break
+
+                                    @case('remainder')
+                                        @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
+                                            {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
+                                            %
+                                        @else
+                                            {{ null }}
+                                        @endif
+                                    @break
+
+                                    @case(preg_match('/_id\z/u', $column))
+                                        <a href="{{ $entityItem->$column }}" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                </path>
+                                                <path fill-rule="evenodd"
+                                                    d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    @break
+
+                                    @case('transport_type_id')
+                                        {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                    @break
+
+                                    @case($column == 'name' || $column == 'id')
+                                        <a href="{{ route($urlShow, $entityItem->id) }}"
+                                            class="text-blue-500 hover:text-blue-600">
+                                            {{ $entityItem->$column }}
+                                        </a>
+                                    @break
+
+                                    @case('positions_count')
+                                        {{ $products_quantity }}
+                                    @break
+
+                                    @case('shipped_count')
+                                        {{ $products_shipped_count }}
+                                    @break
+
+                                    @case($column == 'ms_link' && $entityItem->ms_id)
+                                        <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                            class="flex justify-center" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                </path>
+                                                <path fill-rule="evenodd"
+                                                    d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    @break
+
+                                    @case('date_plan')
+                                        {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                                    @break
+
+                                    @case('is_demand')
+                                        @if ($entityItem->$column)
+                                            <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                                        @else
+                                            <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                                        @endif
+                                    @break
+
+                                    @case('sostav')
+                                        @if (
+                                            $entityItem->positions->first(function ($value, $key) {
+                                                if ($value->product->building_material == 'бетон') {
+                                                    return $value->product->short_name;
+                                                }
+                                            }))
+                                            {{ $entityItem->positions->first(function ($value, $key) {
+                                                if ($value->product->building_material == 'бетон') {
+                                                    return $value->product->short_name;
+                                                }
+                                            })->product->short_name }}
+                                        @else
+                                            -
+                                        @endif
+                                    @break
+
+                                    @default
+                                        {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
+                                @endswitch
+                            </td>
+                        @endforeach
+                    </tr>
+                @else
                     @if (count($entityItem->shipments) > 0)
-                        <td class="text-nowrap px-2 py-2">
-                            <button class="buttonForOpen text-normal font-bold"
-                                data-id="{!! $entityItem->id !!}">+</button>
-                        </td>
-                    @else
-                        <td class="text-nowrap px-2 py-2">
-                        </td>
-                    @endif
+                        <tr class="border-b-2 bg-yellow-100">
+                            @if (count($entityItem->shipments) > 0)
+                                <td class="text-nowrap px-2 py-2">
+                                    <button class="buttonForOpen text-normal font-bold"
+                                        data-id="{!! $entityItem->id !!}">+</button>
+                                </td>
+                            @else
+                                <td class="text-nowrap px-2 py-2">
+                                </td>
+                            @endif
 
-                    @foreach ($resColumns as $column => $title)
-                        <td class="break-all max-w-96 overflow-auto px-2 py-2"
-                            @if ($column == 'contact_id' || $column == 'delivery_id' || $column == 'comment' || is_int($column)) style="text-align:left"
-                            @elseif($column == 'status') style="text-align:center"
-                            @else style="text-align:right" @endif
-                            @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+                            @foreach ($resColumns as $column => $title)
+                                <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                    @switch($column)
+                                            @case('contact_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('delivery_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('comment')
+                                                style="text-align:left"
+                                                @break
+                                            @case('status')
+                                                style="text-align:center"
+                                                @break
+                                            @default
+                                                style="text-align:right"
+                                        @endswitch
+                                    @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
-                            @if (preg_match('/_id\z/u', $column))
-                                @if ($column == 'contact_id')
-                                    {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
-                                @elseif($column == 'delivery_id')
-                                    {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
-                                @elseif($column == 'transport_type_id')
-                                    {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
-                                @elseif($column == 'status_id')
-                                    @switch($entityItem->$column)
-                                        @case(1)
-                                            <div id="status"
-                                                class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
-                                                <span>[N] Новый</span>
-                                            </div>
+                                    @switch($column)
+                                        @case('contact_id')
+                                            {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
                                         @break
 
-                                        @case(2)
-                                            <div id="status"
-                                                class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
-                                                <span>Думают</span>
-                                            </div>
+                                        @case('delivery_id')
+                                            {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
                                         @break
 
-                                        @case(3)
-                                            <div id="status"
-                                                class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
-                                                <span>[DN] Подтвержден</span>
-                                            </div>
+                                        @case('transport_type_id')
+                                            {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
                                         @break
 
-                                        @case(4)
-                                            <div id="status"
-                                                class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
-                                                <span>На брони</span>
-                                            </div>
+                                        @case('status_id')
+                                            @switch($entityItem->$column)
+                                                @case(1)
+                                                    <div id="status"
+                                                        class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                        <span>[N] Новый</span>
+                                                    </div>
+                                                @break
+
+                                                @case(2)
+                                                    <div id="status"
+                                                        class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                        <span>Думают</span>
+                                                    </div>
+                                                @break
+
+                                                @case(3)
+                                                    <div id="status"
+                                                        class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                        <span>[DN] Подтвержден</span>
+                                                    </div>
+                                                @break
+
+                                                @case(4)
+                                                    <div id="status"
+                                                        class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                        <span>На брони</span>
+                                                    </div>
+                                                @break
+
+                                                @case(5)
+                                                    <div id="status"
+                                                        class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                        <span>[DD] Отгружен с долгом</span>
+                                                    </div>
+                                                @break
+
+                                                @case(6)
+                                                    <div id="status"
+                                                        class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                        <span>[DF] Отгружен и закрыт</span>
+                                                    </div>
+                                                @break
+
+                                                @case(7)
+                                                    <div id="status" class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                        <span>[C] Отменен</span>
+                                                    </div>
+                                                @break
+
+                                                @default
+                                                    -
+                                            @endswitch
                                         @break
 
-                                        @case(5)
-                                            <div id="status"
-                                                class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
-                                                <span>[DD] Отгружен с долгом</span>
-                                            </div>
+                                        @case('remainder')
+                                            @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
+                                                {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
+                                                %
+                                            @else
+                                                {{ null }}
+                                            @endif
                                         @break
 
-                                        @case(6)
-                                            <div id="status"
-                                                class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
-                                                <span>[DF] Отгружен и закрыт</span>
-                                            </div>
+                                        @case(preg_match('/_id\z/u', $column))
+                                            <a href="{{ $entityItem->$column }}" target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                    </path>
+                                                    <path fill-rule="evenodd"
+                                                        d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                    </path>
+                                                </svg>
+                                            </a>
                                         @break
 
-                                        @case(7)
-                                            <div id="status" class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
-                                                <span>[C] Отменен</span>
-                                            </div>
+                                        @case('transport_type_id')
+                                            {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                        @break
+
+                                        @case($column == 'name' || $column == 'id')
+                                            <a href="{{ route($urlShow, $entityItem->id) }}"
+                                                class="text-blue-500 hover:text-blue-600">
+                                                {{ $entityItem->$column }}
+                                            </a>
+                                        @break
+
+                                        @case('positions_count')
+                                            {{ $products_quantity }}
+                                        @break
+
+                                        @case('shipped_count')
+                                            {{ $products_shipped_count }}
+                                        @break
+
+                                        @case($column == 'ms_link' && $entityItem->ms_id)
+                                            <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                                class="flex justify-center" target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                    </path>
+                                                    <path fill-rule="evenodd"
+                                                        d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                    </path>
+                                                </svg>
+                                            </a>
+                                        @break
+
+                                        @case('date_plan')
+                                            {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                                        @break
+
+                                        @case('is_demand')
+                                            @if ($entityItem->$column)
+                                                <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                                            @else
+                                                <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                                            @endif
+                                        @break
+
+                                        @case('sostav')
+                                            @if (
+                                                $entityItem->positions->first(function ($value, $key) {
+                                                    if ($value->product->building_material == 'бетон') {
+                                                        return $value->product->short_name;
+                                                    }
+                                                }))
+                                                {{ $entityItem->positions->first(function ($value, $key) {
+                                                    if ($value->product->building_material == 'бетон') {
+                                                        return $value->product->short_name;
+                                                    }
+                                                })->product->short_name }}
+                                            @else
+                                                -
+                                            @endif
                                         @break
 
                                         @default
-                                            -
+                                            {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
                                     @endswitch
-                                @endif
-                            @elseif($column == 'remainder')
-                                @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
-                                    {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
-                                    %
+                                </td>
+                            @endforeach
+                        </tr>
+                    @else
+                        @if ($entityItem->date_plan < \Carbon\Carbon::now()->format('d-m-Y H:i') && $entityItem->status_id !== 7)
+                            <tr class="border-b-2 bg-red-100">
+                                @if (count($entityItem->shipments) > 0)
+                                    <td class="text-nowrap px-2 py-2">
+                                        <button class="buttonForOpen text-normal font-bold"
+                                            data-id="{!! $entityItem->id !!}">+</button>
+                                    </td>
                                 @else
-                                    {{ null }}
+                                    <td class="text-nowrap px-2 py-2">
+                                    </td>
                                 @endif
-                            @elseif(preg_match('/_link/u', $column) && $entityItem->$column !== null && $entityItem->$column !== '')
-                                <a href="{{ $entityItem->$column }}" target="_blank">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
-                                        </path>
-                                        <path fill-rule="evenodd"
-                                            d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
-                                        </path>
-                                    </svg>
-                                </a>
-                            @elseif($column == 'name' || $column == 'id')
-                                <a href="{{ route($urlShow, $entityItem->id) }}"
-                                    class="text-blue-500 hover:text-blue-600">
-                                    {{ $entityItem->$column }}
-                                </a>
-                            @elseif($column == 'positions_count')
-                                {{ $products_quantity }}
-                            @elseif($column == 'shipped_count')
-                                {{ $products_shipped_count }}
-                            @elseif($column == 'residual_count')
-                                {{ $products_quantity - $products_shipped_count }}
-                            @elseif($column == 'ms_link' && $entityItem->ms_id)
-                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
-                                    class="flex justify-center" target="_blank">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
-                                        </path>
-                                        <path fill-rule="evenodd"
-                                            d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
-                                        </path>
-                                    </svg>
-                                </a>
-                            @elseif($column == 'date_plan')
-                                {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
-                            @elseif($column == 'is_demand')
-                                @if ($entityItem->$column)
-                                    <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
-                                @else
-                                    <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
-                                @endif
-                            @elseif($column == 'sostav')
-                                @if (
-                                    $entityItem->positions->first(function ($value, $key) {
-                                        if ($value->product->building_material == 'бетон') {
-                                            return $value->product->short_name;
-                                        }
-                                    }))
-                                   {{ $entityItem->positions->first(function ($value, $key) {
-                                    if ($value->product->building_material == 'бетон') {
-                                    return $value->product->short_name;
-                                    }
-                                    })->product->short_name }}
-                                @else
-                                    -
-                                @endif
-                            @else
-                                {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
-                            @endif
-                        </td>
-                    @endforeach
 
-                </tr>
+                                @foreach ($resColumns as $column => $title)
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                        @switch($column)
+                                            @case('contact_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('delivery_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('comment')
+                                                style="text-align:left"
+                                                @break
+                                            @case('status')
+                                                style="text-align:center"
+                                                @break
+                                            @default
+                                                style="text-align:right"
+                                        @endswitch
+                                        @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                                        @switch($column)
+                                            @case('contact_id')
+                                                {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                            @break
+
+                                            @case('delivery_id')
+                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                            @break
+
+                                            @case('transport_type_id')
+                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                            @break
+
+                                            @case('status_id')
+                                                @switch($entityItem->$column)
+                                                    @case(1)
+                                                        <div id="status"
+                                                            class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                            <span>[N] Новый</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(2)
+                                                        <div id="status"
+                                                            class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                            <span>Думают</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(3)
+                                                        <div id="status"
+                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            <span>[DN] Подтвержден</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(4)
+                                                        <div id="status"
+                                                            class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                            <span>На брони</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(5)
+                                                        <div id="status"
+                                                            class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                            <span>[DD] Отгружен с долгом</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(6)
+                                                        <div id="status"
+                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            <span>[DF] Отгружен и закрыт</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(7)
+                                                        <div id="status"
+                                                            class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                            <span>[C] Отменен</span>
+                                                        </div>
+                                                    @break
+
+                                                    @default
+                                                        -
+                                                @endswitch
+                                            @break
+
+                                            @case('remainder')
+                                                @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
+                                                    {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
+                                                    %
+                                                @else
+                                                    {{ null }}
+                                                @endif
+                                            @break
+
+                                            @case(preg_match('/_id\z/u', $column))
+                                                <a href="{{ $entityItem->$column }}" target="_blank">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                        viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                        </path>
+                                                        <path fill-rule="evenodd"
+                                                            d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            @break
+
+                                            @case('transport_type_id')
+                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                            @break
+
+                                            @case($column == 'name' || $column == 'id')
+                                                <a href="{{ route($urlShow, $entityItem->id) }}"
+                                                    class="text-blue-500 hover:text-blue-600">
+                                                    {{ $entityItem->$column }}
+                                                </a>
+                                            @break
+
+                                            @case('positions_count')
+                                                {{ $products_quantity }}
+                                            @break
+
+                                            @case('shipped_count')
+                                                {{ $products_shipped_count }}
+                                            @break
+
+                                            @case($column == 'ms_link' && $entityItem->ms_id)
+                                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                                    class="flex justify-center" target="_blank">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                        viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                        </path>
+                                                        <path fill-rule="evenodd"
+                                                            d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            @break
+
+                                            @case('date_plan')
+                                                {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                                            @break
+
+                                            @case('is_demand')
+                                                @if ($entityItem->$column)
+                                                    <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                                                @else
+                                                    <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                                                @endif
+                                            @break
+
+                                            @case('sostav')
+                                                @if (
+                                                    $entityItem->positions->first(function ($value, $key) {
+                                                        if ($value->product->building_material == 'бетон') {
+                                                            return $value->product->short_name;
+                                                        }
+                                                    }))
+                                                    {{ $entityItem->positions->first(function ($value, $key) {
+                                                        if ($value->product->building_material == 'бетон') {
+                                                            return $value->product->short_name;
+                                                        }
+                                                    })->product->short_name }}
+                                                @else
+                                                    -
+                                                @endif
+                                            @break
+
+                                            @default
+                                                {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
+                                        @endswitch
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @else
+                            <tr class="border-b-2">
+                                @if (count($entityItem->shipments) > 0)
+                                    <td class="text-nowrap px-2 py-2">
+                                        <button class="buttonForOpen text-normal font-bold"
+                                            data-id="{!! $entityItem->id !!}">+</button>
+                                    </td>
+                                @else
+                                    <td class="text-nowrap px-2 py-2">
+                                    </td>
+                                @endif
+
+                                @foreach ($resColumns as $column => $title)
+                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                        @switch($column)
+                                            @case('contact_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('delivery_id')
+                                                style="text-align:left"
+                                                @break
+                                            @case('comment')
+                                                style="text-align:left"
+                                                @break
+                                            @case('status')
+                                                style="text-align:center"
+                                                @break
+                                            @default
+                                                style="text-align:right"
+                                        @endswitch
+                                        @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
+
+                                        @switch($column)
+                                            @case('contact_id')
+                                                {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                            @break
+
+                                            @case('delivery_id')
+                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                            @break
+
+                                            @case('transport_type_id')
+                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                            @break
+
+                                            @case('status_id')
+                                                @switch($entityItem->$column)
+                                                    @case(1)
+                                                        <div id="status"
+                                                            class="rounded border-yellow-500 bg-yellow-400 px-2 py-1 text-center">
+                                                            <span>[N] Новый</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(2)
+                                                        <div id="status"
+                                                            class="rounded border-blue-500 bg-blue-400 px-2 py-1 text-center">
+                                                            <span>Думают</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(3)
+                                                        <div id="status"
+                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            <span>[DN] Подтвержден</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(4)
+                                                        <div id="status"
+                                                            class="rounded border-purple-500 bg-purple-400 px-2 py-1 text-center">
+                                                            <span>На брони</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(5)
+                                                        <div id="status"
+                                                            class="rounded border-orange-500 bg-orange-400 px-2 py-1 text-center">
+                                                            <span>[DD] Отгружен с долгом</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(6)
+                                                        <div id="status"
+                                                            class="rounded border-green-500 bg-green-400 px-2 py-1 text-center">
+                                                            <span>[DF] Отгружен и закрыт</span>
+                                                        </div>
+                                                    @break
+
+                                                    @case(7)
+                                                        <div id="status"
+                                                            class="rounded border-red-500 bg-red-400 px-2 py-1 text-center">
+                                                            <span>[C] Отменен</span>
+                                                        </div>
+                                                    @break
+
+                                                    @default
+                                                        -
+                                                @endswitch
+                                            @break
+
+                                            @case('remainder')
+                                                @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
+                                                    {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
+                                                    %
+                                                @else
+                                                    {{ null }}
+                                                @endif
+                                            @break
+
+                                            @case(preg_match('/_id\z/u', $column))
+                                                <a href="{{ $entityItem->$column }}" target="_blank">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                        viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                        </path>
+                                                        <path fill-rule="evenodd"
+                                                            d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            @break
+
+                                            @case('transport_type_id')
+                                                {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
+                                            @break
+
+                                            @case($column == 'name' || $column == 'id')
+                                                <a href="{{ route($urlShow, $entityItem->id) }}"
+                                                    class="text-blue-500 hover:text-blue-600">
+                                                    {{ $entityItem->$column }}
+                                                </a>
+                                            @break
+
+                                            @case('positions_count')
+                                                {{ $products_quantity }}
+                                            @break
+
+                                            @case('shipped_count')
+                                                {{ $products_shipped_count }}
+                                            @break
+
+                                            @case($column == 'ms_link' && $entityItem->ms_id)
+                                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                                    class="flex justify-center" target="_blank">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                        viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                        </path>
+                                                        <path fill-rule="evenodd"
+                                                            d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            @break
+
+                                            @case('date_plan')
+                                                {{ \Illuminate\Support\Carbon::parse($entityItem->$column)->format('H:i') }}
+                                            @break
+
+                                            @case('is_demand')
+                                                @if ($entityItem->$column)
+                                                    <div class="bg-green-400 rounded-full w-3 h-3 mx-auto"></div>
+                                                @else
+                                                    <div class="bg-red-400 rounded-full w-3 h-3 mx-auto"></div>
+                                                @endif
+                                            @break
+
+                                            @case('sostav')
+                                                @if (
+                                                    $entityItem->positions->first(function ($value, $key) {
+                                                        if ($value->product->building_material == 'бетон') {
+                                                            return $value->product->short_name;
+                                                        }
+                                                    }))
+                                                    {{ $entityItem->positions->first(function ($value, $key) {
+                                                        if ($value->product->building_material == 'бетон') {
+                                                            return $value->product->short_name;
+                                                        }
+                                                    })->product->short_name }}
+                                                @else
+                                                    -
+                                                @endif
+                                            @break
+
+                                            @default
+                                                {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
+                                        @endswitch
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endif
+                    @endif
+                @endif
 
                 @foreach ($entityItem->shipments as $shipment)
                     <tr style="display: none" class="border-b-2 bg-green-100 position_column_{!! $entityItem->id !!}">
@@ -260,7 +884,8 @@
                                     <a href="{{ $shipment->service_link }}" target="_blank"
                                         class="flex justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                            fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                            viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
                                                 d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
                                             </path>
