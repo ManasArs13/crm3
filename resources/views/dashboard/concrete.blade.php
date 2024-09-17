@@ -96,27 +96,27 @@
                     <tbody>
                     @foreach ($shipments as $key => $shipment)
                         @php
-                            $transportName = optional($shipment->last()->transport)->name ?? '-';
-                            $transportNumber = optional($shipment->last()->transport)->car_number ?? '-';
-                            $transportTonnage = optional($shipment->last()->transport)->tonnage ?? '-';
+                            $transportName = optional($shipment->first()->transport)->name ?? '-';
+                            $transportNumber = optional($shipment->first()->transport)->car_number ?? '-';
+                            $transportTonnage = optional($shipment->first()->transport)->tonnage ?? '-';
 
                             $currentTime = Carbon\Carbon::now();
-                            $lastCreatedAt = Carbon\Carbon::parse($shipment->last()->created_at);
-                            $lastTimeToCome = Carbon\Carbon::parse($shipment->last()->time_to_come);
-                            $lastTimeToOut = Carbon\Carbon::parse($shipment->last()->time_to_out);
-                            $lastToReturn = Carbon\Carbon::parse($shipment->last()->time_to_return);
+                            $firstCreatedAt = Carbon\Carbon::parse($shipment->first()->created_at);
+                            $firstTimeToCome = Carbon\Carbon::parse($shipment->first()->time_to_come);
+                            $firstTimeToOut = Carbon\Carbon::parse($shipment->first()->time_to_out);
+                            $firstToReturn = Carbon\Carbon::parse($shipment->first()->time_to_return);
 
-                            if($currentTime->between($lastCreatedAt, $lastTimeToCome)){
+                            if($currentTime->between($firstCreatedAt, $firstTimeToCome)){
                                 $statusColor = 'bg-yellow-100';
                                 $statusInfo = 'Отгружен';
-                            } elseif($currentTime->between($lastTimeToCome, $lastTimeToOut)){
-                                $statusColor = 'bg-green-100';
-                                $statusInfo = 'На объекте';
-                            } elseif($currentTime->between($lastTimeToOut, $lastToReturn)){
+                            } elseif($currentTime->between($firstTimeToCome, $firstTimeToOut)){
                                 $statusColor = 'bg-sky-100';
+                                $statusInfo = 'На объекте';
+                            } elseif($currentTime->between($firstTimeToOut, $firstToReturn)){
+                                $statusColor = 'bg-sky-200';
                                 $statusInfo = 'Обратно';
                             } else{
-                                $statusColor = 'bg-sky-200';
+                                $statusColor = 'bg-green-100';
                                 $statusInfo = 'На базе';
                             }
                         @endphp
@@ -131,14 +131,7 @@
                             </td>
                             <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
                             <td class="px-1 m-2 border-x-2 text-center py-3 truncate">{{ $statusInfo }}</td>
-                            <td class="px-1 m-2 text-center py-3">{{ $lastToReturn->format('H:i') }}</td>
-                        </tr>
-                        <tr style="display: none;" class="position_column_shipment_{{ $key }} bg-neutral-100 text-sm">
-                            <th></th>
-                            <th class="border-r-2 border-l-2 text-center">Отгружен</th>
-                            <th class="border-r-2 text-center">На объекте</th>
-                            <th class="border-r-2 text-center">Обратно</th>
-                            <th class="py-2 px-1 text-center" colspan="2">База</th>
+                            <td class="px-1 m-2 text-center py-3">{{ $firstToReturn->format('H:i') }}</td>
                         </tr>
                         @foreach($shipment as $num => $transport)
                             @php
@@ -147,24 +140,17 @@
                                 $timeToOut = Carbon\Carbon::parse($transport->time_to_out);
                                 $timeToReturn = Carbon\Carbon::parse($transport->time_to_return);
                             @endphp
-                            <tr style="display: none;" class="border-y-2 border-slate-500 position_column_shipment_{{ $key }}
-                            @if($currentTime->between($createdAt, $timeToCome))
-                                bg-yellow-100
-                            @elseif($currentTime->between($timeToCome, $timeToOut))
-                                bg-green-100
-                            @elseif($currentTime->between($timeToOut, $timeToReturn))
-                                bg-sky-100
-                            @else bg-sky-200 @endif">
-                                <td class="border-r-2 border-slate-500 text-nowrap px-2 py-2">
+                            <tr style="display: none;" class="border-y-2 position_column_shipment_{{ $key }}">
+                                <td class="border-r-2 text-nowrap px-2 py-2">
                                     {{ $num+1 }}
                                 </td>
-                                <td class="px-1 m-2 border-r-2 border-slate-500 py-3 text-center">
+                                <td class="px-1 m-2 border-r-2 py-3 text-center">
                                     {{ $createdAt->format('H:i') }}
                                 </td>
-                                <td class="px-1 m-2 border-x-2 border-slate-500 py-3 text-center">
+                                <td class="px-1 m-2 border-x-2 py-3 text-center">
                                     {{ $timeToCome->format('H:i') }}
                                 </td>
-                                <td class="px-1 m-2 border-x-2 border-slate-500 text-center py-3">
+                                <td class="px-1 m-2 border-x-2 text-center py-3">
                                     {{ $timeToOut->format('H:i') }}
                                 </td>
                                 <td class="px-1 m-2 text-center py-3" colspan="2">
