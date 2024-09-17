@@ -125,8 +125,9 @@
                     <tbody>
                     @foreach ($shipments as $key => $shipment)
                         @php
-                            $transportName = $shipment->first()->transport->name;
-                            $transportNumber = $shipment->first()->transport->car_number;
+                            $transportName = optional($shipment->first()->transport)->name ?? 'Пусто';
+                            $transportNumber = optional($shipment->first()->transport)->car_number;
+                            $transportTonnage = optional($shipment->first()->transport)->tonnage;
 
                             $currentTime = Carbon\Carbon::now();
                             $firstCreatedAt = Carbon\Carbon::parse($shipment->first()->created_at);
@@ -150,10 +151,10 @@
                                         data-id="{{ $key }}">+</button>
                             </td>
                             <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transportNumber }}</td>
-                            <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
+                            <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
                                 {{ $transportName ? $transportName : 'не указано' }}
                             </td>
-                            <td class="px-1 m-2 border-x-2 py-3 text-center"></td>
+                            <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
                             <td class="px-1 m-2 border-x-2 text-center py-3 truncate">{{ $statusInfo }}</td>
                             <td class="px-1 m-2 text-center py-3">{{ $firstTimeToCome->format('H:i') }}</td>
                         </tr>
@@ -174,11 +175,11 @@
                             <tr style="display: none;" class="border-b-2 position_column_{{ $key }}
                             @if($currentTime->between($createdAt, $timeToCome))
                                 bg-yellow-100
-@elseif($currentTime->between($timeToCome, $timeToOut))
+                            @elseif($currentTime->between($timeToCome, $timeToOut))
                                 bg-green-200
-@elseif($currentTime->between($timeToOut, $timeToReturn))
+                            @elseif($currentTime->between($timeToOut, $timeToReturn))
                                 bg-sky-100
-@else bg-sky-300 @endif">
+                            @else bg-sky-300 @endif">
                                 <td class="border-r-2 text-nowrap px-2 py-2">
                                     {{ $num+1 }}
                                 </td>
