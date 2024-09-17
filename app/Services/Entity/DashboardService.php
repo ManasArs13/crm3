@@ -301,43 +301,62 @@ class DashboardService
                     return $sum;
                 });
 
-                if ($referer == 'dashboard-3') {
-                    if ($position_count <= $this->plant_capacity) {
-                        $positions_count[$key] += $position_count;
-                    } else {
-                        $count_cycle = (int) ($position_count / $this->plant_capacity);
 
-                        for ($i = 0; $i < $count_cycle; $i++) {
-                            if (isset($positions_count[$key + $i])) {
-                                $positions_count[$key + $i] += $this->plant_capacity;
+
+                if ($referer == 'dashboard-3') {
+
+                    $orders_whereBetwen = $orders->whereBetween('date_plan', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->all();
+
+                    foreach ($orders_whereBetwen as $order) {
+
+                        $sum = 0;
+
+                        foreach ($order->positions as $position) {
+
+                            if (
+                                $position->product->building_material !== 'доставка' &&
+                                $position->product->building_material !== 'не выбрано'
+                            ) {
+                                $sum += $position->quantity;
                             }
                         }
 
-                        if ($position_count % $this->plant_capacity) {
-                            if (isset($positions_count[$key + $count_cycle])) {
-                                $positions_count[$key + $count_cycle] += $position_count % $this->plant_capacity;
+                        if ($sum <= $this->plant_capacity) {
+                            $positions_count[$key] += $sum;
+                        } else {
+                            $count_cycle = (int) ($sum / $this->plant_capacity);
+
+                            for ($i = 0; $i < $count_cycle; $i++) {
+                                if (isset($positions_count[$key + $i])) {
+                                    $positions_count[$key + $i] += $this->plant_capacity;
+                                }
+                            }
+
+                            if ($sum % $this->plant_capacity) {
+                                if (isset($positions_count[$key + $count_cycle])) {
+                                    $positions_count[$key + $count_cycle] += $sum % $this->plant_capacity;
+                                }
                             }
                         }
                     }
                 } else {
                     $positions_count[$key] += $position_count;
                 }
-
-
-                $shipped_count[$key] += $shipments->whereBetween('created_at', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->sum(function ($items) {
-                    $sum = 0;
-                    foreach ($items->products as $product) {
-                        if (
-                            $product->product->building_material !== 'доставка' &&
-                            $product->product->building_material !== 'не выбрано'
-                        ) {
-                            $sum += $product->quantity;
-                        }
-                    }
-                    return $sum;
-                });
-                $residual_count[$key] += $positions_count[$key] - $shipped_count[$key];
             }
+
+            $shipped_count[$key] += $shipments->whereBetween('created_at', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->sum(function ($items) {
+                $sum = 0;
+                foreach ($items->products as $product) {
+                    if (
+                        $product->product->building_material !== 'доставка' &&
+                        $product->product->building_material !== 'не выбрано'
+                    ) {
+                        $sum += $product->quantity;
+                    }
+                }
+                return $sum;
+            });
+            $residual_count[$key] += $positions_count[$key] - $shipped_count[$key];
         }
 
         array_shift($labels);
