@@ -13,12 +13,13 @@ class TransportController extends Controller
 {
     public function index(FilterRequest $request)
     {
-        $entityItems = Transport::query();
+        $entityItems = Transport::query()->with('type');
         $needMenuForItem = true;
         $urlEdit = "transport.edit";
         $urlDelete = "transport.destroy";
         $urlCreate = "transport.create";
         $urlFilter = 'transport.index';
+        $urlShow = "transportType.show";
         $entityName = 'transports';
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
@@ -35,7 +36,9 @@ class TransportController extends Controller
             'tonnage',
             'contact_id',
             'ms_id',
+            'type_id',
         ];
+
 
 
         $select = [
@@ -44,6 +47,7 @@ class TransportController extends Controller
             'description',
             'tonnage',
             'contact_id',
+            'type_id',
         ];
 
         $selected = $request->columns ?? $select;
@@ -86,7 +90,8 @@ class TransportController extends Controller
             "entityName",
             'urlFilter',
             'orderBy',
-            'selectColumn'
+            'selectColumn',
+            'urlShow'
         ));
     }
 
@@ -96,12 +101,14 @@ class TransportController extends Controller
         $action = "transport.store";
 
         $searchContacts = "api.get.contact";
+        $searchTransportTypes = "api.get.transportType";
 
-        return view('transport.create', compact('action', 'entity', 'searchContacts'));
+        return view('transport.create', compact('action', 'entity', 'searchContacts', 'searchTransportTypes'));
     }
 
     public function store(TransportStoreRequest $request)
     {
+//        dd($request);
         $validated = $request->validated();
 
         $transport = new Transport($validated);
@@ -128,8 +135,9 @@ class TransportController extends Controller
         $entity = "Транспорт $transport->name";
         $action = "transport.update";
         $searchContacts = "api.get.contact";
+        $searchTransportTypes = "api.get.transportType";
 
-        return view("transport.edit", compact('transport', 'entity', 'action', 'searchContacts'));
+        return view("transport.edit", compact('transport', 'entity', 'action', 'searchContacts', 'searchTransportTypes'));
     }
 
     public function update(TransportUpdateRequest $request, string $id)

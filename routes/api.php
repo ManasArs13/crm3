@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Ms\OrderController as MsOrderController;
 use App\Http\Controllers\Api\Site\OrderController as SiteOrderController;
 use App\Http\Controllers\OrderController as OrdController;
+use App\Http\Controllers\TransportTypeController;
 use App\Http\Controllers\Api\Ms\ShipmentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/orders', [OrdController::class, 'get_api'])->name('api.get.order');
 Route::get('get/orders/', [OrderController::class, 'order_get_calculator'])->name('order.get.calculator');
 Route::get('/contacts', [ContactController::class, 'get_api'])->name('api.get.contact');
+Route::get('/transport/type', [TransportTypeController::class, 'get_api'])->name('api.get.transportType');
 Route::get('/products', [ProductController::class, 'get_api'])->name('api.get.product');
 
 Route::get('/shipments/get/month_category', [App\Http\Controllers\Api\Site\ShipmentController::class, 'getShipmentsByMonthAndCategory'])->name('api.get.month.category');

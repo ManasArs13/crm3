@@ -26,6 +26,10 @@ class TransportUpdateRequest extends FormRequest
             'description' => 'nullable',
             'ms_id' => 'nullable|max:36',
             'tonnage' => 'integer|nullable',
+            'car_number' => 'string|nullable|max:255',
+            'driver' => 'string|nullable|max:255',
+            'phone' => 'string|nullable|max:255',
+            'type_id' => 'exists:App\Models\TransportType,id|nullable',
             'contact_id' => 'exists:App\Models\Contact,id|nullable'
         ];
     }
