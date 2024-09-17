@@ -4,6 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        @vite([ 'resources/js/main.js'])
     </x-slot>
 
     @if (isset($entity) && $entity != '')
@@ -34,6 +35,7 @@
         <div
             class="max-w-7xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
+                <div id="message" class="bg-red-600"></div>
                 <form action="{{ route($action, $entityItem->id) }}" method="post">
                     @csrf
                     @method('PATCH')
@@ -371,6 +373,11 @@
                             class="w-full p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
                     </div>
                 </form>
+                <div class="px-5 mb-3 w-full">
+                    <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
+                    class="w-full p-1 mt-5 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Добавить в мс</button>
+                </div>
+
             </div>
         </div>
 
