@@ -73,6 +73,23 @@
                         </div>
 
                         <div class="flex flex-row mb-1">
+                            <label for="input_driver_phone" class="font-bold flex basis-1/3">Телефон водителя</label>
+                            <div class="flex basis-4/5">
+                                <input type="text" class="rounded w-full" id="input_driver_phone" name="input_driver_phone"
+                                       placeholder="Укажите телефон водителя">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row mb-1">
+                            <label for="input_transport_ts" class="font-bold flex basis-1/3">Контрагент</label>
+                            <div class="flex basis-4/5">
+                                <select name="contact_id" id="input_contact" style="width: 100%" class="select2">
+                                    <option value="" selected disabled>не выбрано</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row mb-1">
                             <label for="input_contact" class="font-bold flex basis-1/3">Контрагент</label>
                             <div class="flex basis-4/5">
                                 <select name="contact_id" id="input_contact" style="width: 100%" class="select2">

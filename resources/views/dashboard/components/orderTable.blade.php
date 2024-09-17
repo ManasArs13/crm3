@@ -976,10 +976,14 @@
                         console.log(positions[i].style.display)
                         if (positions[i].style.display === 'none') {
                             positions[i].style.display = ''
-                            b.textContent = '-'
+                            if(!b.classList.contains('d-count')){
+                                b.textContent = '-'
+                            }
                         } else {
                             positions[i].style.display = 'none'
-                            b.textContent = '+'
+                            if(!b.classList.contains('d-count')){
+                                b.textContent = '+'
+                            }
                         }
                     }
                 }
