@@ -10,38 +10,6 @@ class OrderAmo extends Model
 {
     use HasFactory;
 
-    protected $AllColumns = [
-        "id",
-        "name",
-        'status_amo_id',
-        'contact_amo_id',
-        'price',
-        'comment',
-        'is_exist',
-        'order_link',
-        'order_id',
-        'created_at',
-        'updated_at',
-        'manager_id',
-        'is_success'
-    ];
-
-    protected $defaultColumn = [
-        "id",
-        "name",
-        'status_amo_id',
-        'contact_amo_id',
-        'price',
-        'comment',
-        'is_exist',
-        'order_link',
-        'order_id',
-        'created_at',
-        'updated_at',
-        'manager_id',
-        'is_success'
-    ];
-
     protected $fillable = [
         '*'
     ];

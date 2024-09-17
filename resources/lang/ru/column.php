@@ -78,6 +78,7 @@ return [
   'type' => 'Тип',
   'status' => 'Статус',
   'description' => 'Комментарий',
+  'driver' => 'Водитель',
   'paid_sum' => 'Сумма оплачено',
   'suma' => 'Сумма',
   'service_link' => 'Путь к сервису',

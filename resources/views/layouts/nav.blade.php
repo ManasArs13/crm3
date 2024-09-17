@@ -29,7 +29,7 @@
                         </x-nav-link>
 
 
-                        <x-nav-link :href="route('residual.blocksMaterials')" :active="request()->routeIs('residual.*')">
+                        <x-nav-link :href="route('residual.blocksCategories')" :active="request()->routeIs('residual.*')">
                             Остатки
                         </x-nav-link>
                     @endrole
@@ -419,7 +419,7 @@
                                 class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Заказы</a>
                             <a href="{{ route('shipment.index') }}"
                                 class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.shipments') }}</a>
-                            <a href="{{ route('residual.blocksMaterials') }}"
+                            <a href="{{ route('residual.blocksCategories') }}"
                                 class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Остатки</a>
                         @endrole
 

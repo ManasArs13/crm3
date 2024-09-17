@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Amo;
 
-use App\Entity\Amo\AmoOrderEntity;
-use App\Helpers\Columns;
+use App\Filters\Amo\AmoOrderFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Amo\AmoOrderRequest;
 use App\Models\OrderAmo;
-use Illuminate\Support\Facades\Schema;
 
 class AmoOrderController extends Controller
 {
@@ -15,25 +13,76 @@ class AmoOrderController extends Controller
     {
         $entityName = 'Заказы АМО';
 
-        $orderBy = $request->orderBy == 'asc' ? 'desc' : 'asc';
-        $selectColumn = $request->column;
+        // Amo orders
+        $builder = OrderAmo::query()->with(['status_amo', 'contact_amo']);
 
-        $all_columns = Schema::getColumnListing('order_amos');
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $orderBy = 'desc';
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $selectColumn = null;
+        }
 
-        $entityItems = AmoOrderEntity::getForIndex($request, $request->column, $request->orderBy, 50);
+        $all_columns = [
+            "id",
+            "name",
+            'status_amo_id',
+            'contact_amo_id',
+            'price',
+            'comment',
+            'is_exist',
+            'order_link',
+            'order_id',
+            'created_at',
+            'updated_at',
+            'manager_id',
+            'is_success'
+        ];
+    
+        $select = [
+            "id",
+            "name",
+            'status_amo_id',
+            'contact_amo_id',
+            'price',
+            'comment',
+            'is_exist',
+            'order_link',
+            'order_id',
+            'created_at',
+            'updated_at',
+            'manager_id',
+            'is_success'
+        ];
 
-        $columns = Columns::get(new OrderAmo, $request->columns);
+        $selected = $request->columns ?? $select;
 
-        $filtersBy = [];
+        foreach ($all_columns as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
+        }
+
+        $filters = [];
 
         return view('amo.order.index', compact(
-            'all_columns',
+            "resColumns",
+            "resColumnsAll",
             'entityName',
             'entityItems',
-            'columns',
             'orderBy',
             'selectColumn',
-            'filtersBy'
+            'filters',
+            'select'
         ));
     }
 }

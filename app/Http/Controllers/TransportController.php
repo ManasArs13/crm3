@@ -25,14 +25,16 @@ class TransportController extends Controller
 
         // Columns
         $all_columns = [
-            "id",
-            "name",
+            'id',
+            'name',
+            'driver',
             'description',
+            'phone',
             'created_at',
             'updated_at',
             'tonnage',
             'contact_id',
-            'ms_id'
+            'ms_id',
         ];
 
 
