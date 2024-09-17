@@ -295,4 +295,13 @@ class TransportTypeController extends Controller
             'orderBy'
         ));
     }
+    public function get_api(Request $request){
+        $types = TransportType::query()
+            ->where('name', 'LIKE', '%' . $request->query('term') . '%')
+            ->orWhere('id', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orWhere('ms_id', 'LIKE',  '%' . $request->query('term') . '%')
+            ->orderByDesc('id')->take(10)->get();
+
+        return response()->json($types);
+    }
 }
