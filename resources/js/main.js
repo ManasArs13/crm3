@@ -11,16 +11,17 @@ $(document).ready(function(){
             type: "POST",
             data: {"id": $(this).attr("data-id")},
             beforeSend: function() {
-            //   $(".preloader").addClass("active");
+                $(this).html("обработка...")
             },
             success: function(data) {
               $("#message").html(data);
             },
             error: function(response) {
-              $("#message").html(response.responseText);
+              $("#message").html(JSON.parse(response.responseText));
+            //   $("#message").html(response.responseText);
             },
             complete: function() {
-            //   $(".preloader").removeClass("active");
+                $(this).html("Добавить в мс");
             }
           });
     });
