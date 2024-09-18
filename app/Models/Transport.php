@@ -12,7 +12,12 @@ class Transport extends Model
 
     protected $guarded = [];
 
-    protected $fillable = ['name', 'description', 'tonnage', 'contact_id', 'car_number'];
+    protected $fillable = ['name', 'description', 'tonnage', 'contact_id', 'car_number', 'driver', 'phone', 'type_id'];
+
+    public function type()
+    {
+        return $this->belongsTo(TransportType::class, 'type_id');
+    }
 
     public function contact()
     {

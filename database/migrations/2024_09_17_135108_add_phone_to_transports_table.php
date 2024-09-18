@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('transports', function (Blueprint $table) {
             $table->char('phone')->nullable();
+            $table->unsignedBigInteger('type_id')->nullable();
+            $table->foreign('type_id')->references('id')->on('transport_types')->onDelete('set null');
         });
     }
 

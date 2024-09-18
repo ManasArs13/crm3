@@ -39,6 +39,7 @@ return [
   "transport_id" => "Транспорт",
   "delivery_id" => "Доставка",
   "transport_type_id" => "Тип ТС",
+  "type_id" => "Вид ТС",
   "balance" => "Баланс",
   'email' => "Почта",
   'login' => "Логин",

@@ -17,7 +17,6 @@ class ShipmentController extends Controller
 
         $result = $shipmentMsService->createChipmentToMs($id);
 
-
         if (isset($result->id)) {
             $shipment=Shipment::find($id);
             $shipment->ms_id=$result->id;
@@ -25,7 +24,7 @@ class ShipmentController extends Controller
 
             return new Response("<a href='" . 'https://online.moysklad.ru/app/#demand/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Отгрузка №' . $result->name . ' создан!' . "</a>", 200);
         } else {
-            return new Response(trans("error.Error"));
+            return new Response(trans("error.Error").$result);
         }
 
     }

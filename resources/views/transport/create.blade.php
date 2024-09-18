@@ -73,17 +73,25 @@
                         </div>
 
                         <div class="flex flex-row mb-1">
+                            <label for="input_driver" class="font-bold flex basis-1/3">Водитель</label>
+                            <div class="flex basis-4/5">
+                                <input type="text" class="rounded w-full" id="input_driver" name="driver"
+                                       placeholder="Водитель">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row mb-1">
                             <label for="input_driver_phone" class="font-bold flex basis-1/3">Телефон водителя</label>
                             <div class="flex basis-4/5">
-                                <input type="text" class="rounded w-full" id="input_driver_phone" name="input_driver_phone"
+                                <input type="text" class="rounded w-full" id="input_driver_phone" name="phone"
                                        placeholder="Укажите телефон водителя">
                             </div>
                         </div>
 
                         <div class="flex flex-row mb-1">
-                            <label for="input_transport_ts" class="font-bold flex basis-1/3">Контрагент</label>
+                            <label for="input_transport_ts" class="font-bold flex basis-1/3">Вид ТС</label>
                             <div class="flex basis-4/5">
-                                <select name="contact_id" id="input_contact" style="width: 100%" class="select2">
+                                <select name="type_id" id="transport_type" style="width: 100%" class="select1">
                                     <option value="" selected disabled>не выбрано</option>
                                 </select>
                             </div>
@@ -121,6 +129,28 @@
             $('.select2').select2({
                 ajax: {
                     url: `{{ route($searchContacts) }}`,
+                    data: function(params) {
+
+                        var queryParameters = {
+                            term: params.term
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    text: item.name  + '   ' + (item.description ? item.description : ' '),
+                                    id: item.id,
+                                }
+                            })
+                        };
+                    }
+                },
+            });
+            $('.select1').select2({
+                ajax: {
+                    url: `{{ route($searchTransportTypes) }}`,
                     data: function(params) {
 
                         var queryParameters = {
