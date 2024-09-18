@@ -28,7 +28,7 @@ class ShipmentMsService
        $url="https://api.moysklad.ru/api/remap/1.2/entity/demand/";
 
         $array = [];
-        $array["name"]=$shipment["name"];
+        // $array["name"]="06099";
         $array['organization'] = [
             "meta" => [
                 "href" => "https://api.moysklad.ru/api/remap/1.2/entity/organization/03957745-4672-11ee-0a80-0dbe00139b20",
