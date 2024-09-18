@@ -60,12 +60,12 @@
                         @php
                             $residual_percent = round($material['residual'] / $material['residual_norm'] * 100);
                             $color = match (true) {
-                                $residual_percent <= 30 => 'bg-red-100',
-                                $residual_percent > 30 && $residual_percent <= 70 => 'bg-yellow-100',
-                                default => 'bg-green-100'
+                                $residual_percent <= 30 => 'bg-red-300',
+                                $residual_percent > 30 && $residual_percent <= 70 => 'bg-yellow-300',
+                                default => 'bg-green-300'
                             };
                         @endphp
-                        <tr class="border-b-2 {{ $color }}">
+                        <tr class="border-b-2">
                             <td class="px-1 m-2 py-2 max-w-[150px] truncate" colspan="4">
                                 {{ $material['short_name'] }}
                             </td>
@@ -79,7 +79,9 @@
                                 {{ $material['rashod'] ? round($material['rashod'] / 1000) : 0 }}
                             </td>
                             <td class="px-1 m-2 text-right py-2" colspan="1">
-                                {{ round(($material['residual'] - ($material['rashod'] ? $material['rashod'] : 0)) / 1000) }}
+                                <div class="{{ $color }} rounded-sm p-1 h-6 flex justify-center items-center">
+                                    {{ round(($material['residual'] - ($material['rashod'] ? $material['rashod'] : 0)) / 1000) }}
+                                </div>
                             </td>
                         </tr>
                     @endforeach
