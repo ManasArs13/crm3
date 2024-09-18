@@ -121,29 +121,7 @@
                                         d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                                 </svg>
                             </button>
-                        </div>
 
-                        {{-- Delivery --}}
-                        <div class="flex flex-row mb-3 w-full gap-3">
-                            <div class="basis-1/2">
-                                <div class="flex flex-row mb-1 w-full">
-                                    <span
-                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Транспорт</span>
-                                    <select name="transport" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        @if ($entityItem->transport_type_id)
-                                            <option value="{{ $entityItem->transport_type_id }}" selected>
-                                                {{ $entityItem->transport_type->name }}</option>
-                                        @else
-                                            <option value="" selected disabled>не выбрано</option>
-                                        @endif
-                                        @foreach ($transports as $transport)
-                                            <option value="{{ $transport->id }}">{{ $transport->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
@@ -162,6 +140,12 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
+
+                        {{-- Delivery --}}
+                        <div class="flex flex-row mb-3 w-full gap-3">
+
+
                         </div>
 
                         {{-- Date --}}
