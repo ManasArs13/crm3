@@ -192,16 +192,16 @@
 
                                 document.getElementById('reset-button').addEventListener('click', function() {
 
-                                    // Список ID чекбоксов, которые нужно отметить
+
                                     const checkedCheckboxes = [{!! '"' . implode('", "', array_values($selectedColumns)) . '"' !!}];
 
-                                    // Сбрасываем все чекбоксы
+
                                     const allCheckboxes = document.querySelectorAll('.columns_all');
                                     allCheckboxes.forEach(checkbox => {
                                         checkbox.checked = false;
                                     });
 
-                                    // Включаем нужные чекбоксы
+
                                     checkedCheckboxes.forEach(id => {
                                         const checkbox = document.getElementById(`checkbox-${id}`);
                                         if (checkbox) {
