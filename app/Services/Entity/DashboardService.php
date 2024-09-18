@@ -450,7 +450,7 @@ class DashboardService
                     return $shipment['time_to_return'];
                 });
             })
-            ->sortByDesc(function ($groupedShipments) {
+            ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
 
@@ -633,7 +633,7 @@ class DashboardService
                     return $shipment['time_to_return'];
                 });
             })
-            ->sortByDesc(function ($groupedShipments) {
+            ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
 
