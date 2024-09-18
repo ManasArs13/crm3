@@ -168,6 +168,8 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
+        $materials = $this->processMaterials($materials);
+
         return view('dashboard.index', compact(
             'urlShow',
             'entityItems',
@@ -555,6 +557,11 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
+
+        $materials = $this->processMaterials($materials);
+
+
+
         return view('dashboard.block', compact(
             'urlShow',
             'entityItems',
@@ -730,6 +737,8 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
+        $materials = $this->processMaterials($materials);
+
         return view('dashboard.concrete', compact(
             'urlShow',
             'entityItems',
@@ -741,6 +750,44 @@ class DashboardService
             'date',
             'shipments'
         ));
+    }
+
+    public function processMaterials($materials){
+        $groupedMaterials = collect();
+
+        foreach ($materials as $material) {
+
+            if (str_contains($material->short_name, 'Краска')) {
+                $index = $groupedMaterials->search(function ($item) {
+                    return str_contains($item['short_name'], 'Краска');
+                });
+
+                if ($index !== false) {
+                    $existingMaterial = $groupedMaterials[$index];
+                    $existingMaterial['residual'] += $material->residual;
+                    $existingMaterial['residual_norm'] += $material->residual_norm;
+                    $existingMaterial['rashod'] += $material->rashod;
+                    $groupedMaterials[$index] = $existingMaterial;
+                } else {
+                    $groupedMaterials->push([
+                        'id' => $material->id,
+                        'short_name' => 'Краска',
+                        'residual' => $material->residual,
+                        'residual_norm' => $material->residual_norm,
+                        'rashod' => $material->rashod,
+                    ]);
+                }
+            } else {
+                $groupedMaterials->push([
+                    'id' => $material->id,
+                    'short_name' => $material->short_name,
+                    'residual' => $material->residual,
+                    'residual_norm' => $material->residual_norm,
+                    'rashod' => $material->rashod,
+                ]);
+            }
+        }
+        return $groupedMaterials;
     }
 
     public function getOrderDataForMap(): JsonResponse
