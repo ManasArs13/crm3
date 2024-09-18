@@ -35,7 +35,7 @@
         <div
             class="max-w-7xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <div id="message" class="bg-red-600 text-white"></div>
+                <div id="message" class="bg-red-600"></div>
                 <form action="{{ route($action, $entityItem->id) }}" method="post">
                     @csrf
                     @method('PATCH')
@@ -54,7 +54,18 @@
                                     class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                     Отгрузка №</span>
                                 <input type="text" name="name" value="{{ $entityItem->name }}" required
-                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                    class="relative m-0 flex basis-full items-center rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+
+                                    @if ($entityItem->ms_id!=null)
+                                    <a href="https://online.moysklad.ru/app/#demand/edit?id={{ $entityItem->ms_id }}" target="_blank" class="flex justify-center items-center ml-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                            </path>
+                                            <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    @endif
                             </div>
                             <div class="flex flex-row mb-1 w-full basis-1/3">
                                 <span
@@ -176,17 +187,17 @@
                             <h4 class="text-left font-semibold text-lg my-3">Товары</h4>
 
                             <div class="flex flex-row mb-1 w-full bg-gray-100 rounded">
-                                <div class="flex basis-6/12 justify-center text-gray-700">
+                                <div class="flex basis-8/12 justify-center text-gray-700">
                                     наименование
                                 </div>
-                                <div class="flex basis-2/12 justify-center text-gray-700">
+                                <div class="flex basis-1/12 justify-center text-gray-700">
                                     кол-во
                                 </div>
-                                <div class="flex basis-2/12 justify-center text-gray-700">
-                                    вес за у.е.
+                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                    цена
                                 </div>
                                 <div class="flex basis-2/12 justify-center text-gray-700">
-                                    общий вес
+                                    сумма
                                 </div>
                                 <div class="w-6 mx-2">
 
@@ -197,7 +208,7 @@
 
                                     <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product" required
                                         x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
-                                        class="relative m-0 flex basis-6/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        class="relative m-0 flex basis-8/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
                                         <optgroup label="БЕТОН">
@@ -228,10 +239,10 @@
                                         class="relative text-right m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
                                         placeholder="количество" />
 
-                                    <span x-text="row.weight_kg"
-                                        class="flex basis-2/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
+                                    <span x-text="row.price"
+                                        class="flex basis-1/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
-                                    <span x-text="row.weight"
+                                    <span x-text="row.sum"
                                         class="flex basis-2/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
 
@@ -293,19 +304,14 @@
                                                 count: pos.quantity,
                                                 residual: ents.find(x => x.id == pos.product_id) && ents.find(
                                                     x => x.id == pos.product_id).residual,
-                                                weight_kg: ents.find(x => x.id == pos.product_id) && ents.find(
-                                                    x => x.id == pos.product_id).weight_kg ? ents.find(x =>
-                                                    x.id == pos.product_id).weight_kg : 0,
-                                                weight: ents.find(x => x.id == pos.product_id) && ents.find(x =>
-                                                    x.id == pos.product_id).weight_kg ? Math.round(
+                                                sum: ents.find(x => x.id == pos.product_id) && ents.find(x =>
+                                                    x.id == pos.product_id).price ? Math.round(
                                                     ents.find(x => x.id == pos.product_id)
-                                                    .weight_kg * pos.quantity * 100) / 100 : 0,
+                                                    .price * pos.quantity * 100) / 100 : 0,
                                                 price: pos.price,
                                             }));
 
-                                            this.allWeight = Math.round(this.rows.map(item => item.weight).reduce((prev,
-                                                    curr) => prev +
-                                                curr, 0) * 100) / 100;
+                                            this.allWeight = {!!  $entityItem->weight !!}
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -316,8 +322,8 @@
                                         product: '',
                                         count: 0,
                                         residual: 0,
-                                        weight_kg: 0,
-                                        weight: 0,
+                                        // weight_kg: 0,
+                                        // weight: 0,
                                         price: 0,
                                     }],
 
@@ -327,17 +333,25 @@
                                     changeProduct(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
-                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
-                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
-                                                    this
-                                                    .rows[index].count
-                                                this.rows[index].price = this.entities.find(x => x.id == Id).price
-                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id ==
+                                                        Id)
+                                                    .weight_kg
+                                                this.rows[index].weight = Math.round(this.entities.find(x => x.id == Id)
+                                                    .weight_kg * this
+                                                    .rows[index].count * 100) / 100;
+                                                this.rows[index].price = this.entities.find(x => x.id == Id)
+                                                    .price
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id)
+                                                    .residual
+                                                this.rows[index].sum = this.rows[index].price * this.rows[index]
+                                                    .count
                                             }
-                                            this.allWeight = Math.round(this.rows.map(item => item.weight).reduce((prev,
-                                                    curr) => prev +
-                                                curr, 0) * 100) / 100;
-                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                            this.allWeight = Math.round(this.rows.map(item => item.weight)
+                                                .reduce((prev, curr) => prev + curr, 0) * 100) / 100;
+
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev,
+                                                    curr) =>
+                                                prev +
                                                 curr, 0);
                                         }
                                     },
@@ -376,9 +390,6 @@
                                 class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Добавить в мс</button>
                     </div>
                 </form>
-                <div class="px-5 mb-3 w-full">
-
-                </div>
 
             </div>
         </div>

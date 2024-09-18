@@ -189,11 +189,11 @@
                                 <div class="flex basis-1/12 justify-center text-gray-700">
                                     кол-во
                                 </div>
-                                <div class="flex basis-2/12 justify-center text-gray-700">
-                                    вес за у.е.
+                                <div class="flex basis-1/12 justify-end text-gray-700">
+                                    цена
                                 </div>
                                 <div class="flex basis-2/12 justify-center text-gray-700">
-                                    общий вес
+                                    сумма
                                 </div>
                                 <div class="w-8 mx-2">
 
@@ -236,10 +236,11 @@
                                         class="relative text-right m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
                                         placeholder="количество" />
 
-                                    <span x-text="row.weight_kg"
-                                        class="flex basis-2/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
+                                    <span x-text="row.price"
+                                        class="flex basis-1/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-gray-500 bg-gray-100 justify-end">
                                     </span>
-                                    <span x-text="row.weight"
+
+                                    <span x-text="row.sum"
                                         class="flex basis-2/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
 
@@ -300,13 +301,13 @@
                                                 product: pos.product_id,
                                                 count: pos.quantity,
                                                 residual: 0,
-                                                weight_kg: ents.find(x => x.id == pos.product_id) && ents.find(
-                                                    x => x.id == pos.product_id).weight_kg ? ents.find(x =>
-                                                    x.id == pos.product_id).weight_kg : 0,
-                                                weight: ents.find(x => x.id == pos.product_id) && ents.find(x =>
-                                                    x.id == pos.product_id).weight_kg ? Math.round(
+                                                // weight_kg: ents.find(x => x.id == pos.product_id) && ents.find(
+                                                //     x => x.id == pos.product_id).weight_kg ? ents.find(x =>
+                                                //     x.id == pos.product_id).weight_kg : 0,
+                                                sum: ents.find(x => x.id == pos.product_id) && ents.find(x =>
+                                                    x.id == pos.product_id).price ? Math.round(
                                                     ents.find(x => x.id == pos.product_id)
-                                                    .weight_kg * pos.quantity * 100) / 100 : 0,
+                                                    .price * pos.quantity * 100) / 100 : 0,
                                                 price: pos.price,
                                             }));
                                             this.allWeight = Math.round(this.rows.map(item => item.weight)
@@ -325,8 +326,9 @@
                                         product: '',
                                         count: 0,
                                         residual: 0,
-                                        weight_kg: 0,
-                                        weight: 0,
+                                        // weight_kg: 0,
+                                        // weight: 0,
+                                        sum:0,
                                         price: 0,
                                     }],
 

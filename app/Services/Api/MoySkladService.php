@@ -165,8 +165,8 @@ class MoySkladService
                 return false;
             }
         } catch (RequestException  $e) {
-            info($e->getResponse()->getBody()->getContents());
             var_dump($e->getResponse()->getBody()->getContents());
+            info($e->getResponse()->getBody()->getContents());
             return false;
         }
     }
@@ -194,8 +194,10 @@ class MoySkladService
             }
             return false;
         } catch (RequestException $e) {
-            info($e->getResponse()->getBody()->getContents());
+
             var_dump($e->getResponse()->getBody()->getContents());
+           // $rrr=var_export($e->getResponse()->getBody()->getContents(), true);
+            info($e->getResponse()->getBody()->getContents());
             return false;
         }
     }

@@ -68,7 +68,7 @@ class OrderService implements EntityInterface
 
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
-            if (Arr::exists($row, 'deleted')) {
+            if (isset($row["deleted"])) {
                 $entity->positions()->delete();
                 $entity->delete();
             } else {
@@ -343,7 +343,7 @@ class OrderService implements EntityInterface
 
                     $result = json_decode($response->getBody()->getContents(), true);
 
-                    if (Arr::exists($result, 'deleted')) {
+                    if (isset($row["deleted"])) {
 
                         $order->positions()->forceDelete();
 
