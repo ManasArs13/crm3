@@ -58,7 +58,7 @@
                     <tbody>
                     @foreach ($materials as $material)
                         @php
-                            $residual_percent = round($material['residual'] / $material['residual_norm'] * 100);
+                            $residual_percent = ($material['residual'] - ($material['rashod'] ? $material['rashod'] : 0)) /  $material['residual_norm'] * 100;
                             $color = match (true) {
                                 $residual_percent <= 30 => 'bg-red-300',
                                 $residual_percent > 30 && $residual_percent <= 70 => 'bg-yellow-300',
