@@ -168,41 +168,7 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
-        $groupedMaterials = collect();
-
-        foreach ($materials as $material) {
-
-            if (str_contains($material->short_name, 'Краска')) {
-                $index = $groupedMaterials->search(function ($item) {
-                    return str_contains($item['short_name'], 'Краска');
-                });
-
-                if ($index !== false) {
-                    $existingMaterial = $groupedMaterials[$index];
-                    $existingMaterial['residual'] += $material->residual;
-                    $existingMaterial['residual_norm'] += $material->residual_norm;
-                    $existingMaterial['rashod'] += $material->rashod;
-                    $groupedMaterials[$index] = $existingMaterial;
-                } else {
-                    $groupedMaterials->push([
-                        'id' => $material->id,
-                        'short_name' => 'Краска',
-                        'residual' => $material->residual,
-                        'residual_norm' => $material->residual_norm,
-                        'rashod' => $material->rashod,
-                    ]);
-                }
-            } else {
-                $groupedMaterials->push([
-                    'id' => $material->id,
-                    'short_name' => $material->short_name,
-                    'residual' => $material->residual,
-                    'residual_norm' => $material->residual_norm,
-                    'rashod' => $material->rashod,
-                ]);
-            }
-        }
-        $materials = $groupedMaterials;
+        $materials = $this->processMaterials($materials);
 
         return view('dashboard.index', compact(
             'urlShow',
@@ -592,42 +558,7 @@ class DashboardService
         }
 
 
-        $groupedMaterials = collect();
-
-
-        foreach ($materials as $material) {
-
-            if (str_contains($material->short_name, 'Краска')) {
-                $index = $groupedMaterials->search(function ($item) {
-                    return str_contains($item['short_name'], 'Краска');
-                });
-
-                if ($index !== false) {
-                    $existingMaterial = $groupedMaterials[$index];
-                    $existingMaterial['residual'] += $material->residual;
-                    $existingMaterial['residual_norm'] += $material->residual_norm;
-                    $existingMaterial['rashod'] += $material->rashod;
-                    $groupedMaterials[$index] = $existingMaterial;
-                } else {
-                    $groupedMaterials->push([
-                        'id' => $material->id,
-                        'short_name' => 'Краска',
-                        'residual' => $material->residual,
-                        'residual_norm' => $material->residual_norm,
-                        'rashod' => $material->rashod,
-                    ]);
-                }
-            } else {
-                $groupedMaterials->push([
-                    'id' => $material->id,
-                    'short_name' => $material->short_name,
-                    'residual' => $material->residual,
-                    'residual_norm' => $material->residual_norm,
-                    'rashod' => $material->rashod,
-                ]);
-            }
-        }
-        $materials = $groupedMaterials;
+        $materials = $this->processMaterials($materials);
 
 
 
@@ -806,6 +737,22 @@ class DashboardService
             $resColumns[$column] = trans("column." . $column);
         }
 
+        $materials = $this->processMaterials($materials);
+
+        return view('dashboard.concrete', compact(
+            'urlShow',
+            'entityItems',
+            "resColumns",
+            "entity",
+            'materials',
+            'dateNext',
+            'datePrev',
+            'date',
+            'shipments'
+        ));
+    }
+
+    public function processMaterials($materials){
         $groupedMaterials = collect();
 
         foreach ($materials as $material) {
@@ -840,19 +787,7 @@ class DashboardService
                 ]);
             }
         }
-        $materials = $groupedMaterials;
-
-        return view('dashboard.concrete', compact(
-            'urlShow',
-            'entityItems',
-            "resColumns",
-            "entity",
-            'materials',
-            'dateNext',
-            'datePrev',
-            'date',
-            'shipments'
-        ));
+        return $groupedMaterials;
     }
 
     public function getOrderDataForMap(): JsonResponse
