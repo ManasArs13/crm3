@@ -401,6 +401,17 @@
                                             </td>
                                         @break
 
+                                        @case('type_id')
+                                        <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                            @if(isset($entityItem->type->name))
+                                            <a href="{{ route($urlShow, $entityItem->type_id) }}"
+                                               class="text-blue-500 hover:text-blue-600">
+                                                {{ $entityItem->type->name }}
+                                            </a>
+                                            @endif
+                                        </td>
+                                        @break
+
                                         @default
                                             <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
                                                 {{ $entityItem->$column }}

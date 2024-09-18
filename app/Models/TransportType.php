@@ -12,6 +12,11 @@ class TransportType extends Model
 
     protected $guarded = false;
 
+    public function transports()
+    {
+        return $this->hasMany(Transport::class, 'type_id');
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
