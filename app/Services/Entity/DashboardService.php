@@ -77,6 +77,32 @@ class DashboardService
             ->get()
             ->sortBy('sort');
 
+        $shipments = Shipment::whereDate('created_at', $date)
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE)->orWhere('building_material', Product::BLOCK);
+                });
+            })
+            ->select('id', 'created_at', 'transport_id', 'delivery_id')
+            ->with('transport', 'delivery')
+            ->get()
+            ->each(function ($shipment) {
+                $shipment['time_to_come'] = Carbon::parse($shipment->created_at)->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
+                $shipment['time_to_out'] = Carbon::parse($shipment['time_to_come'])->addMinutes(60);
+                $shipment['time_to_return'] = Carbon::parse($shipment['time_to_out'])->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
+            })
+            ->groupBy(function ($shipment) {
+                return optional($shipment->transport)->id ?? 'shipment' . $shipment->id;
+            })
+            ->map(function ($groupedShipments) {
+                return $groupedShipments->sortByDesc(function ($shipment) {
+                    return $shipment['time_to_return'];
+                });
+            })
+            ->sortBy(function ($groupedShipments) {
+                return $groupedShipments->first()['time_to_return'];
+            });
+
         if ($date > date('Y-m-d')) {
 
             $orders = Order::query()->with('positions', 'shipments')
@@ -176,6 +202,7 @@ class DashboardService
             "resColumns",
             "entity",
             'products',
+            'shipments',
             'categories',
             'materials',
             'dateNext',
