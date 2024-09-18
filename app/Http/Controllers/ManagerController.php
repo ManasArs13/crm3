@@ -302,6 +302,7 @@ class ManagerController extends Controller
         }
 
         return view("manager.index", compact(
+            'entityName',
             'entityItems',
             "resColumns",
             "resColumnsAll",
