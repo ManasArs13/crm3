@@ -368,14 +368,16 @@
 
                     </div>
 
-                    <div class="px-5 mb-3 w-full">
+                    <div class="px-5 mb-3 w-full flex flex-row gap-3">
                         <button type="submit"
-                            class="w-full p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+                            class="basis-1/2 p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+
+                        <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
+                                class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Добавить в мс</button>
                     </div>
                 </form>
                 <div class="px-5 mb-3 w-full">
-                    <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
-                    class="w-full p-1 mt-5 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Добавить в мс</button>
+
                 </div>
 
             </div>

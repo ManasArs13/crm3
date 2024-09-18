@@ -18,9 +18,9 @@ class ShipmentController extends Controller
         $result = $shipmentMsService->createChipmentToMs($id);
         $shipment=Shipment::find($id);
 
-        $text="cоздана";
+        $text=" cоздана";
         if ($shipment->ms_id!=null){
-            $text="редактирована";
+            $text=" отредактирована";
         }
 
         if (isset($result->id)) {
