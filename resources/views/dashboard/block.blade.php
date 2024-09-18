@@ -139,10 +139,10 @@
                                 $statusColor = 'bg-yellow-100';
                                 $statusInfo = 'Отгружен';
                             } elseif($currentTime->between($firstTimeToCome, $firstTimeToOut)){
-                                $statusColor = 'bg-sky-100';
+                                $statusColor = 'bg-sky-200';
                                 $statusInfo = 'На объекте';
                             } elseif($currentTime->between($firstTimeToOut, $firstToReturn)){
-                                $statusColor = 'bg-sky-200';
+                                $statusColor = 'bg-sky-100';
                                 $statusInfo = 'Обратно';
                             } else{
                                 $statusColor = 'bg-green-100';

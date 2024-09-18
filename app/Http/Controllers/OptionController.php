@@ -24,6 +24,7 @@ class OptionController extends Controller
 
         $resColumns = [];
         $resColumnsAll = [];
+        $selectedColumns = [];
 
         foreach ($columns as $column) {
             $resColumns[$column] = trans("column." . $column);
@@ -33,6 +34,7 @@ class OptionController extends Controller
         $filters = [];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -114,6 +116,7 @@ class OptionController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('options');
+        $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
 
@@ -154,6 +157,7 @@ class OptionController extends Controller
         $filters = [];
 
         return view("own.index", compact(
+            'selectedColumns',
             'entityItems',
             "resColumns",
             "resColumnsAll",
