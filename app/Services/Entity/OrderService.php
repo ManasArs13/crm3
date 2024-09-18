@@ -23,7 +23,7 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-
+use GuzzleHttp\Client;
 
 class OrderService implements EntityInterface
 {
@@ -31,17 +31,24 @@ class OrderService implements EntityInterface
     private OrderPositionService $orderPositionService;
     private CounterpartyMsService $counterpartyMsService;
     private MoySkladService $service;
+    private string $auth;
+    private $client;
 
 
-    public function __construct(Option $options,
-    OrderPositionService $orderPositionService,
-    CounterpartyMsService $counterpartyMsService,
-    MoySkladService $service)
-    {
+    public function __construct(
+        Option $options,
+        OrderPositionService $orderPositionService,
+        CounterpartyMsService $counterpartyMsService,
+        MoySkladService $service
+    ) {
+        $login = $options::where('code', '=', 'ms_login')->first()?->value;
+        $password = $options::where('code', '=', 'ms_password')->first()?->value;
         $this->options = $options;
         $this->orderPositionService = $orderPositionService;
-        $this->counterpartyMsService=$counterpartyMsService;
+        $this->counterpartyMsService = $counterpartyMsService;
         $this->service = $service;
+        $this->auth = base64_encode($login . ':' . $password);
+        $this->client = new Client();
     }
 
     /**
@@ -254,18 +261,19 @@ class OrderService implements EntityInterface
         }
     }
 
-    public function calcLateAndNoShipmentForTheOrder($date){
-        $orders=Order::leftJoin(DB::raw('(select order_id , min(created_at) as moment from shipments where order_id is not null group by order_id) as t0'),'t0.order_id', '=', 'orders.id')
-              ->whereNotIn("orders.status_id",[1,7])
-              ->whereNotNull("date_plan")
-              ->whereRaw("date_plan<now()")
-              ->where("updated_at",">", $date)
-              ->where(function($query) {
+    public function calcLateAndNoShipmentForTheOrder($date)
+    {
+        $orders = Order::leftJoin(DB::raw('(select order_id , min(created_at) as moment from shipments where order_id is not null group by order_id) as t0'), 't0.order_id', '=', 'orders.id')
+            ->whereNotIn("orders.status_id", [1, 7])
+            ->whereNotNull("date_plan")
+            ->whereRaw("date_plan<now()")
+            ->where("updated_at", ">", $date)
+            ->where(function ($query) {
                 $query->whereRaw("t0.moment>orders.date_plan or t0.moment is null");
             })->get();
 
-        foreach ($orders as $order){
-            $order->late=1;
+        foreach ($orders as $order) {
+            $order->late = 1;
             $order->save();
         }
     }
@@ -319,32 +327,46 @@ class OrderService implements EntityInterface
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/';
 
 
-        $orders = Order::with('positions')->get();
+        $orders = Order::with('positions')->chunkById(100, function ($orders) use ($url) {
 
+            foreach ($orders as $order) {
 
-        foreach ($orders as $order) {
-            $positions = $order->positions;
+                try {
+                    usleep(60000);
+                    
+                    $response = $this->client->request('GET', $url . $order->ms_id, [
+                        'headers' => [
+                            'Accept-Encoding' => 'gzip',
+                            'Authorization' => 'Basic ' . $this->auth
+                        ],
+                    ]);
 
+                    $result = json_decode($response->getBody()->getContents(), true);
 
-            try {
-                $this->service->actionGetRowsFromJson($url . $order->id, false);
-                usleep(60000);
-            } catch (RequestException  $e) {
+                    if (Arr::exists($result, 'deleted')) {
 
-                if ($e->getCode() == 404) {
+                        $order->positions()->forceDelete();
 
-                    foreach ($positions as $position) {
-                        if ($position->product != null) {
-                            $order->positions()->forceDelete();
-                        }
+                        $order->forceDelete();
+
+                        info('Order №' . $order->ms_id . ' has been deleted!');
                     }
 
-                    $order->forceDelete();
-                    info($order->id . ' delete');
+                } catch (RequestException  $e) {
+
+                    if ($e->getCode() == 404) {
+
+                        $order->positions()->forceDelete();
+
+                        $order->forceDelete();
+
+                        info($e->getMessage());
+                        info('Order №' . $order->ms_id . ' has been deleted!');
+                    }
+
                 }
-                info($e->getMessage());
             }
-        }
+        });
     }
 
     public function calcOfDeliveryPriceNorm()
@@ -547,22 +569,21 @@ class OrderService implements EntityInterface
         $order = new Order();
 
         $status_bd = Status::where('ms_id', $array["state"])->first();
-        $order->status_id =$status_bd->id;
+        $order->status_id = $status_bd->id;
 
-        if (isset($array["agent"]["id"])){
+        if (isset($array["agent"]["id"])) {
             $contact_bd = Contact::where('ms_id', $array["agent"]["id"])->first();
             $order->contact_id = $contact_bd->id;
-        }else{
-            $contact= new Contact();
-            $contact->name=$array["agent"]["name"];
-            $contact->phone=$array["agent"]["phone"];
+        } else {
+            $contact = new Contact();
+            $contact->name = $array["agent"]["name"];
+            $contact->phone = $array["agent"]["phone"];
             //check it;
             $agent = $this->counterpartyMsService->updateCounterpartyMs($array["agent"]);
-            $contact->ms_id=$agent->id;
+            $contact->ms_id = $agent->id;
 
             $contact->save();
             $order->contact_id = $contact->id;
-
         }
 
         $delivery_bd = Delivery::where('ms_id', $array["attributes"]["delivery"]['id'])->first();
@@ -572,24 +593,24 @@ class OrderService implements EntityInterface
         $order->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
 
 
-        $order->comment=$array["description"];
+        $order->comment = $array["description"];
         $order->date_plan = $array["deliveryPlannedMoment"];
         $order->date_moment = new DateTime();
         $order->sum = 0;
         $order->weight = 0;
-        $order->name="CRM-";
+        $order->name = "CRM-";
 
         $order->save();
 
         $sum = 0;
         $weight = 0;
 
-        if (isset($array["positions"])){
+        if (isset($array["positions"])) {
             foreach ($array["positions"] as $product) {
                 if (isset($product['product_id'])) {
                     $position = new OrderPosition();
 
-                    $product_bd = Product::where('ms_id',$product['product_id'])->first();
+                    $product_bd = Product::where('ms_id', $product['product_id'])->first();
                     $position->product_id = $product_bd->id;
                     $position->order_id = $order->id;
                     $position->quantity = $product['quantity'];
@@ -600,7 +621,7 @@ class OrderService implements EntityInterface
 
                     $position->save();
 
-                    $sum += $position->price*$product['quantity'];
+                    $sum += $position->price * $product['quantity'];
                     $weight += $position->weight_kg;
                 }
             }
@@ -611,7 +632,7 @@ class OrderService implements EntityInterface
                 if (isset($product['product_id'])) {
                     $position = new OrderPosition();
 
-                    $product_bd = Product::where('ms_id',$product['product_id'])->first();
+                    $product_bd = Product::where('ms_id', $product['product_id'])->first();
                     $position->product_id = $product_bd->id;
                     $position->order_id = $order->id;
                     $position->quantity = $product['quantity'];
@@ -622,24 +643,23 @@ class OrderService implements EntityInterface
 
                     $position->save();
 
-                    $sum += $position->price*$product['quantity'];
+                    $sum += $position->price * $product['quantity'];
                     $weight += $position->weight_kg;
                 }
             }
 
             $order->sum = $sum;
             $order->weight = $weight;
-
         }
 
-        $order->name="CRM-".$order->id;
+        $order->name = "CRM-" . $order->id;
         $order->sum = $sum;
         $order->weight = $weight;
 
 
         $order->update();
 
-        return ["id"=>$order->id, "name"=>$order->name];
+        return ["id" => $order->id, "name" => $order->name];
     }
 
 
@@ -703,8 +723,8 @@ class OrderService implements EntityInterface
                 $delivery_id = $service_delivery_beton;
                 if ($quantity <= 8) {
                     $quantity = 8;
-                // } else if ($quantity > 8 && $quantity !== 0) {
-                //     $quantity = round($quantity/8) * 8;
+                    // } else if ($quantity > 8 && $quantity !== 0) {
+                    //     $quantity = round($quantity/8) * 8;
                 }
             } else {
                 $quantity = 1;
@@ -730,8 +750,8 @@ class OrderService implements EntityInterface
                 ]
             ];
 
-            if (\Arr::exists($msOrder, "services")){
-                foreach($msOrder["services"] as $key=>$position){
+            if (\Arr::exists($msOrder, "services")) {
+                foreach ($msOrder["services"] as $key => $position) {
 
                     $array["positions"][] = [
                         "quantity" => (float)$position["quantity"],
@@ -895,5 +915,4 @@ class OrderService implements EntityInterface
             return $this->moySkladService->actionPutRowsFromJson($url . $msOrder["guid"], $array);
         }
     }
-
 }
