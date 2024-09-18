@@ -69,8 +69,8 @@ class OrderService implements EntityInterface
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
             if (isset($row["deleted"])) {
-                $entity->positions()->delete();
-                $entity->delete();
+                $entity->positions()->forceDelete();
+                $entity->forceDelete();
             } else {
                 if ($entity->ms_id === null) {
                     $entity->ms_id = $row['id'];
@@ -246,17 +246,18 @@ class OrderService implements EntityInterface
                 if (Arr::exists($row, 'updated')) {
                     $entity->updated_at = $row['updated'];
                 }
-            }
-            $entity->save();
 
-            $needDelete = $this->orderPositionService->import($row["positions"], $entity->id);
-
-            if ($needDelete["needDelete"]) {
-                $entity->positions()->delete();
-                $entity->delete();
-            } else {
-                $entity->is_demand = $needDelete["isDemand"];
                 $entity->save();
+
+                $needDelete = $this->orderPositionService->import($row["positions"], $entity->id);
+
+                if ($needDelete["needDelete"]) {
+                    $entity->positions()->delete();
+                    $entity->delete();
+                } else {
+                    $entity->is_demand = $needDelete["isDemand"];
+                    $entity->save();
+                }
             }
         }
     }
@@ -333,7 +334,7 @@ class OrderService implements EntityInterface
 
                 try {
                     usleep(60000);
-                    
+
                     $response = $this->client->request('GET', $url . $order->ms_id, [
                         'headers' => [
                             'Accept-Encoding' => 'gzip',
@@ -351,7 +352,6 @@ class OrderService implements EntityInterface
 
                         info('Order №' . $order->ms_id . ' has been deleted!');
                     }
-
                 } catch (RequestException  $e) {
 
                     if ($e->getCode() == 404) {
@@ -363,7 +363,6 @@ class OrderService implements EntityInterface
                         info($e->getMessage());
                         info('Order №' . $order->ms_id . ' has been deleted!');
                     }
-
                 }
             }
         });
