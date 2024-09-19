@@ -198,11 +198,8 @@
                                 <div class="flex basis-1/12 justify-center text-gray-700">
                                     отг-но
                                 </div>
-                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                <div class="flex basis-2/12 justify-center text-gray-700">
                                     цена
-                                </div>
-                                <div class="flex basis-1/12 justify-center text-gray-700">
-                                    вес
                                 </div>
                                 <div class="flex basis-2/12 justify-center text-gray-700">
                                     сумма
@@ -251,11 +248,9 @@
                                         class="flex basis-1/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
                                     <span x-text="row.price"
-                                        class="flex basis-1/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
+                                        class="flex basis-2/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
-                                    <span x-text="row.weight_kg"
-                                        class="flex basis-1/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
-                                    </span>
+
                                     <span x-text="row.sum"
                                         class="flex justify-end basis-2/12 overflow-hidden rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
