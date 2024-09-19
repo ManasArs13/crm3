@@ -184,6 +184,7 @@ class ManagerController extends Controller
             ->withCount(['order_amos as all_orders' => function (Builder $query) use ($date, $dateY) {
                 $query
                     //->whereNotIn('status_amo_id', [142, 143])
+                    ->where('is_success', true)
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }])
