@@ -141,7 +141,7 @@
                                     <option value="20:00">20:00</option>
                                 </select>
                             </div>
-                           
+
                         </div>
 
                         <hr class="w-full">
@@ -157,13 +157,11 @@
                                 <div class="flex basis-1/12 justify-center text-gray-700">
                                     кол-во
                                 </div>
-                                <div class="flex basis-1/12 justify-end text-gray-700">
+                                <div class="flex basis-2/12 justify-end text-gray-700">
                                     цена
                                 </div>
-                                <div class="flex basis-2/12 justify-center text-gray-700">
-                                    вес
-                                </div>
-                                <div class="flex basis-2/12 justify-center text-gray-700">
+
+                                <div class="flex basis-3/12 justify-center text-gray-700">
                                     сумма
                                 </div>
                                 <div class="w-6 mx-2">
@@ -207,13 +205,11 @@
                                         placeholder="количество" />
 
                                     <span x-text="row.price"
-                                        class="flex basis-1/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-gray-500 bg-gray-100 justify-end">
-                                    </span>
-                                    <span x-text="row.weight_kg"
                                         class="flex basis-2/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-gray-500 bg-gray-100 justify-end">
                                     </span>
+
                                     <span x-text="row.sum"
-                                        class="flex basis-2/12 overflow-hidden rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-gray-500 bg-gray-100 justify-end">
+                                        class="flex basis-3/12 overflow-hidden rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-gray-500 bg-gray-100 justify-end">
                                     </span>
 
                                     <button @click="removeRow(row)" type="button"
