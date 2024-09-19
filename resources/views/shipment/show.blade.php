@@ -35,7 +35,7 @@
         <div
             class="max-w-7xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <div id="message" class="bg-red-600"></div>
+                <div id="message" class="text-red-700"></div>
                 <form action="{{ route($action, $entityItem->id) }}" method="post">
                     @csrf
                     @method('PATCH')
@@ -387,7 +387,7 @@
                             class="basis-1/2 p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
 
                         <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
-                                class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Добавить в мс</button>
+                                class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить в мс</button>
                     </div>
                 </form>
 
