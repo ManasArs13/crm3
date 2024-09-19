@@ -141,12 +141,7 @@
                                     <option value="20:00">20:00</option>
                                 </select>
                             </div>
-                            <div class="flex flex-row basis-full justify-end items-center">
-                                <span
-                                    class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                    Добавить доставку к заказу</span>
-                                <input class="relative flex" type="checkbox" name="shipment_need" checked />
-                            </div>
+                           
                         </div>
 
                         <hr class="w-full">
