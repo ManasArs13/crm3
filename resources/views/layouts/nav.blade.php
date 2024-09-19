@@ -643,20 +643,20 @@
 
 
     <script>
-        // Находим все кнопки меню
+
         const menuToggles = document.querySelectorAll('.menu-toggle');
 
-        // Перебираем каждую кнопку
+
         menuToggles.forEach(toggle => {
             toggle.addEventListener('click', function() {
-                const menuContent = this.nextElementSibling; // Ищем следующий блок меню (sibling)
-                const icon = this.querySelector('.menu-icon'); // Ищем иконку внутри кнопки
+                const menuContent = this.nextElementSibling;
+                const icon = this.querySelector('.menu-icon');
 
-                menuContent.classList.toggle('hidden'); // Показываем/скрываем меню
+                menuContent.classList.toggle('hidden');
                 const expanded = this.getAttribute('aria-expanded') === 'true';
                 this.setAttribute('aria-expanded', !expanded);
 
-                // Поворачиваем стрелку
+
                 icon.classList.toggle('rotate-180');
             });
         });
