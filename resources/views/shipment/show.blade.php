@@ -35,7 +35,7 @@
         <div
             class="max-w-7xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <div id="message" class="bg-red-600"></div>
+                <div id="message" class="text-red-700"></div>
                 <form action="{{ route($action, $entityItem->id) }}" method="post">
                     @csrf
                     @method('PATCH')
@@ -281,6 +281,10 @@
                                         <label>Общий вес:</label>
                                         <span class="" x-text="allWeight">
                                     </div>
+                                    <div class="flex justify-between px-6">
+                                        <label>ИТОГО:</label>
+                                        <span class="" x-text="allSum">
+                                    </div>
                                 </div>
 
                             </div>
@@ -311,6 +315,8 @@
                                                 price: pos.price,
                                             }));
 
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
                                             this.allWeight = {!!  $entityItem->weight !!}
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
@@ -325,8 +331,9 @@
                                         // weight_kg: 0,
                                         // weight: 0,
                                         price: 0,
+                                        sum:0
                                     }],
-
+                                    allSum: 0,
                                     allWeight: 0,
                                     allCount: 0,
 
@@ -346,6 +353,8 @@
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index]
                                                     .count
                                             }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
                                             this.allWeight = Math.round(this.rows.map(item => item.weight)
                                                 .reduce((prev, curr) => prev + curr, 0) * 100) / 100;
 
@@ -387,7 +396,7 @@
                             class="basis-1/2 p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
 
                         <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
-                                class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Добавить в мс</button>
+                                class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить в мс</button>
                     </div>
                 </form>
 

@@ -169,25 +169,8 @@ class OrderController extends Controller
                     if ($value['min']) {
                         $minDatePlanCkeck = $value['min'];
                     }
-
                     if ($value['max']) {
-
                         $maxDatePlanCheck = $value['max'];
-
-                        switch ($value['max']) {
-                            case $dateToday:
-                                $queryPlan = 'today';
-                                break;
-                            case $dateThreeDay:
-                                $queryPlan = 'threeday';
-                                break;
-                            case $dateWeek:
-                                $queryPlan = 'week';
-                                break;
-                            case $dateAll:
-                                $queryPlan = 'all';
-                                break;
-                        }
                     }
                 } else if ($key == 'material') {
                     switch ($value) {
