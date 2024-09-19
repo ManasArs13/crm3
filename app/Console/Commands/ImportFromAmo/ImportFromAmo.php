@@ -40,6 +40,6 @@ class ImportFromAmo extends Command
         $amoService->getLeadsWithContacts();
         Option::query()
            ->where('code',AmoService::LAST_DATE_CODE)
-           ->update(['value'=>Carbon::now()]);
+           ->update(['value' => Carbon::now()->subDays(3)]);
     }
 }

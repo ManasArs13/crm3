@@ -202,11 +202,12 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $entityItem = Product::find($id);
-        $entityItem->fill($request->post())->save();
-        $action = '/admin/product?type=products';
+        $request = $request->except('debtors_balance');
+        $entityItem->fill($request)->save();
+        $action = '/product?type=products';
 
         if ($entityItem->type == Product::MATERIAL) {
-            $action = '/admin/product?type=materials';
+            $action = '/product?type=materials';
         }
 
         return redirect()->to($action);
