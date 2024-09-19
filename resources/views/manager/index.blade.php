@@ -103,11 +103,11 @@
                     <div class="flex flex-row justify-between basis-full">
                         <div class="flex text-lg">
                             @switch($entityItem->name)
-                                @case('Ярослав Менеджер')
+                                @case('Ярослав')
                                     Ярослав
                                 @break
 
-                                @case('Екатерина менеджер')
+                                @case('Екатерина')
                                     Екатерина
                                 @break
 
@@ -121,7 +121,7 @@
                         </div>
                         <div class="flex font-bold">
                             @switch($entityItem->name)
-                                @case('Ярослав Менеджер')
+                                @case('Ярослав')
                                     {{ number_format(
                                         round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments * ($sum_shipments / $total_sum_managars), 2),
                                         0,
@@ -131,7 +131,7 @@
                                     р.
                                 @break
 
-                                @case('Екатерина менеджер')
+                                @case('Екатерина')
                                     {{ number_format(
                                         round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments * ($sum_shipments / $total_sum_managars), 2),
                                         0,
