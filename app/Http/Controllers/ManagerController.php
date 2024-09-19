@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Models\Manager;
+use App\Models\Option;
 use App\Models\OrderAmo;
 use App\Models\Product;
 use DateTime;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\Cast\Double;
 
 class ManagerController extends Controller
 {
@@ -20,6 +22,11 @@ class ManagerController extends Controller
         $urlCreate = "manager.create";
         $urlFilter = 'manager.index';
         $entityName = 'Менеджеры';
+
+        $percent_of_the_block_sale = (float) Option::where('code', '=', 'percent_of_the_block_sale')->first()?->value;
+        $percent_of_the_concrete_sale = (float) Option::where('code', '=', 'percent_of_the_concrete_sale')->first()?->value;
+                
+        $percent = $percent_of_the_block_sale + $percent_of_the_concrete_sale;
 
         $month_list = array(
             '01'  => 'январь',
@@ -304,6 +311,7 @@ class ManagerController extends Controller
         }
 
         return view("manager.index", compact(
+            'percent',
             'entityName',
             'entityItems',
             "resColumns",
@@ -339,6 +347,8 @@ class ManagerController extends Controller
         $urlFilter = 'manager.index';
         $entityName = 'Менеджеры';
 
+        $percent = (float) Option::where('code', '=', 'percent_of_the_block_sale')->first()?->value;
+
         $month_list = array(
             '01'  => 'январь',
             '02'  => 'февраль',
@@ -631,6 +641,7 @@ class ManagerController extends Controller
 
 
         return view("manager.index", compact(
+            'percent',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -665,6 +676,8 @@ class ManagerController extends Controller
         $urlFilter = 'manager.index';
         $entityName = 'Менеджеры';
 
+        $percent = (float) Option::where('code', '=', 'percent_of_the_concrete_sale')->first()?->value;
+
         $month_list = array(
             '01'  => 'январь',
             '02'  => 'февраль',
@@ -956,6 +969,7 @@ class ManagerController extends Controller
         }
 
         return view("manager.index", compact(
+            'percent',
             'entityItems',
             "resColumns",
             "resColumnsAll",
