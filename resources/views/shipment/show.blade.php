@@ -281,6 +281,10 @@
                                         <label>Общий вес:</label>
                                         <span class="" x-text="allWeight">
                                     </div>
+                                    <div class="flex justify-between px-6">
+                                        <label>ИТОГО:</label>
+                                        <span class="" x-text="allSum">
+                                    </div>
                                 </div>
 
                             </div>
@@ -311,6 +315,8 @@
                                                 price: pos.price,
                                             }));
 
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
                                             this.allWeight = {!!  $entityItem->weight !!}
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
@@ -325,8 +331,9 @@
                                         // weight_kg: 0,
                                         // weight: 0,
                                         price: 0,
+                                        sum:0
                                     }],
-
+                                    allSum: 0,
                                     allWeight: 0,
                                     allCount: 0,
 
@@ -346,6 +353,8 @@
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index]
                                                     .count
                                             }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
                                             this.allWeight = Math.round(this.rows.map(item => item.weight)
                                                 .reduce((prev, curr) => prev + curr, 0) * 100) / 100;
 

@@ -279,6 +279,10 @@
                                         <label>Общий вес:</label>
                                         <span class="" x-text="allWeight">
                                     </div>
+                                    <div class="flex justify-between px-6">
+                                        <label>ИТОГО:</label>
+                                        <span class="" x-text="allSum">
+                                    </div>
                                 </div>
 
                             </div>
@@ -332,6 +336,7 @@
                                         price: 0,
                                     }],
 
+                                    allSum: 0,
                                     allWeight: 0,
                                     allCount: 0,
 
@@ -351,6 +356,8 @@
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index]
                                                     .count
                                             }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                            curr, 0);
                                             this.allWeight = Math.round(this.rows.map(item => item.weight)
                                                 .reduce((prev, curr) => prev + curr, 0) * 100) / 100;
 
@@ -370,12 +377,14 @@
                                             weight: 0,
                                             price: 0,
                                             residual: 0,
+                                            sum:0
                                         });
                                     },
 
                                     removeRow(row) {
                                         this.rows.splice(this.rows.indexOf(row), 1);
-
+                                        this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev + curr,
+                                            0);
                                         this.allWeight = this.rows.map(item => item.weight).reduce((prev,
                                                 curr) =>
                                             prev +
