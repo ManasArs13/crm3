@@ -24,7 +24,121 @@
             <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
         @endif
 
+
         {{-- Managers MS --}}
+
+        @php
+            $TotalCountContacts = 0;
+            $TotalSumShipments = 0;
+
+            $TotalCountContactsNew = 0;
+            $TotalSumShipmentsNew = 0;
+        @endphp
+
+        @php
+            $withOutManagerCount = $contacts
+                ->filter(function ($contact) use ($date, $dateY) {
+                    return substr($contact->created_at, 3, -6) == $date . '-' . $dateY;
+                })
+                ->count();
+
+            $withOutManagerSumNew = $contacts->sum(function ($contact) use ($date, $dateY) {
+                if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
+                    return $contact->shipments->sum('suma');
+                } else {
+                    return 0;
+                }
+            });
+
+            $TotalSumShipments += $contacts->sum('shipments_sum_suma');
+            $TotalCountContacts += $contacts->count();
+            $TotalCountContactsNew += $withOutManagerCount;
+            $TotalSumShipmentsNew += $withOutManagerSumNew;
+        @endphp
+
+        @foreach ($entityItems as $entityItem)
+            @php
+                $TotalCountContacts += $entityItem->all_contacts;
+                $TotalCountContactsNew += $entityItem->new_contacts;
+
+                $TotalSumShipments += $entityItem->contacts->sum(function ($contact) {
+                    return $contact->shipments->sum('suma');
+                });
+                $TotalSumShipmentsNew += $entityItem->contacts->sum(function ($contact) use ($date, $dateY) {
+                    if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
+                        return $contact->shipments->sum('suma');
+                    } else {
+                        return 0;
+                    }
+                });
+            @endphp
+        @endforeach
+
+        {{-- Salary --}}
+        <div class="flex flex-row mt-3 mb-10">
+            @foreach ($entityItems as $entityItem)
+                @php
+                    $sum_shipments = $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                    $sum_shipments_new = $entityItem->contacts->sum(function ($contact) use ($date, $dateY) {
+                        if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
+                            return $contact->shipments->sum('suma');
+                        } else {
+                            return 0;
+                        }
+                    });
+                @endphp
+
+                <div
+                    class="flex flex-col basis-2/12 rounded-lg bg-sky-100 border border-1 text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04) p-3 mr-5">
+                    <div class="flex flex-row justify-between basis-full">
+                        <div class="flex text-lg">
+                            @switch($entityItem->name)
+                                @case('Ярослав Менеджер')
+                                    Ярослав
+                                @break
+
+                                @case('Екатерина менеджер')
+                                    Екатерина
+                                @break
+
+                                @case('Общая Еврогрупп')
+                                    Еврогрупп
+                                @break
+
+                                @default
+                                    {{ $entityItem->name }}
+                            @endswitch
+                        </div>
+                        <div class="flex"></div>
+                    </div>
+
+                    <div class="flex flex-row justify-between mt-2">
+                        <div class="flex font-bold text-2xl">
+                            {{ number_format(
+                                $entityItem->contacts->sum(function ($contact) {
+                                    return $contact->shipments->sum('suma');
+                                }),
+                                0,
+                                '',
+                                ' ',
+                            ) }}
+                        </div>
+                        <div class="flex font-bold text-2xl">
+                            @if ($sum_shipments && $sum_shipments !== 0 && $TotalSumShipments && $TotalSumShipments !== 0)
+                                {{ round(100 / ($TotalSumShipments / +$sum_shipments)) }}
+                                %
+                            @else
+                                0%
+                            @endif
+                        </div>
+                    </div>
+
+                </div>
+            @endforeach
+        </div>
+
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
@@ -101,59 +215,8 @@
                     </thead>
                     <tbody>
 
-                        @php
-                            $TotalCountContacts = 0;
-                            $TotalSumShipments = 0;
-
-                            $TotalCountContactsNew = 0;
-                            $TotalSumShipmentsNew = 0;
-                        @endphp
-
-                        @php
-                            $withOutManagerCount = $contacts
-                                ->filter(function ($contact) use ($date, $dateY) {
-                                    return substr($contact->created_at, 3, -6) == $date . '-' . $dateY;
-                                })
-                                ->count();
-
-                            $withOutManagerSumNew = $contacts->sum(function ($contact) use ($date, $dateY) {
-                                if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
-                                    return $contact->shipments->sum('suma');
-                                } else {
-                                    return 0;
-                                }
-                            });
-
-                            $TotalSumShipments += $contacts->sum('shipments_sum_suma');
-                            $TotalCountContacts += $contacts->count();
-                            $TotalCountContactsNew += $withOutManagerCount;
-                            $TotalSumShipmentsNew += $withOutManagerSumNew;
-                        @endphp
-
                         @foreach ($entityItems as $entityItem)
                             @php
-                                $TotalCountContacts += $entityItem->all_contacts;
-                                $TotalCountContactsNew += $entityItem->new_contacts;
-
-                                $TotalSumShipments += $entityItem->contacts->sum(function ($contact) {
-                                    return $contact->shipments->sum('suma');
-                                });
-                                $TotalSumShipmentsNew += $entityItem->contacts->sum(function ($contact) use (
-                                    $date,
-                                    $dateY,
-                                ) {
-                                    if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
-                                        return $contact->shipments->sum('suma');
-                                    } else {
-                                        return 0;
-                                    }
-                                });
-                            @endphp
-                        @endforeach
-
-                        @foreach ($entityItems as $entityItem)
-                            @php
-
                                 $sum_shipments = $entityItem->contacts->sum(function ($contact) {
                                     return $contact->shipments->sum('suma');
                                 });
@@ -249,7 +312,15 @@
 
                                     @switch($column)
                                         @case('count_contacts')
-                                            {{ $contacts->count() }}
+                                            @if ($contacts->count() > 0)
+                                                <div class="bg-red-300 inline p-1 rounded-lg font-bold">
+                                                    {{ $contacts->count() }}
+                                                </div>
+                                            @else
+                                                <div class="inline p-1 rounded-lg">
+                                                    {{ $contacts->count() }}
+                                                </div>
+                                            @endif
                                         @break
 
                                         @case('percent_contacts')
