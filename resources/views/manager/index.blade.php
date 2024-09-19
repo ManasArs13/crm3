@@ -33,6 +33,9 @@
 
             $TotalCountContactsNew = 0;
             $TotalSumShipmentsNew = 0;
+
+            $total_sum_euroblock = 0;
+            $total_sum_managars = 0;
         @endphp
 
         @php
@@ -58,6 +61,18 @@
 
         @foreach ($entityItems as $entityItem)
             @php
+                if ($entityItem->name == 'Общая Еврогрупп') {
+                    $total_sum_euroblock += $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                } else {
+                    $total_sum_managars += $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                }
+            @endphp
+
+            @php
                 $TotalCountContacts += $entityItem->all_contacts;
                 $TotalCountContactsNew += $entityItem->new_contacts;
 
@@ -80,13 +95,6 @@
                 @php
                     $sum_shipments = $entityItem->contacts->sum(function ($contact) {
                         return $contact->shipments->sum('suma');
-                    });
-                    $sum_shipments_new = $entityItem->contacts->sum(function ($contact) use ($date, $dateY) {
-                        if (substr($contact->created_at, 3, -6) == $date . '-' . $dateY) {
-                            return $contact->shipments->sum('suma');
-                        } else {
-                            return 0;
-                        }
                     });
                 @endphp
 
@@ -111,7 +119,29 @@
                                     {{ $entityItem->name }}
                             @endswitch
                         </div>
-                        <div class="flex"></div>
+                        <div class="flex font-bold">
+                            @switch($entityItem->name)
+                                @case('Ярослав Менеджер')
+                                    {{ number_format(
+                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments * ($sum_shipments / $total_sum_managars), 2),
+                                        0,
+                                        '',
+                                        ' ',
+                                    ) }}
+                                    р.
+                                @break
+
+                                @case('Екатерина менеджер')
+                                    {{ number_format(
+                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments * ($sum_shipments / $total_sum_managars), 2),
+                                        0,
+                                        '',
+                                        ' ',
+                                    ) }}
+                                    р.
+                                @break
+                            @endswitch
+                        </div>
                     </div>
 
                     <div class="flex flex-row justify-between mt-2">
