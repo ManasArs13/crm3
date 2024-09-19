@@ -367,34 +367,61 @@
                                 @endforeach
 
                                 @if (isset($needMenuForItem) && $needMenuForItem)
-                                    <td class=" text-nowrap px-6 py-2">
-                                        @if (isset($urlShow) && $urlShow != '')
-                                            <a class="bg-green-400 p-2 rounded-l font-semibold hover:bg-green-500 hover:text-white hover:border-y-2 border-green-500"
-                                                href="{{ route($urlShow, $entityItem->id) }}">
-                                                <i class="fas fa-folder">
-                                                </i>
-                                                {{ __('label.view') }}
-                                            </a>
-                                        @endif
-                                        @if (isset($urlEdit) && $urlEdit != '')
-                                            <a class="bg-blue-400 p-2 font-semibold hover:bg-blue-500 hover:text-white  hover:border-y-2 border-blue-500"
-                                                href="{{ route($urlEdit, $entityItem->id) }}">
-                                                {{ __('label.edit') }}
-                                            </a>
-                                        @endif
-                                        @if (isset($urlDelete) && $urlDelete != '')
-                                            <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
-                                                class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="bg-red-400 rounded-r font-semibold hover:bg-red-500 hover:text-white border-red-500"
-                                                    style="padding: 0.4rem;"
-                                                    href="{{ route($urlDelete, $entityItem->id) }}">
-                                                    {{ __('label.delete') }}
-                                                </button>
-                                            </form>
-                                        @endif
+                                    <td class=" text-nowrap px-6 py-2 flex">
+
+                                            <x-dropdown align="right" width="48">
+                                                <x-slot name="trigger">
+                                                    <button class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+
+                                                        <div class="ms-1">
+                                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                                                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                </x-slot>
+
+                                                <x-slot name="content">
+
+                                                    <div class="py-1" role="none">
+                                                        @if (isset($urlShow) && $urlShow != '')
+                                                            <a href="{{ route($urlShow, $entityItem->id) }}" class="block px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 flex items-center space-x-2" role="menuitem" tabindex="-1" id="menu-item-{{ $entityItem->id }}-5">
+                                                                <svg class="w-4 h-4 fill-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 513 305">
+                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M240.41 0.488786C155.858 5.36079 76.056 50.6498 12.434 129.868C-4.17804 150.552 -4.16504 154.227 12.596 175.153C76.087 254.424 156.164 299.687 241.115 304.323C337.263 309.571 428.112 264.143 499.682 175.028C516.294 154.344 516.281 150.669 499.52 129.743C453.14 71.8368 397.961 32.0518 336.94 12.5218C317.984 6.45478 295.019 2.02179 277.058 0.960786C257.457 -0.196214 253.231 -0.250214 240.41 0.488786ZM277.209 47.0468C305.95 52.4568 333.568 72.0058 348.526 97.5288C366.578 128.33 368.482 165.588 353.614 197.071C347.811 209.357 342.267 217.348 332.716 227.191C279.261 282.278 188.187 265.436 157.185 194.73C145.997 169.214 145.786 138.045 156.622 111.448C167.164 85.5718 190.088 62.9148 216.127 52.6378C235.929 44.8228 255.751 43.0078 277.209 47.0468ZM245.558 95.4078C229.296 98.9248 214.902 109.069 206.659 122.823C200.599 132.934 198.566 140.441 198.636 152.448C198.705 164.034 199.736 168.707 204.367 178.422C208.623 187.348 221.052 199.738 230.165 204.139C262.256 219.635 299.582 203.873 311.131 169.948C314.435 160.243 314.527 145.028 311.343 134.906C304.074 111.805 282.858 95.7078 258.558 94.8568C253.608 94.6838 247.758 94.9318 245.558 95.4078Z" />
+                                                                </svg>
+                                                                <span>{{ __('label.view') }}</span>
+                                                            </a>
+                                                        @endif
+                                                        @if (isset($urlEdit) && $urlEdit != '')
+                                                            <a href="{{ route($urlEdit, $entityItem->id) }}" class="block px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 flex items-center space-x-2" role="menuitem" tabindex="-1" id="menu-item-{{ $entityItem->id }}-5">
+                                                                <svg class="w-4 h-4 fill-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 511">
+                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M408.68 1.82615C396.293 5.83515 393.092 8.27415 369.68 31.5402L347.18 53.8991L401.926 108.664L456.672 163.428L477.787 142.433C500.324 120.025 505.515 113.417 508.757 103.01C513.294 88.4511 512.255 75.0461 505.496 60.9381C501.647 52.9041 500.239 51.2542 479.802 30.8382C456.749 7.80815 452.803 4.91815 439.635 1.41315C431.93 -0.63685 415.617 -0.41985 408.68 1.82615ZM173.968 227.189L31.7598 369.438L15.5438 434.438C3.65184 482.102 -0.481161 500.194 0.0438393 502.274C0.942839 505.83 4.69484 509.653 8.13284 510.515C10.8938 511.208 135.804 480.916 140.68 478.371C142.055 477.653 206.743 413.474 284.431 335.75L425.682 194.433L370.929 139.687L316.175 84.9401L173.968 227.189Z" />
+                                                                </svg>
+                                                                <span>{{ __('label.edit') }}</span>
+                                                            </a>
+                                                        @endif
+                                                    </div>
+
+                                                    @if (isset($urlDelete) && $urlDelete != '')
+                                                        <div class="py-1 border-t" role="none">
+                                                            <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
+                                                                  class="block px-4 text-sm font-medium text-red-500 hover:bg-gray-100 cursor-pointer">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="w-full h-full py-2 flex items-center space-x-2">
+                                                                    <svg class="w-4 h-4 fill-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
+                                                                        <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd"></path>
+                                                                    </svg>
+                                                                    <span class="text-red-500">{{ __('label.delete') }}</span>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endif
+
+                                                </x-slot>
+                                            </x-dropdown>
+
+
                                     </td>
                                 @endif
                             </tr>
