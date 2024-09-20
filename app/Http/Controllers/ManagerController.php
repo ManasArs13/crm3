@@ -25,7 +25,7 @@ class ManagerController extends Controller
 
         $percent_of_the_block_sale = (float) Option::where('code', '=', 'percent_of_the_block_sale')->first()?->value;
         $percent_of_the_concrete_sale = (float) Option::where('code', '=', 'percent_of_the_concrete_sale')->first()?->value;
-                
+
         $percent = $percent_of_the_block_sale + $percent_of_the_concrete_sale;
 
         $month_list = array(
@@ -57,6 +57,103 @@ class ManagerController extends Controller
 
         $datePrev = $date1->modify('-1 month')->format('m');
         $dateNext = $date2->modify('+1 month')->format('m');
+
+        // Salary
+
+        $managers_for_salary_block = Manager::query()
+            ->select('id', 'name')
+            ->whereNot('id', 4)
+            ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                        $query
+                            ->select('id', 'suma', 'created_at', 'contact_id')
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries->where('building_material', Product::BLOCK);
+                                });
+                            });
+                    }])
+                    ->select('id', 'manager_id', 'created_at');
+            }])->get();
+        $managers_for_salary_concrete = Manager::query()
+            ->select('id', 'name')
+            ->whereNot('id', 4)
+            ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                        $query
+                            ->select('id', 'suma', 'created_at', 'contact_id')
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries->where('building_material', Product::CONCRETE);
+                                });
+                            });
+                    }])
+                    ->select('id', 'manager_id', 'created_at');
+            }])->get();
+
+        $total_sum_block_yaroslav = 0;
+        $total_sum_concrete_yaroslav = 0;
+
+        $total_sum_block_ekaterina = 0;
+        $total_sum_concrete_ekaterina = 0;
+
+        $total_sum_block_euroblock = 0;
+        $total_sum_concrete_euroblock = 0;
+
+        foreach ($managers_for_salary_block as $entityItem) {
+            switch ($entityItem->name) {
+                case 'Ярослав':
+                    $total_sum_block_yaroslav = $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                    break;
+                case 'Екатерина':
+                    $total_sum_block_ekaterina = $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                    break;
+                case 'Общая Еврогрупп':
+                    $total_sum_block_euroblock = $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                    break;
+            }
+        }
+
+        foreach ($managers_for_salary_concrete as $entityItem) {
+            switch ($entityItem->name) {
+                case 'Ярослав':
+                    $total_sum_concrete_yaroslav = $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                    break;
+                case 'Екатерина':
+                    $total_sum_concrete_ekaterina = $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                    break;
+                case 'Общая Еврогрупп':
+                    $total_sum_concrete_euroblock = $entityItem->contacts->sum(function ($contact) {
+                        return $contact->shipments->sum('suma');
+                    });
+                    break;
+            }
+        }
+
+        $salary_yaroslav_block = $percent_of_the_block_sale * $total_sum_block_euroblock + 2 * $percent_of_the_block_sale * $total_sum_block_yaroslav;
+        $salary_ekaterina_block = $percent_of_the_block_sale * $total_sum_block_euroblock + 2 * $percent_of_the_block_sale * $total_sum_block_ekaterina;
+
+        $salary_yaroslav_concrete = $percent_of_the_concrete_sale * $total_sum_concrete_euroblock + 2 * $percent_of_the_concrete_sale * $total_sum_concrete_yaroslav;
+        $salary_ekaterina_concrete = $percent_of_the_concrete_sale * $total_sum_concrete_euroblock + 2 * $percent_of_the_concrete_sale * $total_sum_concrete_ekaterina;
+
+        $total_salary_yaroslav = number_format($salary_yaroslav_block + $salary_yaroslav_concrete, 0, '', ' ',);
+        $total_salary_ekaterina = number_format($salary_ekaterina_block + $salary_ekaterina_concrete, 0, '', ' ',);
 
         // Managers
         $builder = Manager::query()
@@ -110,6 +207,7 @@ class ManagerController extends Controller
             }]);
 
         $entityItems = $builder->orderBy('id')->get();
+
 
         // Contacts without Manager
         $contacts = Contact::query()
@@ -311,6 +409,8 @@ class ManagerController extends Controller
         }
 
         return view("manager.index", compact(
+            'total_salary_yaroslav',
+            'total_salary_ekaterina',
             'percent',
             'entityName',
             'entityItems',
@@ -642,6 +742,7 @@ class ManagerController extends Controller
 
         return view("manager.index", compact(
             'percent',
+            'entityName',
             'entityItems',
             "resColumns",
             "resColumnsAll",
@@ -970,6 +1071,7 @@ class ManagerController extends Controller
 
         return view("manager.index", compact(
             'percent',
+            'entityName',
             'entityItems',
             "resColumns",
             "resColumnsAll",
