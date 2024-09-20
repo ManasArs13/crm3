@@ -508,7 +508,7 @@
                                                     $product->product->building_material == 'блок' ||
                                                     $product->product->building_material == 'бетон'
                                                 ) {
-                                                    $sum += $product->price;
+                                                    $sum += $product->price * $product->quantity;
                                                 }
                                             }
                                         }
@@ -530,7 +530,7 @@
                                                         $product->product->building_material == 'блок' ||
                                                         $product->product->building_material == 'бетон'
                                                     ) {
-                                                        $sum += $product->price;
+                                                        $sum += $product->price * $product->quantity;
                                                     }
                                                 }
                                             }
@@ -559,7 +559,7 @@
                                                     $product->product->building_material == 'блок' ||
                                                     $product->product->building_material == 'бетон'
                                                 ) {
-                                                    $sum += $product->price;
+                                                    $sum += $product->price * $product->quantity;
                                                 }
                                             }
                                         }
@@ -581,7 +581,7 @@
                                                         $product->product->building_material == 'блок' ||
                                                         $product->product->building_material == 'бетон'
                                                     ) {
-                                                        $sum += $product->price;
+                                                        $sum += $product->price * $product->quantity;
                                                     }
                                                 }
                                             }
