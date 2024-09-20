@@ -123,7 +123,7 @@
                             @switch($entityItem->name)
                                 @case('Ярослав')
                                     {{ number_format(
-                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments * ($sum_shipments / $total_sum_managars), 2),
+                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2),
                                         0,
                                         '',
                                         ' ',
@@ -133,7 +133,7 @@
 
                                 @case('Екатерина')
                                     {{ number_format(
-                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments * ($sum_shipments / $total_sum_managars), 2),
+                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2),
                                         0,
                                         '',
                                         ' ',
