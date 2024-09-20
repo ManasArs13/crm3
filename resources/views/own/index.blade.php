@@ -26,6 +26,9 @@
             <div class="border-b-2 border-neutral-100">
                 <div class="flex flex-row w-full p-3 justify-between">
                     <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
+                        @if(request()->has('type') && request()->get('type') == 'materials')
+                            <input type="hidden" name="type" value="materials">
+                        @endif
                         <div>
                             <x-dropdown align="left" width="64" outside='false'>
                                 <x-slot name="trigger">
