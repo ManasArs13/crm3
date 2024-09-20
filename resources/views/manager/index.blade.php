@@ -122,22 +122,20 @@
                         <div class="flex font-bold">
                             @switch($entityItem->name)
                                 @case('Ярослав')
-                                    {{ number_format(
-                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2),
-                                        0,
-                                        '',
-                                        ' ',
-                                    ) }}
+                                    @if (isset($total_salary_yaroslav))
+                                        {{ $total_salary_yaroslav }}
+                                    @else
+                                        {{ number_format(round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2), 0, '', ' ') }}
+                                    @endif
                                     р.
                                 @break
 
                                 @case('Екатерина')
-                                    {{ number_format(
-                                        round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2),
-                                        0,
-                                        '',
-                                        ' ',
-                                    ) }}
+                                    @if (isset($total_salary_ekaterina))
+                                        {{ $total_salary_ekaterina }}
+                                    @else
+                                        {{ number_format(round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2), 0, '', ' ') }}
+                                    @endif
                                     р.
                                 @break
                             @endswitch
