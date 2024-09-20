@@ -32,9 +32,6 @@
 
             $TotalCountContactsNew = 0;
             $TotalSumShipmentsNew = 0;
-
-            $total_sum_euroblock = 0;
-            $total_sum_managars = 0;
         @endphp
 
         @php
@@ -60,18 +57,6 @@
 
         @foreach ($entityItems as $entityItem)
             @php
-                if ($entityItem->name == 'Общая Еврогрупп') {
-                    $total_sum_euroblock += $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
-                    });
-                } else {
-                    $total_sum_managars += $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
-                    });
-                }
-            @endphp
-
-            @php
                 $TotalCountContacts += $entityItem->all_contacts;
                 $TotalCountContactsNew += $entityItem->new_contacts;
 
@@ -90,10 +75,75 @@
 
         {{-- Salary --}}
         <div class="flex flex-row mt-3 mb-10">
-            @foreach ($entityItems as $entityItem)
+            @php
+                $total_sum_euroblock = 0;
+                $total_sum_shipments_for_salary = 0;
+            @endphp
+
+            @foreach ($managers_without_dilevery as $entityItem)
                 @php
-                    $sum_shipments = $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
+                    if ($entityItem->name == 'Общая Еврогрупп') {
+                        $total_sum_euroblock += $entityItem->contacts->sum(function ($contact) {
+                            $sum = 0;
+
+                            foreach ($contact->shipments as $shipment) {
+                                if ($shipment->products) {
+                                    foreach ($shipment->products as $product) {
+                                        if (
+                                            $product->product->building_material == 'блок' ||
+                                            $product->product->building_material == 'бетон'
+                                        ) {
+                                            $sum += $product->price * $product->quantity;
+                                        }
+                                    }
+                                }
+                            }
+
+                            return $sum;
+                        });
+                    }
+
+                    $total_sum_shipments_for_salary += $entityItem->contacts->sum(function ($contact) {
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if (
+                                        $product->product->building_material == 'блок' ||
+                                        $product->product->building_material == 'бетон'
+                                    ) {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
+                    });
+                @endphp
+            @endforeach
+
+
+            @foreach ($managers_without_dilevery as $entityItem)
+                @php
+                    $sum_shipments_for_salary = $entityItem->contacts->sum(function ($contact) {
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if (
+                                        $product->product->building_material == 'блок' ||
+                                        $product->product->building_material == 'бетон'
+                                    ) {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
                     });
                 @endphp
 
@@ -124,7 +174,7 @@
                                     @if (isset($total_salary_yaroslav))
                                         {{ $total_salary_yaroslav }}
                                     @else
-                                        {{ number_format(round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2), 0, '', ' ') }}
+                                        {{ number_format(round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments_for_salary, 2), 0, '', ' ') }}
                                     @endif
                                     р.
                                 @break
@@ -133,7 +183,7 @@
                                     @if (isset($total_salary_ekaterina))
                                         {{ $total_salary_ekaterina }}
                                     @else
-                                        {{ number_format(round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments, 2), 0, '', ' ') }}
+                                        {{ number_format(round($total_sum_euroblock * $percent + 2 * $percent * $sum_shipments_for_salary, 2), 0, '', ' ') }}
                                     @endif
                                     р.
                                 @break
@@ -143,18 +193,15 @@
 
                     <div class="flex flex-row justify-between mt-2">
                         <div class="flex font-bold text-2xl">
-                            {{ number_format(
-                                $entityItem->contacts->sum(function ($contact) {
-                                    return $contact->shipments->sum('suma');
-                                }),
-                                0,
-                                '',
-                                ' ',
-                            ) }}
+                            {{ number_format($sum_shipments_for_salary, 0, '', ' ') }}
                         </div>
                         <div class="flex font-bold text-2xl">
-                            @if ($sum_shipments && $sum_shipments !== 0 && $TotalSumShipments && $TotalSumShipments !== 0)
-                                {{ round(100 / ($TotalSumShipments / +$sum_shipments)) }}
+                            @if (
+                                $sum_shipments_for_salary &&
+                                    $sum_shipments_for_salary !== 0 &&
+                                    $total_sum_shipments_for_salary &&
+                                    $total_sum_shipments_for_salary !== 0)
+                                {{ round(100 / ($total_sum_shipments_for_salary / +$sum_shipments_for_salary)) }}
                                 %
                             @else
                                 0%
@@ -166,6 +213,7 @@
             @endforeach
         </div>
 
+        {{-- Managers MS --}}
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
@@ -491,9 +539,6 @@
 
                             $TotalCountContactsNew = 0;
                             $TotalSumShipmentsNew = 0;
-
-                            $total_sum_euroblock = 0;
-                            $total_sum_managars = 0;
                         @endphp
 
                         @foreach ($managers_without_dilevery as $entityItem)
@@ -614,7 +659,7 @@
                                             @break
 
                                             @case('sum_shipments')
-                                                {{ number_format($sum_shipments, 0, '', ' ',) }}
+                                                {{ number_format($sum_shipments, 0, '', ' ') }}
                                             @break
 
                                             @case('percent_shipments')
@@ -642,7 +687,7 @@
                                             @break
 
                                             @case('sum_shipments_new')
-                                                {{ number_format($sum_shipments_new, 0, '', ' ',) }}
+                                                {{ number_format($sum_shipments_new, 0, '', ' ') }}
                                             @break
 
                                             @case('percent_shipments_new')
