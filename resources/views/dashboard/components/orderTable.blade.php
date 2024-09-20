@@ -239,6 +239,10 @@
                                         @endif
                                     @break
 
+                                    @case('comment')
+                                        {{ $entityItem->$column }}
+                                    @break
+
                                     @default
                                         {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
                                 @endswitch
@@ -628,6 +632,10 @@
                                                 @endif
                                             @break
 
+                                            @case('comment')
+                                            {{ $entityItem->$column }}
+                                            @break
+
                                             @default
                                                 {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
                                         @endswitch
@@ -973,7 +981,6 @@
                 function cl(attr, b) {
                     let positions = document.querySelectorAll(".position_column_" + attr, b);
                     for (var i = 0; i < positions.length; i++) {
-                        console.log(positions[i].style.display)
                         if (positions[i].style.display === 'none') {
                             positions[i].style.display = ''
                             if(!b.classList.contains('d-count')){
