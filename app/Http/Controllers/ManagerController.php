@@ -59,7 +59,6 @@ class ManagerController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Salary
-
         $managers_for_salary_block = Manager::query()
             ->select('id', 'name')
             ->whereNot('id', 4)
@@ -208,6 +207,25 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        $managers_without_dilevery = Manager::query()
+            ->select('id', 'name')
+            ->whereNot('id', 4)
+            ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                        $query
+                            ->select('id', 'suma', 'created_at', 'contact_id')
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries->where('building_material', Product::BLOCK)
+                                        ->orWhere('building_material', Product::CONCRETE);
+                                });
+                            })->with('products');
+                    }])
+                    ->select('id', 'manager_id', 'created_at');
+            }])->orderBy('id')->get();
 
         // Contacts without Manager
         $contacts = Contact::query()
@@ -414,6 +432,7 @@ class ManagerController extends Controller
             'percent',
             'entityName',
             'entityItems',
+            'managers_without_dilevery',
             "resColumns",
             "resColumnsAll",
             "urlShow",
@@ -529,6 +548,26 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        $managers_without_dilevery = Manager::query()
+        ->select('id', 'name')
+        ->whereNot('id', 4)
+        ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
+            $query
+                ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                    $query
+                        ->select('id', 'suma', 'created_at', 'contact_id')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', $dateY)
+                        ->whereHas('products', function ($query) {
+                            $query->whereHas('product', function ($queries) {
+                                $queries
+                                    ->where('building_material', Product::BLOCK);
+                            });
+                        })->with('products');
+                }])
+                ->select('id', 'manager_id', 'created_at');
+        }])->orderBy('id')->get();
+
         // Contacts without Manager
         $contacts = Contact::query()
             ->select('id', 'manager_id', 'created_at')
@@ -744,6 +783,7 @@ class ManagerController extends Controller
             'percent',
             'entityName',
             'entityItems',
+            'managers_without_dilevery',
             "resColumns",
             "resColumnsAll",
             "urlShow",
@@ -859,6 +899,26 @@ class ManagerController extends Controller
 
         $entityItems = $builder->orderBy('id')->get();
 
+        $managers_without_dilevery = Manager::query()
+        ->select('id', 'name')
+        ->whereNot('id', 4)
+        ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
+            $query
+                ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                    $query
+                        ->select('id', 'suma', 'created_at', 'contact_id')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', $dateY)
+                        ->whereHas('products', function ($query) {
+                            $query->whereHas('product', function ($queries) {
+                                $queries
+                                    ->where('building_material', Product::CONCRETE);
+                            });
+                        })->with('products');
+                }])
+                ->select('id', 'manager_id', 'created_at');
+        }])->orderBy('id')->get();
+
         // Contacts without Manager
         $contacts = Contact::query()
             ->select('id', 'manager_id', 'created_at')
@@ -1073,6 +1133,7 @@ class ManagerController extends Controller
             'percent',
             'entityName',
             'entityItems',
+            'managers_without_dilevery',
             "resColumns",
             "resColumnsAll",
             "urlShow",
