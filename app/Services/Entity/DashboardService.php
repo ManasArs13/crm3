@@ -638,6 +638,7 @@ class DashboardService
             ->whereIn('status_id', [3, 4, 5, 6, 7])
             ->orderBy('date_plan')
             ->get();
+//        dd($entityItems);
 
         $materials = Product::query()
             ->where('type', Product::MATERIAL)
