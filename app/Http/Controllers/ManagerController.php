@@ -109,17 +109,53 @@ class ManagerController extends Controller
             switch ($entityItem->name) {
                 case 'Ярослав':
                     $total_sum_block_yaroslav = $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if ($product->product->building_material == 'блок') {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
                     });
                     break;
                 case 'Екатерина':
                     $total_sum_block_ekaterina = $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if ($product->product->building_material == 'блок') {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
                     });
                     break;
                 case 'Общая Еврогрупп':
                     $total_sum_block_euroblock = $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if ($product->product->building_material == 'блок') {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
                     });
                     break;
             }
@@ -129,17 +165,53 @@ class ManagerController extends Controller
             switch ($entityItem->name) {
                 case 'Ярослав':
                     $total_sum_concrete_yaroslav = $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if ($product->product->building_material == 'бетон') {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
                     });
                     break;
                 case 'Екатерина':
                     $total_sum_concrete_ekaterina = $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if ($product->product->building_material == 'бетон') {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
                     });
                     break;
                 case 'Общая Еврогрупп':
                     $total_sum_concrete_euroblock = $entityItem->contacts->sum(function ($contact) {
-                        return $contact->shipments->sum('suma');
+                        $sum = 0;
+
+                        foreach ($contact->shipments as $shipment) {
+                            if ($shipment->products) {
+                                foreach ($shipment->products as $product) {
+                                    if ($product->product->building_material == 'бетон') {
+                                        $sum += $product->price * $product->quantity;
+                                    }
+                                }
+                            }
+                        }
+
+                        return $sum;
                     });
                     break;
             }
@@ -549,24 +621,24 @@ class ManagerController extends Controller
         $entityItems = $builder->orderBy('id')->get();
 
         $managers_without_dilevery = Manager::query()
-        ->select('id', 'name')
-        ->whereNot('id', 4)
-        ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
-            $query
-                ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
-                    $query
-                        ->select('id', 'suma', 'created_at', 'contact_id')
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', $dateY)
-                        ->whereHas('products', function ($query) {
-                            $query->whereHas('product', function ($queries) {
-                                $queries
-                                    ->where('building_material', Product::BLOCK);
-                            });
-                        })->with('products');
-                }])
-                ->select('id', 'manager_id', 'created_at');
-        }])->orderBy('id')->get();
+            ->select('id', 'name')
+            ->whereNot('id', 4)
+            ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                        $query
+                            ->select('id', 'suma', 'created_at', 'contact_id')
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries
+                                        ->where('building_material', Product::BLOCK);
+                                });
+                            })->with('products');
+                    }])
+                    ->select('id', 'manager_id', 'created_at');
+            }])->orderBy('id')->get();
 
         // Contacts without Manager
         $contacts = Contact::query()
@@ -900,24 +972,24 @@ class ManagerController extends Controller
         $entityItems = $builder->orderBy('id')->get();
 
         $managers_without_dilevery = Manager::query()
-        ->select('id', 'name')
-        ->whereNot('id', 4)
-        ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
-            $query
-                ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
-                    $query
-                        ->select('id', 'suma', 'created_at', 'contact_id')
-                        ->whereMonth('created_at', $date)
-                        ->whereYear('created_at', $dateY)
-                        ->whereHas('products', function ($query) {
-                            $query->whereHas('product', function ($queries) {
-                                $queries
-                                    ->where('building_material', Product::CONCRETE);
-                            });
-                        })->with('products');
-                }])
-                ->select('id', 'manager_id', 'created_at');
-        }])->orderBy('id')->get();
+            ->select('id', 'name')
+            ->whereNot('id', 4)
+            ->with(['contacts' => function (Builder $query) use ($date, $dateY) {
+                $query
+                    ->with(['shipments' => function (Builder $query) use ($date, $dateY) {
+                        $query
+                            ->select('id', 'suma', 'created_at', 'contact_id')
+                            ->whereMonth('created_at', $date)
+                            ->whereYear('created_at', $dateY)
+                            ->whereHas('products', function ($query) {
+                                $query->whereHas('product', function ($queries) {
+                                    $queries
+                                        ->where('building_material', Product::CONCRETE);
+                                });
+                            })->with('products');
+                    }])
+                    ->select('id', 'manager_id', 'created_at');
+            }])->orderBy('id')->get();
 
         // Contacts without Manager
         $contacts = Contact::query()
