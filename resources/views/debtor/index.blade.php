@@ -60,21 +60,21 @@
                                 $sum += $shipment->balance;
                             @endphp
 
-                            <tr 
+                            <tr
                                 @if (str_contains(mb_strtolower($shipment->description), 'норм')) class="bg-green-100" @elseif(str_contains(mb_strtolower($shipment->description), 'проблем')) class="bg-yellow-100" @endif>
-                                <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-left"><a
+                                <td class="break-all max-w-60 truncate px-2 py-3 text-left"><a
                                         href="https://online.moysklad.ru/app/#Company/edit?id={{ $shipment->ms_id }}"
                                         target="__blank">{{ $shipment->name }}</a></td>
-                                <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">
+                                <td class="break-all max-w-60 truncate px-2 py-3 text-right">
                                     {{ $shipment->moment }}</td>
-                                <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">
+                                <td class="break-all max-w-60 truncate px-2 py-3 text-right">
                                     {{ $shipment->days }}</td>
-                                <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">
+                                <td class="break-all max-w-60 truncate px-2 py-3 text-right">
                                     {{ $shipment->balance }}</td>
-                                <td class="break-all max-w-60 overflow-hidden px-2 py-3">
+                                <td class="break-all max-w-60 truncate px-2 py-3">
                                     {{ $shipment->description }}
                                 </td>
-                                <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">
+                                <td class="break-all max-w-60 truncate px-2 py-3 text-right">
                                     @if (!is_null($shipment->ship))
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" class="mx-auto"

@@ -400,7 +400,7 @@
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                    <td class="break-all max-w-96 truncate px-2 py-2"
                                         @if (
                                             $column == 'id' ||
                                                 $column == 'created_at' ||
@@ -483,7 +483,7 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     @foreach ($resColumns as $column => $title)
-                                        <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-2"
+                                        <td class="break-all max-w-60 xl:max-w-44 truncate px-2 py-2"
                                             style="text-align: right">
                                             @if ($column == 'created_at' || $column == 'updated_at')
                                                 {{ $entityItem->$column }}
