@@ -454,7 +454,7 @@
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                    <td class="break-all max-w-96 px-2 py-2 truncate"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'id' ||

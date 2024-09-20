@@ -301,7 +301,7 @@
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-[20rem] overflow-auto px-3 py-3"
+                                    <td class="break-all max-w-[20rem] truncate px-3 py-3"
                                     @if ((is_int($entityItem->$column) ||
                                             $column == 'quantity' ||
                                             $column == 'sum' ||

@@ -335,7 +335,7 @@
                                 @foreach ($resColumns as $column => $title)
                                     @switch($column)
                                         @case('id')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                 <a href="{{ route($urlEdit, $entityItem->id) }}"
                                                     class="text-blue-500 hover:text-blue-600">
                                                     {{ $entityItem->$column }}
@@ -344,7 +344,7 @@
                                         @break
 
                                         @case('name')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-left">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-left">
                                                 <a href="{{ route($urlEdit, $entityItem->id) }}"
                                                     class="text-blue-500 hover:text-blue-600">
                                                     {{ $entityItem->$column }}
@@ -353,37 +353,37 @@
                                         @break
 
                                         @case('description')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                 {{ $entityItem->$column }}
                                             </td>
                                         @break
 
                                         @case('created_at')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                 {{ $entityItem->$column }}
                                             </td>
                                         @break
 
                                         @case('updated_at')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                 {{ $entityItem->$column }}
                                             </td>
                                         @break
 
                                         @case('tonnage')
                                             @if ($entityItem->tonnage)
-                                                <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                                <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                     {{ $entityItem->$column }}
                                                 </td>
                                             @else
-                                                <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                                <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                     -
                                                 </td>
                                             @endif
                                         @break
 
                                         @case('contact_id')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-left">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-left">
                                                 @if ($entityItem->contact)
                                                     <a href="{{ route('contact.show', $entityItem->contact->id) }}"
                                                         class="text-blue-500 hover:text-blue-600">
@@ -396,13 +396,13 @@
                                         @break
 
                                         @case('ms_id')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                 {{ $entityItem->$column }}
                                             </td>
                                         @break
 
                                         @case('type_id')
-                                        <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                        <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                             @if(isset($entityItem->type->name))
                                             <a href="{{ route($urlShow, $entityItem->type_id) }}"
                                                class="text-blue-500 hover:text-blue-600">
@@ -413,7 +413,7 @@
                                         @break
 
                                         @default
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-2 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-2 text-right">
                                                 {{ $entityItem->$column }}
                                             </td>
                                     @endswitch

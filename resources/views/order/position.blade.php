@@ -292,7 +292,7 @@
                             @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-x-auto px-6 py-2"
+                                    <td class="break-all max-w-64 xl:max-w-64 truncate px-6 py-2"
                                         @if (is_int($entityItem->$column)) style="text-align:left" @else style="text-align:right" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))

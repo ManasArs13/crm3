@@ -157,7 +157,7 @@
 
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-3"
+                                    <td class="break-all max-w-96 truncate px-2 py-3"
                                         @if ($column == 'name') style="text-align:left" @else style="text-align:right" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 

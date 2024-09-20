@@ -75,24 +75,24 @@
                                 @foreach ($resColumns as $column => $title)
                                     @switch($column)
                                         @case('contact_name')
-                                            <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-left">
+                                            <td class="break-all max-w-60 truncate px-2 py-3 text-left">
                                                 {{ $entityItem->contact->name ?? '-' }}
                                             </td>
                                         @break
 
                                         @case('debt')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
                                                 {{ $entityItem->contact->balance ?? 0 }}</td>
                                         @break
 
                                         @case('current month')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
                                                 {{ $entityItem->delivery_fee ?? 0 }}
                                             </td>
                                         @break
 
                                         @case('total')
-                                            <td class="break-all max-w-96 overflow-auto px-2 py-3 text-right">
+                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
                                                 {{ $entityItem->delivery_fee + $entityItem->contact->balance ?? 0 }}</td>
                                         @break
                                     @endswitch
