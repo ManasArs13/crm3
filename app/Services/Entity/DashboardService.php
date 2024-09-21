@@ -639,6 +639,7 @@ class DashboardService
             ->orderBy('date_plan')
             ->get();
 
+
         $materials = Product::query()
             ->where('type', Product::MATERIAL)
             ->where('building_material', Product::CONCRETE)

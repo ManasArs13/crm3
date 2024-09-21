@@ -86,6 +86,12 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
         'shipment' => ShipmentController::class,
     ]);
 
+    // Принт
+    Route::group(['prefix' => 'print'], function () {
+        Route::post('/order', [OrderController::class, 'print'])->name('print.order');
+        Route::post('/shipment', [ShipmentController::class, 'print'])->name('print.shipment');
+    });
+
     // Остатки
 //    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
     Route::get('/residuals/blocks_materials', [ResidualController::class, 'blocksMaterials'])->name('residual.blocksMaterials');
@@ -128,6 +134,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 
     // Users
     Route::prefix('users')->name('users.')->group(function () {

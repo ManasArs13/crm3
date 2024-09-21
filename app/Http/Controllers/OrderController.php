@@ -588,4 +588,9 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
+
+    public function print(Request $request){
+        $order = Order::with('positions.product', 'contact')->find($request->id);
+        return view('print.print', compact('order'));
+    }
 }
