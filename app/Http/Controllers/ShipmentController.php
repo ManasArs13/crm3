@@ -641,7 +641,7 @@ class ShipmentController extends Controller
             }
         }
 
-        return redirect()->route("shipment.show",["shipment"=>$shipment->id]);
+        return redirect()->route("shipment.show",["shipment"=>$shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' добавлена');
     }
 
     public function show(string $id)

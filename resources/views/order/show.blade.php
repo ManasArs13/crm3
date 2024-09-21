@@ -79,53 +79,50 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="basis-1/3">
-                                <div class="flex flex-row mb-1 w-full">
-                                    <span
-                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Статус</span>
-                                    <select name="status" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        <option selected class="bg-white" value="{{ $entityItem->status_id }}">
-                                            {{ $entityItem->status->name }}
-                                        </option>
-                                        @foreach ($statuses as $status)
-                                            <option class="bg-white" value="{{ $status->id }}">{{ $status->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+
                         </div>
 
                         {{-- Contacts --}}
-                        <div class="flex flex-row mb-3 w-full">
-                            <span
-                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Контрагент</span>
-                            <select name="contact" required style="width:36%" class="select2">
-                                <option value="{{ $entityItem->contact_id }}" selected>
-                                    {{ $entityItem->contact->name }}</option>
-                                @foreach ($contacts as $contact)
-                                    <option value="{{ $contact->id }}">{{ $contact->name }}</option>
-                                @endforeach
-                            </select>
-
-
-                            {{-- Add contact button --}}
-                            <button type="button" id="button-modal"
-                                class="inline-block rounded px-2 align-middle text-black hover:text-gray-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                                </svg>
-                            </button>
-
-                            <div class="basis-1/2">
+                        <div class="flex flex-row mb-3 w-full justify-between">
+                            <div class="flex flex-row basis-2/3">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="basis-[15%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Контрагент</span>
+                                    <select name="contact" required style="width:36%" class="select2">
+                                        <option value="{{ $entityItem->contact_id }}" selected>
+                                            {{ $entityItem->contact->name }}</option>
+                                        @foreach ($contacts as $contact)
+                                            <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                                        @endforeach
+                                    </select>
+
+
+                                    {{-- Add contact button --}}
+                                    <button type="button" id="button-modal"
+                                        class="inline-block rounded px-2 align-middle text-black hover:text-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                                {{-- balance --}}
+                                <div class="{{( $entityItem->contact->balance >=0)? "bg-green-300": "bg-red-300" }} p-1 px-2 rounded " >
+                                    {{ $entityItem->contact->balance }}
+                                </div>
+
+                        </div>
+
+                        {{-- Delivery --}}
+                        <div class="flex flex-row mb-3 w-full gap-3">
+                            <div class="basis-1/3">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span
+                                        class="flex basis-[41%]  items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Доставка</span>
                                     <select name="delivery" required class="select2" style="width: 100%">
                                         @if ($entityItem->delivery_id)
@@ -140,19 +137,35 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-
-                        {{-- Delivery --}}
-                        <div class="flex flex-row mb-3 w-full gap-3">
 
 
                         </div>
 
+                        {{-- status --}}
+                        <div class="flex flex-row mb-5 w-full">
+                            <div class="basis-1/3">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span
+                                        class="flex basis-[41%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Статус</span>
+                                    <select name="status" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        <option selected class="bg-white" value="{{ $entityItem->status_id }}">
+                                            {{ $entityItem->status->name }}
+                                        </option>
+                                        @foreach ($statuses as $status)
+                                            <option class="bg-white" value="{{ $status->id }}">{{ $status->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         {{-- Date --}}
                         <div class="flex flex-row mb-5 w-full">
                             <div class="flex flex-row">
                                 <span
-                                    class="basis-1/4 flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
+                                    class="basis-[41%] flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
                                     Плановая дата</span>
                                 <input type="date" min="2020-01-01"
                                     value="{{ date('Y-m-d', strtotime($entityItem->date_plan)) }}" name="date"
@@ -405,11 +418,77 @@
 
                     </div>
 
-                    <div class="px-5 mb-3 w-full">
-                        <button type="submit"
-                            class="w-full p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+
+
+
+                    <div class="px-5 mb-3 w-full flex flex-row gap-3">
+                        <button type="submit" name="action" value="save"
+                            class="basis-1/2 p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+
+                        <button type="submit" name="action" value="create"
+
+                            class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Создать отгрузку
+                        </button>
                     </div>
                 </form>
+                @if (count($entityItem->shipments)>0)
+                <table class="text-left text-md text-nowrap">
+                    <thead>
+                        <tr class="bg-neutral-200 font-semibold py-2">
+
+                            <th scope="col" class="px-6 py-4" style="text-align:right">
+                                Имя
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:right">
+                                Дата создания
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Контрагент
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:right">
+                                Сумма
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Статус мс
+                            </th>
+
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Комментарий
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Цена доставки
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($entityItem->shipments as $sh)
+                        <tr class="border-b-2 bg-gray-100 py-2">
+                            <td class="px-6 py-4" style="text-align:right">
+                                <a href="{{ route("shipment.show", ["shipment"=>$sh->id]) }}">{{ $sh->name }}</a>
+                            </td>
+                            <td class="px-6 py-4" style="text-align:right">
+                                {{ $sh->created_at }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->contact->name }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:right">
+                                {{ $sh->suma }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->status}}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->comment }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->delivery_price }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @endif
             </div>
         </div>
 

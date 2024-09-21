@@ -351,7 +351,7 @@ class OrderController extends Controller
 
                     $position->save();
 
-                    $sum += $position->price*$product['сount'];
+                    $sum += $position->price*$product['count'];
                     $weight += $position->weight_kg;
                 }
             }
@@ -392,7 +392,7 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->route("order.index")->with('success', 'Заказ №' . $order->id . ' добавлен');
+        return redirect()->route("order.show",["order"=>$order->id])->with('success', 'Заказ №' . $order->id . ' добавлен');
     }
 
     public function show(string $id)
@@ -466,6 +466,50 @@ class OrderController extends Controller
             return redirect()->route('order.index')->with('warning', 'Заказ ' . $id .  ' не найден!');
         }
 
+        if ($request->action=="create"){
+
+            $shipment = new Shipment();
+            $shipment->name = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $shipment->order_id = $order->id;
+            $shipment->delivery_id = $request->delivery;
+            $shipment->contact_id = $request->contact;
+
+
+
+            $shipment->weight = 0;
+            $shipment->paid_sum = 0;
+            $shipment->suma = 0;
+
+
+            if ($request->comment) {
+                $shipment->description = $request->comment;
+            }
+
+            $shipment->save();
+
+            if ($request->products) {
+                foreach ($request->products as $product) {
+                    if (isset($product['product'])) {
+                        $shipmentproduct = new ShipmentProduct();
+
+                        $product_bd = Product::find($product['product']);
+                        $shipmentproduct->product_id = $product_bd->id;
+                        $shipmentproduct->shipment_id = $shipment->id;
+                        $shipmentproduct->quantity = $product['count'];
+                        $shipmentproduct->price=$product_bd->price;
+
+                        $shipment->suma+=$product_bd->price*$product['count'];
+                        $shipment->weight+=$product["count"]*$product['count'];
+                        $shipmentproduct->save();
+                    }
+                }
+                $shipment->save();
+            }
+
+            return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->name . '('.$shipment->id.') создана');
+        }else{
+
+
         $order->name = $request->name;
         $order->status_id = $request->status;
         $order->contact_id = $request->contact;
@@ -512,6 +556,7 @@ class OrderController extends Controller
         $order->update();
 
         return redirect()->route("order.show", ['order' => $order->id])->with('success', 'Заказ №' . $order->id . ' обновлён');
+        }
     }
 
     public function destroy(string $id)

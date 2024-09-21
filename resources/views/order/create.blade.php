@@ -4,6 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        @vite(['resources/js/main.js'])
     </x-slot>
 
     @if (isset($entity) && $entity != '')
@@ -56,55 +57,73 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="basis-1/3">
+
+                        </div>
+
+                        {{-- Contacts --}}
+                        <div class="flex flex-row mb-3 w-full justify-between">
+                            <div class="flex flex-row basis-1/2">
+                                <span
+                                    class="basis-[20.5%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    Контрагент</span>
+                                <select name="contact" required style="width:77%" class="select2 contact">
+                                    <option value="" selected disabled>не выбрано</option>
+                                    @foreach ($contacts as $contact)
+                                        <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                                    @endforeach
+                                </select>
+
+
+                                {{-- Add contact button --}}
+                                <button type="button" id="button-modal"
+                                    class="inline-block rounded px-2 align-middle text-black hover:text-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="basic-1/2 text-end">
+                                {{-- balance --}}
+                                <div class="balance p-1  rounded " >
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="flex flex-row mb-3 w-full">
+                             {{-- Delivery --}}
+                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Статус</span>
-                                    <select name="status" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        @foreach ($statuses as $status)
-                                            <option class="bg-white" value="{{ $status->id }}">{{ $status->name }}
-                                            </option>
+                                        class="basis-[20%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Доставка</span>
+                                    <select name="delivery" required class="select2" style="width: 77%">
+                                        <option value="" selected disabled>не выбрано</option>
+                                        @foreach ($deliveries as $delivery)
+                                            <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Contacts --}}
+
                         <div class="flex flex-row mb-3 w-full">
-                            <span
-                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Контрагент</span>
-                            <select name="contact" required style="width:36%" class="select2">
-                                <option value="" selected disabled>не выбрано</option>
-                                @foreach ($contacts as $contact)
-                                    <option value="{{ $contact->id }}">{{ $contact->name }}</option>
-                                @endforeach
-                            </select>
-
-
-                            {{-- Add contact button --}}
-                            <button type="button" id="button-modal"
-                                class="inline-block rounded px-2 align-middle text-black hover:text-gray-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                                </svg>
-                            </button>
-
-                            {{-- Delivery --}}
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Доставка</span>
-                                    <select name="delivery" required class="select2" style="width: 100%">
-                                        <option value="" selected disabled>не выбрано</option>
-                                        @foreach ($deliveries as $delivery)
-                                            <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
+                                        class="flex basis-[20%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Статус</span>
+                                    <select name="status" required style="width: 77%
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        @foreach ($statuses as $status)
+                                            <option class="bg-white" value="{{ $status->id }}">{{ $status->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

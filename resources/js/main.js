@@ -26,4 +26,48 @@ $(document).ready(function(){
           });
     });
 
+    $('body').on("change", ".contact", function(e){
+        e.preventDefault();
+
+        let val=$(this).val();
+
+        $.ajax({
+            url: "/api/contact/get/balance",
+            type: "GET",
+            data: {"id": val},
+
+            success: function(data) {
+              let balance=parseFloat(data);
+              $(".balance").html(data);
+              if (balance>=0){
+                if ($(".balance").hasClass("bg-red-300")){
+                    $(".balance").removeClass("bg-red-300");
+                }
+
+                if (!$(".balance").hasClass("bg-green-300")){
+                    $(".balance").addClass("bg-green-300");
+                }
+
+              }else{
+                if (!$(".balance").hasClass("bg-red-300")){
+                    $(".balance").addClass("bg-red-300");
+                }
+
+                if ($(".balance").hasClass("bg-green-300")){
+                    $(".balance").removeClass("bg-green-300");
+                }
+              }
+            },
+            error: function(response) {
+              $("#message").html(JSON.parse(response.responseText));
+            //   $("#message").html(response.responseText);
+            },
+            complete: function() {
+                $(this).html("Добавить в мс");
+            }
+          });
+
+
+    })
+
 });

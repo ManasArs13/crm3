@@ -84,21 +84,38 @@ class ShipmentMsService
 
         foreach ($shipment->products as $position) {
 
-            $ms_id=Product::find($position["product_id"])->ms_id;
-            if ($position["quantity"] != 0) {
-                $array["positions"][] = [
-                    "quantity" => (float)$position["quantity"],
-                    "price" => (float)$position["price"] * 100,
-                    'vat' => (int)$vat,
-                    "assortment" => [
-                        "meta" => [
-                            "href" => "https://api.moysklad.ru/api/remap/1.2/entity/product/" . $ms_id,
-                            "type" => "product",
-                            "mediaType" => "application/json"
+            $product=Product::find($position["product_id"]);
+            $ms_id=$product->ms_id;
+
+            if ($product->category_id==20){
+                // $array["positions"][] = [
+                //     "quantity" => (float)$position["quantity"],
+                //     "price" => (float)$position["price"] * 100,
+                //     'vat' => (int)$vat,
+                //     "assortment" => [
+                //         "meta" => [
+                //             "href" => "https://api.moysklad.ru/api/remap/1.2/entity/service/" . $ms_id,
+                //             "type" => "service",
+                //             "mediaType" => "application/json"
+                //         ]
+                //     ]
+                // ];
+            }else{
+                if ($position["quantity"] != 0) {
+                    $array["positions"][] = [
+                        "quantity" => (float)$position["quantity"],
+                        "price" => (float)$position["price"] * 100,
+                        'vat' => (int)$vat,
+                        "assortment" => [
+                            "meta" => [
+                                "href" => "https://api.moysklad.ru/api/remap/1.2/entity/product/" . $ms_id,
+                                "type" => "product",
+                                "mediaType" => "application/json"
+                            ]
                         ]
-                    ]
-                ];
-                $quantity = (float)$position["quantity"];
+                    ];
+
+                }
             }
         }
 
