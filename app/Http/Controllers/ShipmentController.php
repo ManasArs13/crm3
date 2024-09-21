@@ -641,7 +641,7 @@ class ShipmentController extends Controller
             }
         }
 
-        return redirect()->route("shipment.show",["shipment"=>$shipment->id]);
+        return redirect()->route("shipment.show",["shipment"=>$shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' добавлена');
     }
 
     public function show(string $id)
@@ -780,5 +780,13 @@ class ShipmentController extends Controller
         $entityItem->delete();
 
         return redirect()->route('shipment.index');
+    }
+
+    public function print(Request $request){
+        $shipment = Shipment::with('products.product', 'contact')->find($request->id);
+        $totalSuma = $shipment->products->map(function ($product) {
+            return $product->quantity * $product->price;
+        })->sum();
+        return view('print.print', compact('shipment', 'totalSuma'));
     }
 }

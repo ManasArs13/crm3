@@ -37,6 +37,8 @@ Route::post('/shipment_ms/create', [ShipmentController::class, 'setShipmentToMs'
 Route::post('/order_ms/create', [MsOrderController::class, 'setOrderFromCalculator'])->name("api.post.ms.order");
 Route::post('/order_site/create', [SiteOrderController::class, 'setOrderFromCalculator'])->name("api.post.site.order");
 
+
+Route::get("/contact/get/balance", [App\Http\Controllers\Api\Site\ContactController::class,"getBalance"])->name("api.get.balance");
 Route::get("/shipping_price/get", [App\Http\Controllers\Api\Site\ShipingPriceController::class,"getPrice"])->name("api.get.shipping_price");
 Route::get("/deliveries/get/name", [App\Http\Controllers\Api\Site\DeliveryController::class,"getByName"])->name("api.get.delivery");
 Route::get("/contacts/get/name", [App\Http\Controllers\Api\Site\ContactController::class,"getByName"])->name("api.get.contact.name");

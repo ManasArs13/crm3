@@ -4,7 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-        @vite([ 'resources/js/main.js'])
+        @vite(['resources/js/main.js'])
     </x-slot>
 
     @if (isset($entity) && $entity != '')
@@ -56,16 +56,20 @@
                                 <input type="text" name="name" value="{{ $entityItem->name }}" required
                                     class="relative m-0 flex basis-full items-center rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
-                                    @if ($entityItem->ms_id!=null)
-                                    <a href="https://online.moysklad.ru/app/#demand/edit?id={{ $entityItem->ms_id }}" target="_blank" class="flex justify-center items-center ml-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                @if ($entityItem->ms_id != null)
+                                    <a href="https://online.moysklad.ru/app/#demand/edit?id={{ $entityItem->ms_id }}"
+                                        target="_blank" class="flex justify-center items-center ml-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
                                             </path>
-                                            <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                            <path fill-rule="evenodd"
+                                                d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
                                             </path>
                                         </svg>
                                     </a>
-                                    @endif
+                                @endif
                             </div>
                             <div class="flex flex-row mb-1 w-full basis-1/3">
                                 <span
@@ -76,29 +80,13 @@
                                     name="date_created" required
                                     class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                             </div>
-                            <div class="basis-1/3">
-                                <div class="flex flex-row mb-1 w-full">
-                                    <span
-                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Статус</span>
-                                    <select name="status" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        <option selected class="bg-white" value="{{ $entityItem->status }}">
-                                            {{ $entityItem->status }}
-                                        </option>
-                                        <option value="Не оплачен" selected>Не оплачен</option>
-                                        <option value="Оплачен" selected>Оплачен</option>
-                                        <option class="bg-white" value="В долг знакомые">В долг знакомые</option>
-                                        <option value="На руках" selected>На руках</option>
-                                    </select>
-                                </div>
-                            </div>
+
                         </div>
 
                         {{-- Contacts --}}
-                        <div class="flex flex-row mb-3 basis-full">
+                        <div class="flex flex-row mb-3 basis-full justify-between align-middle">
                             <div class="basis-1/2">
-                                <div class="flex flex-row mb-1 w-full">
+                                <div class="flex flex-row w-full">
                                     <span
                                         class="basis-1/5 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Контрагент</span>
@@ -113,6 +101,35 @@
                                         @foreach ($contacts as $contact)
                                             <option value="{{ $contact->id }}">{{ $contact->name }}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="basic-1/2">
+
+                                {{-- balance --}}
+                                <div class="{{( $entityItem->contact->balance >=0)? "bg-green-300": "bg-red-300" }} p-1  rounded " >
+                                    {{ $entityItem->contact->balance }}
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="flex flex-row mb-3 w-full gap-3">
+                            <div class="basis-1/2">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span
+                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Статус</span>
+                                    <select name="status" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        <option selected class="bg-white" value="{{ $entityItem->status }}">
+                                            {{ $entityItem->status }}
+                                        </option>
+                                        <option value="Не оплачен" selected>Не оплачен</option>
+                                        <option value="Оплачен" selected>Оплачен</option>
+                                        <option class="bg-white" value="В долг знакомые">В долг знакомые</option>
+                                        <option value="На руках" selected>На руках</option>
                                     </select>
                                 </div>
                             </div>
@@ -136,7 +153,6 @@
                                 </div>
                             </div>
                         </div>
-
                         {{-- Delivery --}}
                         <div class="flex flex-row mb-3 w-full gap-3">
                             <div class="basis-1/2">
@@ -206,8 +222,8 @@
                             <template x-for="(row, index) in rows" :key="index">
                                 <div class="flex flex-row mb-1 w-full">
 
-                                    <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product" required
-                                        x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
+                                    <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
+                                        required x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
                                         class="relative m-0 flex basis-8/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
@@ -317,7 +333,7 @@
 
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = {!!  $entityItem->weight !!}
+                                            this.allWeight = {!! $entityItem->weight !!}
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -331,7 +347,7 @@
                                         // weight_kg: 0,
                                         // weight: 0,
                                         price: 0,
-                                        sum:0
+                                        sum: 0
                                     }],
                                     allSum: 0,
                                     allWeight: 0,
@@ -396,14 +412,79 @@
                             class="basis-1/2 p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
 
                         <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
-                                class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить в мс</button>
+                            class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
+                            в мс</button>
                     </div>
                 </form>
 
+                {{--привязанный заказ --}}
+
+                @if ($entityItem->order)
+                <table class="text-left text-md text-nowrap">
+                    <thead>
+                        <tr class="bg-neutral-200 font-semibold py-2">
+
+                            <th scope="col" class="px-6 py-4" style="text-align:right">
+                                Имя
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:right">
+                                Дата создания
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Контрагент
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:right">
+                                Сумма
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Статус мс
+                            </th>
+
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Комментарий
+                            </th>
+                            <th scope="col" class="px-6 py-4" style="text-align:left">
+                                Цена доставки
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b-2 bg-gray-100 py-2">
+                            <td class="px-6 py-4" style="text-align:right">
+                                <a href="{{ route("order.show", ["order"=>$entityItem->order->id] )}}">{{ $entityItem->order->name }}</a>
+                            </td>
+                            <td class="px-6 py-4" style="text-align:right">
+                                {{ $entityItem->order->created_at }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $entityItem->order->contact->name }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:right">
+                                {{ $entityItem->order->sum }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $entityItem->order->status->name }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $entityItem->order->comment }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $entityItem->order->delivery_price }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                @endif
             </div>
         </div>
 
+
+
+
+
     </div>
+
+
     <script>
         $(document).ready(function() {
             //change selectboxes to selectize mode to be searchable

@@ -303,7 +303,7 @@
                             <tr class="border-b-2">
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-2">
+                                    <td class="break-all max-w-96 truncate px-2 py-2">
                                         @switch($column)
                                             @case('status_amo_id')
                                                 {{ $entityItem->status_amo->name }}

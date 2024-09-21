@@ -69,7 +69,7 @@
                         @endif
 
                         @foreach ($resColumns as $column => $title)
-                            <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                            <td class="break-all max-w-64 px-2 py-2 truncate"
                                 @switch($column)
                                             @case('contact_id')
                                                 style="text-align:left"
@@ -239,6 +239,10 @@
                                         @endif
                                     @break
 
+                                    @case('comment')
+                                        {{ $entityItem->$column }}
+                                    @break
+
                                     @default
                                         {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
                                 @endswitch
@@ -259,7 +263,7 @@
                             @endif
 
                             @foreach ($resColumns as $column => $title)
-                                <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                <td class="break-all max-w-64 truncate px-2 py-2"
                                     @switch($column)
                                             @case('contact_id')
                                                 style="text-align:left"
@@ -432,6 +436,10 @@
                                             @endif
                                         @break
 
+                                        @case('comment')
+                                        {{ $entityItem->$column }}
+                                        @break
+
                                         @default
                                             {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
                                     @endswitch
@@ -452,7 +460,7 @@
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                    <td class="break-all max-w-64 truncate px-2 py-2"
                                         @switch($column)
                                             @case('contact_id')
                                                 style="text-align:left"
@@ -626,6 +634,10 @@
                                                 @else
                                                     -
                                                 @endif
+                                            @break
+
+                                            @case('comment')
+                                            {{ $entityItem->$column }}
                                             @break
 
                                             @default
@@ -647,7 +659,7 @@
                                 @endif
 
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-96 overflow-auto px-2 py-2"
+                                    <td class="break-all max-w-64 truncate px-2 py-2"
                                         @switch($column)
                                             @case('contact_id')
                                                 style="text-align:left"
@@ -823,6 +835,10 @@
                                                 @endif
                                             @break
 
+                                            @case('comment')
+                                            {{ $entityItem->$column }}
+                                            @break
+
                                             @default
                                                 {{ number_format((int) $entityItem->$column, 0, '.', ' ') }}
                                         @endswitch
@@ -839,7 +855,7 @@
                             {{ $loop->iteration }}
                         </td>
                         @foreach ($resColumns as $column => $title)
-                            <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-2 py-2"
+                            <td class="break-all max-w-60 xl:max-w-44 truncate px-2 py-2"
                                 @if (
                                     (is_int($shipment->$column) ||
                                         $column == 'payed_sum' ||
@@ -973,7 +989,6 @@
                 function cl(attr, b) {
                     let positions = document.querySelectorAll(".position_column_" + attr, b);
                     for (var i = 0; i < positions.length; i++) {
-                        console.log(positions[i].style.display)
                         if (positions[i].style.display === 'none') {
                             positions[i].style.display = ''
                             if(!b.classList.contains('d-count')){

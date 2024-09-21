@@ -23,4 +23,12 @@ class ContactController extends Controller
 
         return response()->json($phones);
     }
+
+    public function getBalance(Request $request)
+    {
+        $balance=Contact::find($request->id)->balance;
+
+        return $balance;
+    }
+
 }

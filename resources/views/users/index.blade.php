@@ -111,41 +111,62 @@
 
                             @foreach($users as $user)
                                 <tr class="border-b-2">
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                    <td class="text-nowrap px-6 py-2">
                                         {{ $user->id }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                    <td class="text-nowrap px-6 py-2">
                                         {{ $user->name }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                    <td class="text-nowrap px-6 py-2">
                                         {{ $user->email }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                    <td class="text-nowrap px-6 py-2">
                                         {{ $user->roles->pluck('name')->implode(', ') }}
                                     </td>
-                                    <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                        <a href="{{ route('users.managment.edit', $user->id) }}">
-                                            <button class="rounded-lg p-1 font-semibold hover:bg-blue-500 hover:text-white border border-blue-500">
+                                    <td class="text-nowrap px-6 py-2 flex">
+                                        <x-dropdown align="right" width="48">
+                                            <x-slot name="trigger">
+                                                <button class="items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
 
-                                                <svg viewBox="0 0 435 512" class="w-6 h-6 hover:fill-white" fill="#2563eb" xmlns="http://www.w3.org/2000/svg">
-                                                    <path clip-rule="evenodd" d="M307.215 1.53291C302.943 2.30491 295.968 4.28091 291.715 5.92391C274.271 12.6609 279.976 7.39091 153.185 133.908C85.1194 201.826 33.8414 253.767 31.7214 256.941C29.7044 259.961 27.0224 264.987 25.7614 268.108C24.5004 271.23 18.9114 295.309 13.3414 321.617C1.6754 376.718 1.07339 382.52 5.67139 395.551C8.75639 404.291 14.1954 412.647 20.2954 418.017C28.7034 425.418 43.1554 430.949 54.0854 430.949C57.8804 430.949 143.506 414.403 158.216 410.827C160.837 410.19 166.356 408.085 170.481 406.148C177.849 402.69 180.064 400.546 296.146 284.539C420.819 159.945 419.933 160.892 426.234 145.609C430.802 134.53 432.604 126.027 433.158 112.949C434.026 92.4449 429.146 74.5869 418.204 58.2269C411.069 47.5589 380.866 17.4439 372.481 12.6369C353.06 1.50391 329.523 -2.50109 307.215 1.53291ZM331.047 52.0359C341.353 53.9239 346.984 57.7909 362.721 73.7909C378.405 89.7379 381.514 94.5089 383.46 105.62C384.809 113.326 382.862 123.915 378.827 130.808C377.172 133.636 331.661 180.184 262.341 249.949L148.571 364.449L101.513 372.353C75.6314 376.7 54.2914 380.075 54.0924 379.853C53.8924 379.631 57.8754 358.372 62.9444 332.611L72.1604 285.773L185.571 172.323C284.868 72.9909 299.728 58.5029 304.981 55.8989C314.302 51.2799 321.277 50.2459 331.047 52.0359ZM18.7204 464.284C3.33639 469.863 -1.4456 490.851 9.7594 503.613C11.4274 505.513 14.6344 508.053 16.8864 509.258L20.9814 511.449L214.441 511.709C429.916 511.999 414.557 512.482 422.679 505.159C424.942 503.119 427.613 499.649 428.615 497.449C430.805 492.642 431.049 483.244 429.106 478.594C426.941 473.412 421.443 467.84 415.988 465.3L410.981 462.969L216.481 463.035C69.4314 463.085 21.1854 463.39 18.7204 464.284Z"/>
-                                                </svg>
-                                            </button>
-                                        </a>
-                                        <form action="{{ route('users.managment.destroy', $user->id) }}" method="Post" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                    class="rounded-lg p-1 font-semibold hover:bg-red-500 hover:text-white border border-red-500">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                     class="w-6 h-6 stroke-red-500 hover:stroke-white">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                </svg>
+                                                    <div class="ms-1">
+                                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </x-slot>
 
-                                            </button>
-                                        </form>
+                                            <x-slot name="content">
+                                                <div class="py-1" role="none">
+                                                    <a href="{{ route('users.managment.edit', $user->id) }}" class="block px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 flex items-center space-x-2" role="menuitem" tabindex="-1">
+                                                        <svg class="w-4 h-4 fill-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 511">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M408.68 1.82615C396.293 5.83515 393.092 8.27415 369.68 31.5402L347.18 53.8991L401.926 108.664L456.672 163.428L477.787 142.433C500.324 120.025 505.515 113.417 508.757 103.01C513.294 88.4511 512.255 75.0461 505.496 60.9381C501.647 52.9041 500.239 51.2542 479.802 30.8382C456.749 7.80815 452.803 4.91815 439.635 1.41315C431.93 -0.63685 415.617 -0.41985 408.68 1.82615ZM173.968 227.189L31.7598 369.438L15.5438 434.438C3.65184 482.102 -0.481161 500.194 0.0438393 502.274C0.942839 505.83 4.69484 509.653 8.13284 510.515C10.8938 511.208 135.804 480.916 140.68 478.371C142.055 477.653 206.743 413.474 284.431 335.75L425.682 194.433L370.929 139.687L316.175 84.9401L173.968 227.189Z" />
+                                                        </svg>
+                                                        <span>{{ __('label.edit') }}</span>
+                                                    </a>
+                                                </div>
+                                                <div class="py-1" role="none">
+                                                    <form action="{{ route('users.managment.destroy', $user->id) }}" method="Post"
+                                                          class="block px-4 text-sm font-medium text-red-500 hover:bg-gray-100 cursor-pointer">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="w-full h-full py-2 flex items-center space-x-2">
+                                                            <svg class="w-4 h-4 fill-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
+                                                                <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd"></path>
+                                                            </svg>
+                                                            <span class="text-red-500">{{ __('label.delete') }}</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </x-slot>
+                                        </x-dropdown>
+
+
+
+
+
+
+
                                     </td>
                                 </tr>
                             @endforeach

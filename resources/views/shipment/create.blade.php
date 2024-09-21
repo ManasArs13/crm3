@@ -3,6 +3,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        @vite(['resources/js/main.js'])
     </x-slot>
 
     @if (isset($entity) && $entity != '')
@@ -96,40 +97,44 @@
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
-                            <div class="basis-1/2">
-                                <div class="flex flex-row mb-1 w-full">
-                                    <span
-                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Статус</span>
-                                    <select name="status" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        <option class="bg-white" value="Не оплачен" selected>Не оплачен</option>
-                                        <option class="bg-white" value="Оплачен">Оплачен</option>
-                                        <option class="bg-white" value="В долг знакомые">В долг знакомые</option>
-                                        <option class="bg-white" value="На руках">На руках</option>
-                                    </select>
-                                </div>
-                            </div>
+
                         </div>
 
                         {{-- Contacts --}}
-                        <div class="flex flex-row mb-3 w-full">
-                            <span
-                                class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Контрагент</span>
-                            <select name="contact" required style="width:39%" class="select2">
-                                @if ($order)
-                                    <option value="{{ $order->contact_id }}" selected>{{ $order->contact->name }}
-                                    </option>
-                                @else
-                                    <option value="" selected disabled>не выбрано</option>
-                                @endif
+                        <div class="w-full mb-2 flex flex-row gap-3 justify-between">
+                            <div class="flex flex-row basis-1/2">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span
+                                        class="basis-1/5 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Контрагент</span>
+                                    <select name="contact" required style="width:80%" class="select2 contact">
+                                        @if ($order)
+                                            <option value="{{ $order->contact_id }}" selected>{{ $order->contact->name }}
+                                            </option>
+                                        @else
+                                            <option value="" selected disabled>не выбрано</option>
+                                        @endif
 
-                                @foreach ($contacts as $contact)
-                                    <option value="{{ $contact->id }}">{{ $contact->name }}</option>
-                                @endforeach
-                            </select>
+                                        @foreach ($contacts as $contact)
+                                            <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="basic-1/2 text-end">
+                                {{-- balance --}}
+                                @if ($order)
+                                    <div class="balance p-1 {{ $order->contact->balance>=0?"bg-green-300": "bg-red-300" }} rounded " >
+                                        {{  $order->contact->balance }}
+                                    </div>
+                                @else
+                                    <div class="balance p-1  rounded " >
+                                        
+                                    </div>
+                                @endif
+                            </div>
                         </div>
+
 
                         {{-- Delivery --}}
                         <div class="flex flex-row mb-3 w-full gap-3">
@@ -162,6 +167,23 @@
                                         @foreach ($deliveries as $delivery)
                                             <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row mb-3 w-full">
+                            <div class="basis-1/2">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span
+                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Статус</span>
+                                    <select name="status" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        <option class="bg-white" value="Не оплачен" selected>Не оплачен</option>
+                                        <option class="bg-white" value="Оплачен">Оплачен</option>
+                                        <option class="bg-white" value="В долг знакомые">В долг знакомые</option>
+                                        <option class="bg-white" value="На руках">На руках</option>
                                     </select>
                                 </div>
                             </div>
