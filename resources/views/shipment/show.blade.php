@@ -49,7 +49,7 @@
 
                         {{-- Shipment --}}
                         <div class="w-full mb-2 flex flex-row gap-3">
-                            <div class="flex flex-row basis-1/3 mb-1">
+                            <div class="flex flex-row basis-1/2 mb-1">
                                 <span
                                     class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                     Отгрузка №</span>

@@ -87,34 +87,36 @@ class ShipmentMsService
             $product=Product::find($position["product_id"]);
             $ms_id=$product->ms_id;
 
-            if ($product->category_id==20){
-                // $array["positions"][] = [
-                //     "quantity" => (float)$position["quantity"],
-                //     "price" => (float)$position["price"] * 100,
-                //     'vat' => (int)$vat,
-                //     "assortment" => [
-                //         "meta" => [
-                //             "href" => "https://api.moysklad.ru/api/remap/1.2/entity/service/" . $ms_id,
-                //             "type" => "service",
-                //             "mediaType" => "application/json"
-                //         ]
-                //     ]
-                // ];
-            }else{
-                if ($position["quantity"] != 0) {
+            if ($ms_id!=null){
+                if ($product->category_id==20){
                     $array["positions"][] = [
                         "quantity" => (float)$position["quantity"],
                         "price" => (float)$position["price"] * 100,
                         'vat' => (int)$vat,
                         "assortment" => [
                             "meta" => [
-                                "href" => "https://api.moysklad.ru/api/remap/1.2/entity/product/" . $ms_id,
-                                "type" => "product",
+                                "href" => "https://api.moysklad.ru/api/remap/1.2/entity/service/" . $ms_id,
+                                "type" => "service",
                                 "mediaType" => "application/json"
                             ]
                         ]
                     ];
+                }else{
+                    if ($position["quantity"] != 0) {
+                        $array["positions"][] = [
+                            "quantity" => (float)$position["quantity"],
+                            "price" => (float)$position["price"] * 100,
+                            'vat' => (int)$vat,
+                            "assortment" => [
+                                "meta" => [
+                                    "href" => "https://api.moysklad.ru/api/remap/1.2/entity/product/" . $ms_id,
+                                    "type" => "product",
+                                    "mediaType" => "application/json"
+                                ]
+                            ]
+                        ];
 
+                    }
                 }
             }
         }
