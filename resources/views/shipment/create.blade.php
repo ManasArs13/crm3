@@ -105,7 +105,7 @@
                             <div class="flex flex-row basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="basis-1/5 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="basis-[20.5%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Контрагент</span>
                                     <select name="contact" required style="width:80%" class="select2 contact">
                                         @if ($order)
@@ -129,7 +129,7 @@
                                     </div>
                                 @else
                                     <div class="balance p-1  rounded " >
-                                        
+
                                     </div>
                                 @endif
                             </div>
@@ -143,8 +143,9 @@
                                     <span
                                         class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Транспорт</span>
-                                    <select name="transport" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                    <select name="transport" required style="width:82%"
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal
+                                        leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         <option value="" selected disabled>не выбрано</option>
                                         @foreach ($transports as $transport)
                                             <option value="{{ $transport->id }}">{{ $transport->name }}</option>

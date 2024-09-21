@@ -8,6 +8,8 @@ use GuzzleHttp\Client;
 use App\Contracts\EntityInterface;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7;
 
 class MoySkladService
 {
@@ -164,10 +166,10 @@ class MoySkladService
             } else {
                 return false;
             }
-        } catch (RequestException  $e) {
-            var_dump($e->getResponse()->getBody()->getContents());
+        } catch (ClientException  $e) {
+            // var_dump($e->getResponse()->getBody()->getContents());
             info($e->getResponse()->getBody()->getContents());
-            return false;
+            return  Psr7\Message::toString($e->getResponse());
         }
     }
 
@@ -193,12 +195,14 @@ class MoySkladService
                 return ["isGood" => false, "errors" => $response->getContent(false)];
             }
             return false;
-        } catch (RequestException $e) {
+        } catch (ClientException $e) {
 
-            var_dump($e->getResponse()->getBody()->getContents());
+            // echo Psr7\Message::toString($e->getRequest());
+            // echo Psr7\Message::toString($e->getResponse());
+            // var_dump($e->getResponse()->getBody()->getContents());
            // $rrr=var_export($e->getResponse()->getBody()->getContents(), true);
             info($e->getResponse()->getBody()->getContents());
-            return false;
+            return  Psr7\Message::toString($e->getResponse());
         }
     }
 }
