@@ -89,7 +89,7 @@
                                     <span
                                         class="basis-[15%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Контрагент</span>
-                                    <select name="contact" required style="width:36%" class="select2">
+                                    <select name="contact" required style="width:35%" class="select2">
                                         <option value="{{ $entityItem->contact_id }}" selected>
                                             {{ $entityItem->contact->name }}</option>
                                         @foreach ($contacts as $contact)
@@ -100,7 +100,7 @@
 
                                     {{-- Add contact button --}}
                                     <button type="button" id="button-modal"
-                                        class="inline-block rounded px-2 align-middle text-black hover:text-gray-600">
+                                        class="inline-block rounded  align-middle text-black hover:text-gray-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -162,19 +162,15 @@
                             </div>
                         </div>
                         {{-- Date --}}
+
                         <div class="flex flex-row mb-5 w-full">
                             <div class="flex flex-row">
-                                <span
-                                    class="basis-[41%] flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
+                                <span style="width:152px" class="basis-[100%] flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
                                     Плановая дата</span>
-                                <input type="date" min="2020-01-01"
-                                    value="{{ date('Y-m-d', strtotime($entityItem->date_plan)) }}" name="date"
-                                    required
-                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                <input type="date" min="2020-01-01" value="{{ date('Y-m-d', strtotime($entityItem->date_plan)) }}" name="date" required="" class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                             </div>
                             <div class="flex flex-row">
-                                <span
-                                    class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                <span class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                     время</span>
                                 <select name="time" class="rounded border border-solid border-neutral-400">
                                     <option value="{{ date('h', strtotime($entityItem->date_plan)) }}:00">{{ date('h', strtotime($entityItem->date_plan)) }}:00</option>
@@ -193,7 +189,9 @@
                                     <option value="20:00">20:00</option>
                                 </select>
                             </div>
+
                         </div>
+
 
                         <hr class="w-full">
 
