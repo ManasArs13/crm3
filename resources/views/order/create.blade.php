@@ -36,17 +36,19 @@
                     <div class="min-h-6 px-5 pt-5 pb-3">
 
                         {{-- Order --}}
-                        <div class="w-full mb-2 flex flex-row gap-3">
-                            <div class="flex flex-row basis-2/3">
-                                <div class="flex flex-row mb-1 w-full">
+                        <div class="w-full mb-2 flex flex-row">
+
+                                <div class="flex flex-row basis-1/2">
+                                    <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Заказ №</span>
                                     <input type="number" name="name" min="79999"
                                         value="{{ strtotime($dateNow) }}" required
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                    </div>
                                 </div>
-                                <div class="flex flex-row mb-1 w-full">
+                                <div class="flex flex-row mb-1 w-full basis-1/2">
                                     <div class="flex flex-row">
                                         <span
                                             class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
@@ -56,7 +58,7 @@
                                             class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                     </div>
                                 </div>
-                            </div>
+
 
                         </div>
 
@@ -76,7 +78,7 @@
 
                                 {{-- Add contact button --}}
                                 <button type="button" id="button-modal"
-                                    class="inline-block rounded px-2 align-middle text-black hover:text-gray-600">
+                                    class="inline-block rounded align-middle text-black hover:text-gray-600">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -100,9 +102,9 @@
                              <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="basis-[20%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Доставка</span>
-                                    <select name="delivery" required class="select2" style="width: 77%">
+                                    <select name="delivery" required class="select2" style="width: 100%">
                                         <option value="" selected disabled>не выбрано</option>
                                         @foreach ($deliveries as $delivery)
                                             <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
@@ -117,9 +119,9 @@
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="flex basis-[20%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Статус</span>
-                                    <select name="status" required style="width: 77%
+                                    <select name="status" required style="width: 77%"
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         @foreach ($statuses as $status)
                                             <option class="bg-white" value="{{ $status->id }}">{{ $status->name }}
@@ -133,8 +135,8 @@
                         {{-- Date --}}
                         <div class="flex flex-row mb-5 w-full">
                             <div class="flex flex-row">
-                                <span
-                                    class="basis-1/4 flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
+                                <span style="width:152px"
+                                    class="basis-[100%] flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
                                     Плановая дата</span>
                                 <input type="date" min="2020-01-01" value="{{ $date }}" name="date"
                                     required

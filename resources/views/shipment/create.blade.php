@@ -137,7 +137,7 @@
 
 
                         {{-- Delivery --}}
-                        <div class="flex flex-row mb-3 w-full gap-3">
+                        <div class="flex flex-row mb-3 w-full">
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
@@ -192,11 +192,16 @@
 
                         {{-- Address --}}
                         <div class="flex flex-row mb-5 w-full">
-                            <span
-                                class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                Адрес</span>
-                            <input type="text" name="address" placeholder="введите адрес"
-                                class="basis-full relative m-0 flex rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+
+                            <div class="basis-1/2">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span
+                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Адрес</span>
+                                        <input type="text" name="address" placeholder="введите адрес"
+                                        class="basis-full relative m-0 flex rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                </div>
+                            </div>
                         </div>
 
                         <hr class="w-full">

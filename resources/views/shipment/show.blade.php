@@ -48,14 +48,18 @@
 
 
                         {{-- Shipment --}}
-                        <div class="w-full mb-2 flex flex-row gap-3">
-                            <div class="flex flex-row basis-1/2 mb-1">
-                                <span
-                                    class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                    Отгрузка №</span>
-                                <input type="text" name="name" value="{{ $entityItem->name }}" required
+                        <div class="w-full mb-2 flex flex-row">
+                            <div class="basis-1/2">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Отгрузка №</span>
+
+                                    <input type="text" name="name" value="{{ $entityItem->name }}" required
                                     class="relative m-0 flex basis-full items-center rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
+                                </div>
+                            </div>
+                            <div class="flex flex-row mb-1 w-full basis-1/3">
                                 @if ($entityItem->ms_id != null)
                                     <a href="https://online.moysklad.ru/app/#demand/edit?id={{ $entityItem->ms_id }}"
                                         target="_blank" class="flex justify-center items-center ml-4">
@@ -70,8 +74,6 @@
                                         </svg>
                                     </a>
                                 @endif
-                            </div>
-                            <div class="flex flex-row mb-1 w-full basis-1/3">
                                 <span
                                     class="basis-1/2 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                     дата создания</span>
@@ -85,25 +87,28 @@
 
                         {{-- Contacts --}}
                         <div class="flex flex-row mb-3 basis-full justify-between align-middle">
-                            <div class="basis-1/2">
-                                <div class="flex flex-row w-full">
-                                    <span
-                                        class="basis-1/5 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Контрагент</span>
-                                    <select name="contact" required style="width:75%" class="select2">
-                                        @if ($entityItem->contact_id)
-                                            <option value="{{ $entityItem->contact_id }}" selected>
-                                                {{ $entityItem->contact->name }}</option>
-                                        @else
-                                            <option value="" selected disabled>не выбрано</option>
-                                        @endif
 
-                                        @foreach ($contacts as $contact)
-                                            <option value="{{ $contact->id }}">{{ $contact->name }}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="basis-1/2">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Контрагент</span>
+
+                                        <select name="contact" required style="width:100%" class="select2">
+                                            @if ($entityItem->contact_id)
+                                                <option value="{{ $entityItem->contact_id }}" selected>
+                                                    {{ $entityItem->contact->name }}</option>
+                                            @else
+                                                <option value="" selected disabled>не выбрано</option>
+                                            @endif
+
+                                            @foreach ($contacts as $contact)
+                                                <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                                            @endforeach
+                                        </select>
+
                                 </div>
                             </div>
+
                             <div class="basic-1/2">
 
                                 {{-- balance --}}
@@ -115,13 +120,13 @@
                         </div>
 
 
-                        <div class="flex flex-row mb-3 w-full gap-3">
+                        <div class="flex flex-row mb-3 w-full ">
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
-                                    <span
-                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Статус</span>
-                                    <select name="status" required
+                                    <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Cтатус</span>
+
+                                    <select name="status" required style="width: 100%"
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         <option selected class="bg-white" value="{{ $entityItem->status }}">
                                             {{ $entityItem->status }}
@@ -131,6 +136,7 @@
                                         <option class="bg-white" value="В долг знакомые">В долг знакомые</option>
                                         <option value="На руках" selected>На руках</option>
                                     </select>
+
                                 </div>
                             </div>
                             <div class="basis-1/2">
@@ -154,7 +160,7 @@
                             </div>
                         </div>
                         {{-- Delivery --}}
-                        <div class="flex flex-row mb-3 w-full gap-3">
+                        <div class="flex flex-row mb-3 w-full">
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
