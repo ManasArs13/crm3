@@ -31,7 +31,7 @@
                         @endif
                     </div>
                 </div>
-               
+
                 <div class="flex px-3 text-center font-bold">
                     <div class="flex gap-2">
                         <div class="font-medium mx-1 bg-yellow-200 rounded-md px-2">

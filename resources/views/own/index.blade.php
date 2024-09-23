@@ -281,14 +281,15 @@
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-64 xl:max-w-64 truncate px-6 py-2"
-                                        @if (is_int($entityItem->$column) ||
+                                        @if ((is_int($entityItem->$column) && $column != 'category_id') ||
                                                 $column == 'weight_kg' ||
-                                                $column == 'category_id' ||
-                                                preg_match('/_id\z/u', $column)) style="text-align:right" @else style="text-align:left" @endif
+                                                (preg_match('/_id\z/u', $column) && $column != 'category_id')) style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
                                                 {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                            @elseif($column == 'category_id')
+                                                {{ $entityItem->category->short_name ?? '' }}
                                             @else
                                                 {{ $entityItem->$column }}
                                             @endif

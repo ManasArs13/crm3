@@ -118,7 +118,7 @@
                             @if (isset($category->remainder))
                                 <tr class="border-b-2">
                                     <td class="px-2 m-2 py-2 justify-content-beetwen">
-                                        {{ $category->name }}
+                                        {{ $category->short_name }}
                                     </td>
                                     <td>
                                         <div
