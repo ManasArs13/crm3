@@ -71,216 +71,195 @@ class OrderService implements EntityInterface
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
 
-            if (isset($row["deleted"])) {
-                $shipments = Shipment::where('order_id', $entity->id)->get();
+            if ($entity->ms_id === null) {
+                $entity->ms_id = $row['id'];
+            }
 
-                foreach ($shipments as $shipment) {
-                    if ($shipment) {
-                        $shipment->products()->forceDelete();
-                        $shipment->forceDelete();
-                    }
+            $datePlan = isset($row["deliveryPlannedMoment"]) ? new DateTime($row["deliveryPlannedMoment"]) : null;
+            $dateCreated = isset($row["moment"]) ? new DateTime($row["moment"]) : null;
+            $delivery = null;
+            $transport = null;
+            $deliveryPrice = 0;
+            $vehicleType = null;
+            $isMade = 0;
+            $amoOrder = null;
+            $amoOrderLink = null;
+            $comment = null;
+
+            $entity->name = $row["name"];
+
+            usleep(2000);
+            $contactMs = $this->service->actionGetRowsFromJson($row["agent"]['meta']["href"], false);
+
+            if (isset($contactMs['balance'])) {
+
+                $entityContact = Contact::first(['ms_id' => $contactMs["id"]]);
+
+                if ($entityContact !== null) {
+                    $entityContact->balance = $contactMs["balance"] / 100;
                 }
-
-
-                $entity->positions()->forceDelete();
-                $entity->forceDelete();
             } else {
-                if ($entity->ms_id === null) {
-                    $entity->ms_id = $row['id'];
+                $entityContact = Contact::firstOrNew(['ms_id' => $contactMs['id']]);
+
+                if ($entityContact->ms_id === null) {
+                    $entityContact->ms_id = $contactMs['id'];
                 }
 
-                $datePlan = isset($row["deliveryPlannedMoment"]) ? new DateTime($row["deliveryPlannedMoment"]) : null;
-                $dateCreated = isset($row["moment"]) ? new DateTime($row["moment"]) : null;
-                $delivery = null;
-                $transport = null;
-                $deliveryPrice = 0;
-                $vehicleType = null;
-                $isMade = 0;
-                $amoOrder = null;
-                $amoOrderLink = null;
-                $comment = null;
+                $entityContact->name = $contactMs['name'];
 
-                $entity->name = $row["name"];
+                $phone = null;
+                $phoneNorm = null;
 
-                usleep(2000);
-                $contactMs = $this->service->actionGetRowsFromJson($row["agent"]['meta']["href"], false);
-
-                if (isset($contactMs['balance'])) {
-
-                    $entityContact = Contact::first(['ms_id' => $contactMs["id"]]);
-
-                    if ($entityContact !== null) {
-                        $entityContact->balance = $contactMs["balance"] / 100;
-                    }
-                } else {
-                    $entityContact = Contact::firstOrNew(['ms_id' => $contactMs['id']]);
-
-                    if ($entityContact->ms_id === null) {
-                        $entityContact->ms_id = $contactMs['id'];
-                    }
-
-                    $entityContact->name = $contactMs['name'];
-
-                    $phone = null;
-                    $phoneNorm = null;
-
-                    if (isset($contactMs['phone'])) {
-                        $phone = $contactMs["phone"];
-                        $pattern = "/(\+7|8|7)(\s?(\-|\()?\d{3}(\-|\))?\s?\d{3}-?\d{2}-?\d{2})/";
-                        $phones = preg_replace('/[\(,\s,\),\-, \+]/', '', $contactMs["phone"]);
-                        preg_match_all($pattern, $phones, $matches);
-                        if (isset($matches[2]))
-                            $phoneNorm = "+7" . implode('', $matches[2]);
-                    }
-
-                    $entityContact->phone = $phone;
-                    $entityContact->phone_norm = $phoneNorm;
-
-                    $email = null;
-
-                    if (isset($contactMs['email'])) {
-                        $email = $contactMs["email"];
-                    }
-
-                    $entityContact->email = $email;
-
-                    $isArchived = 0;
-
-                    if (isset($contactMs['archived'])) {
-                        $isArchived = $contactMs["archived"];
-                    }
-
-                    $entityContact->is_archived = $isArchived;
-
-                    $amoContact = null;
-                    $amoContactLink = null;
-
-                    if (isset($contactMs["attributes"])) {
-                        foreach ($contactMs["attributes"] as $attribute) {
-                            switch ($attribute["id"]) {
-                                case $guidAttrAmoContact:
-                                    $amoContact = $attribute["value"];
-                                    break;
-                                case $guidAttrAmoContactLink:
-                                    $amoContactLink = $attribute["value"];
-                                    break;
-                            }
-                        }
-                    }
-
-                    $entityContact->contact_amo_id = $amoContact;
-                    $entityContact->contact_amo_link = $amoContactLink;
-                    $entityContact->is_exist = 1;
-
-                    if ($contactMs['created']) {
-                        $entityContact->created_at = $contactMs['created'];
-                    }
-
-                    if ($contactMs['updated']) {
-                        $entityContact->updated_at = $contactMs['updated'];
-                    }
-                }
-                $entityContact->save();
-
-                $entity->contact_id = $entityContact->id;
-
-                if (isset($row['state'])) {
-                    $status_bd = Status::where('ms_id', $this->getGuidFromUrl($row['state']['meta']['href']))->first();
-                    $entity->status_id = $status_bd->id;
-                } else {
-                    $entity->status_id = null;
+                if (isset($contactMs['phone'])) {
+                    $phone = $contactMs["phone"];
+                    $pattern = "/(\+7|8|7)(\s?(\-|\()?\d{3}(\-|\))?\s?\d{3}-?\d{2}-?\d{2})/";
+                    $phones = preg_replace('/[\(,\s,\),\-, \+]/', '', $contactMs["phone"]);
+                    preg_match_all($pattern, $phones, $matches);
+                    if (isset($matches[2]))
+                        $phoneNorm = "+7" . implode('', $matches[2]);
                 }
 
-                $entity->date_plan = $datePlan;
-                $entity->date_moment = $dateCreated;
-                $entity->sum = $row["sum"] / 100;
-                $entity->shipped_sum = $row["shippedSum"] / 100;
-                $entity->reserved_sum = $row["reservedSum"] / 100;
-                $entity->payed_sum = $row["payedSum"] / 100;
-                $statusShipped = ($row["shippedSum"] == $row["sum"]) ? 1 : ($row["shippedSum"] > 0 ? -1 : 0);
-                $entity->status_shipped = $statusShipped;
-                $entity->debt = ($row["shippedSum"] - $row["payedSum"]) / 100;
+                $entityContact->phone = $phone;
+                $entityContact->phone_norm = $phoneNorm;
 
-                if (isset($row["attributes"])) {
-                    foreach ($row["attributes"] as $attribute) {
+                $email = null;
+
+                if (isset($contactMs['email'])) {
+                    $email = $contactMs["email"];
+                }
+
+                $entityContact->email = $email;
+
+                $isArchived = 0;
+
+                if (isset($contactMs['archived'])) {
+                    $isArchived = $contactMs["archived"];
+                }
+
+                $entityContact->is_archived = $isArchived;
+
+                $amoContact = null;
+                $amoContactLink = null;
+
+                if (isset($contactMs["attributes"])) {
+                    foreach ($contactMs["attributes"] as $attribute) {
                         switch ($attribute["id"]) {
-                            case $attributeDelivery:
-                                $delivery = $attribute["value"]["id"];
+                            case $guidAttrAmoContact:
+                                $amoContact = $attribute["value"];
                                 break;
-                            case $attributeTransport:
-                                $transport = $attribute["value"]["id"];
-                                break;
-                            case $attributeVehicleType:
-                                $vehicleType = $attribute["value"]["id"];
-                                break;
-                            case $attributeDeliveryPrice:
-                                $deliveryPrice = $attribute["value"];
-                                break;
-                            case $attributeIsMade:
-                                $isMade = $attribute["value"];
-                                break;
-                            case $attributeLinkToAmo:
-                                $amoOrderLink = $attribute["value"];
-                                $amoOrder = $this->getGuidFromUrl($amoOrderLink);
-                                break;
-                            case $attributeManager:
-                                $managerMS_id = $this->getGuidFromUrl($attribute['value']['meta']['href']);
-                                $manager = Manager::where('ms_id', $managerMS_id)->first();
-                                if ($manager) {
-                                    $entity->manager_id = $manager->id;
-                                }
+                            case $guidAttrAmoContactLink:
+                                $amoContactLink = $attribute["value"];
                                 break;
                         }
                     }
                 }
 
-                $transport_bd = Transport::where('ms_id', $transport)->first();
-                $entity->transport_id = $transport_bd ? $transport_bd->id : null;
+                $entityContact->contact_amo_id = $amoContact;
+                $entityContact->contact_amo_link = $amoContactLink;
+                $entityContact->is_exist = 1;
 
-                $delivery_bd = Delivery::where('ms_id', $delivery)->first();
-                $entity->delivery_id = $delivery_bd ? $delivery_bd->id : null;
-
-                $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
-                $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
-
-                $entity->delivery_price = $deliveryPrice;
-                $entity->is_made = $isMade;
-                $entity->is_demand = 0;
-                $entity->order_amo_link = $amoOrderLink;
-                $entity->order_amo_id = $amoOrder;
-                $entity->comment = $comment;
-
-                if (isset($row["description"])) {
-                    $entity->comment = $row["description"];
-                }
-                if (Arr::exists($row, 'created')) {
-                    $entity->created_at = $row['created'];
+                if ($contactMs['created']) {
+                    $entityContact->created_at = $contactMs['created'];
                 }
 
-                if (Arr::exists($row, 'updated')) {
-                    $entity->updated_at = $row['updated'];
+                if ($contactMs['updated']) {
+                    $entityContact->updated_at = $contactMs['updated'];
                 }
+            }
 
+            $entityContact->save();
+
+            $entity->contact_id = $entityContact->id;
+
+            if (isset($row['state'])) {
+                $status_bd = Status::where('ms_id', $this->getGuidFromUrl($row['state']['meta']['href']))->first();
+                $entity->status_id = $status_bd->id;
+            } else {
+                $entity->status_id = null;
+            }
+
+            $entity->date_plan = $datePlan;
+            $entity->date_moment = $dateCreated;
+            $entity->sum = $row["sum"] / 100;
+            $entity->shipped_sum = $row["shippedSum"] / 100;
+            $entity->reserved_sum = $row["reservedSum"] / 100;
+            $entity->payed_sum = $row["payedSum"] / 100;
+            $statusShipped = ($row["shippedSum"] == $row["sum"]) ? 1 : ($row["shippedSum"] > 0 ? -1 : 0);
+            $entity->status_shipped = $statusShipped;
+            $entity->debt = ($row["shippedSum"] - $row["payedSum"]) / 100;
+
+            if (isset($row["attributes"])) {
+                foreach ($row["attributes"] as $attribute) {
+                    switch ($attribute["id"]) {
+                        case $attributeDelivery:
+                            $delivery = $attribute["value"]["id"];
+                            break;
+                        case $attributeTransport:
+                            $transport = $attribute["value"]["id"];
+                            break;
+                        case $attributeVehicleType:
+                            $vehicleType = $attribute["value"]["id"];
+                            break;
+                        case $attributeDeliveryPrice:
+                            $deliveryPrice = $attribute["value"];
+                            break;
+                        case $attributeIsMade:
+                            $isMade = $attribute["value"];
+                            break;
+                        case $attributeLinkToAmo:
+                            $amoOrderLink = $attribute["value"];
+                            $amoOrder = $this->getGuidFromUrl($amoOrderLink);
+                            break;
+                        case $attributeManager:
+                            $managerMS_id = $this->getGuidFromUrl($attribute['value']['meta']['href']);
+                            $manager = Manager::where('ms_id', $managerMS_id)->first();
+                            if ($manager) {
+                                $entity->manager_id = $manager->id;
+                            }
+                            break;
+                    }
+                }
+            }
+
+            $transport_bd = Transport::where('ms_id', $transport)->first();
+            $entity->transport_id = $transport_bd ? $transport_bd->id : null;
+
+            $delivery_bd = Delivery::where('ms_id', $delivery)->first();
+            $entity->delivery_id = $delivery_bd ? $delivery_bd->id : null;
+
+            $transport_type_bd = TransportType::where('ms_id', $vehicleType)->first();
+            $entity->transport_type_id = $transport_type_bd ? $transport_type_bd->id : null;
+
+            $entity->delivery_price = $deliveryPrice;
+            $entity->is_made = $isMade;
+            $entity->is_demand = 0;
+            $entity->order_amo_link = $amoOrderLink;
+            $entity->order_amo_id = $amoOrder;
+            $entity->comment = $comment;
+
+            if (isset($row["description"])) {
+                $entity->comment = $row["description"];
+            }
+
+            if (isset($row['created'])) {
+                $entity->created_at = $row['created'];
+            }
+
+            if (isset($row['updated'])) {
+                $entity->updated_at = $row['updated'];
+            }
+
+            if (isset($row["deleted"])) {
+                $entity->deleted_at = $row["deleted"];
+            }
+
+            $entity->save();
+
+            $needDelete = $this->orderPositionService->import($row["positions"], $entity->id);
+
+            if ($needDelete["isDemand"]) {
+                $entity->is_demand = $needDelete["isDemand"];
                 $entity->save();
-
-                $needDelete = $this->orderPositionService->import($row["positions"], $entity->id);
-
-                if ($needDelete["needDelete"]) {
-                    $shipments = Shipment::where('order_id', $entity->id)->get();
-
-                    foreach ($shipments as $shipment) {
-                        if ($shipment) {
-                            $shipment->products()->forceDelete();
-                            $shipment->forceDelete();
-                        }
-                    }
-
-                    $entity->positions()->forceDelete();
-                    $entity->forceDelete();
-                } else {
-                    $entity->is_demand = $needDelete["isDemand"];
-                    $entity->save();
-                }
             }
         }
     }
@@ -368,20 +347,8 @@ class OrderService implements EntityInterface
                     $result = json_decode($response->getBody()->getContents(), true);
 
                     if (isset($result["deleted"])) {
-                        $shipments = Shipment::where('order_id', $order->id)->get();
-
-                        foreach ($shipments as $shipment) {
-                            if ($shipment) {
-                                $shipment->products()->forceDelete();
-                                $shipment->forceDelete();
-                            }
-                        }
-
-                        $order->positions()->forceDelete();
-
-                        $order->forceDelete();
-
-                        info('Order №' . $order->ms_id . ' has been deleted!');
+                        $order->deleted_at = $result["deleted"];
+                        $order->save();
                     }
                 } catch (RequestException  $e) {
 

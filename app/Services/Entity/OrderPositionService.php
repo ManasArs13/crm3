@@ -17,8 +17,6 @@ class OrderPositionService
 
     public function import($data, $order)
     {
-        $count = 0;
-        $guids = [];
         $isDemand = true;
         $rows = isset($data['rows']) ? $data['rows'] : $data;
 
@@ -28,12 +26,12 @@ class OrderPositionService
             $entity = OrderPosition::firstOrNew(['ms_id' => $row["id"]]);
             $product = Product::where('ms_id','=',$row["assortment"]["id"])->first();
 
-            if ($product != null) {
+            if ($product) {
                 if ($entity->ms_id === null) {
                     $entity->ms_id = $row['id'];
                 }
 
-                if ($isDemand && ($product->min_balance_mc - $row["quantity"] + $row["shipped"] < 0)) {
+                if ($product->min_balance_mc - $row["quantity"] + $row["shipped"] < 0) {
                     $isDemand = false;
                 }
 
@@ -57,20 +55,11 @@ class OrderPositionService
                 $entity->save();
 
             } else {
-                ++$count;
-            }
-
-            $guids[] = $entity->id;
-        }
-        if ($count == count($rows)) {
-            return ["needDelete" => 1, "isDemand" => $isDemand];
-        } else {
-            if (count($guids) > 0) {
-                $this->deleteDeletedPositionsFromMS($order, $guids);
+                info('Продукт ' . $row["assortment"]["id"] . ' не найден. Заказ №' . $order);
             }
         }
 
-        return ["needDelete" => 0, "isDemand" => $isDemand];
+        return [ "isDemand" => $isDemand];
     }
 
     public function getGuidFromUrl($url)
