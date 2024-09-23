@@ -31,7 +31,7 @@
                         @endif
                     </div>
                 </div>
-               
+
                 <div class="flex px-3 text-center font-bold">
                     <div class="flex gap-2">
                         <div class="font-medium mx-1 bg-yellow-200 rounded-md px-2">
@@ -103,16 +103,15 @@
             </div>
 
             <div class="flex flex-col bg-white rounded-md shadow overflow-x-auto">
-
                 <table>
                     <thead>
                     <tr class="font-light border-b-2 text-sm bg-neutral-200">
-                        <th></th>
-                        <th class="border-r-2 py-2 px-1">№</th>
+                        <th class="min-w-[59px]"></th>
                         <th class="border-l-2 py-2 px-1 text-center">Транспорт</th>
-                        <th class="border-r-2 py-2 px-1">ГП</th>
+                        <th class="border-r-2 py-2 px-1 min-w-[59px]">ГП</th>
                         <th class="border-r-2 py-2 px-1">Статус</th>
                         <th class="py-2 px-1">База</th>
+                        <th class="py-2 px-1 max-w-[5px]">P</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -128,25 +127,21 @@
                             $firstTimeToOut = Carbon\Carbon::parse($shipment->first()->time_to_out);
                             $firstToReturn = Carbon\Carbon::parse($shipment->first()->time_to_return);
 
-                            if($currentTime->between($firstCreatedAt, $firstTimeToCome)){
+                            if ($currentTime->between($firstCreatedAt, $firstTimeToCome)) {
                                 $statusColor = 'bg-yellow-100';
                                 $statusInfo = 'Отгружен';
-                            } elseif($currentTime->between($firstTimeToCome, $firstTimeToOut)){
+                            } elseif ($currentTime->between($firstTimeToCome, $firstTimeToOut)) {
                                 $statusColor = 'bg-sky-200';
                                 $statusInfo = 'На объекте';
-                            } elseif($currentTime->between($firstTimeToOut, $firstToReturn)){
+                            } elseif ($currentTime->between($firstTimeToOut, $firstToReturn)) {
                                 $statusColor = 'bg-sky-100';
                                 $statusInfo = 'Обратно';
-                            } else{
+                            } else {
                                 $statusColor = 'bg-green-100';
                                 $statusInfo = 'На базе';
                             }
                         @endphp
                         <tr class="border-b-2 {{ $statusColor }}">
-                            <td class="border-r-2 text-nowrap px-2 py-2">
-                                <button class="buttonForOpen text-normal font-bold text-blue-700 d-count"
-                                        data-id="shipment_{{ $key }}">{{ $shipment->count() }}</button>
-                            </td>
                             <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transportNumber }}</td>
                             <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
                                 {{ $transportName ? $transportName : 'не указано' }}
@@ -154,18 +149,20 @@
                             <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
                             <td class="px-1 m-2 border-x-2 text-center py-3 truncate">{{ $statusInfo }}</td>
                             <td class="px-1 m-2 text-center py-3">{{ $firstToReturn->format('H:i') }}</td>
+                            <td class="border-l-2 text-nowrap px-2 py-2">
+                                <button class="buttonForOpen text-normal font-bold text-blue-700 d-count"
+                                        data-id="shipment_{{ $key }}">{{ $shipment->count() }}</button>
+                            </td>
                         </tr>
-                        @foreach($shipment as $num => $transport)
+                        @foreach ($shipment as $num => $transport)
                             @php
                                 $createdAt = Carbon\Carbon::parse($transport->created_at);
                                 $timeToCome = Carbon\Carbon::parse($transport->time_to_come);
                                 $timeToOut = Carbon\Carbon::parse($transport->time_to_out);
                                 $timeToReturn = Carbon\Carbon::parse($transport->time_to_return);
                             @endphp
-                            <tr style="display: none;" class="border-y-2 position_column_shipment_{{ $key }}">
-                                <td class="border-r-2 text-nowrap px-2 py-2">
-                                    {{ $num+1 }}
-                                </td>
+                            <tr style="display: none;"
+                                class="border-y-2 position_column_shipment_{{ $key }}">
                                 <td class="px-1 m-2 border-r-2 py-3 text-center">
                                     {{ $createdAt->format('H:i') }}
                                 </td>
@@ -177,6 +174,9 @@
                                 </td>
                                 <td class="px-1 m-2 text-center py-3" colspan="2">
                                     {{ $timeToReturn->format('H:i') }}
+                                </td>
+                                <td class="border-l-2 text-nowrap px-2 py-2">
+                                    {{ $num + 1 }}
                                 </td>
                             </tr>
                         @endforeach
