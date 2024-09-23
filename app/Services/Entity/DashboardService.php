@@ -37,7 +37,7 @@ class DashboardService
             "residual_count",
             "comment",
             "delivery_id",
-            "ms_link",
+//            "ms_link",
         ];
 
         $this->plant_capacity = Option::select('value')->where('code', 'plant_capacity')->first()?->value;
@@ -195,6 +195,8 @@ class DashboardService
         }
 
         $materials = $this->processMaterials($materials);
+
+//        dd($entityItems);
 
         return view('dashboard.index', compact(
             'urlShow',
