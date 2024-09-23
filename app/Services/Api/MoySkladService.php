@@ -38,7 +38,7 @@ class MoySkladService
     //     */
     public function createUrl(
         string            $url,
-        EntityInterface $repository,
+        EntityInterface $repository=null,
         array             $filters = [],
         string            $expand = "",
         int               $attr = 0,
@@ -48,6 +48,7 @@ class MoySkladService
         $step = 0;
         $count = 1;
         $strGuids = "";
+        $size=0;
 
         if (!empty($filters)) {
             $strGuids = $this->getFilter($filters);
@@ -79,9 +80,13 @@ class MoySkladService
                     break;
                 case -1:
                     $count = 0;
+                case 2:// limit
+                    $count=0;
+                    $size=$rows["meta"]["size"];
+                    break;
             }
         }
-        return 0;
+        return $size;
     }
 
     public function actionGetRowsFromJson(string $url, bool $rows = true, $downloadPath = '')

@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Shipment;
+use App\Models\Order;
+use App\Models\Option;
+use App\Services\Api\MoySkladService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+
 
 class SummaryController extends Controller
 {
@@ -80,5 +84,26 @@ class SummaryController extends Controller
         "sumBuyer","sumAnother",
         "sumMutualSettlementMainDebt", "sumBuyerDebt",
         "sumAnotherDebt","sumCarriersDebt","shipments"));
+    }
+
+    public function remains( MoySkladService $service ){
+
+        $cntShipmentsSite=Shipment::count();
+        $cntOrdersSite=Order::count();
+        $cntContactsSite=Contact::count();
+
+
+        $urlContact = Option::where('code', '=', 'ms_counterparty_url')->first()?->value;
+        $urlOrder = Option::where('code', '=', 'ms_orders_url')->first()?->value;
+        $urlDemand = Option::where('code', '=', 'ms_url_demand')->first()?->value;
+
+
+        $cntShipmentsMS=$service->createUrl($urlDemand,null, [], "", 2, false);
+        $cntOrdersMS=$service->createUrl($urlOrder,null, [], "", 2, false);
+        $cntContactsMS=$service->createUrl($urlContact,null, [], "", 2, false);
+        
+
+        return view("summary.remains", compact("cntShipmentsSite", "cntOrdersSite", "cntContactsSite",
+                                                "cntShipmentsMS", "cntOrdersMS", "cntContactsMS"));
     }
 }

@@ -277,6 +277,11 @@
                                         </x-dropdown-link>
                                     @endrole
 
+                                    @role('admin')
+                                        <x-dropdown-link :href="route('summary.remains')">
+                                            {{ __('title.summaryRemains') }}
+                                        </x-dropdown-link>
+                                    @endrole
 
                                 </x-slot>
                             </x-dropdown>

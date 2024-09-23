@@ -246,6 +246,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
 
     Route::get('/summary', [SummaryController::class, 'index'])->name('summary.index');
+    Route::get('/summary/remains', [SummaryController::class, 'remains'])->name('summary.remains');
 });
 
 
