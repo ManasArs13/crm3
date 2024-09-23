@@ -70,7 +70,7 @@ class OrderService implements EntityInterface
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
             if (isset($row["deleted"])) {
-                $shipments = Shipment::query()->where('id', $entity->id)->first();
+                $shipments = Shipment::query()->where('order_id', $entity->id)->first();
 
                 if ($shipments) {
                     $shipments->products()->forceDelete();
