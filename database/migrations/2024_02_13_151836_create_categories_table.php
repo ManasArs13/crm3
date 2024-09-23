@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string("name", 190);
+            $table->string("short_name", 190);
             $table->boolean('is_active')->default(0);
             $table->enum('type', [
                 Category::NOT_SELECTED,

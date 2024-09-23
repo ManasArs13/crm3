@@ -239,13 +239,13 @@ class ProductController extends Controller
 
         if ($request->type == 'products') {
             $entity = 'products';
-            $entityItems = Product::query()->where('type', Product::PRODUCTS);
+            $entityItems = Product::query()->where('type', Product::PRODUCTS)->with('category');
         } else if ($request->type == 'materials') {
             $entity = 'materials';
-            $entityItems = Product::query()->where('type', Product::MATERIAL);
+            $entityItems = Product::query()->where('type', Product::MATERIAL)->with('category');
         } else {
             $entity = 'products';
-            $entityItems = Product::query();
+            $entityItems = Product::query()->with('category');
         }
 
         /* Колонки */
