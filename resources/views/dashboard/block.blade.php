@@ -140,7 +140,7 @@
                         <th class="border-r-2 py-2 px-1 min-w-[59px]">ГП</th>
                         <th class="border-r-2 py-2 px-1">Статус</th>
                         <th class="py-2 px-1">База</th>
-                        <th class="py-2 px-1 max-w-[5px]">P</th>
+                        <th class="py-2 px-1">P</th>
                     </tr>
                     </thead>
                     <tbody>
