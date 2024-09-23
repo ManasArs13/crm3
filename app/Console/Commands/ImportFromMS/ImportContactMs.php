@@ -41,9 +41,13 @@ class ImportContactMs extends Command
         $url_2 = Option::where('code', '=', 'ms_counterparty_report_url')->first()?->value;
 
         $all = $this->option('all');
-        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subMonths(3);
 
-        $service->createUrl($url_1, $contactMsService, ["updated" => '>=' . $date], '');
-        $service->createUrl($url_2, $contactMsService, ["updated" => '>=' . $date], '');
+        if ($all) {
+            $service->createUrl($url_1, $contactMsService, [] , '');
+            $service->createUrl($url_2, $contactMsService, [] , '');
+        } else {
+            $service->createUrl($url_1, $contactMsService, ["updated" => '>=' . Carbon::now()->subMonths(3)], '');
+            $service->createUrl($url_2, $contactMsService, ["updated" => '>=' . Carbon::now()->subMonths(3)], '');
+        }
     }
 }

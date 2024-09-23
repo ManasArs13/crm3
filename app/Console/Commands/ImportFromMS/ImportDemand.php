@@ -30,9 +30,13 @@ class ImportDemand extends Command
     public function handle(DemandService $demandService, MoySkladService $service)
     {
         $all = $this->option('all');
+
         $url = Option::query()->where('code', '=', 'ms_url_demand')->first()?->value;
 
-        $date = $all ? Carbon::now()->subYears(2) : Carbon::now()->subDays(3);
-        $service->createUrl($url, $demandService, ["updated"=>'>='.$date, "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
+        if($all) {
+            $service->createUrl($url, $demandService, ["isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
+        } else {
+            $service->createUrl($url, $demandService, ["updated"=>'>='.Carbon::now()->subDays(3), "isDeleted"=>["true","false"]],'positions.assortment,attributes.value,agent,state');
+        }
     }
 }
