@@ -102,6 +102,7 @@ class OrderService implements EntityInterface
 
                 $entity->name = $row["name"];
 
+                usleep(2000);
                 $contactMs = $this->service->actionGetRowsFromJson($row["agent"]['meta']["href"], false);
 
                 if (isset($contactMs['balance'])) {
