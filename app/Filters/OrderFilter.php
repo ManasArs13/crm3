@@ -29,7 +29,8 @@ class OrderFilter
             $this->builder->whereIn('status_id', $this->request->status);
         }
 
-        if(!isset($this->filters()['date_plan']['min']) && !isset($this->filters()['date_plan']['max'])){
+
+        if(!isset($this->filters()['date_plan']['min']) && !isset($this->filters()['date_plan']['max']) && empty($this->filters())){
             $this->builder->where('date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
             ->where('date_plan', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
         }
@@ -68,8 +69,6 @@ class OrderFilter
         if ($value['max']) {
             $this->builder->where('date_plan', '<=', $value['max'] . ' 23:59:59');
         }
-
-
     }
 
     public function material($value)

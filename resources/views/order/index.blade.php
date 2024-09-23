@@ -166,7 +166,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][min]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['minChecked'] == '' && $filter['name'] == 'date_plan' ? date("Y-m-d") : $filter['minChecked'] }}"
+                                                                value="{{ $filter['minChecked'] == '' && !request()->has('filters') && $filter['name'] == 'date_plan' ? date("Y-m-d") : $filter['minChecked'] }}"
                                                                 class="date-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -178,7 +178,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][max]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['maxChecked'] == '' && $filter['name'] == 'date_plan' ? date("Y-m-d") : $filter['maxChecked'] }}"
+                                                                value="{{ $filter['maxChecked'] == '' && !request()->has('filters') && $filter['name'] == 'date_plan' ? date("Y-m-d") : $filter['maxChecked'] }}"
                                                                 class="date-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
