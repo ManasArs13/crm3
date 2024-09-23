@@ -104,7 +104,7 @@ class OrderService implements EntityInterface
 
                 if (isset($contactMs['balance'])) {
 
-                    $entityContact = Contact::firstOrNew(['ms_id' => $contactMs["id"]]);
+                    $entityContact = Contact::first(['ms_id' => $contactMs["id"]]);
 
                     if ($entityContact !== null) {
                         $entityContact->balance = $contactMs["balance"] / 100;
