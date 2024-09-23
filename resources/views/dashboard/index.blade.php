@@ -141,12 +141,12 @@
                 <table>
                     <thead>
                         <tr class="font-light border-b-2 text-sm bg-neutral-200">
-                            <th></th>
-                            <th class="border-r-2 py-2 px-1">№</th>
+                            <th class="min-w-[59px]"></th>
                             <th class="border-l-2 py-2 px-1 text-center">Транспорт</th>
-                            <th class="border-r-2 py-2 px-1">ГП</th>
+                            <th class="border-r-2 py-2 px-1 min-w-[59px]">ГП</th>
                             <th class="border-r-2 py-2 px-1">Статус</th>
                             <th class="py-2 px-1">База</th>
+                            <th class="py-2 px-1 max-w-[5px]">P</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -177,10 +177,6 @@
                                 }
                             @endphp
                             <tr class="border-b-2 {{ $statusColor }}">
-                                <td class="border-r-2 text-nowrap px-2 py-2">
-                                    <button class="buttonForOpen text-normal font-bold text-blue-700 d-count"
-                                        data-id="shipment_{{ $key }}">{{ $shipment->count() }}</button>
-                                </td>
                                 <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transportNumber }}</td>
                                 <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
                                     {{ $transportName ? $transportName : 'не указано' }}
@@ -188,6 +184,10 @@
                                 <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
                                 <td class="px-1 m-2 border-x-2 text-center py-3 truncate">{{ $statusInfo }}</td>
                                 <td class="px-1 m-2 text-center py-3">{{ $firstToReturn->format('H:i') }}</td>
+                                <td class="border-l-2 text-nowrap px-2 py-2">
+                                    <button class="buttonForOpen text-normal font-bold text-blue-700 d-count"
+                                            data-id="shipment_{{ $key }}">{{ $shipment->count() }}</button>
+                                </td>
                             </tr>
                             @foreach ($shipment as $num => $transport)
                                 @php
@@ -198,9 +198,6 @@
                                 @endphp
                                 <tr style="display: none;"
                                     class="border-y-2 position_column_shipment_{{ $key }}">
-                                    <td class="border-r-2 text-nowrap px-2 py-2">
-                                        {{ $num + 1 }}
-                                    </td>
                                     <td class="px-1 m-2 border-r-2 py-3 text-center">
                                         {{ $createdAt->format('H:i') }}
                                     </td>
@@ -212,6 +209,9 @@
                                     </td>
                                     <td class="px-1 m-2 text-center py-3" colspan="2">
                                         {{ $timeToReturn->format('H:i') }}
+                                    </td>
+                                    <td class="border-l-2 text-nowrap px-2 py-2">
+                                        {{ $num + 1 }}
                                     </td>
                                 </tr>
                             @endforeach
