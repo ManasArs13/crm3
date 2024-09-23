@@ -72,12 +72,15 @@ class OrderService implements EntityInterface
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
 
             if (isset($row["deleted"])) {
-                $shipment = Shipment::where('order_id', $entity->id)->first();
+                $shipments = Shipment::where('order_id', $entity->id)->get();
 
-                if ($shipment) {
-                    $shipment->products()->forceDelete();
-                    $shipment->forceDelete();
+                foreach ($shipments as $shipment) {
+                    if ($shipment) {
+                        $shipment->products()->forceDelete();
+                        $shipment->forceDelete();
+                    }
                 }
+
 
                 $entity->positions()->forceDelete();
                 $entity->forceDelete();
@@ -262,15 +265,17 @@ class OrderService implements EntityInterface
                 $needDelete = $this->orderPositionService->import($row["positions"], $entity->id);
 
                 if ($needDelete["needDelete"]) {
-                    $shipment = Shipment::where('order_id', $entity->id)->first();
+                    $shipments = Shipment::where('order_id', $entity->id)->get();
 
-                    if ($shipment) {
-                        $shipment->products()->forceDelete();
-                        $shipment->forceDelete();
+                    foreach ($shipments as $shipment) {
+                        if ($shipment) {
+                            $shipment->products()->forceDelete();
+                            $shipment->forceDelete();
+                        }
                     }
 
-                    $entity->positions()->delete();
-                    $entity->delete();
+                    $entity->positions()->forceDelete();
+                    $entity->forceDelete();
                 } else {
                     $entity->is_demand = $needDelete["isDemand"];
                     $entity->save();
