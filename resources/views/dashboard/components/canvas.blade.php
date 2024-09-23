@@ -62,8 +62,7 @@
                 type: "line",
                 data: {
                     labels: labels,
-                    datasets: [
-                        {
+                    datasets: [{
                             label: "Кол-во продуктов" + ' (' + count(positions_count) + ' шт.)',
                             data: positions_count,
                             backgroundColor: "rgb(255, 205, 86)",
@@ -92,6 +91,11 @@
                         ticks: {
                             beginAtZero: true,
                             max: 4
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     },
                     interaction: {

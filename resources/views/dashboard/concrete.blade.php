@@ -31,20 +31,19 @@
                         @endif
                     </div>
                 </div>
-
-                <div class="flex gap-2">
-                    <div class="font-medium mx-3">
-                        Кол-во: <span id="QuantityProduct">0</span>
-                    </div>
-                    <div class="font-medium mx-3">
-                       Отг-но: <span id="QuantityShipment">0</span>
-                    </div>
-                    <div class="font-medium mx-3">
-                        Остаток: <span id="QuantityResidual">0</span>
-                    </div>
-                </div>
-                
+               
                 <div class="flex px-3 text-center font-bold">
+                    <div class="flex gap-2">
+                        <div class="font-medium mx-1 bg-yellow-200 rounded-md px-2">
+                            Кол-во: <span id="QuantityProduct">0</span>
+                        </div>
+                        <div class="font-medium mx-1 bg-green-200 rounded-md px-2">
+                            Отг-но: <span id="QuantityShipment">0</span>
+                        </div>
+                        <div class="font-medium mx-1 bg-red-200 rounded-md px-2">
+                            Остаток: <span id="QuantityResidual">0</span>
+                        </div>
+                    </div>
                     <a href="{{ route('dashboard-3', ['date_plan' => $datePrev]) }}" class="mx-2 text-lg">&#9668;</a>
                     <p class="mx-2 text-lg">{{ $date }}</p>
                     <a href="{{ route('dashboard-3', ['date_plan' => $dateNext]) }}" class="mx-2 text-lg">&#9658;</a>
