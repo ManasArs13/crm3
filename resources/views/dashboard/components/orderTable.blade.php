@@ -869,7 +869,7 @@
                                         $column == 'weight' ||
                                         $column == 'debt') &&
                                         !preg_match('/_id\z/u', $column) &&
-                                        $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
+                                        $column !== 'sostav' && $column !== 'comment') style="text-align:right" @else style="text-align:left" @endif
                                 @if ($shipment->$column) title="{{ $shipment->$column }}" @endif>
                                 @if (preg_match('/_id\z/u', $column))
                                     @if ($column == 'contact_id')
@@ -879,7 +879,7 @@
                                             {{ $shipment->order->name }}
                                         </a>
                                     @elseif($column == 'delivery_id')
-                                        {{ $shipment->delivery ? $shipment->delivery->name : '-' }}
+                                        {{ $shipment->transport->name ? $shipment->transport->name : '-' }}
                                     @elseif($column == 'transport_id')
                                         {{ $shipment->transport ? $shipment->transport->name : '-' }}
                                     @elseif($column == 'transport_type_id')
@@ -923,7 +923,7 @@
                                         {{ $shipment->name }}
                                     </a>
                                 @elseif($column == 'comment')
-                                    {{ $shipment->description }}
+                                    {{ $shipment->transport->id }}
                                 @elseif($column == 'positions_count')
                                     @php
                                         $products_quantity_shipment = 0;
