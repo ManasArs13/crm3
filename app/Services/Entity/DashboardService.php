@@ -257,10 +257,10 @@ class DashboardService
             '19:30',
             '20:00',
             '20:30',
-            '21:00',
-            '21:30',
-            '22:00',
-            '23:59'
+            // '21:00',
+            // '21:30',
+            // '22:00',
+            // '23:59'
         ];
 
 
@@ -390,6 +390,12 @@ class DashboardService
 
         array_shift($labels);
         array_pop($labels);
+
+        foreach ($labels as $key => $label) {
+            if (substr($label, -2) == 30) {
+                $labels[$key] = ' ';
+            }
+        }
 
         return response()->json([
             'positions_count' => $positions_count,
@@ -780,7 +786,8 @@ class DashboardService
         ));
     }
 
-    public function processMaterials($materials){
+    public function processMaterials($materials)
+    {
         $groupedMaterials = collect();
 
         foreach ($materials as $material) {

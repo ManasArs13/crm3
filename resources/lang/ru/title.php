@@ -7,5 +7,5 @@ return [
      'shipments'=> 'Отгрузки',
      'shipments2'=> 'Отгрузки2',
      'debtors'=>'Должники',
-     'summaryRemains'=> 'Сводка:Остатки'
+     'summaryRemains'=> 'Сводка:Сихронизация'
 ];
