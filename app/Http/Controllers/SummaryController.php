@@ -101,7 +101,7 @@ class SummaryController extends Controller
         $cntShipmentsMS=$service->createUrl($urlDemand,null, [], "", 2, false);
         $cntOrdersMS=$service->createUrl($urlOrder,null, [], "", 2, false);
         $cntContactsMS=$service->createUrl($urlContact,null, [], "", 2, false);
-        
+
 
         return view("summary.remains", compact("cntShipmentsSite", "cntOrdersSite", "cntContactsSite",
                                                 "cntShipmentsMS", "cntOrdersMS", "cntContactsMS"));
