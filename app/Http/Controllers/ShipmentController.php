@@ -445,6 +445,7 @@ class ShipmentController extends Controller
     {
         $entity = 'new shipment';
         $action = "shipment.store";
+        $newContact = 'contact.store';
         $actionWithOrder = "shipment.createWithOrder";
         $searchOrders = "api.get.order";
         $order = [];
@@ -501,6 +502,7 @@ class ShipmentController extends Controller
             'searchOrders',
             'entity',
             'deliveries',
+            'newContact',
             'transports',
             'contacts',
             'date',

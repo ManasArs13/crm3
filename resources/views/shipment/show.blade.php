@@ -422,38 +422,23 @@
                             в мс</button>
                     </div>
                 </form>
+            </div>
+        </div>
 
+
+
+
+
+    </div>
+
+    <div class="w-11/12 max-w-7xl mx-auto py-8">
+        <div class="mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+
+                <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                 {{--привязанный заказ --}}
 
                 @if ($entityItem->order)
                 <table class="text-left text-md text-nowrap">
-                    <thead>
-                        <tr class="bg-neutral-200 font-semibold py-2">
-
-                            <th scope="col" class="px-6 py-4" style="text-align:right">
-                                Имя
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:right">
-                                Дата создания
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Контрагент
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:right">
-                                Сумма
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Статус мс
-                            </th>
-
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Комментарий
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Цена доставки
-                            </th>
-                        </tr>
-                    </thead>
                     <tbody>
                         <tr class="border-b-2 bg-gray-100 py-2">
                             <td class="px-6 py-4" style="text-align:right">
@@ -481,13 +466,9 @@
                     </tbody>
                 </table>
                 @endif
+                </div>
             </div>
-        </div>
-
-
-
-
-
+        
     </div>
 
 
