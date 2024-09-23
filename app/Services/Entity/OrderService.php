@@ -355,7 +355,7 @@ class OrderService implements EntityInterface
             foreach ($orders as $order) {
 
                 try {
-                    usleep(60000);
+                    usleep(200);
 
                     $response = $this->client->request('GET', $url . $order->ms_id, [
                         'headers' => [
@@ -366,7 +366,15 @@ class OrderService implements EntityInterface
 
                     $result = json_decode($response->getBody()->getContents(), true);
 
-                    if (isset($row["deleted"])) {
+                    if (isset($result["deleted"])) {
+                        $shipments = Shipment::where('order_id', $order->id)->get();
+
+                        foreach ($shipments as $shipment) {
+                            if ($shipment) {
+                                $shipment->products()->forceDelete();
+                                $shipment->forceDelete();
+                            }
+                        }
 
                         $order->positions()->forceDelete();
 
@@ -377,6 +385,14 @@ class OrderService implements EntityInterface
                 } catch (RequestException  $e) {
 
                     if ($e->getCode() == 404) {
+                        $shipments = Shipment::where('order_id', $order->id)->get();
+
+                        foreach ($shipments as $shipment) {
+                            if ($shipment) {
+                                $shipment->products()->forceDelete();
+                                $shipment->forceDelete();
+                            }
+                        }
 
                         $order->positions()->forceDelete();
 
