@@ -11,6 +11,10 @@
             let shipped_count = [];
             let labels = [];
 
+            let QuantityProduct = document.getElementById('QuantityProduct');
+            let QuantityShipment = document.getElementById('QuantityShipment');
+            let QuantityResidual = document.getElementById('QuantityResidual');
+
             function count(arr) {
                 let sum = 0;
                 arr.forEach(function(item) {
@@ -37,6 +41,10 @@
                     for (let item in data.shipped_count) {
                         shipped_count.push(data.shipped_count[item])
                     }
+
+                    QuantityProduct.innerText = count(positions_count);
+                    QuantityShipment.innerText = count(shipped_count);
+                    QuantityResidual.innerText = count(residual_count);
 
                 })
                 .catch((error) => {
