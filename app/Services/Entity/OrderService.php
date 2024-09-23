@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderPosition;
 use App\Models\Product;
 use App\Models\ShipingPrice;
+use App\Models\Shipment;
 use App\Models\Status;
 use App\Models\Transport;
 use App\Models\TransportType;
@@ -69,6 +70,13 @@ class OrderService implements EntityInterface
         foreach ($rows['rows'] as $row) {
             $entity = Order::query()->firstOrNew(['ms_id' => $row["id"]]);
             if (isset($row["deleted"])) {
+                $shipments = Shipment::query()->first(['id' => $entity->id]);
+
+                if ($shipments) {
+                    $shipments->products()->forceDelete();
+                    $shipments->forceDelete();
+                }
+
                 $entity->positions()->forceDelete();
                 $entity->forceDelete();
             } else {
