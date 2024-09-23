@@ -70,7 +70,6 @@ Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function ()
         Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
         Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
         Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
-
     });
 });
 
@@ -79,6 +78,10 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard-2', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-2');
     Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
+
+    // API for dashboard
+    Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
+    Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
 
     // Moy Sklad
     Route::resources([
@@ -93,7 +96,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
     });
 
     // Остатки
-//    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
+    //    Route::get('/residuals', [ResidualController::class, 'index'])->name('residual.index');
     Route::get('/residuals/blocks_materials', [ResidualController::class, 'blocksMaterials'])->name('residual.blocksMaterials');
     Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
     Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
@@ -151,9 +154,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         ]);
     });
 
-    // Aou for dashboard
-    Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
-    Route::get('/map_data', [DashboardController::class, 'getOrderDataForMap'])->name('map.data');
+
 
 
     // Moy Sklad
