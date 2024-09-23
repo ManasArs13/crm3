@@ -13,7 +13,7 @@
     @endif
 
 
-    <div class="w-11/12 max-w-10xl mx-auto py-8">
+    <div class="w-11/12 max-w-10xl mx-auto py-8 mb-3">
 
         @if (session('success'))
             <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
@@ -429,64 +429,7 @@
                         </button>
                     </div>
                 </form>
-                @if (count($entityItem->shipments)>0)
-                <table class="text-left text-md text-nowrap">
-                    <thead>
-                        <tr class="bg-neutral-200 font-semibold py-2">
 
-                            <th scope="col" class="px-6 py-4" style="text-align:right">
-                                Имя
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:right">
-                                Дата создания
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Контрагент
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:right">
-                                Сумма
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Статус мс
-                            </th>
-
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Комментарий
-                            </th>
-                            <th scope="col" class="px-6 py-4" style="text-align:left">
-                                Цена доставки
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($entityItem->shipments as $sh)
-                        <tr class="border-b-2 bg-gray-100 py-2">
-                            <td class="px-6 py-4" style="text-align:right">
-                                <a href="{{ route("shipment.show", ["shipment"=>$sh->id]) }}">{{ $sh->name }}</a>
-                            </td>
-                            <td class="px-6 py-4" style="text-align:right">
-                                {{ $sh->created_at }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->contact->name }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:right">
-                                {{ $sh->suma }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->status}}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->comment }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->delivery_price }}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @endif
             </div>
         </div>
 
@@ -529,6 +472,52 @@
         </div>
 
     </div>
+
+
+
+    <div class="w-11/12 max-w-10xl mx-auto py-8">
+        <div class="mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+
+                <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
+                {{--привязанный заказ --}}
+
+                @if (count($entityItem->shipments)>0)
+                <table class="text-left text-md text-nowrap">
+
+                    <tbody>
+                        @foreach ($entityItem->shipments as $sh)
+                        <tr class="border-b-2 bg-gray-100 py-2">
+                            <td class="px-6 py-4" style="text-align:right">
+                                <a href="{{ route("shipment.show", ["shipment"=>$sh->id]) }}">{{ $sh->name }}</a>
+                            </td>
+                            <td class="px-6 py-4" style="text-align:right">
+                                {{ $sh->created_at }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->contact->name }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:right">
+                                {{ $sh->suma }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->status}}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->comment }}
+                            </td>
+                            <td class="px-6 py-4" style="text-align:left">
+                                {{ $sh->delivery_price }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @endif
+                </div>
+            </div>
+
+    </div>
+
     <style>
         .select2-container--default .select2-results>.select2-results__options {
             min-height: 24rem;

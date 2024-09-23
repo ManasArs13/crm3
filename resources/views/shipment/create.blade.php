@@ -28,44 +28,7 @@
             </h3>
         @endif
 
-        <div class="mx-auto block rounded-lg bg-white text-center">
-            <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <form action="{{ route($actionWithOrder) }}" method="post">
-                    @csrf
-                    @method('post')
 
-                    <div class="min-h-6 px-5 py-2">
-
-                        <div class="flex flex-row mb-3 w-full gap-3">
-                            <div class="basis-1/2">
-                                <div class="flex flex-row mb-1 w-full">
-                                    <span
-                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                        Сформировать на основе заказа №</span>
-                                    <select name="order_id" required class="js-data-example-ajax" style="width: 100%"
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        @if ($order)
-                                            <option value="{{ $order->id }}" selected="selected">{{ $order->name }}
-                                            </option>
-                                        @else
-                                            <option value="" selected="selected">не выбрано
-                                            </option>
-                                        @endif
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="basis-1/2 text-left">
-                                <button type="submit"
-                                    class="px-4 py-[0.2rem] bg-blue-400 hover:bg-blue-600 rounded text-white font-semibold">принять</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <hr>
-
-        </div>
 
         <div
             class="max-w-10xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
@@ -119,6 +82,15 @@
                                             <option value="{{ $contact->id }}">{{ $contact->name }}</option>
                                         @endforeach
                                     </select>
+                                    {{-- Add contact button --}}
+                                    <button type="button" id="button-modal"
+                                        class="inline-block rounded align-middle text-black hover:text-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                             <div class="basic-1/2 text-end">
@@ -436,35 +408,71 @@
             </div>
         </div>
 
-
+        <div class="hidden absolute top-[13%] border-2 border-black w-full bg-gray-200 text-center p-5 mx-auto z-50 rounded-md shadow-lg max-w-7xl"
+            id="contact-modal">
+            <div class="absolute top-5 right-5 cursor-pointer" id="close-modal">закрыть</div>
+            <h4 class="text-3xl max-w-7xl mx-auto font-bold mb-6">Добавить контакт</h4>
+            <form action="{{ route($newContact) }}" method="post" id="newContact">
+                @csrf
+                @method('post')
+                <div class="flex flex-row w-full px-1">
+                    <span
+                        class="flex basis-[11%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                        Имя</span>
+                    <input type="text" name="name" required placeholder="ФИО или название контрагента"
+                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                </div>
+                <div class="flex flex-row w-full px-1 my-2">
+                    <div class="flex basis-1/2">
+                        <span
+                            class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                            Телефон</span>
+                        <input type="tel" name="tel" placeholder="+7(000)000-00-00" required
+                            class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                    </div>
+                    <div class="flex basis-1/2">
+                        <span
+                            class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                            Почта</span>
+                        <input type="mail" name="mail" placeholder="example@example.com" required
+                            class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                    </div>
+                </div>
+                <div class="flex flex-row w-full px-1 my-2">
+                    <button type="submit"
+                        class="w-full p-1 bg-green-500 hover:bg-green-400 text-white hover:text-gray-700 rounded font-semibold uppercase">сохранить
+                        контакт</button>
+                </div>
+            </form>
+        </div>
 
     </div>
     <script>
         $(document).ready(function() {
             //change selectboxes to selectize mode to be searchable
             $(".select2").select2();
-            $('.js-data-example-ajax').select2({
-                ajax: {
-                    url: `{{ route($searchOrders) }}`,
-                    data: function(params) {
 
-                        var queryParameters = {
-                            term: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function(data) {
-                        return {
-                            results: $.map(data, function(item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id,
-                                }
-                            })
-                        };
-                    }
-                },
-            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var modal = document.getElementById("contact-modal");
+            var btn = document.getElementById("button-modal");
+            var close = document.getElementById('close-modal');
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            close.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
         });
     </script>
 </x-app-layout>
