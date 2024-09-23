@@ -26,7 +26,7 @@ class ShipmentFilter
             }
         }
 
-        if(!isset($this->filters()['created_at']['min']) && !isset($this->filters()['created_at']['max'])){
+        if(!isset($this->filters()['created_at']['min']) && !isset($this->filters()['created_at']['max']) && empty($this->filters())){
             $this->builder->where('created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
                 ->where('created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
         }
