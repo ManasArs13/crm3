@@ -78,6 +78,21 @@
                                 {{ $cntContactsMS  }}
                             </td>
                         </tr>
+
+                        <tr class="border-b-2">
+                            <td class="break-all overflow-auto px-2 py-3 text-sm">
+                                   
+                            </td>
+                            <td class="break-all overflow-auto px-2 py-3 text-sm">
+                                {{ $cntOrdersSite-$cntOrdersMS }}
+                            </td>
+                            <td class="break-all overflow-auto px-2 py-3 text-sm">
+                                {{$cntShipmentsSite-$cntShipmentsMS}}
+                            </td>
+                            <td class="break-all overflow-auto px-2 py-3 text-sm">
+                                {{ $cntContactsSite-$cntContactsMS  }}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
