@@ -391,6 +391,12 @@ class DashboardService
         array_shift($labels);
         array_pop($labels);
 
+        foreach ($labels as $key => $label) {
+            if (substr($label, -2) == 30) {
+                $labels[$key] = ' ';
+            }
+        }
+
         return response()->json([
             'positions_count' => $positions_count,
             'shipped_count' => $shipped_count,
@@ -780,7 +786,8 @@ class DashboardService
         ));
     }
 
-    public function processMaterials($materials){
+    public function processMaterials($materials)
+    {
         $groupedMaterials = collect();
 
         foreach ($materials as $material) {
