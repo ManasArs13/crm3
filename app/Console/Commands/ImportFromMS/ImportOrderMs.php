@@ -41,7 +41,7 @@ class ImportOrderMs extends Command
         $all = $this->option('all');
 
         if ($all) {
-            $service->createUrl($url, $orderService, ["isDeleted" => ["true", "false"]], 'positions.assortment,attributes.value,agent,state');
+            $service->createUrl($url, $orderService, [], 'positions.assortment,attributes.value,agent,state');
         } else {
             $service->createUrl($url, $orderService, ["updated" => '>=' . Carbon::now()->subDays(3), "isDeleted" => ["true", "false"]], 'positions.assortment,attributes.value,agent,state'); 
         }      
