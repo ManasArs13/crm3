@@ -75,8 +75,7 @@ class OrderService implements EntityInterface
                 $shipment = Shipment::where('order_id', $entity->id)->first();
 
                 if ($shipment !== null) {
-                    $shipment_products = ShipmentProduct::where('shipment_id', $shipment->id)->get();
-                    $shipment_products->forceDelete();
+                    $shipment->products()->forceDelete();
                     $shipment->forceDelete();
                 }
 
@@ -263,6 +262,13 @@ class OrderService implements EntityInterface
                 $needDelete = $this->orderPositionService->import($row["positions"], $entity->id);
 
                 if ($needDelete["needDelete"]) {
+                    $shipment = Shipment::where('order_id', $entity->id)->first();
+
+                    if ($shipment !== null) {
+                        $shipment->products()->forceDelete();
+                        $shipment->forceDelete();
+                    }
+
                     $entity->positions()->delete();
                     $entity->delete();
                 } else {
