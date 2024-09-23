@@ -5,5 +5,8 @@ return [
     'materials'=>'Материалы',
     'products'=>'Продукция',
     'carriers'=>'Перевозчики',
-    'buyers'=>'Покупатели'
+    'buyers'=>'Покупатели',
+    'orders'=>"Заказов",
+    'demands'=>"Отгрузок",
+    "contacts"=>"Контактов"
 ];
