@@ -380,6 +380,17 @@ class OrderMsService
             ];
         }
 
+        if($order->status && $order->status->ms_id) {
+            $array['state'] = [
+                'meta' => [
+                    'href' => "https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/states/" .$order->status->ms_id,
+                    "metadataHref" => "https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata",
+                    'type' => "state",
+                    "mediaType" => "application/json"
+                ],
+            ];
+        }
+
         if ($order->ms_id==null) {
             return $this->moySkladService->actionPostRowsFromJson($url, $array);
         } else {

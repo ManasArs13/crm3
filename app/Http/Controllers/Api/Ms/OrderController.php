@@ -83,7 +83,7 @@ class OrderController extends Controller
             $shipment->name=$result->name;
             $shipment->save();
 
-            return new Response(["id"=>"<a href='" . 'https://online.moysklad.ru/app/#customerorder/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Отгрузка №' . $result->name . $text . " !</a>", "name"=>$result->name], 200);
+            return new Response(["id"=>"<a href='" . 'https://online.moysklad.ru/app/#customerorder/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Заказ №' . $result->name . $text . " !</a>", "name"=>$result->name], 200);
         } else {
             return new Response(trans("error.Error").$result);
         }
