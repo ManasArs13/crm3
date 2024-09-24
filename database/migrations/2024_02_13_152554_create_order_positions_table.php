@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('order_positions', function (Blueprint $table) {
             $table->id();
             $table->foreignId("product_id")->nullable()->index()->constrained("products");
-            $table->foreignId("order_id")->index()->constrained("orders");
+            $table->foreignId("order_id")->index()->constrained("orders")->onDelete('cascade');
 
             $table->integer("quantity")->unsigned()->default(0);
             $table->integer("shipped")->unsigned()->default(0);
