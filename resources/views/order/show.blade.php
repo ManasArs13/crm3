@@ -4,6 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        @vite(['resources/js/main.js'])
     </x-slot>
 
     @if (isset($entity) && $entity != '')
@@ -441,9 +442,6 @@
                         </script>
 
                     </div>
-
-
-
 
                     <div class="px-5 mb-3 w-full flex flex-row gap-3">
                         <button type="submit" name="action" value="save"

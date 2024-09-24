@@ -276,7 +276,7 @@ class OrderMsService
 
     function createOrderToMs($msOrder)
     {
-       $order=Order::with('contact', 'delivery','status','products')->find($msOrder);
+       $order=Order::with('contact', 'delivery','status','positions')->find($msOrder);
        $vat = Option::where('code', '=', "ms_vat")->first()?->value;
        $url="https://api.moysklad.ru/api/remap/1.2/entity/customerorder/";
 
@@ -361,30 +361,30 @@ class OrderMsService
 
 
         if ($order->delivery!=null && $order->delivery->ms_id !=null){
-            $array["attributes"][] = [
-                'meta' => [
-                    'href' => "https://api.moysklad.ru/api/remap/1.2/entity/demand/metadata/attributes/368d7401-25d9-11ec-0a80-0844000fc7ea",
-                    'type' => "attributemetadata",
-                    "mediaType" => "application/json"
-                ],
-                'value' => [
-                    'meta' => [
-                        'href' => "https://api.moysklad.ru/api/remap/1.2/entity/customentity/8b306150-5c8b-11ea-0a80-02ed000aa214/".$order->delivery->ms_id ,
-                        'type' => "customentity",
-                        "mediaType" => "application/json",
-                    ],
-                ],
-                "id" => "368d7401-25d9-11ec-0a80-0844000fc7ea",
-                "name" => "Доставка",
-                "type" => "customentity"
-            ];
+            // $array["attributes"][] = [
+            //     'meta' => [
+            //         'href' => "https://api.moysklad.ru/api/remap/1.2/entity/demand/metadata/attributes/368d7401-25d9-11ec-0a80-0844000fc7ea",
+            //         'type' => "attributemetadata",
+            //         "mediaType" => "application/json"
+            //     ],
+            //     'value' => [
+            //         'meta' => [
+            //             'href' => "https://api.moysklad.ru/api/remap/1.2/entity/customentity/8b306150-5c8b-11ea-0a80-02ed000aa214/".$order->delivery->ms_id ,
+            //             'type' => "customentity",
+            //             "mediaType" => "application/json",
+            //         ],
+            //     ],
+            //     "id" => "368d7401-25d9-11ec-0a80-0844000fc7ea",
+            //     "name" => "Доставка",
+            //     "type" => "customentity"
+            // ];
         }
 
 
 
 
-
-
+info($array);
+return response()->json($array);
         if ($order->ms_id==null) {
             return $this->moySkladService->actionPostRowsFromJson($url, $array);
         } else {
