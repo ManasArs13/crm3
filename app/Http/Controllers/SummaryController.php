@@ -89,7 +89,7 @@ class SummaryController extends Controller
     public function remains( MoySkladService $service ){
 
         $cntShipmentsSite=Shipment::count();
-        $cntOrdersSite=Order::count();
+        $cntOrdersSite=Order::whereNull('deleted_at')->count();
         $cntContactsSite=Contact::count();
 
 
