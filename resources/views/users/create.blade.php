@@ -43,6 +43,7 @@
                                     <option value="manager">Менеджер</option>
                                     <option value="dispatcher">Диспетчер</option>
                                     <option value="carrier">Перевозчик</option>
+                                    <option value="audit">Аудит</option>
                                 </select>
                             </div>
                         </div>

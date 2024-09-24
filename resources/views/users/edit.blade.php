@@ -38,6 +38,7 @@
                                             <option @if($user->hasRole('manager')) selected @endif value="manager">Менеджер</option>
                                             <option @if($user->hasRole('dispatcher')) selected @endif value="dispatcher">Диспетчер</option>
                                             <option @if($user->hasRole('carrier')) selected @endif value="carrier">Перевозчик</option>
+                                            <option @if($user->hasRole('audit')) selected @endif value="audit">Аудит</option>
                                         </select>
                                     </div>
                                 </div>

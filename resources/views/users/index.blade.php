@@ -75,6 +75,17 @@
                                             Перевозчики</a>
                                     @endif
                                 </div>
+                                <div>
+                                    @if (url()->current() == route('users.roles', ['role' => 'audit']))
+                                        <a href="{{ route('users.roles', ['role' => 'audit']) }}"
+                                           class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                            Аудит</a>
+                                    @else
+                                        <a href="{{ route('users.roles', ['role' => 'audit']) }}"
+                                           class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                            Аудит</a>
+                                    @endif
+                                </div>
                             </div>
                             <div class="flex px-3 text-center font-bold">
                                 <a href="{{ route('users.managment.create') }}"
@@ -108,7 +119,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
                             @foreach($users as $user)
                                 <tr class="border-b-2">
                                     <td class="text-nowrap px-6 py-2">
@@ -135,7 +145,6 @@
                                                     </div>
                                                 </button>
                                             </x-slot>
-
                                             <x-slot name="content">
                                                 <div class="py-1" role="none">
                                                     <a href="{{ route('users.managment.edit', $user->id) }}" class="block px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 flex items-center space-x-2" role="menuitem" tabindex="-1">
@@ -160,23 +169,13 @@
                                                 </div>
                                             </x-slot>
                                         </x-dropdown>
-
-
-
-
-
-
-
                                     </td>
                                 </tr>
                             @endforeach
-
-
                             </tbody>
                         </table>
                     </div>
 
                 </div>
             </div>
-
 </x-app-layout>
