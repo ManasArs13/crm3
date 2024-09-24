@@ -30,7 +30,7 @@ use App\Http\Controllers\ShipmentProductController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
-use App\Http\Controllers\WelcomeController;
+//use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +54,7 @@ Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {
     Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
 });
 
-Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(function () {
     // Moy Sklad
     Route::resources([
         'manager' => ManagerController::class
@@ -73,7 +73,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function ()
     });
 });
 
-Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|audit'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard-2', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-2');
@@ -124,7 +124,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher'])->group(
     });
 });
 
-Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|carrier'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|carrier|audit'])->group(function () {
     Route::name('report.')->group(function () {
         // Перевозчик
         Route::get('/report/transporter', [TransporterController::class, 'index'])->name('transporter');
@@ -133,26 +133,12 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|carrier'])
     });
 });
 
-Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    // Users
-    Route::prefix('users')->name('users.')->group(function () {
-        Route::get('/', [UsersController::class, 'users'])->name('all');
-        Route::get('/{role}', [UsersController::class, 'users'])->where('role', 'operator|manager|dispatcher|carrier')->name('roles');
-
-
-        Route::resource('managment', UsersController::class)->only([
-            'create',
-            'store',
-            'edit',
-            'update',
-            'destroy'
-        ]);
-    });
 
 
 
@@ -165,7 +151,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         'contactAmo' => ContactAmoController::class,
         'contact' => ContactController::class,
         'delivery' => DeliveryController::class,
-        'option' => OptionController::class,
         'shiping_price' => ShipingPriceController::class,
         'category' => CategoryController::class,
         'order_positions' => OrderPositionController::class,
@@ -194,7 +179,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/contactAmos/filter', [ContactAmoController::class, 'filter'])->name('contactAmo.filter');
     Route::get('/contacts/filter', [ContactController::class, 'filter'])->name('contact.filter');
     Route::get('/deliveries/filter', [DeliveryController::class, 'filter'])->name('delivery.filter');
-    Route::get('/options/filter', [OptionController::class, 'filter'])->name('option.filter');
     Route::get('/shiping_prices/filter', [ShipingPriceController::class, 'filter'])->name('shiping_price.filter');
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
@@ -250,6 +234,27 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/summary/remains', [SummaryController::class, 'remains'])->name('summary.remains');
 });
 
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    // Users
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [UsersController::class, 'users'])->name('all');
+        Route::get('/{role}', [UsersController::class, 'users'])->where('role', 'operator|manager|dispatcher|carrier|audit')->name('roles');
+
+
+        Route::resource('managment', UsersController::class)->only([
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy'
+        ]);
+    });
+    Route::get('/options/filter', [OptionController::class, 'filter'])->name('option.filter');
+    // Moy Sklad
+    Route::resources([
+        'option' => OptionController::class,
+    ]);
+});
 
 
 require __DIR__ . '/auth.php';
