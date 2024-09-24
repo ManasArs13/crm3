@@ -11,7 +11,7 @@ class SupplyController extends Controller
 {
     public function index(Request $request)
     {
-        $entityName = 'Приёмки';
+        $entity = 'supplies';
         $urlEdit = "supply.edit";
         $urlShow = "supply.show";
         $urlDelete = "supply.destroy";
@@ -199,6 +199,7 @@ class SupplyController extends Controller
             'filters',
             'orderBy',
             'selectColumn',
+            'entity'
         ));
     }
 
