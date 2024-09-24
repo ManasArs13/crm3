@@ -923,7 +923,7 @@
                                         {{ $shipment->name }}
                                     </a>
                                 @elseif($column == 'comment')
-                                    {{ $shipment->transport->id }}
+                                    {{ $shipment->transport->car_number }}
                                 @elseif($column == 'positions_count')
                                     @php
                                         $products_quantity_shipment = 0;

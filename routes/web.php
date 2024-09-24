@@ -48,7 +48,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:operator|admin|audit'])->group(function () {
     // Operator windows
     Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
     Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
@@ -137,11 +137,6 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-
-
-
-
 
     // Moy Sklad
     Route::resources([
