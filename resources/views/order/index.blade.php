@@ -563,7 +563,12 @@
                                         @elseif($column == 'name' || $column == 'id')
                                             <a href="{{ route($urlShow, $entityItem->id) }}"
                                                 class="text-blue-500 hover:text-blue-600">
-                                                {{ $entityItem->$column }}
+
+                                                @if ($entityItem->$column==null)
+                                                   ---
+                                                @else
+                                                    {{ $entityItem->$column }}
+                                                @endif
                                             </a>
                                         @elseif($column == 'positions_count')
                                             {{ $total_quantity }}

@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/orders', [OrdController::class, 'get_api'])->name('api.get.order');
-Route::get('get/orders/', [OrderController::class, 'order_get_calculator'])->name('order.get.calculator');
+Route::get('get/orders/', [MsOrderController::class, 'order_get_calculator'])->name('order.get.calculator');
 Route::get('/contacts', [ContactController::class, 'get_api'])->name('api.get.contact');
 Route::get('/transport/type', [TransportTypeController::class, 'get_api'])->name('api.get.transportType');
 Route::get('/products', [ProductController::class, 'get_api'])->name('api.get.product');
@@ -34,6 +34,7 @@ Route::get('/products', [ProductController::class, 'get_api'])->name('api.get.pr
 Route::get('/shipments/get/month_category', [App\Http\Controllers\Api\Site\ShipmentController::class, 'getShipmentsByMonthAndCategory'])->name('api.get.month.category');
 Route::post('/shipment_ms/create', [ShipmentController::class, 'setShipmentToMs'])->name("api.post.ms.shipment");
 
+Route::post('/order_ms/create2', [MsOrderController::class, 'setOrderToMs'])->name("api.post.ms.order2");
 Route::post('/order_ms/create', [MsOrderController::class, 'setOrderFromCalculator'])->name("api.post.ms.order");
 Route::post('/order_site/create', [SiteOrderController::class, 'setOrderFromCalculator'])->name("api.post.site.order");
 

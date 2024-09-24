@@ -59,7 +59,7 @@ class OrderController extends Controller
 
 
             if (isset($order["id"])) {
-                return new Response("<a href='/order/" .$order["id"]. "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Заказ №' . $order["name"] . ' создан!' . "</a>", 200);
+                return new Response("<a href='/order/" .$order["id"]. "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Заказ №' . $order["id"] . ' создан!' . "</a>", 200);
             } else {
                 throw new \Exception(trans("error.Error"));
             }
@@ -69,32 +69,5 @@ class OrderController extends Controller
         }
     }
 
-    public function order_get_calculator(Request $request)
-    {
-        $date = Carbon::parse($request['needDate']);
 
-        $orders = Order::query()->with(
-            'positions',
-            'positions.product',
-            'status',
-            'shipment_products',
-            'shipment_products.product',
-            'delivery',
-            'transport',
-            'contact',
-            'transport_type'
-        )
-            ->whereDate('date_plan', $date)
-            ->whereHas('positions', function ($query) {
-                $query->whereHas('product', function ($queries) {
-                    $queries->where('building_material', Product::CONCRETE);
-                });
-            })
-            ->whereIn('status_id', [3, 4, 5, 6])
-            ->orderBy('date_plan')
-            ->get();
-
-
-        return response()->json($orders);
-    }
 }

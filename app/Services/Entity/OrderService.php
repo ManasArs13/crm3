@@ -75,6 +75,7 @@ class OrderService implements EntityInterface
                 $entity->ms_id = $row['id'];
             }
 
+            $address=null;
             $datePlan = isset($row["deliveryPlannedMoment"]) ? new DateTime($row["deliveryPlannedMoment"]) : null;
             $dateCreated = isset($row["moment"]) ? new DateTime($row["moment"]) : null;
             $delivery = null;
@@ -87,9 +88,15 @@ class OrderService implements EntityInterface
             $comment = null;
 
             $entity->name = $row["name"];
+            $address=null;
+
+            if (isset($row["shipmentAddress"])){
+                $address=$row["shipmentAddress"];
+            }
 
             usleep(2000);
             $contactMs = $this->service->actionGetRowsFromJson($row["agent"]['meta']["href"], false);
+            $entity->address=$address;
 
             if (isset($contactMs['balance'])) {
 
@@ -603,7 +610,7 @@ class OrderService implements EntityInterface
         $order->date_moment = new DateTime();
         $order->sum = 0;
         $order->weight = 0;
-        $order->name = "CRM-";
+        // $order->name = "CRM-";
 
         $order->save();
 
@@ -657,7 +664,7 @@ class OrderService implements EntityInterface
             $order->weight = $weight;
         }
 
-        $order->name = "CRM-" . $order->id;
+
         $order->sum = $sum;
         $order->weight = $weight;
 

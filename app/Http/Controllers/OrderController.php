@@ -314,13 +314,14 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $order = new Order();
-        $order->name = 'CRM-' . $request->name;
+
         $order->status_id = $request->status;
         $order->contact_id = $request->contact;
         $order->delivery_id = $request->delivery;
         $order->transport_type_id = $request->transport_type;
         $order->date_plan = $request->date . ' ' . $request->time;
         $order->date_moment = $request->date_created;
+        $order->address = $request->address;
         $order->sum = 0;
         $order->weight = 0;
 
@@ -469,10 +470,11 @@ class OrderController extends Controller
         if ($request->action=="create"){
 
             $shipment = new Shipment();
-            $shipment->name = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+
             $shipment->order_id = $order->id;
             $shipment->delivery_id = $request->delivery;
             $shipment->contact_id = $request->contact;
+            $shipment->shipment_address = $request->address;
 
 
 
@@ -507,55 +509,54 @@ class OrderController extends Controller
             }
 
             return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->name . '('.$shipment->id.') создана');
-        }else{
+        }elseif($request->action=="save"){
 
+            $order->status_id = $request->status;
+            $order->contact_id = $request->contact;
+            $order->delivery_id = $request->delivery;
+            $order->transport_type_id = $request->transport_type;
+            $order->address = $request->address;
+            $order->date_plan = $request->date . ' ' . $request->time;
+            $order->date_moment = $request->date_created;
 
-        $order->name = $request->name;
-        $order->status_id = $request->status;
-        $order->contact_id = $request->contact;
-        $order->delivery_id = $request->delivery;
-        $order->transport_type_id = $request->transport_type;
-        $order->date_plan = $request->date . ' ' . $request->time;
-        $order->date_moment = $request->date_created;
+            if ($request->comment) {
+                $order->comment = $request->comment;
+            }
 
-        if ($request->comment) {
-            $order->comment = $request->comment;
-        }
+            $sum = 0;
+            $weight = 0;
 
-        $sum = 0;
-        $weight = 0;
+            $order->positions()->delete();
 
-        $order->positions()->delete();
+            // Add Order position
+            if ($request->products) {
+                foreach ($request->products as $product) {
+                    if (isset($product['product'])) {
+                        $position = new OrderPosition();
 
-        // Add Order position
-        if ($request->products) {
-            foreach ($request->products as $product) {
-                if (isset($product['product'])) {
-                    $position = new OrderPosition();
+                        $product_bd = Product::find($product['product']);
+                        $position->product_id = $product_bd->id;
+                        $position->order_id = $order->id;
+                        $position->quantity = $product['count'];
+                        $position->price = $product_bd->price;
+                        $position->weight_kg = $product_bd->price * $product['count'];
+                        $position->shipped = 0;
+                        $position->reserve = 0;
 
-                    $product_bd = Product::find($product['product']);
-                    $position->product_id = $product_bd->id;
-                    $position->order_id = $order->id;
-                    $position->quantity = $product['count'];
-                    $position->price = $product_bd->price;
-                    $position->weight_kg = $product_bd->price * $product['count'];
-                    $position->shipped = 0;
-                    $position->reserve = 0;
+                        $position->save();
 
-                    $position->save();
-
-                    $sum += $position->price;
-                    $weight += $position->weight_kg;
+                        $sum += $position->price;
+                        $weight += $position->weight_kg;
+                    }
                 }
             }
-        }
 
-        $order->sum = $sum;
-        $order->weight = $weight;
+            $order->sum = $sum;
+            $order->weight = $weight;
 
-        $order->update();
+            $order->update();
 
-        return redirect()->route("order.show", ['order' => $order->id])->with('success', 'Заказ №' . $order->id . ' обновлён');
+            return redirect()->route("order.show", ['order' => $order->id])->with('success', 'Заказ №' . $order->id . ' обновлён');
         }
     }
 

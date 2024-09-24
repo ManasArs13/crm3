@@ -376,7 +376,11 @@
                                         @elseif($column == 'name' || $column == 'id')
                                             <a href="{{ route($urlShow, $entityItem->id) }}"
                                                 class="text-blue-500 hover:text-blue-600">
+                                                @if ($entityItem->column!=null)
                                                 {{ $entityItem->$column }}
+                                                @else
+                                                   ---
+                                                @endif
                                             </a>
                                         @elseif($column == 'products_count')
                                             @php
