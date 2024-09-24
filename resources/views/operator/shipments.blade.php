@@ -63,6 +63,7 @@
                                     </th>
                                 @endif
                             @endforeach
+                            <td></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,12 +77,10 @@
                             @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
-                                    <td class="break-all max-w-60 xl:max-w-44 overflow-auto px-6 py-2"
+                                    <td class="break-all max-w-64 xl:max-w-64 truncate px-6 py-2"
                                         @if (
                                             (is_int($entityItem->$column) ||
                                                 $column == 'payed_sum' ||
-                                                $column !== 'status' ||
-                                                $column !== 'description' ||
                                                 $column == 'positions_count' ||
                                                 $column == 'residual_count' ||
                                                 $column == 'shipped_count' ||
@@ -90,7 +89,8 @@
                                                 $column == 'weight' ||
                                                 $column == 'debt') &&
                                                 !preg_match('/_id\z/u', $column) &&
-                                                $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
+                                                $column !== 'sostav' &&
+                                                $column !== 'created_at') style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                         @if (preg_match('/_id\z/u', $column))
                                             @if ($column == 'contact_id')
@@ -172,6 +172,10 @@
                                         @endif
                                     </td>
                                 @endforeach
+                                <td>
+                                    <button class="rounded bg-yellow-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase text-black hover:bg-yellow-400">Отгрузить</button>
+
+                                </td>
 
                             </tr>
                         @endforeach
@@ -190,6 +194,7 @@
                                     </td>
                                 @endif
                             @endforeach
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
