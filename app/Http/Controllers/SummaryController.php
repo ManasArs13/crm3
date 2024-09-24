@@ -89,7 +89,7 @@ class SummaryController extends Controller
     public function remains( MoySkladService $service ){
 
         $cntShipmentsSite=Shipment::count();
-        $cntOrdersSite=Order::count();
+        $cntOrdersSite=Order::whereNull('deleted_at')->count();
         $cntContactsSite=Contact::count();
 
 
@@ -99,7 +99,7 @@ class SummaryController extends Controller
 
 
         $cntShipmentsMS=$service->createUrl($urlDemand,null, [], "", 2, false);
-        $cntOrdersMS=$service->createUrl($urlOrder,null, [], "", 2, false);
+        $cntOrdersMS=$service->createUrl($urlOrder,null, ["isDeleted" => ["false"]], "", 2, false);
         $cntContactsMS=$service->createUrl($urlContact,null, [], "", 2, false);
 
 
