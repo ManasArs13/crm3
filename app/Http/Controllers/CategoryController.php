@@ -45,6 +45,12 @@ class CategoryController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('categories');
+
+        $key = array_search('name', $columns);
+        if ($key !== false) {
+            unset($columns[$key]);
+        }
+
         $selectedColumns = [];
         $resColumns = [];
         $resColumnsAll = [];
