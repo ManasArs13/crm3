@@ -14,7 +14,12 @@ $(document).ready(function(){
                 $(this).html("обработка...")
             },
             success: function(data) {
-              $("#message").html(data);
+                if ("id" in data){
+                    $("#message").html(data["id"]);
+                    $("#name").val(data["name"])
+                }else{
+                    $("#message").html(data)
+                }
             },
             error: function(response) {
               $("#message").html(JSON.parse(response.responseText));

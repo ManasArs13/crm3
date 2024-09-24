@@ -596,7 +596,6 @@ class ShipmentController extends Controller
     {
         $shipment = new Shipment();
 
-        $shipment->name = 'CRM_' . $request->name;
         $shipment->status = $request->status;
 
         $shipment->paid_sum = 0;
@@ -724,7 +723,7 @@ class ShipmentController extends Controller
             return redirect()->route('order.index')->with('warning', 'Отгрузка ' . $id .  ' не найдена!');
         }
 
-        $shipment->name = $request->name;
+
         $shipment->status = $request->status;
 
         $shipment->paid_sum = 0;

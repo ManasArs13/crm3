@@ -29,7 +29,7 @@
         @endif
 
         @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ $entity }}{{ $entityItem->name }}</h3>
+            <h3 class="text-4xl font-bold mb-6">{{ $entity }}{{ $entityItem->id }}</h3>
         @endif
 
         <div
@@ -49,15 +49,25 @@
 
                         {{-- Shipment --}}
                         <div class="w-full mb-2 flex flex-row">
-                            <div class="basis-1/2">
+                            <div class="basis-1/3">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Отгрузка №</span>
 
-                                    <input type="text" name="name" value="{{ $entityItem->name }}" required
+                                    <input type="text"  value="{{ $entityItem->id }}" readonly
                                     class="relative m-0 flex basis-full items-center rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
                                 </div>
+
+
+                            </div>
+                            <div class="flex flex-row mb-1 w-full basis-1/3">
+                                <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    № мс</span>
+
+                                <input type="text" name="name" id="name" value="{{ $entityItem->name }}" readonly
+                                class="relative m-0 flex basis-full items-center rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+
                             </div>
                             <div class="flex flex-row mb-1 w-full basis-1/3">
                                 @if ($entityItem->ms_id != null)
@@ -415,10 +425,10 @@
 
                     <div class="px-5 mb-3 w-full flex flex-row gap-3">
                         <button type="submit"
-                            class="basis-1/2 p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+                            class=" p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
 
                         <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
-                            class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
+                            class=" p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
                             в мс</button>
                     </div>
                 </form>
@@ -468,7 +478,7 @@
                 @endif
                 </div>
             </div>
-        
+
     </div>
 
 

@@ -28,12 +28,13 @@
         @endif
 
         @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ $entity }}{{ $entityItem->name }}</h3>
+            <h3 class="text-4xl font-bold mb-6">{{ $entity }}{{ $entityItem->id }}</h3>
         @endif
 
         <div
             class="mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
+                <div id="message" class="text-red-700"></div>
                 <form action="{{ route($action, $entityItem->id) }}" method="post">
                     @csrf
                     @method("PATCH")
@@ -51,8 +52,9 @@
                                     <span
                                         class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Заказ №</span>
-                                    <input type="text" name="name" value="{{ $entityItem->name }}"
-                                        required
+                                    <input type="text" value="{{ $entityItem->id }}"
+
+                                        readonly
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
 
@@ -67,16 +69,29 @@
                                         </a>
                                         @endif
                                 </div>
+
                                 <div class="flex flex-row mb-1 w-full">
-                                    <div class="flex flex-row">
-                                        <span
-                                            class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                            дата создания</span>
-                                        <input type="datetime-local" min="2020-01-01"
-                                            value="{{ date('Y-m-d h:m:s', strtotime($entityItem->created_at)) }}"
-                                            name="date_created" required
-                                            class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                    </div>
+
+                                    <span
+                                        class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        мс №</span>
+                                    <input type="text" value="{{ $entityItem->name }}"
+                                        readonly
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+
+                                </div>
+
+
+                            </div>
+                            <div class="flex flex-row mb-1 w-full">
+                                <div class="flex flex-row">
+                                    <span
+                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        дата создания</span>
+                                    <input type="datetime-local" min="2020-01-01"
+                                        value="{{ date('Y-m-d h:m:s', strtotime($entityItem->created_at)) }}"
+                                        name="date_created" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
 
@@ -158,6 +173,17 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row mb-5 w-full">
+                            <div class="basis-1/3">
+                                <div class="flex flex-row mb-1 w-full">
+                                    <span
+                                        class="flex basis-[41%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Адрес</span>
+                                        <input type="text"  name="address" value="{{ $entityItem->address }}"  class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                 </div>
                             </div>
                         </div>
@@ -421,11 +447,14 @@
 
                     <div class="px-5 mb-3 w-full flex flex-row gap-3">
                         <button type="submit" name="action" value="save"
-                            class="basis-1/2 p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+                            class=" p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
 
+                        <button formaction="/api/order_ms/create2" data-id= "{{ $entityItem->id }}"
+                                class=" p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
+                                в мс</button>
                         <button type="submit" name="action" value="create"
 
-                            class="basis-1/2 p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Создать отгрузку
+                            class="p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Создать отгрузку
                         </button>
                     </div>
                 </form>

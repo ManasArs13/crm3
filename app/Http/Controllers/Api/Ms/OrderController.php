@@ -57,12 +57,37 @@ class OrderController extends Controller
             if (isset($result->id)) {
                 return new Response("<a href='" . 'https://online.moysklad.ru/app/#customerorder/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Заказ №' . $result->name . ' создан!' . "</a>", 200);
             } else {
-                throw new \Exception(trans("error.Error"));
+                throw new \Exception(trans("error.Error").$result);
             }
         } catch (\Exception $exception) {
             return new Response($exception->getMessage(), 500);
             //return new Response($exception->getMessage() . "-^-" . $exception->getCode() . "-^-" . $exception->getLine() . "-^-" . $exception->getFile(), 500);
         }
+    }
+
+    public function setOrderToMs(Request $request,OrderMsService $orderMsService ): Response
+    {
+        $id=$request->id;
+
+        $result = $orderMsService->createOrderToMs($id);
+        $shipment=Order::find($id);
+
+        $text=" cоздан";
+        if ($shipment->ms_id!=null){
+            $text=" отредактирован";
+        }
+
+        if (isset($result->id)) {
+            $shipment=Order::find($id);
+            $shipment->ms_id=$result->id;
+            $shipment->name=$result->name;
+            $shipment->save();
+
+            return new Response(["id"=>"<a href='" . 'https://online.moysklad.ru/app/#customerorder/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Отгрузка №' . $result->name . $text . " !</a>", "name"=>$result->name], 200);
+        } else {
+            return new Response(trans("error.Error").$result);
+        }
+
     }
 
     public function order_get_calculator(Request $request)

@@ -26,9 +26,10 @@ class ShipmentController extends Controller
         if (isset($result->id)) {
             $shipment=Shipment::find($id);
             $shipment->ms_id=$result->id;
+            $shipment->name=$result->name;
             $shipment->save();
 
-            return new Response("<a href='" . 'https://online.moysklad.ru/app/#demand/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Отгрузка №' . $result->name . $text . " !</a>", 200);
+            return new Response(["id"=>"<a href='" . 'https://online.moysklad.ru/app/#demand/edit?id=' . $result->id . "' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'  target='_blank'>" . 'Отгрузка №' . $result->name . $text . " !</a>", "name"=>$result->name], 200);
         } else {
             return new Response(trans("error.Error").$result);
         }
