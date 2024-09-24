@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId("status_id")->nullable()->index()->constrained("statuses");
             $table->foreignId("contact_id")->nullable()->index()->constrained("contacts");
             $table->dateTime("date_plan")->nullable();
-            $table->dateTime("date_fact")->nullable();
             $table->dateTime("date_moment")->nullable();
             $table->decimal("sum", 10, 1)->default(0.0);
             $table->decimal("payed_sum", 10, 1)->default(0.0);
