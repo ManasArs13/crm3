@@ -43,6 +43,9 @@ class AuthenticatedSessionController extends Controller
         if (Auth::user()->hasRole('dispatcher')) {
             return redirect('/dashboard');
         }
+        if (Auth::user()->hasRole('audit')) {
+            return redirect('/dashboard');
+        }
 //        if (Auth::user()->hasRole('carrier')) {
 //            return redirect('/operator/shipments');
 //        }
