@@ -38,12 +38,12 @@
                 <div id="message" class="text-red-700"></div>
                 <form action="{{ route($action, $entityItem->id) }}" method="post">
                     @csrf
-                    @method("PATCH")
+                    @method('PATCH')
 
                     <div class="min-h-6 px-5 pb-3">
 
                         <div class="flex flex-row basis-full justify-end my-2">
-                            <span class="font-light text-sm">обновлено: {{ $entityItem->updated_at}}</span>
+                            <span class="font-light text-sm">обновлено: {{ $entityItem->updated_at }}</span>
                         </div>
 
                         {{-- Order --}}
@@ -53,22 +53,25 @@
                                     <span
                                         class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Заказ №</span>
-                                    <input type="text" value="{{ $entityItem->id }}"
-
-                                        readonly
+                                    <input type="text" value="{{ $entityItem->id }}" readonly
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
 
-                                        @if ($entityItem->ms_id!=null)
-                                        <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}" target="_blank" class="flex justify-center items-center ml-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                    @if ($entityItem->ms_id != null)
+                                        <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                            target="_blank" class="flex justify-center items-center ml-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
                                                 </path>
-                                                <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                <path fill-rule="evenodd"
+                                                    d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
                                                 </path>
                                             </svg>
                                         </a>
-                                        @endif
+                                    @endif
                                 </div>
 
                                 <div class="flex flex-row mb-1 w-full">
@@ -76,8 +79,7 @@
                                     <span
                                         class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         мс №</span>
-                                    <input type="text" value="{{ $entityItem->name }}"
-                                        readonly
+                                    <input type="text" value="{{ $entityItem->name }}" readonly
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
                                 </div>
@@ -126,10 +128,11 @@
                                 </div>
                             </div>
 
-                                {{-- balance --}}
-                                <div class="{{( $entityItem->contact->balance >=0)? "bg-green-300": "bg-red-300" }} p-1 px-2 rounded " >
-                                    {{ $entityItem->contact->balance }}
-                                </div>
+                            {{-- balance --}}
+                            <div
+                                class="{{ $entityItem->contact->balance >= 0 ? 'bg-green-300' : 'bg-red-300' }} p-1 px-2 rounded ">
+                                {{ $entityItem->contact->balance }}
+                            </div>
 
                         </div>
 
@@ -184,7 +187,8 @@
                                     <span
                                         class="flex basis-[41%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Адрес</span>
-                                        <input type="text"  name="address" required value="{{ $entityItem->address }}"  class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                    <input type="text" name="address" required value="{{ $entityItem->address }}"
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                 </div>
                             </div>
                         </div>
@@ -192,15 +196,21 @@
 
                         <div class="flex flex-row mb-5 w-full">
                             <div class="flex flex-row">
-                                <span style="width:152px" class="basis-[100%] flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
+                                <span style="width:152px"
+                                    class="basis-[100%] flex items-center whitespace-nowrap px-2 py-[0.25rem] text-center text-base text-surface">
                                     Плановая дата</span>
-                                <input type="date" min="2020-01-01" value="{{ date('Y-m-d', strtotime($entityItem->date_plan)) }}" name="date" required="" class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                <input type="date" min="2020-01-01"
+                                    value="{{ date('Y-m-d', strtotime($entityItem->date_plan)) }}" name="date"
+                                    required=""
+                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                             </div>
                             <div class="flex flex-row">
-                                <span class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                <span
+                                    class="basis-[10%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                     время</span>
                                 <select name="time" class="rounded border border-solid border-neutral-400">
-                                    <option value="{{ date('h', strtotime($entityItem->date_plan)) }}:00">{{ date('h', strtotime($entityItem->date_plan)) }}:00</option>
+                                    <option value="{{ date('h', strtotime($entityItem->date_plan)) }}:00">
+                                        {{ date('h', strtotime($entityItem->date_plan)) }}:00</option>
                                     <option value="08:00">08:00</option>
                                     <option value="09:00">09:00</option>
                                     <option value="10:00">10:00</option>
@@ -315,8 +325,7 @@
 
                             <div class="flex flex-row mb-1 w-full rounded p-2">
                                 <div class="flex basis-8/12">
-                                    <textarea name="comment"
-                                     class="w-full rounded border-neutral-200" placeholder="Комментарий">{{ $entityItem->comment }}</textarea>
+                                    <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий">{{ $entityItem->comment }}</textarea>
                                 </div>
                                 <div class="flex flex-col basis-4/12 font-semibold">
                                     <div class="flex justify-between px-6">
@@ -448,21 +457,22 @@
                             class=" p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
 
                         <button formaction="/api/order_ms/create2" data-id= "{{ $entityItem->id }}"
-                                class=" p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
-                                в мс</button>
-                        <button type="submit" name="action" value="create"
-
-                            class="p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Создать отгрузку
-                        </button>
+                            class=" p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
+                            в мс</button>
+                        <a href="{{ route('shipment.createFromOrder', ['orderId' => $entityItem->id]) }}"
+                            class="p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase">Создать
+                            отгрузку
+                        </a>
                         <div class="ml-auto">
                             <button onclick="printOrder({{ $entityItem->id }})" type="button"
-                                    class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Распечать</button>
-                            <button form="formDelete" type="submit" class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Удалить</button>
+                                class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Распечать</button>
+                            <button form="formDelete" type="submit"
+                                class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Удалить</button>
                         </div>
                     </div>
                 </form>
                 <form id="formDelete" action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
-                      class="block px-4 text-sm font-medium text-red-500 hover:bg-gray-100 cursor-pointer">
+                    class="block px-4 text-sm font-medium text-red-500 hover:bg-gray-100 cursor-pointer">
                     @csrf
                     @method('DELETE')
                 </form>
@@ -513,45 +523,47 @@
 
 
     <div class="w-11/12 max-w-10xl mx-auto py-8">
-        <div class="mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+        <div
+            class="mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
 
-                <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                {{--привязанный заказ --}}
+            <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
+                {{-- привязанный заказ --}}
 
-                @if (count($entityItem->shipments)>0)
-                <table class="text-left text-md text-nowrap">
+                @if (count($entityItem->shipments) > 0)
+                    <table class="text-left text-md text-nowrap">
 
-                    <tbody>
-                        @foreach ($entityItem->shipments as $sh)
-                        <tr class="border-b-2 bg-gray-100 py-2">
-                            <td class="px-6 py-4" style="text-align:right">
-                                <a href="{{ route("shipment.show", ["shipment"=>$sh->id]) }}">{{ $sh->name }}</a>
-                            </td>
-                            <td class="px-6 py-4" style="text-align:right">
-                                {{ $sh->created_at }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->contact->name }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:right">
-                                {{ $sh->suma }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->status}}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->comment }}
-                            </td>
-                            <td class="px-6 py-4" style="text-align:left">
-                                {{ $sh->delivery_price }}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        <tbody>
+                            @foreach ($entityItem->shipments as $sh)
+                                <tr class="border-b-2 bg-gray-100 py-2">
+                                    <td class="px-6 py-4" style="text-align:right">
+                                        <a
+                                            href="{{ route('shipment.show', ['shipment' => $sh->id]) }}">{{ $sh->name }}</a>
+                                    </td>
+                                    <td class="px-6 py-4" style="text-align:right">
+                                        {{ $sh->created_at }}
+                                    </td>
+                                    <td class="px-6 py-4" style="text-align:left">
+                                        {{ $sh->contact->name }}
+                                    </td>
+                                    <td class="px-6 py-4" style="text-align:right">
+                                        {{ $sh->suma }}
+                                    </td>
+                                    <td class="px-6 py-4" style="text-align:left">
+                                        {{ $sh->status }}
+                                    </td>
+                                    <td class="px-6 py-4" style="text-align:left">
+                                        {{ $sh->comment }}
+                                    </td>
+                                    <td class="px-6 py-4" style="text-align:left">
+                                        {{ $sh->delivery_price }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 @endif
-                </div>
             </div>
+        </div>
 
     </div>
 
@@ -566,13 +578,16 @@
 
 
             fetch(printUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Добавляем CSRF-токен
-                },
-                body: JSON.stringify({ id: orderId })
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content') // Добавляем CSRF-токен
+                    },
+                    body: JSON.stringify({
+                        id: orderId
+                    })
+                })
                 .then(response => response.text())
                 .then(html => {
 

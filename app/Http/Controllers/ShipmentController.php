@@ -592,6 +592,80 @@ class ShipmentController extends Controller
         ));
     }
 
+    public function createFromOrder(Request $request, $orderId)
+    {
+        if ($orderId == null) {
+            return response()->redirectToRoute('shipment.create');
+        }
+
+        $order = Order::with('positions', 'contact', 'delivery:id,name')->find($orderId);
+
+        if ($order == null) {
+            return response()->redirectToRoute('shipment.create');
+        }
+
+        $entity = 'new shipment';
+        $action = "shipment.store";
+        $searchOrders = "api.get.order";
+        $newContact = 'contact.store';
+
+        $deliveries = Delivery::orderBy('name')->get();
+        $transports = Transport::orderBy('name')->get();
+        $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
+        $date = Carbon::now()->format('Y-m-d');
+        $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+
+        $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->orderBy('name')
+            ->get();
+
+        $products_block = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'бетон')
+            ->orderBy('name')
+            ->get();
+
+        $products_concrete = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'блок')
+            ->orderBy('name')
+            ->get();
+
+        $products_delivery = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('building_material', 'доставка')
+            ->orderBy('name')
+            ->get();
+
+        $products_another = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
+            ->where('type', Product::PRODUCTS)
+            ->where('category_id', 16)
+            ->orderBy('name')
+            ->get();
+
+        $positions = $order->positions;
+
+        return view('shipment.create', compact(
+            'action',
+            'searchOrders',
+            'entity',
+            'deliveries',
+            'transports',
+            'contacts',
+            'date',
+            'dateNow',
+            'order',
+            'products',
+            'products_block',
+            'products_concrete',
+            'products_delivery',
+            'products_another',
+            'positions',
+            'newContact'
+        ));
+    }
+
     public function store(Request $request)
     {
         $shipment = new Shipment();

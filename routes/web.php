@@ -165,6 +165,7 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
 
 
     //Доп
+    Route::get('shipments/createFromOrder/{orderId}', [ShipmentController::class, 'createFromOrder'])->name('shipment.createFromOrder');
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
     //Route::get('/supplies/products', [SupplyController::class, 'products'])->name('supplies.products');
 
