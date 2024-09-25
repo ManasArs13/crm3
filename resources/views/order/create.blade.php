@@ -38,26 +38,25 @@
                         {{-- Order --}}
                         <div class="w-full mb-2 flex flex-row">
 
-                                <div class="flex flex-row basis-1/2">
-                                    <div class="flex flex-row mb-1 w-full">
+                            <div class="flex flex-row basis-1/2">
+                                <div class="flex flex-row mb-1 w-full">
                                     <span
                                         class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Заказ №</span>
-                                    <input type="number" name="name" min="79999"
-                                        value="" readonly
+                                    <input type="number" name="name" min="79999" value="" readonly
                                         class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                    </div>
                                 </div>
-                                <div class="flex flex-row mb-1 w-full basis-1/2">
-                                    <div class="flex flex-row">
-                                        <span
-                                            class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                            дата создания</span>
-                                        <input type="datetime-local" min="2020-01-01" value="{{ $dateNow }}"
-                                            name="date_created" required
-                                            class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                    </div>
+                            </div>
+                            <div class="flex flex-row mb-1 w-full basis-1/2">
+                                <div class="flex flex-row">
+                                    <span
+                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        дата создания</span>
+                                    <input type="datetime-local" min="2020-01-01" value="{{ $dateNow }}"
+                                        name="date_created" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
+                            </div>
 
 
                         </div>
@@ -89,7 +88,7 @@
 
                             <div class="basic-1/2 text-end">
                                 {{-- balance --}}
-                                <div class="balance p-1  rounded " >
+                                <div class="balance p-1  rounded ">
                                 </div>
                             </div>
 
@@ -98,8 +97,8 @@
                         </div>
 
                         <div class="flex flex-row mb-3 w-full">
-                             {{-- Delivery --}}
-                             <div class="basis-1/2">
+                            {{-- Delivery --}}
+                            <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
                                         class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
@@ -121,10 +120,12 @@
                                     <span
                                         class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Статус</span>
-                                    <select name="status" required style="width: 77%"
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                    <select name="status" required style="width: 77%; background-color: {{ $statuses[0]->color }}"
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         @foreach ($statuses as $status)
-                                            <option class="bg-white" value="{{ $status->id }}">{{ $status->name }}
+                                            <option style="background-color: {{ $status->color }}"
+                                                data-color="{{ $status->color }}" value="{{ $status->id }}">
+                                                {{ $status->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -136,12 +137,11 @@
 
                             <div class="flex flex-row basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
-                                <span
-                                    class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                    Адрес</span>
-                                <input type="text" name="address" required
-
-                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                    <span
+                                        class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        Адрес</span>
+                                    <input type="text" name="address" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
                         </div>
@@ -205,8 +205,8 @@
                             <template x-for="(row, index) in rows" :key="index">
                                 <div class="flex flex-row mb-1 w-full">
 
-                                    <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product" required
-                                        x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
+                                    <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
+                                        required x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
                                         class="relative m-0 flex basis-6/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
@@ -436,6 +436,12 @@
                     modal.style.display = "none";
                 }
             }
+
+            $('select').on('change', function() {
+                $(this).css({
+                    backgroundColor: $(this).find('option:selected').data('color')
+                });
+            });
         });
     </script>
 </x-app-layout>

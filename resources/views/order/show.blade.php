@@ -47,33 +47,67 @@
                         </div>
 
                         {{-- Order --}}
-                        <div class="flex flex-row mb-3 w-full justify-between">
-                            <div class="flex flex-row w-full">
-                                <div class="flex flex-row mb-1">
+                        <div class="w-full mb-2 flex flex-row gap-3">
+                            <div class="flex flex-row basis-2/3">
+                                <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
+                                        class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Заказ №</span>
+                                    <input type="text" value="{{ $entityItem->id }}" readonly
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
-                                        <input type="text" value="{{ $entityItem->name }}"
-                                               readonly
-                                               class="w-[137px] rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                        <input type="datetime-local" min="2020-01-01"
-                                               value="{{ date('Y-m-d h:m:s', strtotime($entityItem->created_at)) }}"
-                                               name="date_created" required
-                                               class="ml-2 relative rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+
+                                    @if ($entityItem->ms_id != null)
+                                        <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}"
+                                            target="_blank" class="flex justify-center items-center ml-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-box-arrow-in-up-right"
+                                                viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
+                                                </path>
+                                                <path fill-rule="evenodd"
+                                                    d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    @endif
+                                </div>
+
+                                <div class="flex flex-row mb-1 w-full">
+
+                                    <span
+                                        class="flex basis-[42%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        мс №</span>
+                                    <input type="text" value="{{ $entityItem->name }}" readonly
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+
+                                </div>
+
+
+                            </div>
+                            <div class="flex flex-row mb-1 w-full">
+                                <div class="flex flex-row">
+                                    <span
+                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        дата создания</span>
+                                    <input type="datetime-local" min="2020-01-01"
+                                        value="{{ date('Y-m-d h:m:s', strtotime($entityItem->created_at)) }}"
+                                        name="date_created" required
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
 
                         {{-- Contacts --}}
                         <div class="flex flex-row mb-3 w-full justify-between">
                             <div class="flex flex-row basis-2/3">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
+                                        class="basis-[15%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Контрагент</span>
-                                    <select name="contact" required class="select2 w-[308px]">
+                                    <select name="contact" required style="width:35%" class="select2">
                                         <option value="{{ $entityItem->contact_id }}" selected>
                                             {{ $entityItem->contact->name }}</option>
                                         @foreach ($contacts as $contact)
@@ -84,18 +118,21 @@
 
                                     {{-- Add contact button --}}
                                     <button type="button" id="button-modal"
-                                        class="inline-block rounded border border-solid border-neutral-400 hover:bg-neutral-200 ml-1 p-2 align-middle text-black hover:text-gray-600">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 367 368" >
-                                            <path d="M171.7 2.39681C168.8 3.89681 165.3 6.49681 164 8.29681C158.3 15.7968 158.5 12.8968 158.5 88.7968V158.897L87.2 159.097L15.8 159.397L10.9 162.397C7.9 164.297 4.9 167.297 3 170.297C0.3 174.797 0 175.997 0 183.897C0 191.797 0.3 192.997 3 197.497C4.9 200.497 7.9 203.497 10.9 205.397L15.8 208.397L87.2 208.697L158.5 208.897L158.7 280.197L159 351.597L162 356.497C163.9 359.497 166.9 362.497 169.9 364.397C174.4 367.097 175.6 367.397 183.5 367.397C191.4 367.397 192.6 367.097 197.1 364.397C200.1 362.497 203.1 359.497 205 356.497L208 351.597L208.3 280.197L208.5 208.897L279.8 208.697L351.2 208.397L356.1 205.397C359.1 203.497 362.1 200.497 364 197.497C366.7 192.997 367 191.797 367 183.897C367 175.997 366.7 174.797 364 170.297C362.1 167.297 359.1 164.297 356.1 162.397L351.2 159.397L279.8 159.097L208.5 158.897L208.3 87.5968L208 16.1968L205 11.2968C200.4 3.89681 194.1 0.496811 184.6 0.0968114C178 -0.203189 176.3 0.0968114 171.7 2.39681Z" fill="#AAAAAA"/>
+                                        class="inline-block rounded  align-middle text-black hover:text-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                                         </svg>
                                     </button>
                                 </div>
                             </div>
 
-                                {{-- balance --}}
-                                <div class="{{( $entityItem->contact->balance >=0)? "bg-green-300": "bg-red-300" }} p-1 px-2 rounded " >
-                                    {{ $entityItem->contact->balance }}
-                                </div>
+                            {{-- balance --}}
+                            <div
+                                class="{{ $entityItem->contact->balance >= 0 ? 'bg-green-300' : 'bg-red-300' }} p-1 px-2 rounded ">
+                                {{ $entityItem->contact->balance }}
+                            </div>
 
                         </div>
 
@@ -104,9 +141,9 @@
                             <div class="basis-1/3">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
+                                        class="flex basis-[41%]  items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Доставка</span>
-                                    <select name="delivery" required class="select2 w-[350px]">
+                                    <select name="delivery" required class="select2" style="width: 100%">
                                         @if ($entityItem->delivery_id)
                                             <option value="{{ $entityItem->delivery_id }}" selected>
                                                 {{ $entityItem->delivery->name }}</option>
@@ -128,15 +165,18 @@
                             <div class="basis-1/3">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
+                                        class="flex basis-[41%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Статус</span>
-                                    <select name="status" required
-                                        class="w-[350px] relative m-0 rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        <option selected class="bg-white" value="{{ $entityItem->status_id }}">
+                                    <select name="status" required style="background-color: {{ $entityItem->status->color }}"
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-300 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        <option selected style="background-color: {{ $entityItem->status->color }}"
+                                            value="{{ $entityItem->status_id }}">
                                             {{ $entityItem->status->name }}
                                         </option>
                                         @foreach ($statuses as $status)
-                                            <option class="bg-white" value="{{ $status->id }}">{{ $status->name }}
+                                            <option style="background-color: {{ $status->color }}"
+                                                data-color="{{ $status->color }}" value="{{ $status->id }}">
+                                                {{ $status->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -148,10 +188,10 @@
                             <div class="basis-1/3">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
+                                        class="flex basis-[41%] items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Адрес</span>
-                                        <input type="text" name="address" required value="{{ $entityItem->address }}"
-                                               class="w-[350px] relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                    <input type="text" name="address" required value="{{ $entityItem->address }}"
+                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                 </div>
                             </div>
                         </div>
@@ -287,17 +327,21 @@
 
 
                             <div class="flex flex-row mb-1 w-full rounded p-2">
-                                <div class="flex basis-10/12">
+                                <div class="flex basis-8/12">
                                     <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий">{{ $entityItem->comment }}</textarea>
                                 </div>
-                                <div class="flex flex-col basis-2/12 font-semibold">
+                                <div class="flex flex-col basis-4/12 font-semibold">
+                                    <div class="flex justify-between px-6">
+                                        <label>Количество:</label>
+                                        <span class="" x-text="allCount">
+                                    </div>
+                                    <div class="flex justify-between px-6">
+                                        <label>Общий вес:</label>
+                                        <span class="" x-text="allWeight">
+                                    </div>
                                     <div class="flex justify-between px-6">
                                         <label>ИТОГО:</label>
                                         <span class="" x-text="allSum">
-                                    </div>
-                                    <div class="flex justify-between px-6">
-                                        <label></label>
-                                        <span class="text-xs" x-text="allWeight">
                                     </div>
                                 </div>
 
@@ -336,7 +380,7 @@
 
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce((prev,
+                                            this.allWeight = Math.round(this.rows.map(item => item.weight).reduce((prev,
                                                     curr) => prev +
                                                 curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
@@ -373,7 +417,7 @@
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce((prev,
+                                            this.allWeight = Math.round(this.rows.map(item => item.weight).reduce((prev,
                                                     curr) => prev +
                                                 curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
@@ -400,7 +444,7 @@
 
                                         this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev + curr,
                                             0);
-                                        this.allWeight = 'Вес: ' + this.rows.map(item => item.weight).reduce((prev, curr) => prev +
+                                        this.allWeight = this.rows.map(item => item.weight).reduce((prev, curr) => prev +
                                             curr, 0);
                                         this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                             curr, 0);
@@ -423,11 +467,6 @@
                             отгрузку
                         </a>
                         <div class="ml-auto">
-                            @if ($entityItem->ms_id!=null)
-                                <a href="https://online.moysklad.ru/app/#customerorder/edit?id={{ $entityItem->ms_id }}" target="_blank" class="p-2 mr-1 text-sm bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">
-                                    Перейти в мс
-                                </a>
-                            @endif
                             <button onclick="printOrder({{ $entityItem->id }})" type="button"
                                 class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Распечать</button>
                             <button form="formDelete" type="submit"
@@ -535,13 +574,6 @@
         .select2-container--default .select2-results>.select2-results__options {
             min-height: 24rem;
         }
-        .select2-selection, .select2-selection--single{
-            padding: 5px;
-            height: 37px !important;
-        }
-        .select2-selection__arrow{
-            top: 4px !important;
-        }
     </style>
     <script>
         function printOrder(orderId) {
@@ -612,6 +644,12 @@
                     modal.style.display = "none";
                 }
             }
+
+            $('select').on('change', function() {
+                $(this).css({
+                    backgroundColor: $(this).find('option:selected').data('color')
+                });
+            });
         });
     </script>
 </x-app-layout>
