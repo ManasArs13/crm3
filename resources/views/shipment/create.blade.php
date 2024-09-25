@@ -22,13 +22,12 @@
         @endif
 
         @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }} @if ($order)
-                    на основе заказа № {{ $order->name }}
+            <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }} 
+                @if ($order)
+                    на основе заказа № {{ $order->id }}
                 @endif
             </h3>
         @endif
-
-
 
         <div
             class="max-w-10xl mx-auto block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
@@ -170,7 +169,7 @@
                                     <span
                                         class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
                                         Адрес</span>
-                                        <input type="text" name="address" placeholder="введите адрес"
+                                        <input type="text" name="address" placeholder="введите адрес" @if($order && $order->address) value={{ $order->address}} @endif
                                         class="basis-full relative m-0 flex rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
