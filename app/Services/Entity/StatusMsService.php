@@ -56,7 +56,7 @@ class StatusMsService implements EntityInterface
 
         foreach ($statuses as $status) {
             usleep(200);
-dump($status->name);
+
             try {
                 usleep(200);
 
