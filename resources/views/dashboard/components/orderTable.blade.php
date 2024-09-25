@@ -879,11 +879,11 @@
                                             {{ $shipment->order->name }}
                                         </a>
                                     @elseif($column == 'delivery_id')
-                                        {{ $shipment->transport->name ? $shipment->transport->name : '-' }}
+                                        {{ $shipment->transport->name ?? '-' }}
                                     @elseif($column == 'transport_id')
-                                        {{ $shipment->transport ? $shipment->transport->name : '-' }}
+                                        {{ $shipment->transport->name ?? '-' }}
                                     @elseif($column == 'transport_type_id')
-                                        {{ $shipment->transport_type ? $shipment->transport_type->name : '-' }}
+                                        {{ $shipment->transport_type ?? '-' }}
                                     @elseif($column == 'status_id')
                                         {{ $shipment->status }}
                                     @else
@@ -923,7 +923,7 @@
                                         {{ $shipment->name }}
                                     </a>
                                 @elseif($column == 'comment')
-                                    {{ $shipment->transport->car_number }}
+                                    {{ $shipment->transport->car_number ?? '-' }}
                                 @elseif($column == 'positions_count')
                                     @php
                                         $products_quantity_shipment = 0;
