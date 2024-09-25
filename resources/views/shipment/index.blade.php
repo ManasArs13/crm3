@@ -66,11 +66,11 @@
                                     </div>
                                     <div class="mt-4 flex justify-start mb-4 ml-4">
                                         <button type="submit"
-                                                class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                            class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
                                             поиск
                                         </button>
                                         <button type="button" id="reset-button"
-                                                class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
+                                            class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
                                             Сбросить
                                         </button>
                                     </div>
@@ -132,7 +132,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][min]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['minChecked'] == '' && !request()->has('filters') && $filter['name'] == 'created_at' ? date("Y-m-d") : $filter['minChecked'] }}"
+                                                                value="{{ $filter['minChecked'] == '' && !request()->has('filters') && $filter['name'] == 'created_at' ? date('Y-m-d') : $filter['minChecked'] }}"
                                                                 class="date-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -144,7 +144,7 @@
                                                             <input name="filters[{{ $filter['name'] }}][max]"
                                                                 step="0.1" type="{{ $filter['type'] }}"
                                                                 min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                value="{{ $filter['maxChecked'] == '' && !request()->has('filters') && $filter['name'] == 'created_at' ? date("Y-m-d") : $filter['maxChecked'] }}"
+                                                                value="{{ $filter['maxChecked'] == '' && !request()->has('filters') && $filter['name'] == 'created_at' ? date('Y-m-d') : $filter['maxChecked'] }}"
                                                                 class="date-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                         </div>
                                                     </div>
@@ -172,16 +172,16 @@
                                                 </div>
                                             @endif
                                         @endforeach
-                                            <div class="mt-4 flex justify-end">
-                                                <button type="submit"
-                                                        class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
-                                                    поиск
-                                                </button>
-                                                <button id="reset-button2" type="button"
-                                                        class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
-                                                    Сбросить
-                                                </button>
-                                            </div>
+                                        <div class="mt-4 flex justify-end">
+                                            <button type="submit"
+                                                class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                                поиск
+                                            </button>
+                                            <button id="reset-button2" type="button"
+                                                class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
+                                                Сбросить
+                                            </button>
+                                        </div>
                                     </div>
                                 </x-slot>
                             </x-dropdown>
@@ -376,10 +376,11 @@
                                         @elseif($column == 'name' || $column == 'id')
                                             <a href="{{ route($urlShow, $entityItem->id) }}"
                                                 class="text-blue-500 hover:text-blue-600">
-                                                @if ($entityItem->column!=null)
-                                                {{ $entityItem->$column }}
+
+                                                @if ($entityItem->$column == null)
+                                                    ---
                                                 @else
-                                                   ---
+                                                    {{ $entityItem->$column }}
                                                 @endif
                                             </a>
                                         @elseif($column == 'products_count')
@@ -421,7 +422,12 @@
                                                 -
                                             @endif
                                         @else
-                                            @if($column == 'suma' || $column == 'paid_sum' || $column == 'delivery_price' || $column == 'delivery_price_norm' || $column == 'delivery_fee')
+                                            @if (
+                                                $column == 'suma' ||
+                                                    $column == 'paid_sum' ||
+                                                    $column == 'delivery_price' ||
+                                                    $column == 'delivery_price_norm' ||
+                                                    $column == 'delivery_fee')
                                                 {{ isset($entityItem->$column) ? number_format((int) $entityItem->$column, 0, ',', ' ') : '' }}
                                             @else
                                                 {{ $entityItem->$column }}
@@ -435,11 +441,15 @@
 
                                     <x-dropdown align="right" width="48">
                                         <x-slot name="trigger">
-                                            <button class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                            <button
+                                                class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
 
                                                 <div class="ms-1">
-                                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                                                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                                    <svg class="w-5 h-5" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                        viewBox="0 0 4 15">
+                                                        <path
+                                                            d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                                                     </svg>
                                                 </div>
                                             </button>
@@ -447,21 +457,32 @@
 
                                         <x-slot name="content">
                                             <div class="py-1" role="none">
-                                                <button onclick="printShipment({{ $entityItem->id }})" class="w-full block px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 flex items-center space-x-2" role="menuitem" tabindex="-1" id="menu-item-{{ $entityItem->id }}-5">
-                                                    <svg class="w-4 h-4 fill-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M148.711 1.19301C134.219 4.10901 121.956 10.742 110.804 21.695C94.0776 38.125 87.9626 55.931 87.8806 88.445L87.8546 98.695H255.512H423.17L422.541 81.445C422.09 69.075 421.336 61.948 419.875 56.253C414.384 34.84 400.277 17.495 380.355 7.66301C364.277 -0.271986 372.629 0.248014 257.855 0.041014C175.697 -0.107986 154.037 0.121014 148.711 1.19301ZM60.7106 130.199C46.2386 133.098 33.9606 139.737 22.8036 150.695C9.33359 163.926 2.6016 178.707 0.732596 199.152C0.0925957 206.156 -0.152404 234.197 0.0945956 272.35C0.481596 332.234 0.563596 334.447 2.6826 342.137C8.7146 364.026 22.5246 380.94 42.3546 390.727C53.5136 396.234 60.3226 397.81 75.6046 398.424L88.8546 398.956V358.825V318.695L82.6046 318.693C78.6506 318.692 75.0766 318.05 72.8746 316.943C62.1696 311.565 62.1696 295.825 72.8746 290.447C76.1486 288.801 86.9326 288.698 255.355 288.698C423.777 288.698 434.561 288.801 437.835 290.447C448.54 295.825 448.54 311.565 437.835 316.943C435.633 318.05 432.059 318.692 428.105 318.693L421.855 318.695V358.823V398.951L435.605 398.426C451.407 397.822 458.048 396.307 469.355 390.727C489.158 380.954 502.872 364.176 509.073 342.137C511.29 334.259 511.308 333.626 511.308 263.695C511.308 193.764 511.29 193.131 509.073 185.253C502.872 163.214 489.158 146.436 469.355 136.663C452.827 128.506 472.577 129.22 258.355 129.034C102.839 128.899 66.1206 129.115 60.7106 130.199ZM133.835 194.447C138.831 196.956 141.855 201.953 141.855 207.695C141.855 213.437 138.831 218.434 133.835 220.943C130.779 222.479 127.067 222.692 103.355 222.692C79.6426 222.692 75.9306 222.479 72.8746 220.943C62.1696 215.565 62.1696 199.825 72.8746 194.447C75.9306 192.911 79.6426 192.698 103.355 192.698C127.067 192.698 130.779 192.911 133.835 194.447ZM118.063 403.445L118.355 488.195L120.737 493.465C123.885 500.431 131.912 507.764 138.837 510C143.641 511.552 153.498 511.695 255.355 511.695C357.212 511.695 367.069 511.552 371.873 510C378.798 507.764 386.825 500.431 389.973 493.465L392.355 488.195L392.647 403.445L392.94 318.695H255.355H117.77L118.063 403.445ZM301.835 354.447C312.54 359.825 312.54 375.565 301.835 380.943C298.683 382.527 294.299 382.692 255.355 382.692C207.414 382.692 207.762 382.738 203.125 375.797C198.368 368.676 201.155 358.325 208.875 354.447C212.027 352.863 216.411 352.698 255.355 352.698C294.299 352.698 298.683 352.863 301.835 354.447ZM301.835 418.447C312.54 423.825 312.54 439.565 301.835 444.943C298.683 446.527 294.299 446.692 255.355 446.692C207.414 446.692 207.762 446.738 203.125 439.797C198.368 432.676 201.155 422.325 208.875 418.447C212.027 416.863 216.411 416.698 255.355 416.698C294.299 416.698 298.683 416.863 301.835 418.447Z" />
+                                                <button onclick="printShipment({{ $entityItem->id }})"
+                                                    class="w-full block px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 flex items-center space-x-2"
+                                                    role="menuitem" tabindex="-1"
+                                                    id="menu-item-{{ $entityItem->id }}-5">
+                                                    <svg class="w-4 h-4 fill-gray-500"
+                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M148.711 1.19301C134.219 4.10901 121.956 10.742 110.804 21.695C94.0776 38.125 87.9626 55.931 87.8806 88.445L87.8546 98.695H255.512H423.17L422.541 81.445C422.09 69.075 421.336 61.948 419.875 56.253C414.384 34.84 400.277 17.495 380.355 7.66301C364.277 -0.271986 372.629 0.248014 257.855 0.041014C175.697 -0.107986 154.037 0.121014 148.711 1.19301ZM60.7106 130.199C46.2386 133.098 33.9606 139.737 22.8036 150.695C9.33359 163.926 2.6016 178.707 0.732596 199.152C0.0925957 206.156 -0.152404 234.197 0.0945956 272.35C0.481596 332.234 0.563596 334.447 2.6826 342.137C8.7146 364.026 22.5246 380.94 42.3546 390.727C53.5136 396.234 60.3226 397.81 75.6046 398.424L88.8546 398.956V358.825V318.695L82.6046 318.693C78.6506 318.692 75.0766 318.05 72.8746 316.943C62.1696 311.565 62.1696 295.825 72.8746 290.447C76.1486 288.801 86.9326 288.698 255.355 288.698C423.777 288.698 434.561 288.801 437.835 290.447C448.54 295.825 448.54 311.565 437.835 316.943C435.633 318.05 432.059 318.692 428.105 318.693L421.855 318.695V358.823V398.951L435.605 398.426C451.407 397.822 458.048 396.307 469.355 390.727C489.158 380.954 502.872 364.176 509.073 342.137C511.29 334.259 511.308 333.626 511.308 263.695C511.308 193.764 511.29 193.131 509.073 185.253C502.872 163.214 489.158 146.436 469.355 136.663C452.827 128.506 472.577 129.22 258.355 129.034C102.839 128.899 66.1206 129.115 60.7106 130.199ZM133.835 194.447C138.831 196.956 141.855 201.953 141.855 207.695C141.855 213.437 138.831 218.434 133.835 220.943C130.779 222.479 127.067 222.692 103.355 222.692C79.6426 222.692 75.9306 222.479 72.8746 220.943C62.1696 215.565 62.1696 199.825 72.8746 194.447C75.9306 192.911 79.6426 192.698 103.355 192.698C127.067 192.698 130.779 192.911 133.835 194.447ZM118.063 403.445L118.355 488.195L120.737 493.465C123.885 500.431 131.912 507.764 138.837 510C143.641 511.552 153.498 511.695 255.355 511.695C357.212 511.695 367.069 511.552 371.873 510C378.798 507.764 386.825 500.431 389.973 493.465L392.355 488.195L392.647 403.445L392.94 318.695H255.355H117.77L118.063 403.445ZM301.835 354.447C312.54 359.825 312.54 375.565 301.835 380.943C298.683 382.527 294.299 382.692 255.355 382.692C207.414 382.692 207.762 382.738 203.125 375.797C198.368 368.676 201.155 358.325 208.875 354.447C212.027 352.863 216.411 352.698 255.355 352.698C294.299 352.698 298.683 352.863 301.835 354.447ZM301.835 418.447C312.54 423.825 312.54 439.565 301.835 444.943C298.683 446.527 294.299 446.692 255.355 446.692C207.414 446.692 207.762 446.738 203.125 439.797C198.368 432.676 201.155 422.325 208.875 418.447C212.027 416.863 216.411 416.698 255.355 416.698C294.299 416.698 298.683 416.863 301.835 418.447Z" />
                                                     </svg>
                                                     <span>Распечать отгрузку</span>
                                                 </button>
                                             </div>
                                             <div class="py-1" role="none">
-                                                <form action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
-                                                      class="block px-4 text-sm font-medium text-red-500 hover:bg-gray-100 cursor-pointer">
+                                                <form action="{{ route($urlDelete, $entityItem->id) }}"
+                                                    method="Post"
+                                                    class="block px-4 text-sm font-medium text-red-500 hover:bg-gray-100 cursor-pointer">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="w-full h-full py-2 flex items-center space-x-2">
-                                                        <svg class="w-4 h-4 fill-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
-                                                            <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd"></path>
+                                                    <button type="submit"
+                                                        class="w-full h-full py-2 flex items-center space-x-2">
+                                                        <svg class="w-4 h-4 fill-red-500"
+                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                            aria-hidden="true">
+                                                            <path fill-rule="evenodd"
+                                                                d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                                                                clip-rule="evenodd"></path>
                                                         </svg>
                                                         <span class="text-red-500">{{ __('label.delete') }}</span>
                                                     </button>
@@ -523,13 +544,15 @@
 
 
             fetch(printUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ id: shipmentId })
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        id: shipmentId
+                    })
+                })
                 .then(response => response.text())
                 .then(html => {
 
