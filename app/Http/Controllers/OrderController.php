@@ -404,7 +404,10 @@ class OrderController extends Controller
         $urlDelete = "order.destroy";
         $newContact = 'contact.store';
 
-        $statuses = Status::all();
+        $statusesAll = Status::all();
+        $statuses = $statusesAll->whereNotIn('id', $entityItem->status_id);
+
+        
         $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
         $deliveries = Delivery::orderBy('name')->get();
         $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')
