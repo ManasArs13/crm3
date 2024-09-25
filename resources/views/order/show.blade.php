@@ -454,7 +454,17 @@
 
                             class="p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Создать отгрузку
                         </button>
+                        <div class="ml-auto">
+                            <button onclick="printOrder({{ $entityItem->id }})" type="button"
+                                    class="p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Распечать</button>
+                            <button form="formDelete" type="submit" class="p-1 bg-red-500 hover:bg-red-600 text-white hover:text-gray-700 rounded font-bold uppercase">Удалить</button>
+                        </div>
                     </div>
+                </form>
+                <form id="formDelete" action="{{ route($urlDelete, $entityItem->id) }}" method="Post"
+                      class="block px-4 text-sm font-medium text-red-500 hover:bg-gray-100 cursor-pointer">
+                    @csrf
+                    @method('DELETE')
                 </form>
 
             </div>
@@ -551,6 +561,47 @@
         }
     </style>
     <script>
+        function printOrder(orderId) {
+            var printUrl = '{{ route('print.order') }}';
+
+
+            fetch(printUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Добавляем CSRF-токен
+                },
+                body: JSON.stringify({ id: orderId })
+            })
+                .then(response => response.text())
+                .then(html => {
+
+                    var printFrame = document.createElement('iframe');
+                    printFrame.style.position = 'absolute';
+                    printFrame.style.width = '0px';
+                    printFrame.style.height = '0px';
+                    printFrame.style.border = 'none';
+
+
+                    document.body.appendChild(printFrame);
+
+
+                    var frameDoc = printFrame.contentWindow.document;
+                    frameDoc.open();
+                    frameDoc.write(html);
+                    frameDoc.close();
+
+                    printFrame.onload = function() {
+                        printFrame.contentWindow.focus();
+                        printFrame.contentWindow.print();
+
+                        document.body.removeChild(printFrame);
+                    };
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
         $(document).ready(function() {
             //change selectboxes to selectize mode to be searchable
             $(".select2").select2();

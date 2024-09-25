@@ -647,6 +647,7 @@ class ShipmentController extends Controller
 
     public function show(string $id)
     {
+        $urlDelete = "shipment.destroy";
         $entityItem = Shipment::with('order', 'contact', 'delivery', 'transport', 'transport_type', 'products')->find($id);
         $entity = 'Отгрузка №';
         $action = "shipment.update";
@@ -701,7 +702,8 @@ class ShipmentController extends Controller
             'products_delivery',
             'products_another',
             'positions',
-            'statuses'
+            'statuses',
+            'urlDelete'
         ));
     }
 

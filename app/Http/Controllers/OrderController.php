@@ -401,6 +401,7 @@ class OrderController extends Controller
         $entityItem = Order::with('positions', 'status', 'contact', 'transport')->find($id);
         $entity = 'Заказ №';
         $action = "order.update";
+        $urlDelete = "order.destroy";
         $newContact = 'contact.store';
 
         $statuses = Status::all();
@@ -451,7 +452,8 @@ class OrderController extends Controller
             'products_delivery',
             'products_another',
             'date',
-            'dateNow'
+            'dateNow',
+            'urlDelete'
         ));
     }
 
