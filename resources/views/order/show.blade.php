@@ -456,8 +456,8 @@
                         </button>
                         <div class="ml-auto">
                             <button onclick="printOrder({{ $entityItem->id }})" type="button"
-                                    class="p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Распечать</button>
-                            <button form="formDelete" type="submit" class="p-1 bg-red-500 hover:bg-red-600 text-white hover:text-gray-700 rounded font-bold uppercase">Удалить</button>
+                                    class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Распечать</button>
+                            <button form="formDelete" type="submit" class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Удалить</button>
                         </div>
                     </div>
                 </form>
