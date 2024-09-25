@@ -51,47 +51,20 @@
                         <div class="w-full mb-2 flex flex-row">
                             <div class="basis-1/3">
                                 <div class="flex flex-row mb-1 w-full">
-                                    <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    <span class="w-[170px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Отгрузка №</span>
 
-                                    <input type="text"  value="{{ $entityItem->id }}" readonly
-                                    class="relative m-0 flex basis-full items-center rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                    <input type="text" name="name" id="name" value="{{ $entityItem->name }}" readonly
+                                           class="w-[137px] relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                    <input type="datetime-local" min="2020-01-01"
+                                           value="{{ date('Y-m-d h:m:s', strtotime($entityItem->created_at)) }}"
+                                           name="date_created" required
+                                           class="ml-2 relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
                                 </div>
-
-
                             </div>
-                            <div class="flex flex-row mb-1 w-full basis-1/3">
-                                <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                    № мс</span>
 
-                                <input type="text" name="name" id="name" value="{{ $entityItem->name }}" readonly
-                                class="relative m-0 flex basis-full items-center rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
 
-                            </div>
-                            <div class="flex flex-row mb-1 w-full basis-1/3">
-                                @if ($entityItem->ms_id != null)
-                                    <a href="https://online.moysklad.ru/app/#demand/edit?id={{ $entityItem->ms_id }}"
-                                        target="_blank" class="flex justify-center items-center ml-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                                d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
-                                            </path>
-                                            <path fill-rule="evenodd"
-                                                d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                @endif
-                                <span
-                                    class="basis-1/2 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
-                                    дата создания</span>
-                                <input type="datetime-local" min="2020-01-01"
-                                    value="{{ date('Y-m-d h:m:s', strtotime($entityItem->created_at)) }}"
-                                    name="date_created" required
-                                    class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                            </div>
 
                         </div>
 
@@ -100,10 +73,10 @@
 
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
-                                    <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    <span class="w-[170px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Контрагент</span>
 
-                                        <select name="contact" required style="width:100%" class="select2">
+                                        <select name="contact" required class="select2 w-[350px]">
                                             @if ($entityItem->contact_id)
                                                 <option value="{{ $entityItem->contact_id }}" selected>
                                                     {{ $entityItem->contact->name }}</option>
@@ -130,14 +103,14 @@
                         </div>
 
 
-                        <div class="flex flex-row mb-3 w-full ">
+                        <div class="flex flex-row mb-3 w-full">
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
-                                    <span class="flex basis-1/4 items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                    <span class="w-[170px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Cтатус</span>
 
-                                    <select name="status" required style="width: 100%"
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                    <select name="status" required
+                                        class="w-[350px] h-[37px] relative m-0 rounded border border-solid border-neutral-200 bg-blue-400 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         <option selected class="bg-white" value="{{ $entityItem->status }}">
                                             {{ $entityItem->status }}
                                         </option>
@@ -149,13 +122,15 @@
 
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="flex flex-row mb-3 w-full">
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="w-[170px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         На основе заказа №</span>
-                                    <select name="order_id" class="js-data-example-ajax" style="width: 100%"
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                    <select name="order_id" class="js-data-example-ajax w-[350px] relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         @if ($entityItem->order)
                                             <option value="{{ $entityItem->order_id }}" selected="selected">
                                                 {{ $entityItem->order->name }}
@@ -174,10 +149,10 @@
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="basis-1/4 flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="w-[170px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Транспорт</span>
                                     <select name="transport" required
-                                        class="relative m-0 flex basis-full rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                            class="w-[350px] h-[37px] relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
                                         @if ($entityItem->transport)
                                             <option value="{{ $entityItem->transport_id }}" selected>
                                                 {{ $entityItem->transport->name }}</option>
@@ -190,12 +165,14 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="flex flex-row mb-3 w-full">
                             <div class="basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
                                     <span
-                                        class="basis-[11%] flex items-center whitespace-nowrap px-3 py-[0.25rem] text-center text-base text-surface">
+                                        class="w-[170px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Доставка</span>
-                                    <select name="delivery" required class="select2" style="width: 100%">
+                                    <select name="delivery" required class="select2 w-[350px]">
                                         @if ($entityItem->delivery_id)
                                             <option value="{{ $entityItem->delivery_id }}" selected>
                                                 {{ $entityItem->delivery->name }}</option>
@@ -301,21 +278,17 @@
 
 
                             <div class="flex flex-row mb-1 w-full rounded p-2">
-                                <div class="flex basis-8/12">
+                                <div class="flex basis-10/12">
                                     <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий">{{ $entityItem->description }}</textarea>
                                 </div>
-                                <div class="flex flex-col basis-4/12 font-semibold">
-                                    <div class="flex justify-between px-6">
-                                        <label>Количество:</label>
-                                        <span class="" x-text="allCount">
-                                    </div>
-                                    <div class="flex justify-between px-6">
-                                        <label>Общий вес:</label>
-                                        <span class="" x-text="allWeight">
-                                    </div>
+                                <div class="flex flex-col basis-2/12 font-semibold">
                                     <div class="flex justify-between px-6">
                                         <label>ИТОГО:</label>
                                         <span class="" x-text="allSum">
+                                    </div>
+                                    <div class="flex justify-between px-6">
+                                        <label></label>
+                                        <span class="text-xs" x-text="allWeight">
                                     </div>
                                 </div>
 
@@ -349,7 +322,7 @@
 
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = {!! $entityItem->weight !!}
+                                            this.allWeight = 'Вес: ' + {!! $entityItem->weight !!};
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -387,7 +360,7 @@
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = Math.round(this.rows.map(item => item.weight)
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight)
                                                 .reduce((prev, curr) => prev + curr, 0) * 100) / 100;
 
                                             this.allCount = this.rows.map(item => item.count).reduce((prev,
@@ -412,7 +385,7 @@
                                     removeRow(row) {
                                         this.rows.splice(this.rows.indexOf(row), 1);
 
-                                        this.allWeight = this.rows.map(item => item.weight).reduce((prev, curr) => prev +
+                                        this.allWeight = 'Вес: ' + this.rows.map(item => item.weight).reduce((prev, curr) => prev +
                                             curr, 0);
                                         this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                             curr, 0);
@@ -432,6 +405,12 @@
                             в мс</button>
 
                         <div class="ml-auto">
+                            @if ($entityItem->ms_id != null)
+                                <a href="https://online.moysklad.ru/app/#demand/edit?id={{ $entityItem->ms_id }}"
+                                   target="_blank" class="p-2 mr-1 text-sm bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">
+                                    Перейти в мс
+                                </a>
+                            @endif
                             <button onclick="printShipment({{ $entityItem->id }})" type="button"
                                     class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Распечать</button>
                             <button form="formDelete" type="submit" class="p-1 bg-slate-400 hover:bg-slate-500 text-white rounded uppercase">Удалить</button>
@@ -492,6 +471,16 @@
 
     </div>
 
+
+    <style>
+        .select2-selection, .select2-selection--single{
+            padding: 5px;
+            height: 37px !important;
+        }
+        .select2-selection__arrow{
+            top: 4px !important;
+        }
+    </style>
 
     <script>
         function printShipment(shipmentId) {
