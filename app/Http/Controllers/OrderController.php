@@ -345,14 +345,14 @@ class OrderController extends Controller
                     $position->product_id = $product_bd->id;
                     $position->order_id = $order->id;
                     $position->quantity = $product['count'];
-                    $position->price = $product_bd->price;
+                    $position->price = $product['price'];
                     $position->weight_kg = $product_bd->weight_kg * $product['count'];
                     $position->shipped = 0;
                     $position->reserve = 0;
 
                     $position->save();
 
-                    $sum += $position->price*$product['count'];
+                    $sum += $product['sum'];
                     $weight += $position->weight_kg;
                 }
             }
@@ -503,10 +503,10 @@ class OrderController extends Controller
                         $shipmentproduct->product_id = $product_bd->id;
                         $shipmentproduct->shipment_id = $shipment->id;
                         $shipmentproduct->quantity = $product['count'];
-                        $shipmentproduct->price=$product_bd->price;
+                        $shipmentproduct->price=$product['price'];
 
-                        $shipment->suma+=$product_bd->price*$product['count'];
-                        $shipment->weight+=$product["count"]*$product['count'];
+                        $shipment->suma+=$product['sum'];
+                        $shipment->weight+=$product_bd->weight_kg * $product['count'];
                         $shipmentproduct->save();
                     }
                 }
@@ -543,14 +543,14 @@ class OrderController extends Controller
                         $position->product_id = $product_bd->id;
                         $position->order_id = $order->id;
                         $position->quantity = $product['count'];
-                        $position->price = $product_bd->price;
-                        $position->weight_kg = $product_bd->price * $product['count'];
+                        $position->price = $product['price'];
+                        $position->weight_kg = $product_bd->weight_kg * $product['count'];
                         $position->shipped = 0;
                         $position->reserve = 0;
 
                         $position->save();
 
-                        $sum += $position->price;
+                        $sum += $product['sum'];
                         $weight += $position->weight_kg;
                     }
                 }
