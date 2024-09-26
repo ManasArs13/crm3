@@ -200,7 +200,8 @@ class OperatorController extends Controller
             'dateAll',
             'queryMaterial',
             'queryPlan',
-            'select'
+            'select',
+            'entityName'
         ));
     }
 

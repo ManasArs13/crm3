@@ -33,6 +33,7 @@ return [
     'processing' => 'Техоперация №',
     'techchart' => 'Техкарта ',
     'supplies' => 'Приёмки',
+    'supplies_position' => 'Позиции приёмок',
     'supply' => 'Приёмка №',
     'new shipment' => 'Новая отгрузка',
     'order_positions' => 'Позиции заказов',
