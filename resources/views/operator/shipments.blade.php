@@ -33,7 +33,6 @@
                                         <th scope="col" class="px-6 py-4"
                                             @if (
                                                 $column == 'Имя' ||
-                                                    $column == 'Дата создания' ||
                                                     $column == 'Сумма' ||
                                                     $column == 'Кол-во' ||
                                                     $column == 'Дата обновления' ||
@@ -131,6 +130,10 @@
                                                 @endif
                                             @elseif($column == 'status')
                                                 {{ $entityItem->$column }}
+                                            @elseif($column == 'car_number')
+                                                {{ $entityItem->transport->car_number ? $entityItem->transport->car_number : '-' }}
+                                            @elseif($column == 'driver')
+                                                {{ $entityItem->transport->driver ? $entityItem->transport->driver : '-' }}
                                             @elseif($column == 'remainder')
                                                 @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
                                                     {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}

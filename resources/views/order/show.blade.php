@@ -287,10 +287,10 @@
 
 
                             <div class="flex flex-row mb-1 w-full rounded p-2">
-                                <div class="flex basis-8/12">
+                                <div class="flex basis-10/12">
                                     <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий">{{ $entityItem->comment }}</textarea>
                                 </div>
-                                <div class="flex flex-col basis-4/12 font-semibold">
+                                <div class="flex flex-col basis-2/12 font-semibold">
                                     <div class="flex justify-between px-6">
                                         <label>ИТОГО:</label>
                                         <span class="" x-text="allSum">

@@ -11,6 +11,7 @@ return [
   'phone' => "Телефон",
   'phone1' => "Телефон 2",
   "phone_norm" => "Телефон нормированный",
+  'car_number' => "Номер машины",
   'created_at' => "Дата создания",
   "contact_id" => "Контакт МС",
   "contact_ms_id" => "Uuid в МС",

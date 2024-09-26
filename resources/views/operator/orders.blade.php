@@ -208,14 +208,12 @@
                                                         $column == 'payed_sum' ||
                                                         $column == 'name' ||
                                                         $column == 'sum' ||
-                                                        $column == 'positions_count' ||
                                                         $column == 'residual_count' ||
                                                         $column == 'shipped_count' ||
                                                         $column == 'shipped_sum' ||
                                                         $column == 'reserved_sum' ||
                                                         $column == 'weight' ||
                                                         $column == 'date_moment' ||
-                                                        $column == 'date_plan' ||
                                                         $column == 'date_fact' ||
                                                         $column == 'delivery_price_norm' ||
                                                         $column == 'created_at' ||
@@ -231,6 +229,8 @@
                                                         {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
                                                     @elseif($column == 'delivery_id')
                                                         {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                                    @elseif($column == 'transport_id')
+                                                        {{ $entityItem->transport->name ? $entityItem->transport->name : '-' }}
                                                     @elseif($column == 'transport_type_id')
                                                         {{ $entityItem->transport_type ? $entityItem->transport_type->name : '-' }}
                                                     @elseif($column == 'status_id')
@@ -345,6 +345,10 @@
                                                 @else
                                                     @if($column == 'sum' || $column == 'payed_sum' || $column == 'shipped_sum' || $column == 'reserved_sum' || $column == 'delivery_price' || $column == 'debt')
                                                         {{ number_format((int) $entityItem->$column, 0, ',', ' ') }}
+                                                    @elseif($column == 'car_number')
+                                                        {{ $entityItem->transport->car_number }}
+                                                    @elseif($column == 'driver')
+                                                        {{ $entityItem->transport->driver }}
                                                     @else
                                                         {{ $entityItem->$column }}
                                                     @endif
@@ -446,7 +450,7 @@
                                                 {{ number_format((int) $totalSum, 0, '.', ' ') }}
                                             </td>
                                         @elseif($column == 'positions_count')
-                                            <td class="overflow-auto px-2 py-2" style="text-align:right">
+                                            <td class="overflow-auto px-2 py-2" style="text-align:left">
                                                 {{ $totalCount }}
                                             </td>
                                         @elseif($column == 'shipped_count')
@@ -482,6 +486,8 @@
                                             </td>
                                         @endif
                                     @endforeach
+                                    <td>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
