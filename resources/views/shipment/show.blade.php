@@ -124,26 +124,6 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-row mb-3 w-full">
-                            <div class="basis-1/2">
-                                <div class="flex flex-row mb-1 w-full">
-                                    <span
-                                        class="w-[170px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
-                                        На основе заказа №</span>
-                                    <select name="order_id" class="js-data-example-ajax w-[350px] relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
-                                        @if ($entityItem->order)
-                                            <option value="{{ $entityItem->order_id }}" selected="selected">
-                                                {{ $entityItem->order->name }}
-                                            </option>
-                                        @else
-                                            <option value="" selected="selected">не выбрано
-                                            </option>
-                                        @endif
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                         {{-- Delivery --}}
                         <div class="flex flex-row mb-3 w-full">
                             <div class="basis-1/2">
