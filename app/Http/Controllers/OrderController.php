@@ -94,7 +94,6 @@ class OrderController extends Controller
             "positions_count",
             "residual_count",
             "delivery_id",
-            "ms_link",
         ];
 
         $selected = $request->columns ?? $select;
@@ -407,7 +406,7 @@ class OrderController extends Controller
         $statusesAll = Status::all();
         $statuses = $statusesAll->whereNotIn('id', $entityItem->status_id);
 
-        
+
         $contacts = Contact::where('name', '<>', null)->OrderBy('name')->get();
         $deliveries = Delivery::orderBy('name')->get();
         $products = Product::select('id', 'name', 'price', 'residual', 'weight_kg')

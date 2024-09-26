@@ -36,14 +36,25 @@ class DeliveryController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('deliveries');
-        $selectedColumns = [];
+        $selectedColumns = [
+            'id',
+            'name',
+            'distance',
+            'ton_price',
+            'created_at',
+            'updated_at',
+            'km_fact',
+            'time_minute'
+        ];
         $resColumns = [];
         $resColumnsAll = [];
 
         /* Колонки для меню */
         foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selectedColumns)];
+            if (in_array($column, $selectedColumns)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
         }
 
         /*  Фильтры */
