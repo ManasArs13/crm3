@@ -45,14 +45,38 @@ class ProductController extends Controller
 
         /* Колонки */
         $columns = Schema::getColumnListing('products');
-        $selectedColumns = [];
+
+        $selectedColumns = [
+            'id',
+            'short_name',
+            'price', 'balance',
+            'weight_kg',
+            'count_pallets',
+            'category_id',
+            'color_id',
+            'is_active',
+            'materials',
+            'min_balance',
+            'type',
+            'residual_norm',
+            'consumption_year',
+            'building_material',
+            'residual',
+            'release',
+            'sort',
+            'created_at',
+            'updated_at',
+            'ms_id'
+            ];
         //    $columns[] = 'remainder';
         $resColumns = [];
         $resColumnsAll = [];
 
         foreach ($columns as $column) {
-            $resColumns[$column] = trans("column." . $column);
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => false];
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selectedColumns)];
+            if (in_array($column, $selectedColumns)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
         }
 
         /*  Фильтры */

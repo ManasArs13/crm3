@@ -223,7 +223,7 @@
                                 <div class="flex flex-row mb-1 w-full">
 
                                     <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
-                                        x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
+                                        x-on:input.change="changeProduct($event.target.value, row.id)"
                                         class="relative m-0 flex basis-6/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
@@ -250,21 +250,26 @@
 
                                     </select>
 
-                                    <input x-model.number="row.count" x-init="$watch('row', (row) => changeProduct(row.product, row.id))" min="0"
-                                        type="number" x-bind:name="`products[${row.id}][count]`" required
-                                        class="relative m-0 flex text-right basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
+                                    <input x-model.number="row.count" min="0"
+                                        x-on:input.change="changeCount(row.product, row.id)" type="number"
+                                        x-bind:name="`products[${row.id}][count]`" required
+                                        class="relative m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
                                         placeholder="количество" />
 
                                     <span x-text="row.shipped"
                                         class="flex basis-1/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
                                     </span>
-                                    <span x-text="row.price"
-                                        class="flex basis-2/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
-                                    </span>
+                                    <input x-model.number="row.price" type="number"
+                                        x-bind:name="`products[${row.id}][price]`" required
+                                        x-on:input.change="changePrice(row.product, row.id)"
+                                        class="relative m-0 flex basis-2/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
+                                        placeholder="цена" />
 
-                                    <span x-text="row.sum"
-                                        class="flex justify-end basis-2/12 overflow-hidden rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
-                                    </span>
+                                    <input x-model.number="row.sum" type="number"
+                                        x-bind:name="`products[${row.id}][sum]`" required
+                                        x-on:input.change="changeSum(row.product, row.id)"
+                                        class="relative m-0 flex basis-2/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
+                                        placeholder="сумма" />
 
                                     <button @click="removeRow(row)" type="button"
                                         class="justify-center text-lg rounded-full mx-2">
@@ -373,7 +378,74 @@
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce((prev,
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                    curr) => prev +
+                                                curr, 0) * 100) / 100;
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                        }
+                                    },
+
+                                    changeCount(Id, index) {
+                                        if (this.entities.find(x => x.id == Id) !== undefined) {
+                                            if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                    .rows[index].count
+                                                //    this.rows[index].price = this.entities.find(x => x.id == Id).price
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                this.rows[index].sum = this.rows[index].price * this.rows[index].count
+                                            }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                    curr) => prev +
+                                                curr, 0) * 100) / 100;
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                        }
+                                    },
+
+                                    changePrice(Id, index) {
+                                        if (this.entities.find(x => x.id == Id) !== undefined) {
+                                            if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                    .rows[index].count
+                                                //    this.rows[index].price = this.entities.find(x => x.id == Id).price
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                this.rows[index].sum = this.rows[index].price * this.rows[index].count
+                                            }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                    curr) => prev +
+                                                curr, 0) * 100) / 100;
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                        }
+                                    },
+
+                                    changeSum(Id, index) {
+                                        if (this.entities.find(x => x.id == Id) !== undefined) {
+                                            if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                    .rows[index].count
+                                                this.rows[index].price = this.rows[index].sum / this.rows[index].count
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                //    this.rows[index].sum = this.rows[index].price * this.rows[index].count
+                                            }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
                                                     curr) => prev +
                                                 curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +

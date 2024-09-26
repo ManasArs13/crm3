@@ -46,10 +46,10 @@
                                     <input type="number" name="name" min="79999" value="" readonly
                                         class="w-[137px] w-relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                     <input type="datetime-local" min="2020-01-01" value="{{ $dateNow }}"
-                                               name="date_created" required
-                                               class="w-[227px] ml-2 relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
-                                    </div>
+                                        name="date_created" required
+                                        class="w-[227px] ml-2 relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
+                            </div>
                         </div>
 
                         {{-- Contacts --}}
@@ -68,9 +68,12 @@
 
                                 {{-- Add contact button --}}
                                 <button type="button" id="button-modal"
-                                        class="inline-block rounded border border-solid border-neutral-400 hover:bg-neutral-200 ml-1 p-2 align-middle text-black hover:text-gray-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 367 368" >
-                                        <path d="M171.7 2.39681C168.8 3.89681 165.3 6.49681 164 8.29681C158.3 15.7968 158.5 12.8968 158.5 88.7968V158.897L87.2 159.097L15.8 159.397L10.9 162.397C7.9 164.297 4.9 167.297 3 170.297C0.3 174.797 0 175.997 0 183.897C0 191.797 0.3 192.997 3 197.497C4.9 200.497 7.9 203.497 10.9 205.397L15.8 208.397L87.2 208.697L158.5 208.897L158.7 280.197L159 351.597L162 356.497C163.9 359.497 166.9 362.497 169.9 364.397C174.4 367.097 175.6 367.397 183.5 367.397C191.4 367.397 192.6 367.097 197.1 364.397C200.1 362.497 203.1 359.497 205 356.497L208 351.597L208.3 280.197L208.5 208.897L279.8 208.697L351.2 208.397L356.1 205.397C359.1 203.497 362.1 200.497 364 197.497C366.7 192.997 367 191.797 367 183.897C367 175.997 366.7 174.797 364 170.297C362.1 167.297 359.1 164.297 356.1 162.397L351.2 159.397L279.8 159.097L208.5 158.897L208.3 87.5968L208 16.1968L205 11.2968C200.4 3.89681 194.1 0.496811 184.6 0.0968114C178 -0.203189 176.3 0.0968114 171.7 2.39681Z" fill="#AAAAAA"/>
+                                    class="inline-block rounded border border-solid border-neutral-400 hover:bg-neutral-200 ml-1 p-2 align-middle text-black hover:text-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="0 0 367 368">
+                                        <path
+                                            d="M171.7 2.39681C168.8 3.89681 165.3 6.49681 164 8.29681C158.3 15.7968 158.5 12.8968 158.5 88.7968V158.897L87.2 159.097L15.8 159.397L10.9 162.397C7.9 164.297 4.9 167.297 3 170.297C0.3 174.797 0 175.997 0 183.897C0 191.797 0.3 192.997 3 197.497C4.9 200.497 7.9 203.497 10.9 205.397L15.8 208.397L87.2 208.697L158.5 208.897L158.7 280.197L159 351.597L162 356.497C163.9 359.497 166.9 362.497 169.9 364.397C174.4 367.097 175.6 367.397 183.5 367.397C191.4 367.397 192.6 367.097 197.1 364.397C200.1 362.497 203.1 359.497 205 356.497L208 351.597L208.3 280.197L208.5 208.897L279.8 208.697L351.2 208.397L356.1 205.397C359.1 203.497 362.1 200.497 364 197.497C366.7 192.997 367 191.797 367 183.897C367 175.997 366.7 174.797 364 170.297C362.1 167.297 359.1 164.297 356.1 162.397L351.2 159.397L279.8 159.097L208.5 158.897L208.3 87.5968L208 16.1968L205 11.2968C200.4 3.89681 194.1 0.496811 184.6 0.0968114C178 -0.203189 176.3 0.0968114 171.7 2.39681Z"
+                                            fill="#AAAAAA" />
                                     </svg>
                                 </button>
                             </div>
@@ -126,11 +129,11 @@
 
                             <div class="flex flex-row basis-1/2">
                                 <div class="flex flex-row mb-1 w-full">
-                                <span
-                                    class="w-[150px] h-[37px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
-                                    Адрес</span>
-                                <input type="text" name="address" required
-                                    class="w-[372px] relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
+                                    <span
+                                        class="w-[150px] h-[37px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
+                                        Адрес</span>
+                                    <input type="text" name="address" required
+                                        class="w-[372px] relative m-0 rounded border border-solid border-neutral-400 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.1] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary" />
                                 </div>
                             </div>
                         </div>
@@ -195,7 +198,7 @@
                                 <div class="flex flex-row mb-1 w-full">
 
                                     <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
-                                        required x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
+                                        required x-on:input.change="changeProduct($event.target.value, row.id)"
                                         class="relative m-0 flex basis-6/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
@@ -222,18 +225,23 @@
 
                                     </select>
 
-                                    <input x-model.number="row.count" x-init="$watch('row', (row) => changeProduct(row.product, row.id))" min="0"
-                                        type="number" x-bind:name="`products[${row.id}][count]`" required
+                                    <input x-model.number="row.count" min="0"
+                                        x-on:input.change="changeCount(row.product, row.id)" type="number"
+                                        x-bind:name="`products[${row.id}][count]`" required
                                         class="relative m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
                                         placeholder="количество" />
 
-                                    <span x-text="row.price"
-                                        class="flex basis-2/12 items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-gray-500 bg-gray-100 justify-end">
-                                    </span>
+                                    <input x-model.number="row.price" type="number"
+                                        x-bind:name="`products[${row.id}][price]`" required
+                                        x-on:input.change="changePrice(row.product, row.id)"
+                                        class="relative m-0 flex basis-2/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
+                                        placeholder="цена" />
 
-                                    <span x-text="row.sum"
-                                        class="flex basis-3/12 overflow-hidden rounded-r items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-gray-500 bg-gray-100 justify-end">
-                                    </span>
+                                    <input x-model.number="row.sum" type="number"
+                                        x-bind:name="`products[${row.id}][sum]`" required
+                                        x-on:input.change="changeSum(row.product, row.id)"
+                                        class="relative m-0 flex basis-3/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
+                                        placeholder="сумма" />
 
                                     <button @click="removeRow(row)" type="button"
                                         class="w-6 justify-center text-lg rounded-full mx-2">
@@ -307,7 +315,74 @@
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce((prev,
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                    curr) => prev +
+                                                curr, 0) * 100) / 100;
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                        }
+                                    },
+
+                                    changeCount(Id, index) {
+                                        if (this.entities.find(x => x.id == Id) !== undefined) {
+                                            if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                    .rows[index].count
+                                                //    this.rows[index].price = this.entities.find(x => x.id == Id).price
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                this.rows[index].sum = this.rows[index].price * this.rows[index].count
+                                            }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                    curr) => prev +
+                                                curr, 0) * 100) / 100;
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                        }
+                                    },
+
+                                    changePrice(Id, index) {
+                                        if (this.entities.find(x => x.id == Id) !== undefined) {
+                                            if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                    .rows[index].count
+                                                //    this.rows[index].price = this.entities.find(x => x.id == Id).price
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                this.rows[index].sum = this.rows[index].price * this.rows[index].count
+                                            }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                    curr) => prev +
+                                                curr, 0) * 100) / 100;
+                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                        }
+                                    },
+
+                                    changeSum(Id, index) {
+                                        if (this.entities.find(x => x.id == Id) !== undefined) {
+                                            if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                    .rows[index].count
+                                                this.rows[index].price = this.rows[index].sum / this.rows[index].count
+                                                this.rows[index].residual = this.entities.find(x => x.id == Id).residual
+                                                //    this.rows[index].sum = this.rows[index].price * this.rows[index].count
+                                            }
+                                            this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
+                                                curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
                                                     curr) => prev +
                                                 curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
@@ -333,7 +408,8 @@
 
                                         this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev + curr,
                                             0);
-                                        this.allWeight = 'Вес: ' + this.rows.map(item => item.weight).reduce((prev, curr) => prev +
+                                        this.allWeight = 'Вес: ' + this.rows.map(item => item.weight).reduce((prev, curr) =>
+                                            prev +
                                             curr, 0);
                                         this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                             curr, 0);
@@ -395,11 +471,14 @@
         .select2-container--default .select2-results>.select2-results__options {
             min-height: 24rem;
         }
-        .select2-selection, .select2-selection--single{
+
+        .select2-selection,
+        .select2-selection--single {
             padding: 5px;
             height: 37px !important;
         }
-        .select2-selection__arrow{
+
+        .select2-selection__arrow {
             top: 4px !important;
         }
     </style>
