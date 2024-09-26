@@ -212,14 +212,4 @@ class SupplyController extends Controller
 
         return view('supply.show', compact("entity", 'supply'));
     }
-
-    public function products(Request $request)
-    {
-        $needMenuForItem = true;
-        $entity = 'supplies';
-
-        $supply_products = SupplyPosition::with('supply', 'products')->orderBy('created_at', 'desc')->paginate(100);
-
-        return view('supply.products', compact("entity", 'supply_products'));
-    }
 }

@@ -119,6 +119,7 @@ return [
   'incoming_number' => 'Входящий номер',
   'incoming_date' => 'Входящий номер от',
   'supply' => 'Приёмка',
+  'supply_id' => 'ID Приёмки',
   'to_sale'  => 'К продаже',
   'is_archived' => 'В архиве',
   'budget' => 'Бюджет',

@@ -171,9 +171,9 @@
                                             Позиции отгрузок
                                         </x-dropdown-link>
 
-{{--                                        <x-dropdown-link :href="route('shipment_products.index')">--}}
-{{--                                            Позиции приёмок--}}
-{{--                                        </x-dropdown-link>--}}
+                                        <x-dropdown-link :href="route('supply_positions.index')">
+                                            Позиции приёмок
+                                        </x-dropdown-link>
 
                                         <x-dropdown-link :href="route('operator.orders')">
                                             Оператор заказы
@@ -550,8 +550,8 @@
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции заказов</a>
                                     <a href="{{ route('shipment_products.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции отгрузок</a>
-{{--                                    <a href="{{ route('shipment_products.index') }}"--}}
-{{--                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции приёмок</a>--}}
+                                    <a href="{{ route('supply_positions.index') }}"
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции приёмок</a>
                                     <a href="{{ route('operator.orders') }}"
                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Оператор заказы</a>
                                     <a href="{{ route('operator.shipments') }}"

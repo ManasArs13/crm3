@@ -28,6 +28,7 @@ use App\Http\Controllers\ShipingPriceController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\ShipmentProductController;
 use App\Http\Controllers\SupplyController;
+use App\Http\Controllers\SupplyPositionController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
 //use App\Http\Controllers\WelcomeController;
@@ -150,7 +151,8 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
         'category' => CategoryController::class,
         'order_positions' => OrderPositionController::class,
         'shipment_products' => ShipmentProductController::class,
-        'supply'    => SupplyController::class,
+        'supply' => SupplyController::class,
+        'supply_positions' => SupplyPositionController::class,
     ]);
 
     // Amo CRM
@@ -167,7 +169,6 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
     //Доп
     Route::get('shipments/createFromOrder/{orderId}', [ShipmentController::class, 'createFromOrder'])->name('shipment.createFromOrder');
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
-    //Route::get('/supplies/products', [SupplyController::class, 'products'])->name('supplies.products');
 
     // Фильтры
     Route::get('/products/filter', [ProductController::class, 'filter'])->name('product.filter');
@@ -178,7 +179,7 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
     Route::get('/shiping_prices/filter', [ShipingPriceController::class, 'filter'])->name('shiping_price.filter');
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
-    Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
+//    Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
 
 
 
