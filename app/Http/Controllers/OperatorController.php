@@ -29,7 +29,7 @@ class OperatorController extends Controller
         $entityName = 'Заказы';
 
         // Orders
-        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments');
+        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'transport');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
@@ -48,13 +48,17 @@ class OperatorController extends Controller
         // Columns
         $all_columns = [
             "id",
-            "name",
-            "date_moment",
+            "created_at",
             "contact_id",
             "sostav",
-            "sum",
-            "date_plan",
             "positions_count",
+            "transport_id",
+            "count_pallets",
+            "car_number",
+            "driver",
+            "date_moment",
+            "name",
+            "sum",
             "shipped_count",
             "residual_count",
             "status_id",
@@ -67,10 +71,8 @@ class OperatorController extends Controller
             "shipped_sum",
             "reserved_sum",
             "weight",
-            "count_pallets",
             "norm1_price",
             "norm2_price",
-            "transport_id",
             "is_demand",
             "is_made",
             // "status_shipped",
@@ -78,24 +80,19 @@ class OperatorController extends Controller
             "ms_link",
             "order_amo_id",
             "delivery_price_norm",
-            "created_at",
+            "date_plan",
             "updated_at",
             "ms_id"
         ];
 
         $select = [
-            "name",
+            "created_at",
             "contact_id",
             "sostav",
-            'status_shipped',
-            "sum",
-            "date_plan",
-            "status_id",
-            "comment",
             "positions_count",
-            "residual_count",
-            "delivery_id",
-            "ms_link",
+            "transport_id",
+            "car_number",
+            "driver",
         ];
 
         $selected = $request->columns ?? $select;
@@ -217,7 +214,7 @@ class OperatorController extends Controller
         $entityName = 'Отгрузки';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name,car_number,driver', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
@@ -235,14 +232,19 @@ class OperatorController extends Controller
 
         // Columns
         $all_columns = [
+            "created_at",
+            "contact_id",
+            "sostav",
+            "products_count",
+            "transport_id",
+            "car_number",
+            "driver",
             "name",
             "ms_id",
             "id",
-            "created_at",
             "counterparty_link",
             "suma",
             "status",
-            "products_count",
             "shipment_address",
             "description",
             "delivery_price",
@@ -251,9 +253,6 @@ class OperatorController extends Controller
             "delivery_fee",
             "delivery_id",
             "transport_type_id",
-            "transport_id",
-            "contact_id",
-            "sostav",
             "order_id",
             "service_link",
             "paid_sum",
@@ -264,20 +263,13 @@ class OperatorController extends Controller
 
 
         $select = [
-            "name",
             "created_at",
-            "counterparty_link",
-            "suma",
-            "status",
+            "contact_id",
+            "sostav",
             "products_count",
-            "shipment_address",
-            "description",
-            "delivery_price",
-            "delivery_price_norm",
-            "delivery_fee",
-            "delivery_id",
-            "transport_type_id",
             "transport_id",
+            "car_number",
+            "driver",
         ];
 
         $selected = $request->columns ?? $select;
