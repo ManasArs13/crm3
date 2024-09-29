@@ -6,6 +6,16 @@ use App\Models\Contact;
 
 class ContactController extends Controller
 {
+    public function getContacts(Request $request)
+    {
+        $phones = Contact::query()
+        ->where('phone', 'LIKE', '%'.$request->query('term') . '%')
+        ->orWhere('name', 'LIKE', '%'.$request->query('term') . '%')
+        ->latest()->take(10)->get();
+
+        return response()->json($phones);
+    }
+
     public function getByName(Request $request)
     {
         $contacts = Contact::query()
