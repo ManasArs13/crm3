@@ -44,4 +44,5 @@ Route::get("/shipping_price/get", [App\Http\Controllers\Api\Site\ShipingPriceCon
 Route::get("/deliveries/get/name", [App\Http\Controllers\Api\Site\DeliveryController::class,"getByName"])->name("api.get.delivery");
 Route::get("/contacts/get/name", [App\Http\Controllers\Api\Site\ContactController::class,"getByName"])->name("api.get.contact.name");
 Route::get("/contacts/get/phone", [App\Http\Controllers\Api\Site\ContactController::class,"getByPhone"])->name("api.get.contact.phone");
+Route::get("/contacts/get", [App\Http\Controllers\Api\Site\ContactController::class,"getContacts"])->name("api.get.contact");
 Route::get("/states/get/name", [App\Http\Controllers\Api\Site\StatusMsController::class,"getByName"])->name("api.get.state.name");

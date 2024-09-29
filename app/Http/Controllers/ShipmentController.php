@@ -677,15 +677,20 @@ class ShipmentController extends Controller
         $shipment->delivery_id = $request->delivery;
         $shipment->transport_id = $request->transport;
         $shipment->weight = $request->weight;
-        $shipment->contact_id = $request->contact;
+
+        if ($request->contact_name == $request->contact_phone) {
+            $shipment->contact_id = $request->contact_name;
+        } else {
+            $contact = Contact::create([
+                'name' => $request->contact_name,
+                'phone' => $request->contact_phone
+            ]);
+            $shipment->contact_id = $contact->id;
+        }
 
         if ($request->order_id) {
             $shipment->order_id = $request->order_id;
         }
-
-        // if ($request->transport_type_id) {
-        //     $shipment->tranport_type_id = $request->transport_type;
-        // }
 
         if ($request->comment) {
             $shipment->description = $request->comment;
@@ -695,6 +700,9 @@ class ShipmentController extends Controller
             $shipment->shipment_address = $request->address;
         }
 
+        $weight = 0;
+        $shipment->weight = $weight;
+        
         $shipment->save();
 
         // Add shipment position
@@ -711,10 +719,15 @@ class ShipmentController extends Controller
                     $position->shipment_id = $shipment->id;
                     $position->quantity = $product['count'];
 
+                    $weight +=  $product_bd->weight_kg;
+
                     $position->save();
                 }
             }
         }
+
+        $shipment->weight = $weight;
+        $shipment->save();
 
         return redirect()->route("shipment.show",["shipment"=>$shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' добавлена');
     }
@@ -780,16 +793,6 @@ class ShipmentController extends Controller
             'urlDelete'
         ));
     }
-
-    // public function edit(string $id)
-    // {
-    //     $entityItem = Shipment::find($id);
-    //     $columns = Schema::getColumnListing('shipments');
-    //     $entity = 'shipments';
-    //     $action = "shipment.update";
-
-    //     return view("own.edit", compact('entityItem', 'columns', 'action', 'entity'));
-    // }
 
     public function update(Request $request, string $id)
     {

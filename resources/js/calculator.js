@@ -1,6 +1,5 @@
 import Inputmask from "inputmask";
 import { jsPDF } from "jspdf";
-import * as rasterizeHTML from 'rasterizehtml';
 
 $(document).ready(function(){
     Inputmask({"mask": "+79999999999"}).mask(".phone");
@@ -439,38 +438,6 @@ $(document).ready(function(){
     });
 
 
-    // $('form').submit(function(e){
-    //     e.preventDefault();
-    //     let classForm=$(this).attr("class");
-    //     if (classForm=="calcBeton"){
-    //         // let $quantity=$("."+classForm+" .change_js");
-    //         // if ($quantity.val()<$("."+classForm+" .weight-tn").val()){
-    //         //     $quantity.val($("."+classForm+" .weight-tn").val());
-    //         // }
-    //     }
-    //     let url=$(this).attr("formaction");
-    //     console.log(url);
-
-    //     $.ajax({
-    //       url: "api/order_ms/create",
-    //       type: "POST",
-    //       data: $(this).serialize(),
-    //       beforeSend: function() {
-    //         $(".preloader").addClass("active");
-    //       },
-    //       success: function(data) {
-    //         $("#message").html(data);
-    //       },
-    //       error: function(response) {
-    //         $("#message").html(response.responseText);
-    //       },
-    //       complete: function() {
-    //         $(".preloader").removeClass("active");
-    //       }
-    //     });
-
-    // });
-
     $("body").on("click", "#button-modal", function(){
         $(".agent").toggleClass("active");
     });
@@ -619,7 +586,6 @@ $(document).ready(function(){
     $(".change_state").each(function(){
         var $this = $(this);
         let style= $this.parent().find(".state_input").attr("data-style-default");
-        console.log(style);
 
         $this.select2({
             width: '220px',

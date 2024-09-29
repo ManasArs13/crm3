@@ -324,6 +324,16 @@ class OrderController extends Controller
         $order->sum = 0;
         $order->weight = 0;
 
+        if ($request->contact_name == $request->contact_phone) {
+            $order->contact_id = $request->contact_name;
+        } else {
+            $contact = Contact::create([
+                'name' => $request->contact_name,
+                'phone' => $request->contact_phone
+            ]);
+            $order->contact_id = $contact->id;
+        }
+
         if ($request->comment) {
             $order->comment = $request->comment;
         }
@@ -392,7 +402,7 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->route("order.show",["order"=>$order->id])->with('success', 'Заказ №' . $order->id . ' добавлен');
+        return redirect()->route("order.show", ["order" => $order->id])->with('success', 'Заказ №' . $order->id . ' добавлен');
     }
 
     public function show(string $id)
@@ -459,9 +469,7 @@ class OrderController extends Controller
         ));
     }
 
-    public function edit(string $id)
-    {
-    }
+    public function edit(string $id) {}
 
     public function update(Request $request, string $id)
     {
@@ -471,7 +479,7 @@ class OrderController extends Controller
             return redirect()->route('order.index')->with('warning', 'Заказ ' . $id .  ' не найден!');
         }
 
-        if ($request->action=="create"){
+        if ($request->action == "create_shipment") {
 
             $shipment = new Shipment();
 
@@ -479,8 +487,6 @@ class OrderController extends Controller
             $shipment->delivery_id = $request->delivery;
             $shipment->contact_id = $request->contact;
             $shipment->shipment_address = $request->address;
-
-
 
             $shipment->weight = 0;
             $shipment->paid_sum = 0;
@@ -502,26 +508,35 @@ class OrderController extends Controller
                         $shipmentproduct->product_id = $product_bd->id;
                         $shipmentproduct->shipment_id = $shipment->id;
                         $shipmentproduct->quantity = $product['count'];
-                        $shipmentproduct->price=$product['price'];
+                        $shipmentproduct->price = $product['price'];
 
-                        $shipment->suma+=$product['sum'];
-                        $shipment->weight+=$product_bd->weight_kg * $product['count'];
+                        $shipment->suma += $product['sum'];
+                        $shipment->weight += $product_bd->weight_kg * $product['count'];
                         $shipmentproduct->save();
                     }
                 }
                 $shipment->save();
             }
 
-            return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->name . '('.$shipment->id.') создана');
-        }elseif($request->action=="save"){
+            return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->name . '(' . $shipment->id . ') создана');
+        } elseif ($request->action == "save") {
 
             $order->status_id = $request->status;
-            $order->contact_id = $request->contact;
             $order->delivery_id = $request->delivery;
             $order->transport_type_id = $request->transport_type;
             $order->address = $request->address;
             $order->date_plan = $request->date . ' ' . $request->time;
             $order->date_moment = $request->date_created;
+
+            if ($request->contact_name == $request->contact_phone) {
+                $order->contact_id = $request->contact_name;
+            } else {
+                $contact = Contact::create([
+                    'name' => $request->contact_name,
+                    'phone' => $request->contact_phone
+                ]);
+                $order->contact_id = $contact->id;
+            }
 
             if ($request->comment) {
                 $order->comment = $request->comment;
@@ -569,7 +584,6 @@ class OrderController extends Controller
         $order = Order::with('shipments')->find($id);
         $order->positions()->delete();
 
-        //dd($order->shipments());
         if ($order->shipments()) {
             foreach ($order->shipments() as $shipment) {
                 $shipment->order_id = null;
@@ -594,7 +608,8 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
-    public function print(Request $request){
+    public function print(Request $request)
+    {
         $order = Order::with('positions.product', 'contact')->find($request->id);
         return view('print.print', compact('order'));
     }
