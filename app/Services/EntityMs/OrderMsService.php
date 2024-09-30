@@ -290,14 +290,19 @@ class OrderMsService
             ]
         ];
 
-        $msId=$order->contact->ms_id;
-        if ($msId==null){
-            $arContact=["name"=>$order->contact->name, "phone"=>$order->contact->phone];
+        $msId = $order->contact->ms_id;
+
+        if ($msId == null){
+            $arContact = ["name"=>$order->contact->name, "phone"=>$order->contact->phone];
             $agent = $this->counterpartyMsService->updateCounterpartyMs($arContact);
+           var_dump($agent['id']);
             $msId = $agent->id;
+
+            $order->contact->ms_id = $msId;
+            $order->push();
         }
 
-        $array["shipmentAddress"]=$order->address;
+        $array["shipmentAddress"] = $order->address;
 
         $array['agent']=[
             "meta" => [
