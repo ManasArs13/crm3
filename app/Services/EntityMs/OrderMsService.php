@@ -276,9 +276,10 @@ class OrderMsService
 
     function createOrderToMs($msOrder)
     {
-       $order=Order::with('contact', 'delivery','status','positions')->find($msOrder);
+       $order = Order::with('contact', 'delivery','status','positions')->find($msOrder);
        $vat = Option::where('code', '=', "ms_vat")->first()?->value;
-       $url="https://api.moysklad.ru/api/remap/1.2/entity/customerorder/";
+       $url = "https://api.moysklad.ru/api/remap/1.2/entity/customerorder/";
+       $urlCounterparty = Option::where('code', '=',"ms_counterparty_url")->first()?->value;
 
         $array = [];
 
@@ -294,8 +295,8 @@ class OrderMsService
 
         if ($msId == null){
             $arContact = ["name"=>$order->contact->name, "phone"=>$order->contact->phone];
-            $agent = $this->counterpartyMsService->updateCounterpartyMs($arContact);
-           var_dump($agent['id']);
+            $agent = $this->moySkladService->actionPostRowsFromJson($urlCounterparty, $arContact);
+
             $msId = $agent->id;
 
             $order->contact->ms_id = $msId;
@@ -304,7 +305,7 @@ class OrderMsService
 
         $array["shipmentAddress"] = $order->address;
 
-        $array['agent']=[
+        $array['agent'] = [
             "meta" => [
                 "href" => "https://api.moysklad.ru/api/remap/1.2/entity/counterparty/".$order->contact->ms_id,
                 "type"=>"counterparty",
@@ -396,7 +397,7 @@ class OrderMsService
             ];
         }
 
-        if ($order->ms_id==null) {
+        if ($order->ms_id == null) {
             return $this->moySkladService->actionPostRowsFromJson($url, $array);
         } else {
             return $this->moySkladService->actionPutRowsFromJson($url . $order->ms_id, $array);
