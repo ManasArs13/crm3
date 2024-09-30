@@ -18,15 +18,14 @@ class CounterpartyMsService
     {
         $urlCounterparty = Option::where('code', '=',"ms_counterparty_url")->first()?->value;
 
-
         if (!isset($msCounterparty["id"]) && isset($msCounterparty["phone"])){
-            $msCounterparty["id"]=null;
-            $counterparty=$this->moySkladService->actionGetRowsFromJson($urlCounterparty."?filter=phone=".urlencode($msCounterparty["phone"]));
+            $msCounterparty["id"] = null;
+            $counterparty = $this->moySkladService->actionGetRowsFromJson($urlCounterparty."?filter=phone=".urlencode($msCounterparty["phone"]));
             if (isset($counterparty[0])){
-                $msCounterparty["id"]=\Arr::exists($counterparty[0],"id")?$counterparty[0]["id"]:null;
+                $msCounterparty["id"]=\Arr::exists($counterparty[0],"id") ? $counterparty[0]["id"]:null;
             }
         }
-        $array=$msCounterparty;
+        $array = $msCounterparty;
         unset($array["id"]);
 
 

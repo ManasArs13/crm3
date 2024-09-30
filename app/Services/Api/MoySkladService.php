@@ -185,7 +185,7 @@ class MoySkladService
                 'headers' => [
                     'content-type' => 'application/json',
                     'Accept-Encoding' => 'gzip',
-                    'user-agent' => 'My User Agent',
+                   // 'user-agent' => 'My User Agent',
                     'Authorization' => 'Basic ' . $this->auth
                 ],
                 'json' => $array

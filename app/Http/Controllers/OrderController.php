@@ -325,7 +325,8 @@ class OrderController extends Controller
         $order->weight = 0;
 
         if ($request->contact_name == $request->contact_phone) {
-            $order->contact_id = $request->contact_name;
+            $contact = Contact::where('id', $request->contact_name)->first();
+            $order->contact_id = $contact->id;
         } else {
             $contact = Contact::create([
                 'name' => $request->contact_name,
@@ -529,7 +530,8 @@ class OrderController extends Controller
             $order->date_moment = $request->date_created;
 
             if ($request->contact_name == $request->contact_phone) {
-                $order->contact_id = $request->contact_name;
+                $contact = Contact::where('id', $request->contact_name)->first();
+                $order->contact_id = $contact->id;
             } else {
                 $contact = Contact::create([
                     'name' => $request->contact_name,

@@ -67,12 +67,13 @@ class OrderController extends Controller
 
     public function setOrderToMs(Request $request,OrderMsService $orderMsService ): Response
     {
-        $id=$request->id;
+        $id = $request->id;
 
         $result = $orderMsService->createOrderToMs($id);
-        $shipment=Order::find($id);
+        $shipment = Order::find($id);
 
         $text=" cоздан";
+        
         if ($shipment->ms_id!=null){
             $text=" отредактирован";
         }
