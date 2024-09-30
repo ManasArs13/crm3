@@ -447,7 +447,7 @@
                             @endforeach
                         </tr>
                     @else
-                        @if ($entityItem->date_plan < \Carbon\Carbon::now()->format('d-m-Y H:i') && $entityItem->status_id !== 7)
+                        @if (\Carbon\Carbon::parse($entityItem->date_plan)->format('d-m-Y') == \Carbon\Carbon::now()->format('d-m-Y') && $entityItem->date_plan < \Carbon\Carbon::now()->format('d-m-Y H:i') && $entityItem->status_id !== 7)
                             <tr class="border-b-2 bg-red-100">
                                 @if (count($entityItem->shipments) > 0)
                                     <td class="text-nowrap px-2 py-2">

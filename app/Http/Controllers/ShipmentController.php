@@ -678,15 +678,8 @@ class ShipmentController extends Controller
         $shipment->transport_id = $request->transport;
         $shipment->weight = $request->weight;
 
-        if ($request->contact_name == $request->contact_phone) {
-            $shipment->contact_id = $request->contact_name;
-        } else {
-            $contact = Contact::create([
-                'name' => $request->contact_name,
-                'phone' => $request->contact_phone
-            ]);
-            $shipment->contact_id = $contact->id;
-        }
+        $contact = Contact::where('id', $request->contact_name)->first();
+        $shipment->contact_id = $contact->id;
 
         if ($request->order_id) {
             $shipment->order_id = $request->order_id;
@@ -702,7 +695,7 @@ class ShipmentController extends Controller
 
         $weight = 0;
         $shipment->weight = $weight;
-        
+
         $shipment->save();
 
         // Add shipment position
@@ -715,7 +708,7 @@ class ShipmentController extends Controller
                     $product_bd = Product::find($product['product']);
 
                     $position->product_id = $product_bd->id;
-                    $position->price=$product['price'];
+                    $position->price = $product['price'];
                     $position->shipment_id = $shipment->id;
                     $position->quantity = $product['count'];
 
@@ -729,7 +722,7 @@ class ShipmentController extends Controller
         $shipment->weight = $weight;
         $shipment->save();
 
-        return redirect()->route("shipment.show",["shipment"=>$shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' добавлена');
+        return redirect()->route("shipment.show", ["shipment" => $shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' добавлена');
     }
 
     public function show(string $id)
@@ -810,15 +803,13 @@ class ShipmentController extends Controller
         $shipment->delivery_id = $request->delivery;
         $shipment->transport_id = $request->transport;
         $shipment->weight = $request->weight;
-        $shipment->contact_id = $request->contact;
 
         if ($request->order_id) {
             $shipment->order_id = $request->order_id;
         }
 
-        // if ($request->transport_type_id) {
-        //     $shipment->tranport_type_id = $request->tranport_type;
-        // }
+        $contact = Contact::where('id', $request->contact_name)->first();
+        $shipment->contact_id = $contact->id;
 
         if ($request->comment) {
             $shipment->description = $request->comment;
@@ -844,7 +835,7 @@ class ShipmentController extends Controller
                     $position->product_id = $product_bd->id;
                     $position->shipment_id = $shipment->id;
                     $position->quantity = $product['count'];
-                    $position->price = $product_bd->price;
+                    $position->price = $product['price'];
 
                     $position->save();
                 }
@@ -862,7 +853,8 @@ class ShipmentController extends Controller
         return redirect()->route('shipment.index');
     }
 
-    public function print(Request $request){
+    public function print(Request $request)
+    {
         $shipment = Shipment::with('products.product', 'contact')->find($request->id);
         $totalSuma = $shipment->products->map(function ($product) {
             return $product->quantity * $product->price;
