@@ -11,7 +11,7 @@ class ContactController extends Controller
         $phones = Contact::query()
         ->where('phone', 'LIKE', '%'.$request->query('term') . '%')
         ->orWhere('name', 'LIKE', '%'.$request->query('term') . '%')
-        ->latest()->take(10)->get();
+        ->orderBy('name')->take(10)->get();
 
         return response()->json($phones);
     }

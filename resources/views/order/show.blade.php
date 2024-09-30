@@ -445,7 +445,7 @@
                                                 this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
                                                     this
                                                     .rows[index].count
-                                                this.rows[index].price = this.rows[index].sum / this.rows[index].count
+                                                this.rows[index].price = Math.round(this.rows[index].sum / this.rows[index].count)
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                                 //    this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }

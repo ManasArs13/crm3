@@ -70,7 +70,7 @@
                                         class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Имя</span>
                                     <select name="contact_name" class="contact change_name" data-change="change_phone"
-                                        required id="contact_name" data-placeholder="Выберите или введите имя">
+                                        required id="contact_name" data-placeholder="Выберите имя">
                                         @if ($order)
                                             <option value="{{ $order->contact_id }}" selected="selected">
                                                 {{ $order->contact->name }}</option>
@@ -104,7 +104,7 @@
                                         class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Телефон</span>
                                     <select name="contact_phone" class="contact change_phone" data-change="change_name"
-                                        required id="contact_phone" data-placeholder="Выберите или введите телефон">
+                                        required id="contact_phone" data-placeholder="Выберите">
                                         @if ($order)
                                             <option value="{{ $order->contact_id }}" selected="selected">
                                                 {{ $order->contact->phone }}</option>
@@ -174,7 +174,7 @@
                                         class="w-[150px] whitespace-nowrap px-3 py-[0.25rem] text-left text-base text-surface">
                                         Доставка</span>
                                     <select name="delivery" required class="select2 w-[372px]">
-                                        @if ($order)
+                                        @if ($order && $order->delivery)
                                             <option value="{{ $order->delivery_id }}" selected>
                                                 {{ $order->delivery->name }}</option>
                                         @else
@@ -290,10 +290,6 @@
                                         <label>ИТОГО:</label>
                                         <span class="" x-text="allSum">
                                     </div>
-                                    <div class="flex justify-between px-6">
-                                        <label></label>
-                                        <span class="text-xs" x-text="allWeight">
-                                    </div>
                                 </div>
 
                             </div>
@@ -315,18 +311,16 @@
                                                 id: row_i++,
                                                 product: pos.product_id,
                                                 count: pos.quantity,
-                                                residual: 0,
+                                                 residual: 0,
                                                 sum: pos.price * pos.quantity,
                                                 price: pos.price,
                                             }));
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight)
-                                                .reduce((prev, curr) => prev + curr, 0) * 100) / 100;
-                                            this.allCount = this.rows.map(item => item.count).reduce((prev,
-                                                    curr) =>
-                                                prev +
-                                                curr, 0);
-                                            this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
-                                                curr, 0);
+                                            this.allSum = 
+                                            this.rows.map(item => item.price).reduce((prev,
+                                                    curr) => prev + curr, 0)
+                                            *
+                                            this.rows.map(item => item.count).reduce((prev,
+                                                    curr) => prev + curr, 0);
                                         }
                                     },
                                     entities: [],
@@ -335,8 +329,6 @@
                                         product: '',
                                         count: 0,
                                         residual: 0,
-                                        // weight_kg: 0,
-                                        // weight: 0,
                                         sum: 0,
                                         price: 0,
                                     }],
@@ -348,20 +340,12 @@
                                     changeProduct(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
-                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
-                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
-                                                    this
-                                                    .rows[index].count
-                                                this.rows[index].price = this.entities.find(x => x.id == Id).price
+                                               this.rows[index].price = this.entities.find(x => x.id == Id).price
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
-                                                (prev,
-                                                    curr) => prev +
-                                                curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -370,20 +354,11 @@
                                     changeCount(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
-                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
-                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
-                                                    this
-                                                    .rows[index].count
-                                                //    this.rows[index].price = this.entities.find(x => x.id == Id).price
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
-                                                (prev,
-                                                    curr) => prev +
-                                                curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -392,20 +367,11 @@
                                     changePrice(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
-                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
-                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
-                                                    this
-                                                    .rows[index].count
-                                                //    this.rows[index].price = this.entities.find(x => x.id == Id).price
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
-                                                (prev,
-                                                    curr) => prev +
-                                                curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -414,20 +380,11 @@
                                     changeSum(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
-                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
-                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
-                                                    this
-                                                    .rows[index].count
-                                                this.rows[index].price = this.rows[index].sum / this.rows[index].count
+                                                this.rows[index].price =  Math.round(this.rows[index].sum / this.rows[index].count)
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
-                                                //    this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
-                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
-                                                (prev,
-                                                    curr) => prev +
-                                                curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -439,7 +396,6 @@
                                             product: '',
                                             count: 0,
                                             weight_kg: 0,
-                                            weight: 0,
                                             price: 0,
                                             residual: 0,
                                             sum: 0
@@ -450,10 +406,6 @@
                                         this.rows.splice(this.rows.indexOf(row), 1);
                                         this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev + curr,
                                             0);
-                                        this.allWeight = 'Вес: ' + this.rows.map(item => item.weight).reduce((prev,
-                                                curr) =>
-                                            prev +
-                                            curr, 0);
                                         this.allCount = this.rows.map(item => item.count).reduce((prev,
                                                 curr) =>
                                             prev +
@@ -491,7 +443,7 @@
 
             $("#contact_name").select2({
                 width: '372px',
-                tags: true,
+              //  tags: true,
                 ajax: {
                     delay: 250,
                     url: '/api/contacts/get',
@@ -517,7 +469,7 @@
 
             $("#contact_phone").select2({
                 width: '372px',
-                tags: true,
+             //   tags: true,
                 ajax: {
                     delay: 250,
                     url: '/api/contacts/get',
@@ -544,28 +496,22 @@
             $('#contact_phone').on('select2:select', function(e) {
                 var data = e.params.data;
 
-                if (data.text !== data.id) {
-                    if ($('#contact_name').find("option[value='" + data.id + "']").length) {
-                        $('#contact_name').val(data.id).trigger('change');
-                    } else {
-                        var newOption = new Option(data.attr1, data.id, true, true);
-                        $('#contact_name').append(newOption).trigger('change');
-                    }
+                if ($('#contact_name').find("option[value='" + data.id + "']").length) {
+                    $('#contact_name').val(data.id).trigger('change');
+                } else {
+                    var newOption = new Option(data.attr1, data.id, true, true);
+                    $('#contact_name').append(newOption).trigger('change');
                 }
             });
 
             $('#contact_name').on('select2:select', function(e) {
                 var data = e.params.data;
 
-                if (data.text !== data.id) {
-                    if ($('#contact_phone').find("option[value='" + data.id + "']").length) {
-                        $('#contact_phone').val(data.id).trigger('change');
-                    } else {
-                        var newOption = new Option(data.attr1, data.id, true, true);
-                        $('#contact_phone').append(newOption).trigger('change');
-                    }
+                if ($('#contact_phone').find("option[value='" + data.id + "']").length) {
+                    $('#contact_phone').val(data.id).trigger('change');
                 } else {
-                    $('#contact_phone').val(null).trigger('change');
+                    var newOption = new Option(data.attr1, data.id, true, true);
+                    $('#contact_phone').append(newOption).trigger('change');
                 }
             });
         });
