@@ -176,16 +176,17 @@
                             <h4 class="text-left font-semibold text-lg my-3">Товары</h4>
 
                             <div class="flex flex-row mb-1 w-full bg-gray-100 rounded">
-                                <div class="flex basis-8/12 justify-center text-gray-700">
+                                <div class="flex basis-6/12 justify-center text-gray-700">
                                     наименование
                                 </div>
                                 <div class="flex basis-1/12 justify-center text-gray-700">
                                     кол-во
                                 </div>
-                                <div class="flex basis-1/12 justify-center text-gray-700">
+                                <div class="flex basis-2/12 justify-end text-gray-700">
                                     цена
                                 </div>
-                                <div class="flex basis-2/12 justify-center text-gray-700">
+
+                                <div class="flex basis-3/12 justify-center text-gray-700">
                                     сумма
                                 </div>
                                 <div class="w-6 mx-2">
@@ -196,8 +197,8 @@
                                 <div class="flex flex-row mb-1 w-full">
 
                                     <select x-bind:name="`products[${row.id}][product]`" x-model.number="row.product"
-                                        required x-init="$watch('row', (row) => changeProduct(row.product, row.id))"
-                                        class="relative m-0 flex basis-8/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
+                                        required x-on:input.change="changeProduct($event.target.value, row.id)"
+                                        class="relative m-0 flex basis-6/12 rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary">
 
                                         <option value="" selected disabled>не выбрано</option>
                                         <optgroup label="БЕТОН">
@@ -223,20 +224,26 @@
 
                                     </select>
 
-                                    <input x-model.number="row.count" x-init="$watch('row', (row) => changeProduct(row.product, row.id))" min="0"
-                                        type="number" x-bind:name="`products[${row.id}][count]`" required
-                                        class="relative text-right m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
+                                    <input x-model.number="row.count" min="0"
+                                        x-on:input.change="changeCount(row.product, row.id)" type="number"
+                                        x-bind:name="`products[${row.id}][count]`" required
+                                        class="relative m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
                                         placeholder="количество" />
 
-                                    <span x-text="row.price"
-                                        class="flex basis-1/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
-                                    </span>
-                                    <span x-text="row.sum"
-                                        class="flex basis-2/12 justify-end items-center whitespace-nowrap border border-solid border-neutral-200 px-3 py-[0.25rem] text-center text-base font-normal leading-[1.6] text-gray-500 bg-gray-100">
-                                    </span>
+                                    <input x-model.number="row.price" type="number"
+                                        x-bind:name="`products[${row.id}][price]`" required
+                                        x-on:input.change="changePrice(row.product, row.id)"
+                                        class="relative m-0 flex basis-2/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
+                                        placeholder="цена" />
+
+                                    <input x-model.number="row.sum" type="number"
+                                        x-bind:name="`products[${row.id}][sum]`" required
+                                        x-on:input.change="changeSum(row.product, row.id)"
+                                        class="relative m-0 flex basis-3/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
+                                        placeholder="сумма" />
 
                                     <button @click="removeRow(row)" type="button"
-                                        class="justify-center text-lg rounded-full mx-2">
+                                        class="w-6 justify-center text-lg rounded-full mx-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             fill="currentColor" data-slot="icon"
                                             class="w-6 h-6 m-auto fill-gray-400 hover:fill-red-500">
@@ -249,8 +256,6 @@
                                 </div>
                             </template>
 
-                            <input type="text" class="hidden" name="weight" x-model="allWeight">
-
                             <button @click="addNewRow()" type="button"
                                 class="flex mx-auto text-center justify-center items-center border rounded font-semibold px-8 py-[0.25rem] text-gray-600 bg-gray-100 hover:bg-gray-200">
                                 добавить товар
@@ -259,7 +264,7 @@
 
                             <div class="flex flex-row mb-1 w-full rounded p-2">
                                 <div class="flex basis-10/12">
-                                    <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий">{{ $entityItem->description }}</textarea>
+                                    <textarea name="comment" class="w-full rounded border-neutral-200" placeholder="Комментарий"></textarea>
                                 </div>
                                 <div class="flex flex-col basis-2/12 font-semibold">
                                     <div class="flex justify-between px-6">
@@ -293,10 +298,7 @@
                                                 count: pos.quantity,
                                                 residual: ents.find(x => x.id == pos.product_id) && ents.find(
                                                     x => x.id == pos.product_id).residual,
-                                                sum: ents.find(x => x.id == pos.product_id) && ents.find(x =>
-                                                    x.id == pos.product_id).price ? Math.round(
-                                                    ents.find(x => x.id == pos.product_id)
-                                                    .price * pos.quantity * 100) / 100 : 0,
+                                                sum: pos.price * pos.quantity,
                                                 price: pos.price,
                                             }));
 

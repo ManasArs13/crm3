@@ -715,7 +715,7 @@ class ShipmentController extends Controller
                     $product_bd = Product::find($product['product']);
 
                     $position->product_id = $product_bd->id;
-                    $position->price=$product_bd->price;
+                    $position->price=$product['price'];
                     $position->shipment_id = $shipment->id;
                     $position->quantity = $product['count'];
 
