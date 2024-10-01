@@ -6,9 +6,11 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Option;
+use App\Models\Shifts;
 use App\Models\Shipment;
 use App\Models\TechChart;
 use App\Models\TechChartProduct;
+use App\Models\Transport;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\JsonResponse;
@@ -84,8 +86,13 @@ class DashboardService
                 });
             })
             ->select('id', 'created_at', 'transport_id', 'delivery_id')
-            ->with('transport', 'delivery')
-            ->get()
+            ->with([
+                'transport',
+                'delivery',
+                'transport.shifts' => function ($query) use ($date){
+                    $query->whereDate('start_shift', $date);
+                }
+            ])->get()
             ->each(function ($shipment) {
                 $shipment['time_to_come'] = Carbon::parse($shipment->created_at)->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
                 $shipment['time_to_out'] = Carbon::parse($shipment['time_to_come'])->addMinutes(60);
@@ -196,7 +203,19 @@ class DashboardService
 
         $materials = $this->processMaterials($materials);
 
-//        dd($entityItems);
+
+
+        $transports = Transport::with(['shifts' => function ($query) use ($date) {
+            $query->whereDate('start_shift', $date);
+        }])->get();
+
+        $isTransports = [];
+        foreach($shipments as $shipment){
+            if(isset($shipment->first()->transport_id)){
+                $isTransports[] = $shipment->first()->transport_id;
+            }
+        }
+        $shifts = Shifts::WhereDate('start_shift', $date)->whereNotIn('transport_id', $isTransports)->with('transport')->get();
 
         return view('dashboard.index', compact(
             'urlShow',
@@ -210,6 +229,8 @@ class DashboardService
             'dateNext',
             'datePrev',
             'date',
+            'transports',
+            'shifts'
         ));
     }
 
@@ -472,8 +493,13 @@ class DashboardService
                     $queries->where('building_material', Product::BLOCK);
                 });
             })
-            ->with('transport', 'delivery')
-            ->get()
+            ->with([
+                'transport',
+                'delivery',
+                'transport.shifts' => function ($query) use ($date){
+                    $query->whereDate('start_shift', $date);
+                }
+            ])->get()
             ->each(function ($shipment) {
                 $shipment['time_to_come'] = Carbon::parse($shipment->created_at)->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
                 $shipment['time_to_out'] = Carbon::parse($shipment['time_to_come'])->addMinutes(60);
@@ -595,6 +621,18 @@ class DashboardService
 
         $materials = $this->processMaterials($materials);
 
+        $transports = Transport::with(['shifts' => function ($query) use ($date) {
+            $query->whereDate('start_shift', $date);
+        }])->get();
+
+        $isTransports = [];
+        foreach($shipments as $shipment){
+            if(isset($shipment->first()->transport_id)){
+                $isTransports[] = $shipment->first()->transport_id;
+            }
+        }
+        $shifts = Shifts::WhereDate('start_shift', $date)->whereNotIn('transport_id', $isTransports)->with('transport')->get();
+
 
 
         return view('dashboard.block', compact(
@@ -608,7 +646,9 @@ class DashboardService
             'dateNext',
             'datePrev',
             'date',
-            'shipments'
+            'shipments',
+            'transports',
+            'shifts'
         ));
     }
 
@@ -661,8 +701,13 @@ class DashboardService
                 });
             })
             ->select('id', 'created_at', 'transport_id', 'delivery_id')
-            ->with('transport', 'delivery')
-            ->get()
+            ->with([
+                'transport',
+                'delivery',
+                'transport.shifts' => function ($query) use ($date){
+                    $query->whereDate('start_shift', $date);
+                }
+            ])->get()
             ->each(function ($shipment) {
                 $shipment['time_to_come'] = Carbon::parse($shipment->created_at)->addMinutes($shipment->delivery ? $shipment->delivery->time_minute : 0);
                 $shipment['time_to_out'] = Carbon::parse($shipment['time_to_come'])->addMinutes(60);
@@ -775,6 +820,18 @@ class DashboardService
 
         $materials = $this->processMaterials($materials);
 
+        $transports = Transport::with(['shifts' => function ($query) use ($date) {
+            $query->whereDate('start_shift', $date);
+        }])->get();
+
+        $isTransports = [];
+        foreach($shipments as $shipment){
+            if(isset($shipment->first()->transport_id)){
+                $isTransports[] = $shipment->first()->transport_id;
+            }
+        }
+        $shifts = Shifts::WhereDate('start_shift', $date)->whereNotIn('transport_id', $isTransports)->with('transport')->get();
+
         return view('dashboard.concrete', compact(
             'urlShow',
             'entityItems',
@@ -784,7 +841,9 @@ class DashboardService
             'dateNext',
             'datePrev',
             'date',
-            'shipments'
+            'shipments',
+            'transports',
+            'shifts',
         ));
     }
 

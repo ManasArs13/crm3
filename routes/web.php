@@ -34,6 +34,7 @@ use App\Http\Controllers\TransportTypeController;
 //use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -154,6 +155,11 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
         'supply' => SupplyController::class,
         'supply_positions' => SupplyPositionController::class,
     ]);
+
+    Route::prefix('transports')->name('transport.')->group(function () {
+        Route::resource('shift', ShiftController::class)->only(['index', 'update']);
+        Route::get('/{shift}', [ShiftController::class, 'index'])->where('shift', 'onshift|offshift')->name('shifts');
+    });
 
     // Amo CRM
     Route::resources([

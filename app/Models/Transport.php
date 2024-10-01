@@ -12,7 +12,13 @@ class Transport extends Model
 
     protected $guarded = [];
 
-    protected $fillable = ['name', 'description', 'tonnage', 'contact_id', 'car_number', 'driver', 'phone', 'type_id'];
+    protected $fillable = ['name', 'description', 'tonnage', 'contact_id', 'car_number', 'driver', 'phone', 'type_id', 'start_shift', 'end_shift'];
+
+
+    public function shifts()
+    {
+        return $this->hasMany(Shifts::class);
+    }
 
     public function type()
     {

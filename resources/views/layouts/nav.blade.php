@@ -109,6 +109,9 @@
                                     <x-dropdown-link :href="route('transport.index')">
                                         Весь транспорт
                                     </x-dropdown-link>
+                                    <x-dropdown-link :href="route('transport.shift.index')">
+                                        Смены
+                                    </x-dropdown-link>
 
                                     <x-dropdown-link :href="route('transportType.index')">
                                         Виды ТС
@@ -505,6 +508,8 @@
                                     <a href="{{ route('transport.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Весь
                                         транспорт</a>
+                                    <a href="{{ route('transport.shift.index') }}"
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Смены</a>
                                     <a href="{{ route('transportType.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Виды
                                         ТС</a>
