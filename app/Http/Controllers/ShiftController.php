@@ -115,7 +115,7 @@ class ShiftController extends Controller
             $request['transports'] = [];
         }
 
-        $time = $request->day . ' ' . $request->time;
+        $time = $request->day === Carbon::now()->toDateString() ? Carbon::now() : $request->day . ' ' . $request->time;
         $dataCreate = [];
 
         Shifts::whereDate('start_shift', $request->day)
