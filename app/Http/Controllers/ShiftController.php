@@ -118,9 +118,9 @@ class ShiftController extends Controller
         $time = $request->day === Carbon::now()->toDateString() ? Carbon::now() : $request->day . ' ' . $request->time;
         $dataCreate = [];
 
-        Shifts::whereDate('start_shift', $request->day)
-            ->whereNotIn('transport_id', $request->transports)
-            ->delete();
+//        Shifts::whereDate('start_shift', $request->day)
+//            ->whereNotIn('transport_id', $request->transports)
+//            ->delete();
 
         Shifts::WhereIn('transport_id', $request->transports)
             ->whereDate('start_shift', $request->day)
@@ -149,15 +149,17 @@ class ShiftController extends Controller
     }
 
     public function change(ShiftChangeRequest $request){
-        $shift = Shifts::firstOrCreate(
-            [
+        $shift = Shifts::where('transport_id', $request->id)
+            ->whereDate('start_shift', $request->date)
+            ->first();
+
+        if (!$shift) {
+            $shift = Shifts::create([
                 'transport_id' => $request->id,
-                'start_shift' => $request->date . ' ' . '08:00'
-            ],
-            [
+                'start_shift' => $request->date . ' ' . '08:00',
                 'end_shift' => null
-            ]
-        );
+            ]);
+        }
 
         $shift->update(['end_shift' => $shift->end_shift ? null : Carbon::now()]);
 

@@ -27,9 +27,20 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        $user = Auth::user();
+
+
+        if ($user->current_session_id && $user->current_session_id !== session()->getId()) {
+
+            Auth::logoutOtherDevices($request->input('password'));
+
+            $user->update(['current_session_id' => session()->getId()]);
+        } else {
+            $user->update(['current_session_id' => session()->getId()]);
+        }
+
         $request->session()->regenerate();
 
-//        return redirect()->intended(RouteServiceProvider::HOME);
 
         if (Auth::user()->hasRole('admin')) {
             return redirect('/dashboard');
@@ -56,6 +67,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
+        if ($user) {
+            $user->update(['current_session_id' => null]);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
