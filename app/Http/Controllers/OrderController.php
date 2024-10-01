@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Filters\OrderFilter;
+use App\Http\Controllers\Api\Ms\OrderController as MsOrderController;
 use App\Http\Requests\OrderRequest;
 use App\Models\Contact;
 use App\Models\Delivery;
+use App\Models\Option;
 use App\Models\Order;
 use App\Models\OrderPosition;
 use App\Models\Product;
@@ -13,7 +15,10 @@ use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Status;
 use App\Models\TransportType;
+use App\Services\EntityMs\OrderMsService;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -472,7 +477,7 @@ class OrderController extends Controller
 
     public function edit(string $id) {}
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, OrderMsService $orderMsService)
     {
         $order = Order::find($id);
 
@@ -577,7 +582,18 @@ class OrderController extends Controller
 
             $order->update();
 
-            return redirect()->route("order.show", ['order' => $order->id])->with('success', 'Заказ №' . $order->id . ' обновлён');
+            $req = $orderMsService->createOrderToMs($order->id);
+            $result = json_decode(json_encode($req), true);
+
+            if (isset($result['id']) && $result['id'] !== null) {
+                $order->ms_id = $result['id'];
+                $order->name = $result['name'];
+                $order->update();
+
+                return redirect()->route("order.show", ['order' => $order->id])->with('success', 'Заказ №' . $order->id . ' обновлён и отправлен');
+            } else {
+                return redirect()->route("order.show", ['order' => $order->id])->with('warning', $result);
+            }
         }
     }
 

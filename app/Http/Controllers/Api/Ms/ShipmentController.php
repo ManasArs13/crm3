@@ -11,7 +11,7 @@ use App\Models\Shipment;
 
 class ShipmentController extends Controller
 {
-    public function setShipmentToMs(Request $request,ShipmentMsService $shipmentMsService ): Response
+    public function setShipmentToMs(Request $request, ShipmentMsService $shipmentMsService): Response
     {
         $id=$request->id;
 

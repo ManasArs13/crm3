@@ -493,11 +493,11 @@
 
                     <div class="px-5 mb-3 w-full flex flex-row gap-3">
                         <button type="submit" name="action" value="save"
-                            class=" p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+                            class=" p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить и отправить</button>
 
-                        <button formaction="/api/order_ms/create2" data-id="{{ $entityItem->id }}"
+                        {{-- <button formaction="/api/order_ms/create2" data-id="{{ $entityItem->id }}"
                             class=" p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
-                            в мс</button>
+                            в мс</button> --}}
                         <a href="{{ route('shipment.createFromOrder', ['orderId' => $entityItem->id]) }}"
                             class="p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase">Создать
                             отгрузку
