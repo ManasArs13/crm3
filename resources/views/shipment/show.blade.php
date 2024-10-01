@@ -399,11 +399,11 @@
 
                     <div class="px-5 mb-3 w-full flex flex-row gap-3">
                         <button type="submit"
-                            class=" p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить</button>
+                            class=" p-1 bg-yellow-500 hover:bg-yellow-600 text-white hover:text-gray-700 rounded font-bold uppercase">Обновить и отправить в мс</button>
 
-                        <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
+                        {{-- <button formaction="/api/shipment_ms/create" data-id= "{{ $entityItem->id }}"
                             class=" p-1 bg-green-500 hover:bg-green-600 text-white hover:text-gray-700 rounded font-bold uppercase create_to_ms">Отправить
-                            в мс</button>
+                            в мс</button> --}}
 
                         <div class="ml-auto">
                             @if ($entityItem->ms_id != null)

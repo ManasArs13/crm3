@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Transport;
+use App\Services\EntityMs\ShipmentMsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -787,7 +788,7 @@ class ShipmentController extends Controller
         ));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, ShipmentMsService $shipmentMsService)
     {
         $shipment = Shipment::find($id);
 
@@ -842,7 +843,21 @@ class ShipmentController extends Controller
             }
         }
 
-        return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' обновлена');
+
+        $req = $shipmentMsService->createChipmentToMs($id);
+        $result = json_decode(json_encode($req), true);
+
+        if (isset($result['id']) && $result['id'] !== null) {
+            $shipment->ms_id=$result['id'];
+            $shipment->name=$result['name'];
+            $shipment->save();
+
+            return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' обновлена и отправлена');
+        } else {
+            info($result);
+            return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('warning', 'Ошибка');
+        }
+     
     }
 
     public function destroy(string $id)

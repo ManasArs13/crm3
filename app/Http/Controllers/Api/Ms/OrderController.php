@@ -65,7 +65,7 @@ class OrderController extends Controller
         }
     }
 
-    public function setOrderToMs(Request $request,OrderMsService $orderMsService ): Response
+    public function setOrderToMs(Request $request, OrderMsService $orderMsService ): Response
     {
         $id = $request->id;
 
