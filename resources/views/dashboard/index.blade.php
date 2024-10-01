@@ -425,7 +425,7 @@
                                             <div class="mt-2 w-full">
                                                 <select name="transport" id="transport" multiple="multiple" class="select2 h-[36px] block !w-full rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                                     @foreach($transports as $transport)
-                                                        <option value="{{ $transport->id }}" @if($transport->shifts->isNotEmpty()) selected @endif>{{ $transport->name }}</option>
+                                                        <option value="{{ $transport->id }}" @if($transport->shifts->isNotEmpty()) disabled @endif>{{ $transport->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

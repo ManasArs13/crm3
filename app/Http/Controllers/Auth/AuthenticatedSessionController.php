@@ -29,24 +29,18 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
+
         if ($user->current_session_id && $user->current_session_id !== session()->getId()) {
 
             Auth::logoutOtherDevices($request->input('password'));
 
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect()->route('login')->withErrors([
-                'email' => 'Вы уже вошли в систему с другого устройства.',
-            ]);
+            $user->update(['current_session_id' => session()->getId()]);
+        } else {
+            $user->update(['current_session_id' => session()->getId()]);
         }
-
-        $user->update(['current_session_id' => session()->getId()]);
 
         $request->session()->regenerate();
 
-//        return redirect()->intended(RouteServiceProvider::HOME);
 
         if (Auth::user()->hasRole('admin')) {
             return redirect('/dashboard');
