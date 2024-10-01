@@ -27,6 +27,23 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        $user = Auth::user();
+
+        if ($user->current_session_id && $user->current_session_id !== session()->getId()) {
+
+            Auth::logoutOtherDevices($request->input('password'));
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')->withErrors([
+                'email' => 'Вы уже вошли в систему с другого устройства.',
+            ]);
+        }
+
+        $user->update(['current_session_id' => session()->getId()]);
+
         $request->session()->regenerate();
 
 //        return redirect()->intended(RouteServiceProvider::HOME);
@@ -56,6 +73,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
+        if ($user) {
+            $user->update(['current_session_id' => null]);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
