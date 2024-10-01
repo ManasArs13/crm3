@@ -25,7 +25,7 @@ class ShiftCreateRequest extends FormRequest
             'transports' => ['nullable', 'array'],
             'transports.*' => ['integer'],
             'day' => 'required|date',
-            'time' => 'required|time',
+            'time' => 'required|date_format:H:i',
         ];
     }
 }

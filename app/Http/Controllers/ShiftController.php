@@ -6,8 +6,8 @@ use App\Http\Requests\FilterRequest;
 use App\Models\Shifts;
 use App\Models\Transport;
 use Illuminate\Support\Carbon;
-use App\Http\Requests\shift\ShiftChangeRequest;
-use App\Http\Requests\shift\ShiftCreateRequest;
+use App\Http\Requests\Shift\ShiftChangeRequest;
+use App\Http\Requests\Shift\ShiftCreateRequest;
 use Illuminate\Http\Request;
 
 class ShiftController extends Controller
@@ -110,7 +110,7 @@ class ShiftController extends Controller
         return redirect()->back();
     }
 
-    public function create(Request $request){
+    public function create(ShiftCreateRequest $request){
         if(!$request->has('transports')){
             $request['transports'] = [];
         }
