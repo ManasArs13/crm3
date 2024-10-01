@@ -206,7 +206,7 @@
                         @endif
                     @endforeach
                     @foreach($shifts as $shift)
-                        @if(isset($shift->end_shift))
+                        @if(!isset($shift->end_shift))
                             <tr class="border-b-2 group">
                                 <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $shift->transport->car_number }}</td>
                                 <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
@@ -337,7 +337,7 @@
                         @endif
                     @endforeach
                     @foreach($shifts as $shift)
-                        @if(!isset($shift->end_shift))
+                        @if(isset($shift->end_shift))
                             <tr class="border-b-2 group">
                                 <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $shift->transport->car_number }}</td>
                                 <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
