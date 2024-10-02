@@ -22,13 +22,8 @@ class ShiftController extends Controller
             return $query->whereNotNull('end_shift');
         });
 
-        $needMenuForItem = true;
-        $urlEdit = "transport.edit";
-        $urlDelete = "transport.destroy";
-        $urlCreate = "transport.create";
-        $urlFilter = 'transport.index';
         $urlShow = "transportType.show";
-        $entityName = 'transports';
+        $entityName = 'entity.shifts';
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
 
@@ -90,12 +85,7 @@ class ShiftController extends Controller
             'filters',
             "resColumns",
             "resColumnsAll",
-            "needMenuForItem",
-            "urlDelete",
-            "urlEdit",
-            "urlCreate",
             "entityName",
-            'urlFilter',
             'orderBy',
             'selectColumn',
             'urlShow'

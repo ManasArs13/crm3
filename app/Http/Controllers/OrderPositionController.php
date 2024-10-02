@@ -41,11 +41,23 @@ class OrderPositionController extends Controller
         // Колонки
         $all_columns = Schema::getColumnListing('order_positions');
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = $all_columns;
-        }
+
+        $select = [
+            "id",
+            "product_id",
+            "order_id",
+            "quantity",
+            "shipped",
+            "reserve",
+            "price",
+            "count_pallets",
+            "weight_kg",
+//            "created_at",
+//            "updated_at",
+//            "ms_id",
+        ];
+
+        $selected = $request->columns ?? $select;
 
         foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
