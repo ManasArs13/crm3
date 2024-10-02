@@ -111,6 +111,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|audit'])->
 
     // Должники
     Route::get('/shipments/debtors', [DebtorController::class, 'index'])->name('debtors');
+    Route::get('/shipments/debtors/{debtor}', [DebtorController::class, 'index'])->where('debtor', 'norm|fizik|problem|urik')->name('debtors.tab');
 
     // Сводка
     Route::name('report.')->group(function () {
@@ -252,6 +253,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
             'destroy'
         ]);
     });
+
     Route::get('/options/filter', [OptionController::class, 'filter'])->name('option.filter');
     // Moy Sklad
     Route::resources([
