@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Transport;
 use DateTime;
@@ -46,7 +47,8 @@ class TransporterController extends Controller
         $dateNext = $date2->modify('+1 month')->format('m');
 
         // Transport
-        $entityItems = Transport::query()
+        $transport = Transport::query()
+            ->with('contact')
             ->withCount(['shipments as shipments_count' => function (Builder $query) use ($date, $dateY) {
                 $query
                     ->whereMonth('created_at', $date)
@@ -67,9 +69,25 @@ class TransporterController extends Controller
                     ->whereMonth('created_at', $date)
                     ->whereYear('created_at', $dateY);
             }], 'delivery_fee')
-            ->groupBy('contact_id')
-            ->havingNotNull('contact_id')
+           // ->groupBy('contact_id')
+          //  ->havingNotNull('contact_id')
+            ->whereNotNull('contact_id')
             ->get();
+
+        $grouped = $transport->groupBy('contact_id');
+
+        $entityItems = [];
+
+        foreach ($grouped as $key => $group) {
+            $entityItems[] = [
+                'contact_name' => Contact::where('id', $key)->first()?->name,
+                'shipments_count' => $group->sum('shipments_count'),
+                'price_norm' => $group->sum('price_norm'),
+                'price' => $group->sum('price'),
+                'delivery_fee' => $group->sum('delivery_fee')
+            ];
+
+        }
 
         $selected = [
             //"name",
