@@ -9,13 +9,30 @@ use Illuminate\Support\Facades\DB;
 
 class DebtorController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $debtor = null)
     {
         $entityName = 'Должники';
+        $debtorMap = [
+            'problem' => 'проблема',
+            'urik' => 'юрик',
+            'fizik' => 'физик',
+            'norm' => 'норм',
+        ];
+
 
         $contacts = Contact::whereDoesntHave('contact_categories', function ($q) {
             $q->where('contact_category_id', '=', '9');
         })
+            ->when($debtor, function ($query, $debtor) use ($debtorMap){
+                if($debtor == 'fizik'){
+                    return $query->where(function ($q) {
+                        $q->where('contacts.description', 'NOT LIKE', '%юрик%')
+                            ->orWhereNull('contacts.description');
+                    });
+                }elseif(array_key_exists($debtor, $debtorMap)){
+                    return $query->where('contacts.description', 'LIKE', "%{$debtorMap[$debtor]}%");
+                }
+            })
             ->selectRaw('contacts.id,
                         contacts.name,
                         contacts.balance,
