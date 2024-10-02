@@ -49,14 +49,15 @@ class ShipmentController extends Controller
         // Columns
         $all_columns = [
             "name",
+            "order_id",
             "ms_id",
             "id",
             "created_at",
-            "counterparty_link",
+//            "counterparty_link",
             "suma",
             "status",
             "products_count",
-            "shipment_address",
+//            "shipment_address",
             "description",
             "delivery_price",
             "delivery_price_norm",
@@ -67,7 +68,6 @@ class ShipmentController extends Controller
             "transport_id",
             "contact_id",
             "sostav",
-            "order_id",
             "service_link",
             "paid_sum",
             "updated_at",
@@ -78,12 +78,11 @@ class ShipmentController extends Controller
 
         $select = [
             "name",
+            "order_id",
             "created_at",
-            "counterparty_link",
             "suma",
             "status",
             "products_count",
-            "shipment_address",
             "description",
             "delivery_price",
             "delivery_price_norm",
@@ -857,7 +856,7 @@ class ShipmentController extends Controller
             info($result);
             return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('warning', 'Ошибка');
         }
-     
+
     }
 
     public function destroy(string $id)
