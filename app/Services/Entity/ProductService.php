@@ -95,7 +95,7 @@ class ProductService implements EntityInterface
      */
     public function importResidual(): void
     {
-        $urlResidual = 'https://api.moysklad.ru/api/remap/1.2/report/stock/bystore/current';
+        $urlResidual = 'https://api.moysklad.ru/api/remap/1.2/report/stock/bystore/current?stockType=quantity&include=zeroLines';
 
         $residuals = $this->service->actionGetRowsFromJson($urlResidual, false);
 
