@@ -20,17 +20,23 @@
                                 <div class="flex flex-row mb-1">
                                     <label for="input_name" class="font-bold flex basis-1/3">Имя</label>
                                     <div class="flex basis-2/3">
-                                        <input type="text" class="rounded w-full" id="input_" name="name" placeholder="Administrator" value="{{ $user->name }}">
+                                        <input type="text" class="rounded w-full" id="input_name" name="name" placeholder="Administrator" value="{{ $user->name }}">
                                     </div>
                                 </div>
                                 <div class="flex flex-row mb-1">
-                                    <label for="input_name" class="font-bold flex basis-1/3">Login</label>
+                                    <label for="input_login" class="font-bold flex basis-1/3">Login</label>
                                     <div class="flex basis-2/3">
-                                        <input type="text" class="rounded w-full" id="input_" name="login" placeholder="Operator05" value="{{ $user->email }}">
+                                        <input type="text" class="rounded w-full" id="input_login" name="login" placeholder="Operator05" value="{{ $user->email }}">
                                     </div>
                                 </div>
                                 <div class="flex flex-row mb-1">
-                                    <label for="input_" class="font-bold flex basis-1/3">Роль</label>
+                                    <label for="input_password" class="font-bold flex basis-1/3">Новый пароль</label>
+                                    <div class="flex basis-2/3">
+                                        <input type="password" class="rounded w-full" id="input_password" name="password" placeholder="*****">
+                                    </div>
+                                </div>
+                                <div class="flex flex-row mb-1">
+                                    <label for="inputGroupSelect01" class="font-bold flex basis-1/3">Роль</label>
                                     <div class="flex basis-2/3">
                                         <select class="w-full rounded" name="role" id="inputGroupSelect01">
                                             <option @if($user->hasRole('admin')) selected @endif value="admin">Админ</option>

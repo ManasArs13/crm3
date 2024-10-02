@@ -18,6 +18,7 @@ class UserUpdateRequest extends FormRequest
             'name'    => 'string|required',
             'login'   => 'required|string|min:3|max:55',
             'role'   => 'string|required',
+            'password'   => 'string|nullable|min:5|max:55',
         ];
     }
 }

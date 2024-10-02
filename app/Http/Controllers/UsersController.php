@@ -47,9 +47,11 @@ class UsersController extends Controller
     }
     public function update(UserUpdateRequest $request){
         $user = User::find($request->managment);
+        $password = $request->password ?? $user->password;
         $user->Update([
             'name' => $request->name,
             'email' => $request->login,
+            'password' => $password,
         ]);
         $user->syncRoles($request->role);
         return redirect()->route('users.all');
