@@ -29,19 +29,26 @@ class OperatorController extends Controller
         $entityName = 'Заказы';
 
         // Orders
-        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'transport');
+        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'transport')
+            ->whereHas('positions', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
+            ->where('date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+            ->where('date_plan', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = $builder->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = $builder->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = $builder->orderByDesc('id')->paginate(50);
             $selectColumn = null;
         }
 
@@ -215,19 +222,27 @@ class OperatorController extends Controller
         $entityName = 'Отгрузки';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name,car_number,driver', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()
+            ->with('order:id,name', 'contact:id,name', 'transport:id,name,car_number,driver', 'transport_type:id,name', 'delivery:id,name', 'products')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+            ->where('created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = $builder->orderBy($request->column)->paginate(50);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = $builder->orderByDesc($request->column)->paginate(50);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = $builder->orderByDesc('id')->paginate(50);
             $selectColumn = null;
         }
 

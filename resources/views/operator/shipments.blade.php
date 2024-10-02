@@ -2,7 +2,7 @@
 
     @if (isset($entityName) && $entityName != '')
         <x-slot:title>
-            {{ __('entity.' . $entityName) }}
+            {{ $entityName }}
             </x-slot>
             @endif
 
@@ -131,9 +131,9 @@
                                             @elseif($column == 'status')
                                                 {{ $entityItem->$column }}
                                             @elseif($column == 'car_number')
-                                                {{ $entityItem->transport->car_number ? $entityItem->transport->car_number : '-' }}
+                                                {{ $entityItem->transport->car_number ?? '-' }}
                                             @elseif($column == 'driver')
-                                                {{ $entityItem->transport->driver ? $entityItem->transport->driver : '-' }}
+                                                {{ $entityItem->transport->driver ?? '-' }}
                                             @elseif($column == 'remainder')
                                                 @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
                                                     {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
@@ -197,7 +197,7 @@
                                                 </a>
                                             @elseif($column == 'sostav')
                                                 @if (isset($entityItem->products[0]) && isset($entityItem->products[0]->product))
-                                                    {{ $entityItem->products[0]->product->building_material == 'бетон' ? $entityItem->products[0]->product->name : '-' }}
+                                                    {{ $entityItem->products[0]->product->building_material == 'бетон' ? $entityItem->products[0]->product->short_name : '-' }}
                                                 @else
                                                     -
                                                 @endif
