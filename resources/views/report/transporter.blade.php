@@ -146,97 +146,99 @@
                         @endforeach
 
                         @foreach ($entityItems as $entityItem)
-                            <tr class="border-b-2">
+                            @if ($entityItem['shipments_count'] > 0)
+                                <tr class="border-b-2">
 
-                                <td class="break-all truncate px-2 py-3 text-sm">
-                                    {{ $loop->iteration }}
-                                </td>
+                                    <td class="break-all truncate px-2 py-3 text-sm">
+                                        {{ $loop->iteration }}
+                                    </td>
 
 
-                                @foreach ($resColumns as $column => $title)
-                                    @switch($column)
-                                        @case('contact_name')
-                                            <td class="break-all max-w-60 truncate px-2 py-3 text-left">
-                                                {{ $entityItem['contact_name'] ?? '-' }}
-                                            </td>
-                                        @break
+                                    @foreach ($resColumns as $column => $title)
+                                        @switch($column)
+                                            @case('contact_name')
+                                                <td class="break-all max-w-60 truncate px-2 py-3 text-left">
+                                                    {{ $entityItem['contact_name'] ?? '-' }}
+                                                </td>
+                                            @break
 
-                                        @case('name')
-                                            <td class="break-all max-w-60 truncate px-2 py-3 text-left">
-                                                <a href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->ms_id }}"
-                                                    target="_blank" class="text-blue-700 hover:text-blue-500">
-                                                    {{ $entityItem->$column }}
-                                                </a>
-                                            </td>
-                                        @break
+                                            @case('name')
+                                                <td class="break-all max-w-60 truncate px-2 py-3 text-left">
+                                                    <a href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->ms_id }}"
+                                                        target="_blank" class="text-blue-700 hover:text-blue-500">
+                                                        {{ $entityItem->$column }}
+                                                    </a>
+                                                </td>
+                                            @break
 
-                                        @case('count_shipments')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ $entityItem['shipments_count'] ?? 0 }}
-                                            </td>
-                                        @break
+                                            @case('count_shipments')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    {{ $entityItem['shipments_count'] ?? 0 }}
+                                                </td>
+                                            @break
 
-                                        @case('price_norm')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ $entityItem['price_norm'] ?? 0 }}
-                                            </td>
-                                        @break
+                                            @case('price_norm')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    {{ $entityItem['price_norm'] ?? 0 }}
+                                                </td>
+                                            @break
 
-                                        @case('price')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ $entityItem['price'] ?? 0 }}
-                                            </td>
-                                        @break
+                                            @case('price')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    {{ $entityItem['price'] ?? 0 }}
+                                                </td>
+                                            @break
 
-                                        @case('delivery_fee')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ $entityItem['delivery_fee'] ?? 0 }}
-                                            </td>
-                                        @break
+                                            @case('delivery_fee')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    {{ $entityItem['delivery_fee'] ?? 0 }}
+                                                </td>
+                                            @break
 
-                                        @case('difference_norm')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ $entityItem['delivery_fee'] - $entityItem['price_norm'] ?? 0 }}</td>
-                                        @break
+                                            @case('difference_norm')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    {{ $entityItem['delivery_fee'] - $entityItem['price_norm'] ?? 0 }}</td>
+                                            @break
 
-                                        @case('difference_norm_percent')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                @if (
-                                                    $entityItem['delivery_fee'] &&
-                                                        $entityItem['delivery_fee'] !== 0 &&
-                                                        $entityItem['price_norm'] &&
-                                                        $entityItem['price_norm'] !== 0 &&
-                                                        abs($entityItem['delivery_fee'] - $entityItem['price_norm']) !== 0)
-                                                    {{ round((abs($entityItem['delivery_fee'] - $entityItem['price_norm']) / $entityItem['delivery_fee']) * 100) }}%
-                                                @else
-                                                    0%
-                                                @endif
-                                            </td>
-                                        @break
+                                            @case('difference_norm_percent')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    @if (
+                                                        $entityItem['delivery_fee'] &&
+                                                            $entityItem['delivery_fee'] !== 0 &&
+                                                            $entityItem['price_norm'] &&
+                                                            $entityItem['price_norm'] !== 0 &&
+                                                            abs($entityItem['delivery_fee'] - $entityItem['price_norm']) !== 0)
+                                                        {{ round((abs($entityItem['delivery_fee'] - $entityItem['price_norm']) / $entityItem['delivery_fee']) * 100) }}%
+                                                    @else
+                                                        0%
+                                                    @endif
+                                                </td>
+                                            @break
 
-                                        @case('difference_price')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ $entityItem['delivery_fee'] - $entityItem['price'] ?? 0 }}</td>
-                                        @break
+                                            @case('difference_price')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    {{ $entityItem['delivery_fee'] - $entityItem['price'] ?? 0 }}</td>
+                                            @break
 
-                                        @case('difference_price_percent')
-                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                @if (
-                                                    $entityItem['delivery_fee'] &&
-                                                        $entityItem['delivery_fee'] !== 0 &&
-                                                        $entityItem['price'] &&
-                                                        $entityItem['price'] !== 0 &&
-                                                        abs($entityItem['delivery_fee'] - $entityItem['price']) !== 0)
-                                                    {{ round((abs($entityItem['delivery_fee'] - $entityItem['price']) / $entityItem['delivery_fee']) * 100) }}%
-                                                @else
-                                                    0%
-                                                @endif
-                                            </td>
-                                        @break
-                                    @endswitch
-                                @endforeach
+                                            @case('difference_price_percent')
+                                                <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                    @if (
+                                                        $entityItem['delivery_fee'] &&
+                                                            $entityItem['delivery_fee'] !== 0 &&
+                                                            $entityItem['price'] &&
+                                                            $entityItem['price'] !== 0 &&
+                                                            abs($entityItem['delivery_fee'] - $entityItem['price']) !== 0)
+                                                        {{ round((abs($entityItem['delivery_fee'] - $entityItem['price']) / $entityItem['delivery_fee']) * 100) }}%
+                                                    @else
+                                                        0%
+                                                    @endif
+                                                </td>
+                                            @break
+                                        @endswitch
+                                    @endforeach
 
-                            </tr>
+                                </tr>
+                            @endif
                         @endforeach
 
                         <tr class="border-b-2 bg-gray-100">
