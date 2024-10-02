@@ -15,7 +15,7 @@
             </div>
         @endif
 
-        @if (isset($entity) && $entity != '')
+        @if (isset($entityName) && $entityName != '')
             <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
         @endif
 

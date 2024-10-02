@@ -251,7 +251,8 @@ class OrderController extends Controller
             'dateAll',
             'queryMaterial',
             'queryPlan',
-            'select'
+            'select',
+            'entityName'
         ));
     }
 
