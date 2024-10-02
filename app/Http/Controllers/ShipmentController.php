@@ -821,7 +821,7 @@ class ShipmentController extends Controller
 
         $shipment->update();
 
-        $shipment->products()->delete();
+        $shipment->products()->cursor()->each->delete();
 
         // Add shipment position
         if ($request->products) {
@@ -843,19 +843,19 @@ class ShipmentController extends Controller
         }
 
 
-        $req = $shipmentMsService->createChipmentToMs($id);
-        $result = json_decode(json_encode($req), true);
+        // $req = $shipmentMsService->createChipmentToMs($id);
+        // $result = json_decode(json_encode($req), true);
 
-        if (isset($result['id']) && $result['id'] !== null) {
-            $shipment->ms_id=$result['id'];
-            $shipment->name=$result['name'];
-            $shipment->save();
+        // if (isset($result['id']) && $result['id'] !== null) {
+        //     $shipment->ms_id=$result['id'];
+        //     $shipment->name=$result['name'];
+        //     $shipment->save();
 
             return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('success', 'Отгрузка №' . $shipment->id . ' обновлена и отправлена');
-        } else {
-            info($result);
-            return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('warning', 'Ошибка');
-        }
+        // } else {
+        //     info($result);
+        //     return redirect()->route("shipment.show", ['shipment' => $shipment->id])->with('warning', 'Ошибка');
+        // }
 
     }
 
