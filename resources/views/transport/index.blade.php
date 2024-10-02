@@ -20,8 +20,8 @@
             </div>
         @endif
 
-        @if (isset($entity) && $entity != '')
-            <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
+        @if (isset($entityName) && $entityName != '')
+            <h3 class="text-4xl font-bold mb-6">{{ __($entityName) }}</h3>
         @endif
 
         <div

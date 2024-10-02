@@ -20,7 +20,7 @@ class TransportController extends Controller
         $urlCreate = "transport.create";
         $urlFilter = 'transport.index';
         $urlShow = "transportType.show";
-        $entityName = 'transports';
+        $entityName = 'entity.transports';
         $orderBy  = $request->orderBy;
         $selectColumn = $request->column;
 
@@ -91,7 +91,8 @@ class TransportController extends Controller
             'urlFilter',
             'orderBy',
             'selectColumn',
-            'urlShow'
+            'urlShow',
+            'entityName'
         ));
     }
 
