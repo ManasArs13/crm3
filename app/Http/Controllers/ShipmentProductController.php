@@ -39,13 +39,29 @@ class ShipmentProductController extends Controller
         }
 
         // Колонки
-        $all_columns = Schema::getColumnListing('shipment_products');
+        $all_columns = [
+            "id",
+            "shipment_id",
+            "product_id",
+            "created_at",
+            "updated_at",
+            "ms_id",
+            "price",
+            "quantity",
+            "deviation_price",
+        ];
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = $all_columns;
-        }
+        $select = [
+            "id",
+            "shipment_id",
+            "product_id",
+            "price",
+            "quantity",
+            "deviation_price",
+        ];
+
+        $selected = $request->columns ?? $select;
+
 
         foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];

@@ -37,12 +37,16 @@ class ContactController extends Controller
 
         /* Колонки */
         $all_columns = Schema::getColumnListing('contacts');
+        $select = [
+            "id",
+            "name",
+            "phone_norm",
+            "contact_amo_id",
+            "balance",
+            "created_at",
+        ];
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = $all_columns;
-        }
+        $selected = $request->columns ?? $select;
 
         foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];

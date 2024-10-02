@@ -19,7 +19,6 @@ return [
     "contact_amos"=>"Контакты Амо",
     "contacts"=>"Контакты",
     "order_amos"=>"Заказы Амо",
-    "orders"=>"Заказы",
     'new order' => 'Новый заказ',
     "order"=> "Заказ",
     "status"=>"Статусы МС",

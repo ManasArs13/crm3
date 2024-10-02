@@ -31,13 +31,10 @@ class AuthenticatedSessionController extends Controller
 
 
         if ($user->current_session_id && $user->current_session_id !== session()->getId()) {
-
             Auth::logoutOtherDevices($request->input('password'));
-
-            $user->update(['current_session_id' => session()->getId()]);
-        } else {
-            $user->update(['current_session_id' => session()->getId()]);
         }
+
+        $user->update(['current_session_id' => session()->getId()]);
 
         $request->session()->regenerate();
 

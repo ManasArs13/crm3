@@ -37,13 +37,37 @@ class ContactAmoController extends Controller
         }
 
         // Columns
-        $all_columns = Schema::getColumnListing('contact_amos');
+        $all_columns = [
+            'id',
+            'name',
+            'phone',
+            'phone1',
+            'email',
+            'phone_norm',
+            'contact_ms_id',
+            'contact_ms_link',
+            'is_exist',
+            'is_dublash',
+            'created_at',
+            'updated_at',
+            'is_success'
+        ];
 
-        if (isset($request->columns)) {
-            $selected = $request->columns;
-        } else {
-            $selected = $all_columns;
-        }
+        $select = [
+            'id',
+            'name',
+            'phone',
+            'phone_norm',
+            'contact_ms_link',
+            'is_exist',
+            'is_dublash',
+            'created_at',
+            'updated_at',
+            'is_success'
+        ];
+
+        $selected = $request->columns ?? $select;
+
 
         foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
