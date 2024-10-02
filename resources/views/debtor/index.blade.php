@@ -27,7 +27,7 @@
         <div
             class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             {{-- header --}}
-            <div class="border-b-2 border-neutral-100">
+            <div class="border-b-2 border-neutral-100 mb-2 py-2">
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex flex-row gap-1">
                         <div>
@@ -55,12 +55,6 @@
                                    class="rounded {{ url()->current() == route('debtors.tab', ['debtor' => 'urik']) ? 'bg-blue-600' : 'bg-blue-300' }} px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                                     Юрик</a>
                         </div>
-                    </div>
-                    <div class="flex px-3 text-center font-bold">
-                        <a href="{{ route('users.managment.create') }}"
-                           class="inline-flex items-center rounded bg-green-400 px-3 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
-                            Добавить
-                        </a>
                     </div>
                 </div>
             </div>
