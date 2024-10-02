@@ -378,36 +378,6 @@ class OrderController extends Controller
             $order->update();
         }
 
-        // Add shipment
-        if ($request->shipment_need) {
-
-            $shipment = new Shipment();
-            $shipment->name = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
-            $shipment->order_id = $order->id;
-            $shipment->delivery_id = $request->delivery;
-            $shipment->transport_type_id = $request->transport_type;
-            $shipment->weight = $weight;
-            $shipment->paid_sum = 0;
-            $shipment->suma = 0;
-
-            $shipment->save();
-
-            if ($request->products) {
-                foreach ($request->products as $product) {
-                    if (isset($product['product'])) {
-                        $shipmentproduct = new ShipmentProduct();
-
-                        $product_bd = Product::find($product['product']);
-                        $shipmentproduct->product_id = $product_bd->id;
-                        $shipmentproduct->shipment_id = $shipment->id;
-                        $shipmentproduct->quantity = $product['count'];
-
-                        $shipmentproduct->save();
-                    }
-                }
-            }
-        }
-
         return redirect()->route("order.show", ["order" => $order->id])->with('success', 'Заказ №' . $order->id . ' добавлен');
     }
 
