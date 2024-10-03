@@ -75,7 +75,7 @@ class OrderService implements EntityInterface
                 $entity->ms_id = $row['id'];
             }
 
-            $address=null;
+            $address = null;
             $datePlan = isset($row["deliveryPlannedMoment"]) ? new DateTime($row["deliveryPlannedMoment"]) : null;
             $dateCreated = isset($row["moment"]) ? new DateTime($row["moment"]) : null;
             $delivery = null;
@@ -88,15 +88,15 @@ class OrderService implements EntityInterface
             $comment = null;
 
             $entity->name = $row["name"];
-            $address=null;
+            $address = null;
 
-            if (isset($row["shipmentAddress"])){
-                $address=$row["shipmentAddress"];
+            if (isset($row["shipmentAddress"])) {
+                $address = $row["shipmentAddress"];
             }
 
             usleep(2000);
             $contactMs = $this->service->actionGetRowsFromJson($row["agent"]['meta']["href"], false);
-            $entity->address=$address;
+            $entity->address = $address;
 
             if (isset($contactMs['balance'])) {
 
@@ -364,7 +364,7 @@ class OrderService implements EntityInterface
 
                         foreach ($shipments as $shipment) {
                             if ($shipment) {
-                                $shipment->products()->forceDelete();
+                                $shipment->products()->cursor()->each->delete();
                                 $shipment->forceDelete();
                             }
                         }

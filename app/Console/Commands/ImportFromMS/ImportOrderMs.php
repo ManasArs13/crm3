@@ -37,7 +37,6 @@ class ImportOrderMs extends Command
     public function handle(Option $option, MoySkladService $service, OrderService $orderService)
     {
         $url = Option::where('code', '=', 'ms_orders_url')->first()?->value;
-        //    $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
         $all = $this->option('all');
 
         if ($all) {

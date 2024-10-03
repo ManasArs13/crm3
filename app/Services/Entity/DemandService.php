@@ -19,21 +19,28 @@ use App\Models\Transport;
 use App\Models\TransportType;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class DemandService implements EntityInterface
 {
     private Option $options;
-
     public OrderService $orderService;
     public MoySkladService $service;
     public ContactMsService $contactMsService;
+    private string $auth;
+    private $client;
 
     public function __construct(Option $options, MoySkladService $service, OrderService $orderService, ContactMsService $contactMsService)
     {
-        $this->service = $service;
+        $login = $options::where('code', '=', 'ms_login')->first()?->value;
+        $password = $options::where('code', '=', 'ms_password')->first()?->value;
         $this->options = $options;
+        $this->service = $service;
         $this->orderService = $orderService;
         $this->contactMsService = $contactMsService;
+        $this->auth = base64_encode($login . ':' . $password);
+        $this->client = new Client();
     }
 
     /**
@@ -137,13 +144,13 @@ class DemandService implements EntityInterface
                                 $carrier = $this->getGuidFromUrl($attribute["value"]["meta"]["href"]);
                                 $carrier_bd = Carrier::where('ms_id', $carrier)->firstorNew();
 
-                                if ($carrier_bd!=null){
-                                    $carrier=$carrier_bd->id;
-                                }else{
-                                    $carrier_bd->name=$attribute["value"];
-                                    $carrier_bd->ms_id=$carrier;
+                                if ($carrier_bd != null) {
+                                    $carrier = $carrier_bd->id;
+                                } else {
+                                    $carrier_bd->name = $attribute["value"];
+                                    $carrier_bd->ms_id = $carrier;
                                     $carrier_bd->save();
-                                    $carrier=$carrier_bd->id;
+                                    $carrier = $carrier_bd->id;
                                 }
                                 break;
                         }
@@ -170,7 +177,7 @@ class DemandService implements EntityInterface
                 if (isset($row["positions"])) {
 
                     $positions = $this->service->actionGetRowsFromJson($row['positions']['meta']['href']);
-                    $guids=[];
+                    $guids = [];
 
                     if ($positions) {
                         foreach ($positions as $position) {
@@ -182,9 +189,9 @@ class DemandService implements EntityInterface
 
                             $entity_position->shipment_id = $entity->id;
                             $entity_position->quantity = $position['quantity'];
-                            $entity_position->price = $position['price']/100;
+                            $entity_position->price = $position['price'] / 100;
 
-                            $guids[]=$position["id"];
+                            $guids[] = $position["id"];
                             $product_bd = Product::where('ms_id', $this->getGuidFromUrl($position['assortment']['meta']['href']))->first();
 
                             if ($product_bd) {
@@ -201,13 +208,13 @@ class DemandService implements EntityInterface
                     }
                 }
 
-                $entity->delivery_price_norm=0;
-                $entity->saldo=$entity->delivery_price;
+                $entity->delivery_price_norm = 0;
+                $entity->saldo = $entity->delivery_price;
                 $entity->weight = $shipmentWeight;
-                if ($entity->transport_type_id!=null && $distance!=null && in_array($entity->transport_type_id, [2,3,4,5,6])){
-                    $weight_tn=($entity->transport_type_id==2)?round($shipmentWeight/1000,1):ceil($shipmentWeight/1000);
-                    $entity->delivery_price_norm=$this->getPrice(["distance"=>$distance, "weightTn"=>$weight_tn, "vehicleType" =>$entity->transport_type_id]);
-                    $entity->saldo=$entity->delivery_price-$entity->delivery_price_norm;
+                if ($entity->transport_type_id != null && $distance != null && in_array($entity->transport_type_id, [2, 3, 4, 5, 6])) {
+                    $weight_tn = ($entity->transport_type_id == 2) ? round($shipmentWeight / 1000, 1) : ceil($shipmentWeight / 1000);
+                    $entity->delivery_price_norm = $this->getPrice(["distance" => $distance, "weightTn" => $weight_tn, "vehicleType" => $entity->transport_type_id]);
+                    $entity->saldo = $entity->delivery_price - $entity->delivery_price_norm;
                 }
                 $entity->update();
             }
@@ -222,140 +229,141 @@ class DemandService implements EntityInterface
 
     public function getPrice($data)
     {
-            $distance = $data["distance"];
-            $vehicleType = $data["vehicleType"];
-            $weightTn = $data["weightTn"];
+        $distance = $data["distance"];
+        $vehicleType = $data["vehicleType"];
+        $weightTn = $data["weightTn"];
 
-            $price=0;
-            $deliveryPrice=0;
+        $price = 0;
+        $deliveryPrice = 0;
 
-            $innerQuery=DB::table('shiping_prices')
-                    ->selectRaw('transport_type_id, min(distance) as minDistance')
-                    ->where('transport_type_id', $vehicleType)
-                    ->where('distance','>=',$distance);
+        $innerQuery = DB::table('shiping_prices')
+            ->selectRaw('transport_type_id, min(distance) as minDistance')
+            ->where('transport_type_id', $vehicleType)
+            ->where('distance', '>=', $distance);
 
-            $mainQuery0 = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
-                    ->mergeBindings($innerQuery)
-                    ->selectRaw("sh.distance, min(sh.tonnage) as tonnage, sh.transport_type_id")
-                    ->join("shiping_prices as sh", function($join){
-                        $join->on('tab.minDistance', '=', 'sh.distance');
-                        $join->on("tab.transport_type_id","=","sh.transport_type_id");
-                    })
-                    ->where("sh.tonnage",'>=',$weightTn);
+        $mainQuery0 = DB::table(DB::raw('(' . $innerQuery->toSql() . ') as tab'))
+            ->mergeBindings($innerQuery)
+            ->selectRaw("sh.distance, min(sh.tonnage) as tonnage, sh.transport_type_id")
+            ->join("shiping_prices as sh", function ($join) {
+                $join->on('tab.minDistance', '=', 'sh.distance');
+                $join->on("tab.transport_type_id", "=", "sh.transport_type_id");
+            })
+            ->where("sh.tonnage", '>=', $weightTn);
 
-            $mainQuery = DB::table(DB::raw('(' .$mainQuery0->toSql() . ') as tab0'))
-                    ->mergeBindings($mainQuery0)
-                    ->selectRaw("sh2.price, sh2.tonnage as ton, sh2.distance")
-                    ->join("shiping_prices as sh2", function($join){
-                        $join->on('tab0.distance', '=', 'sh2.distance');
-                        $join->on("tab0.transport_type_id","=","sh2.transport_type_id");
-                        $join->on("tab0.tonnage","=","sh2.tonnage");
-                    })->first();
+        $mainQuery = DB::table(DB::raw('(' . $mainQuery0->toSql() . ') as tab0'))
+            ->mergeBindings($mainQuery0)
+            ->selectRaw("sh2.price, sh2.tonnage as ton, sh2.distance")
+            ->join("shiping_prices as sh2", function ($join) {
+                $join->on('tab0.distance', '=', 'sh2.distance');
+                $join->on("tab0.transport_type_id", "=", "sh2.transport_type_id");
+                $join->on("tab0.tonnage", "=", "sh2.tonnage");
+            })->first();
 
 
-            if($mainQuery==null){
-                $mainQuery = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
-                    ->mergeBindings($innerQuery)
-                    ->selectRaw("sh2.tonnage as ton, sh2.distance, sh2.price")
-                    ->join("shiping_prices as sh2", function($join){
-                        $join->on('tab.minDistance', '=', 'sh2.distance');
-                        $join->on("tab.transport_type_id","=","sh2.transport_type_id");
-                    })
-                    ->orderBy("sh2.tonnage","desc")
-                    ->first();
+        if ($mainQuery == null) {
+            $mainQuery = DB::table(DB::raw('(' . $innerQuery->toSql() . ') as tab'))
+                ->mergeBindings($innerQuery)
+                ->selectRaw("sh2.tonnage as ton, sh2.distance, sh2.price")
+                ->join("shiping_prices as sh2", function ($join) {
+                    $join->on('tab.minDistance', '=', 'sh2.distance');
+                    $join->on("tab.transport_type_id", "=", "sh2.transport_type_id");
+                })
+                ->orderBy("sh2.tonnage", "desc")
+                ->first();
 
-                if ($mainQuery==null){
-                    return 0;
-                }else{
-                    $price = $mainQuery->price;
-                }
-            }else{
+            if ($mainQuery == null) {
+                return 0;
+            } else {
                 $price = $mainQuery->price;
             }
+        } else {
+            $price = $mainQuery->price;
+        }
 
-            if ($mainQuery->ton>$weightTn){
-                $weightTn=$mainQuery->ton;
-            }
+        if ($mainQuery->ton > $weightTn) {
+            $weightTn = $mainQuery->ton;
+        }
 
-            $deliveryPrice = $price * $weightTn;
+        $deliveryPrice = $price * $weightTn;
 
-            if ($vehicleType==5 || $vehicleType==3)
-                $deliveryPrice=round($deliveryPrice/100)*100;
-            else if ($vehicleType==4 && $weightTn<=14)
-                $deliveryPrice=round($deliveryPrice/500)*500;
+        if ($vehicleType == 5 || $vehicleType == 3)
+            $deliveryPrice = round($deliveryPrice / 100) * 100;
+        else if ($vehicleType == 4 && $weightTn <= 14)
+            $deliveryPrice = round($deliveryPrice / 500) * 500;
 
-            return $deliveryPrice;
+        return $deliveryPrice;
     }
 
-    public function DeviationForShipments($date){
+    public function DeviationForShipments($date)
+    {
 
-        ShipmentProduct::where("created_at",">=", $date)
-        ->update(['deviation_price' => 0]);
+        ShipmentProduct::where("created_at", ">=", $date)
+            ->update(['deviation_price' => 0]);
 
 
-        $skip=0;
-        $take=200;
+        $skip = 0;
+        $take = 200;
 
-        while (true){
-            $innerQuery=DB::table('shipments as sh')
-            ->selectRaw('max(pl.created_at) as min ,sh.created_at, sh.id as shipment')
-            ->join("price_lists as pl", "sh.created_at",">=","pl.created_at")
-            ->where("sh.created_at", ">=",$date)->groupBy("sh.id")
-            ->skip($skip)
-            ->take($take)
-            ;
+        while (true) {
+            $innerQuery = DB::table('shipments as sh')
+                ->selectRaw('max(pl.created_at) as min ,sh.created_at, sh.id as shipment')
+                ->join("price_lists as pl", "sh.created_at", ">=", "pl.created_at")
+                ->where("sh.created_at", ">=", $date)->groupBy("sh.id")
+                ->skip($skip)
+                ->take($take);
 
-            $positions = DB::table(DB::raw('(' .$innerQuery->toSql() . ') as tab'))
-            ->selectRaw("plp.price as priceList, sp.price, sp.id  as position")
-            ->mergeBindings($innerQuery)
-            ->join("shipment_products as sp", "tab.shipment","=", "sp.shipment_id")
-            ->join("price_list_positions as plp", function($join){
-                $join->on("plp.created_at","=","tab.min");
-                $join->on("plp.product_id","=","sp.product_id");
-            })->get();
+            $positions = DB::table(DB::raw('(' . $innerQuery->toSql() . ') as tab'))
+                ->selectRaw("plp.price as priceList, sp.price, sp.id  as position")
+                ->mergeBindings($innerQuery)
+                ->join("shipment_products as sp", "tab.shipment", "=", "sp.shipment_id")
+                ->join("price_list_positions as plp", function ($join) {
+                    $join->on("plp.created_at", "=", "tab.min");
+                    $join->on("plp.product_id", "=", "sp.product_id");
+                })->get();
 
-            if (count($positions)===0){
+            if (count($positions) === 0) {
                 break;
             }
 
-            foreach($positions as $pos){
-                $shipmentPos=ShipmentProduct::where('id','=',$pos->position)->first();
-                $shipmentPos->deviation_price=$pos->priceList-$pos->price;
+            foreach ($positions as $pos) {
+                $shipmentPos = ShipmentProduct::where('id', '=', $pos->position)->first();
+                $shipmentPos->deviation_price = $pos->priceList - $pos->price;
                 $shipmentPos->save();
             }
-            $skip= $skip+$take;
+            $skip = $skip + $take;
         }
     }
 
 
 
-    public function DeliveryPriceNormAndSaldoForShipments($date){
-        Shipment::where("updated_at",">", $date)
-                ->update(['delivery_price_norm' => 0, 'saldo'=>0]);
+    public function DeliveryPriceNormAndSaldoForShipments($date)
+    {
+        Shipment::where("updated_at", ">", $date)
+            ->update(['delivery_price_norm' => 0, 'saldo' => 0]);
 
-        $skip=0;
-        $take=100;
+        $skip = 0;
+        $take = 100;
 
-        while (true){
-            $demands=Shipment::whereIn("transport_type_id",[2,3,4,5,6])
-            ->whereNotNull("delivery_id")->where("updated_at",">", $date)
+        while (true) {
+            $demands = Shipment::whereIn("transport_type_id", [2, 3, 4, 5, 6])
+                ->whereNotNull("delivery_id")->where("updated_at", ">", $date)
                 ->skip($skip)
                 ->take($take)
                 ->with("delivery")
                 ->get();
 
-            if (count($demands)===0){
+            if (count($demands) === 0) {
                 break;
             }
 
-            foreach ($demands as $demand){
-                $weight_tn=($demand->transport_type_id==2)?round($demand->weight/1000,1):ceil($demand->weight/1000);
-                $distance=$demand->delivery->distance;
-                $demand->delivery_price_norm=$this->getPrice(["distance"=>$distance, "weightTn"=>$weight_tn, "vehicleType" =>$demand->transport_type_id]);
-                $demand->saldo=$demand->delivery_price-$demand->delivery_price_norm;
+            foreach ($demands as $demand) {
+                $weight_tn = ($demand->transport_type_id == 2) ? round($demand->weight / 1000, 1) : ceil($demand->weight / 1000);
+                $distance = $demand->delivery->distance;
+                $demand->delivery_price_norm = $this->getPrice(["distance" => $distance, "weightTn" => $weight_tn, "vehicleType" => $demand->transport_type_id]);
+                $demand->saldo = $demand->delivery_price - $demand->delivery_price_norm;
                 $demand->save();
             }
-            $skip= $skip+$take;
+            $skip = $skip + $take;
         }
     }
 
@@ -458,5 +466,44 @@ class DemandService implements EntityInterface
                 }
             }
         }
+    }
+
+    public function checkRows()
+    {
+        $url = 'https://api.moysklad.ru/api/remap/1.2/entity/demand/';
+
+        $shipments = Shipment::with('products')->chunkById(100, function ($shipments) use ($url) {
+
+            foreach ($shipments as $shipment) {
+
+                try {
+                    usleep(200);
+
+                    $response = $this->client->request('GET', $url . $shipment->ms_id, [
+                        'headers' => [
+                            'Accept-Encoding' => 'gzip',
+                            'Authorization' => 'Basic ' . $this->auth
+                        ],
+                    ]);
+
+                    $result = json_decode($response->getBody()->getContents(), true);
+
+                    if (isset($result["deleted"])) {
+                        $shipment->deleted_at = $result["deleted"];
+                        $shipment->save();
+                    }
+                } catch (RequestException  $e) {
+
+                    if ($e->getCode() == 404) {
+                        $shipment->products()->cursor()->each->delete();
+
+                        $shipment->forceDelete();
+
+                        info($e->getMessage());
+                        info('Shipment №' . $shipment->ms_id . ' has been deleted!');
+                    }
+                }
+            }
+        });
     }
 }
