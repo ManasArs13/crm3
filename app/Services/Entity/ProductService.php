@@ -131,7 +131,7 @@ class ProductService implements EntityInterface
                     }
                 }
 
-                $product->residual = $residual['stock'];
+                $product->residual = $residual['quantity'];
                 $product->materials = $residual_material;
                 $product->update();
             }
