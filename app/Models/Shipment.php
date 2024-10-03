@@ -39,6 +39,11 @@ class Shipment extends Model
         return $this->belongsTo(TransportType::class);
     }
 
+    public function carrier()
+    {
+        return $this->belongsTo(Carrier::class);
+    }
+
     public function products()
     {
         return $this->hasMany(ShipmentProduct::class);

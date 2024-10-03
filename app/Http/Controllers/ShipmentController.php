@@ -7,6 +7,7 @@ use App\Filters\ShipmentFilter;
 use App\Http\Requests\FilterRequest;
 use App\Http\Requests\ShipmentRequest;
 use App\Models\Contact;
+use App\Models\Carrier;
 use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Product;
@@ -30,7 +31,7 @@ class ShipmentController extends Controller
         $entityName = 'Отгрузки';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
@@ -146,6 +147,7 @@ class ShipmentController extends Controller
         $queryStatus = 'index';
         $queryTransport = 'index';
         $contacts = [];
+        $carriers = [];
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
@@ -197,6 +199,18 @@ class ShipmentController extends Controller
                             }
                         }
                         break;
+                    case 'carriers':
+                        $carrier_names_get = Carrier::WhereIn('id', $value)->get(['id', 'name']);
+                        if (isset($value)) {
+                            $carriers = [];
+                            foreach ($carrier_names_get as $val){
+                                $carriers[] = [
+                                    'value' => $val->id,
+                                    'name' => $val->name
+                                ];
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -241,6 +255,12 @@ class ShipmentController extends Controller
                 'values' => $contacts,
             ],
             [
+                'type' => 'select2',
+                'name' => 'carriers',
+                'name_rus' => 'Перевозчики',
+                'values' => $carriers,
+            ],
+            [
                 'type' => 'select',
                 'name' => 'status',
                 'name_rus' => "Статус",
@@ -255,6 +275,7 @@ class ShipmentController extends Controller
                 'checked_value' => $queryTransport,
             ],
         ];
+
 
         return view("shipment.index", compact(
             'select',
