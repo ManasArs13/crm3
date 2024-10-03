@@ -31,6 +31,7 @@ return [
   "date_plan" => "Время",
   "date_fact" => "Фактическая дата",
   "date_moment" => "Дата документа",
+  "delivery_address" => "Объект",
   "debt" => "Долг",
   "payed_sum" => "Сумма оплачено",
   "shipped_sum" => "Сумма отгружено",
