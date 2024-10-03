@@ -486,52 +486,52 @@
     </style>
 
     <script>
+        function printShipment(shipmentId) {
+            var printUrl = '{{ route('print.shipment') }}';
+
+
+            fetch(printUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content')
+                },
+                body: JSON.stringify({
+                    id: shipmentId
+                })
+            })
+                .then(response => response.text())
+                .then(html => {
+
+                    var printFrame = document.createElement('iframe');
+                    printFrame.style.position = 'absolute';
+                    printFrame.style.width = '0px';
+                    printFrame.style.height = '0px';
+                    printFrame.style.border = 'none';
+
+
+                    document.body.appendChild(printFrame);
+
+
+                    var frameDoc = printFrame.contentWindow.document;
+                    frameDoc.open();
+                    frameDoc.write(html);
+                    frameDoc.close();
+
+                    printFrame.onload = function() {
+                        printFrame.contentWindow.focus();
+                        printFrame.contentWindow.print();
+
+                        document.body.removeChild(printFrame);
+                    };
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
         $(document).ready(function() {
 
-            function printShipment(shipmentId) {
-                var printUrl = '{{ route('print.shipment') }}';
-
-
-                fetch(printUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                'content')
-                        },
-                        body: JSON.stringify({
-                            id: shipmentId
-                        })
-                    })
-                    .then(response => response.text())
-                    .then(html => {
-
-                        var printFrame = document.createElement('iframe');
-                        printFrame.style.position = 'absolute';
-                        printFrame.style.width = '0px';
-                        printFrame.style.height = '0px';
-                        printFrame.style.border = 'none';
-
-
-                        document.body.appendChild(printFrame);
-
-
-                        var frameDoc = printFrame.contentWindow.document;
-                        frameDoc.open();
-                        frameDoc.write(html);
-                        frameDoc.close();
-
-                        printFrame.onload = function() {
-                            printFrame.contentWindow.focus();
-                            printFrame.contentWindow.print();
-
-                            document.body.removeChild(printFrame);
-                        };
-                    })
-                    .catch(error => {
-                        console.error('Ошибка:', error);
-                    });
-            }
 
             $(".select2").select2();
 
