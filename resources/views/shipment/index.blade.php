@@ -321,7 +321,7 @@
                                             @if ($column == 'contact_id')
                                                 {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
                                             @elseif($column == 'order_id')
-                                                <a href="{{ route('order.show', $entityItem->id) }}"
+                                                <a href="{{ route('order.show', $entityItem->order->id ?? '') }}"
                                                     class="text-blue-500 hover:text-blue-600">
                                                     {{ $entityItem->$column }}
                                                 </a>
