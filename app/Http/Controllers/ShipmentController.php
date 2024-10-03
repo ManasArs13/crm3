@@ -144,6 +144,7 @@ class ShipmentController extends Controller
         $queryDelivery = 'index';
         $queryStatus = 'index';
         $queryTransport = 'index';
+        $contacts = [];
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
@@ -183,6 +184,18 @@ class ShipmentController extends Controller
                     case 'transport':
                         $queryTransport = $value;
                         break;
+                    case 'contacts':
+                        $contact_names_get = Contact::WhereIn('id', $value)->get(['id', 'name']);
+                        if (isset($value)) {
+                            $contacts = [];
+                            foreach ($contact_names_get as $val){
+                                $contacts[] = [
+                                    'value' => $val->id,
+                                    'name' => $val->name
+                                ];
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -219,6 +232,12 @@ class ShipmentController extends Controller
                 'name_rus' => 'Доставка',
                 'values' => $deliveryValues,
                 'checked_value' => $queryDelivery,
+            ],
+            [
+                'type' => 'select2',
+                'name' => 'contacts',
+                'name_rus' => 'Контакты',
+                'values' => $contacts,
             ],
             [
                 'type' => 'select',
