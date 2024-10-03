@@ -114,6 +114,23 @@ class ShipmentFilter
                 ->where('contacts.balance', '<', 0);
         }
     }
+    public function contacts($value)
+    {
+        if (isset($value)) {
+            $this->builder->whereHas('contact', function ($query) use ($value) {
+                $query->whereIn('id', $value);
+            });
+        }
+    }
+
+    public function carriers($value)
+    {
+        if (isset($value)) {
+            $this->builder->whereHas('carrier', function ($query) use ($value) {
+                $query->whereIn('id', $value);
+            });
+        }
+    }
 
     public function filters()
     {

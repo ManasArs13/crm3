@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController as OrdController;
 use App\Http\Controllers\TransportTypeController;
 use App\Http\Controllers\Api\Ms\ShipmentController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
@@ -48,4 +49,5 @@ Route::get("/deliveries/get/name", [App\Http\Controllers\Api\Site\DeliveryContro
 Route::get("/contacts/get/name", [App\Http\Controllers\Api\Site\ContactController::class,"getByName"])->name("api.get.contact.name");
 Route::get("/contacts/get/phone", [App\Http\Controllers\Api\Site\ContactController::class,"getByPhone"])->name("api.get.contact.phone");
 Route::get("/contacts/get", [App\Http\Controllers\Api\Site\ContactController::class,"getContacts"])->name("api.get.contact");
+Route::get("/carriers/get", [App\Http\Controllers\Api\Site\CarrierController::class,"getCarriers"])->name("api.get.carrier");
 Route::get("/states/get/name", [App\Http\Controllers\Api\Site\StatusMsController::class,"getByName"])->name("api.get.state.name");

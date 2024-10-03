@@ -25,6 +25,7 @@ class OrderController extends Controller
 {
     public function index(OrderRequest $request)
     {
+
         $urlEdit = "order.edit";
         $urlShow = "order.show";
         $urlDelete = "order.destroy";
@@ -127,6 +128,8 @@ class OrderController extends Controller
         $maxDatePlan = Order::query()->max('date_plan');
         $maxDatePlanCheck = '';
 
+        $contacts = [];
+
         $dateToday = Carbon::now()->format('Y-m-d');
         $dateThreeDay = Carbon::now()->addDays(3)->format('Y-m-d');
         $dateWeek = Carbon::now()->addDays(7)->format('Y-m-d');
@@ -185,6 +188,18 @@ class OrderController extends Controller
                             $queryMaterial = 'block';
                             break;
                     }
+                } else if ($key == 'contacts') {
+                    $contact_names_get = Contact::WhereIn('id', $value)->get(['id', 'name']);
+
+                    if (isset($value)) {
+                        $contacts = [];
+                        foreach ($contact_names_get as $val){
+                            $contacts[] = [
+                                'value' => $val->id,
+                                'name' => $val->name
+                            ];
+                        }
+                    }
                 }
             }
         }
@@ -216,6 +231,12 @@ class OrderController extends Controller
                 'minChecked' => $minDatePlanCkeck,
                 'max' => substr($maxDatePlan, 0, 10),
                 'maxChecked' => $maxDatePlanCheck
+            ],
+            [
+                'type' => 'select2',
+                'name' => 'contacts',
+                'name_rus' => 'Контакты',
+                'values' => $contacts,
             ],
             [
                 'type' => 'select',

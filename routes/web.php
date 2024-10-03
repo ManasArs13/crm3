@@ -20,6 +20,7 @@ use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Report\CounterpartyController;
+use App\Http\Controllers\Report\ReportDeliveryController;
 use App\Http\Controllers\Report\TransportController as ReportTransportController;
 use App\Http\Controllers\Report\TransporterController;
 use App\Http\Controllers\Report\TransporterFeeController;
@@ -67,6 +68,8 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
 
     // Сводка
     Route::name('report.')->group(function () {
+        // Доставки
+        Route::get('/report/delivery', [ReportDeliveryController::class, 'index'])->name('delivery');
 
         // Контрагенты
         Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');

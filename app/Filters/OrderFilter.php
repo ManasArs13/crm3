@@ -94,6 +94,15 @@ class OrderFilter
         }
     }
 
+    public function contacts($value)
+    {
+        if (isset($value)) {
+            $this->builder->whereHas('contact', function ($query) use ($value) {
+                $query->whereIn('id', $value);
+            });
+        }
+    }
+
     public function filters()
     {
         return $this->request->filters ? $this->request->filters : [];

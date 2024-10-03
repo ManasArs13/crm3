@@ -7,6 +7,7 @@ use App\Filters\ShipmentFilter;
 use App\Http\Requests\FilterRequest;
 use App\Http\Requests\ShipmentRequest;
 use App\Models\Contact;
+use App\Models\Carrier;
 use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Product;
@@ -30,7 +31,7 @@ class ShipmentController extends Controller
         $entityName = 'Отгрузки';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
@@ -53,6 +54,7 @@ class ShipmentController extends Controller
             "ms_id",
             "id",
             "created_at",
+            "contact_id",
             //            "counterparty_link",
             "suma",
             "status",
@@ -66,7 +68,6 @@ class ShipmentController extends Controller
             "delivery_id",
             "transport_type_id",
             "transport_id",
-            "contact_id",
             "sostav",
             "service_link",
             "paid_sum",
@@ -80,6 +81,7 @@ class ShipmentController extends Controller
             "name",
             "order_id",
             "created_at",
+            "contact_id",
             "suma",
             "status",
             "products_count",
@@ -144,6 +146,8 @@ class ShipmentController extends Controller
         $queryDelivery = 'index';
         $queryStatus = 'index';
         $queryTransport = 'index';
+        $contacts = [];
+        $carriers = [];
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
@@ -183,6 +187,30 @@ class ShipmentController extends Controller
                     case 'transport':
                         $queryTransport = $value;
                         break;
+                    case 'contacts':
+                        $contact_names_get = Contact::WhereIn('id', $value)->get(['id', 'name']);
+                        if (isset($value)) {
+                            $contacts = [];
+                            foreach ($contact_names_get as $val){
+                                $contacts[] = [
+                                    'value' => $val->id,
+                                    'name' => $val->name
+                                ];
+                            }
+                        }
+                        break;
+                    case 'carriers':
+                        $carrier_names_get = Carrier::WhereIn('id', $value)->get(['id', 'name']);
+                        if (isset($value)) {
+                            $carriers = [];
+                            foreach ($carrier_names_get as $val){
+                                $carriers[] = [
+                                    'value' => $val->id,
+                                    'name' => $val->name
+                                ];
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -221,6 +249,18 @@ class ShipmentController extends Controller
                 'checked_value' => $queryDelivery,
             ],
             [
+                'type' => 'select2',
+                'name' => 'contacts',
+                'name_rus' => 'Контакты',
+                'values' => $contacts,
+            ],
+            [
+                'type' => 'select2',
+                'name' => 'carriers',
+                'name_rus' => 'Перевозчики',
+                'values' => $carriers,
+            ],
+            [
                 'type' => 'select',
                 'name' => 'status',
                 'name_rus' => "Статус",
@@ -235,6 +275,7 @@ class ShipmentController extends Controller
                 'checked_value' => $queryTransport,
             ],
         ];
+
 
         return view("shipment.index", compact(
             'select',
