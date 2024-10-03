@@ -185,9 +185,9 @@
                                                     </div>
                                                     <div class="basis-4/5 mb-4">
                                                         <select
-                                                            class="contact change_name select-default2" multiple="multiple"
+                                                            class="select-default2" multiple="multiple"
                                                             name="filters[{{ $filter['name'] }}][]"
-                                                            id="contact_name" data-placeholder="Выберите контакт">
+                                                            id="{{ $filter['name'] }}_select" data-placeholder="Выберите контакт">
                                                             @foreach($filter['values'] as $value)
                                                                 <option value="{{ $value['value'] }}" selected>{{ $value['name'] }}</option>
                                                             @endforeach
@@ -542,33 +542,34 @@
     </style>
     <script>
         $(document).ready(function(){
-            $(".select2").select2();
 
-            $("#contact_name").select2({
-                width: '372px',
-                tags: true,
-                ajax: {
-                    delay: 250,
-                    url: '/api/contacts/get',
-                    data: function(params) {
-                        var queryParameters = {
-                            term: params.term
+            function initSelect2(elementId, url) {
+                $(elementId).select2({
+                    width: '372px',
+                    tags: true,
+                    ajax: {
+                        delay: 250,
+                        url: url,
+                        data: function(params) {
+                            return { term: params.term };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: $.map(data, function(item) {
+                                    return {
+                                        text: item.name,
+                                        id: item.id,
+                                        attr1: item.phone,
+                                    };
+                                })
+                            };
                         }
-                        return queryParameters;
                     },
-                    processResults: function(data) {
-                        return {
-                            results: $.map(data, function(item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id,
-                                    attr1: item.phone,
-                                }
-                            })
-                        };
-                    }
-                },
-            });
+                });
+            }
+
+            initSelect2("#contacts_select", '/api/contacts/get');
+            initSelect2("#carriers_select", '/api/carriers/get');
         });
 
         function printShipment(shipmentId) {
