@@ -302,13 +302,13 @@
 
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-[20rem] truncate px-3 py-3"
-                                    @if ((is_int($entityItem->$column) ||
-                                            $column == 'quantity' ||
-                                            $column == 'sum' ||
+                                    @if (((is_int($entityItem->$column) &&
+                                            $column != 'hours' &&
+                                            $column != 'cycles' &&
+                                            $column != 'defective') ||
                                             $column == 'moment' ||
                                             $column == 'created_at') &&
-                                            !preg_match('/_id\z/u', $column) &&
-                                            $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
+                                            !preg_match('/_id\z/u', $column)) style="text-align:right" @else style="text-align:left" @endif
                                         @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
 
                                         @if ($column == 'name' || $column == 'id')
