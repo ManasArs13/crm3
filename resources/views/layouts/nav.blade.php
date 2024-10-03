@@ -267,11 +267,11 @@
                                         </x-dropdown-link>
                                     @endrole
 
-{{--                                    @role('admin|manager|audit')--}}
-{{--                                        <x-dropdown-link :href="route('manager.index')">--}}
-{{--                                            Сводка - Все доставки--}}
-{{--                                        </x-dropdown-link>--}}
-{{--                                    @endrole--}}
+                                    @role('admin|manager|audit')
+                                        <x-dropdown-link :href="route('report.delivery')">
+                                            Сводка - Все доставки
+                                        </x-dropdown-link>
+                                    @endrole
 
                                     @role('admin|manager|dispatcher|audit')
                                         <x-dropdown-link :href="route('report.transport')">
@@ -627,11 +627,11 @@
                                     - Менеджеры</a>
                                 @endrole
 
-{{--                                @role('admin|manager|audit')--}}
-{{--                                <a href="{{ route('manager.index') }}"--}}
-{{--                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка--}}
-{{--                                    - Все доставки</a>--}}
-{{--                                @endrole--}}
+                                @role('admin|manager|audit')
+                                <a href="{{ route('report.delivery') }}"
+                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
+                                    - Все доставки</a>
+                                @endrole
 
                                 @role('admin|manager|dispatcher|audit')
                                     <a href="{{ route('report.transport') }}"
