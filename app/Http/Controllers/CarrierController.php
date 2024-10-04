@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\ShipmentFilter;
+use App\Http\Requests\ShipmentRequest;
 use App\Models\Contact;
 use App\Models\Carrier;
 use App\Models\Delivery;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 
 class CarrierController extends Controller
 {
-    public function index(Request $request){
+    public function index(ShipmentRequest $request){
 
         $id = $request->id;
         $hash = $request->hash;
@@ -32,7 +33,7 @@ class CarrierController extends Controller
         // Shipments
         $builder = Shipment::query()
             ->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products')
-            ->where('carrier_id', 102)
+            ->where('carrier_id', $id)
             ->when(isset($request->filters['transport']) && $request->filters['transport'] != 'index', function($query) use ($request) {
                 return $query->where('transport_id', $request->filters['transport']);
             });
