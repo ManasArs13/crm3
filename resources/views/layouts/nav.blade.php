@@ -300,6 +300,12 @@
                                         </x-dropdown-link>
                                     @endrole
 
+                                    @role('admin|manager|dispatcher|carrier|audit')
+                                        <x-dropdown-link :href="route('report.cash.index')">
+                                            Сводка - Платежи
+                                        </x-dropdown-link>
+                                    @endrole
+
                                     @role('admin|manager|audit')
                                         <x-dropdown-link :href="route('report.counteparty')">
                                             Сводка - Контрагенты
@@ -328,8 +334,7 @@
                         @if (request()->get('debtors_balance') < -3000000)
                             <div
                                 class="inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-800 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out">
-                                <a href="{{ route('debtors') }}"
-                                    class="bg-red-300 p-1 rounded-lg">Должники</a>
+                                <a href="{{ route('debtors') }}" class="bg-red-300 p-1 rounded-lg">Должники</a>
                             </div>
                         @else
                             <x-nav-link :href="route('debtors')" :active="request()->routeIs('debtors')">
@@ -518,32 +523,32 @@
 
                                 <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
                                     @role('admin|manager|dispatcher|carrier|audit')
-                                    <a href="{{ route('report.transporter_fee') }}"
-                                       class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Перевозчики</a>
+                                        <a href="{{ route('report.transporter_fee') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Перевозчики</a>
                                     @endrole
                                     @role('admin|audit')
-                                    <a href="{{ route('contact.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты</a>
-                                    <a href="{{ route('product.index', ['type' => 'products']) }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Товары</a>
-                                    <a href="{{ route('product.index', ['type' => 'materials']) }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Материалы</a>
-                                    <a href="{{ route('transport.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Весь
-                                        транспорт</a>
-                                    <a href="{{ route('transport.shift.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Смены</a>
-                                    <a href="{{ route('transportType.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Виды
-                                        ТС</a>
-                                    <a href="{{ route('delivery.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Доставка</a>
-                                    <a href="{{ route('shiping_price.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Прайс
-                                        (доставка)</a>
-                                    <a href="{{ route('category.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Категории
-                                        товаров</a>
+                                        <a href="{{ route('contact.index') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты</a>
+                                        <a href="{{ route('product.index', ['type' => 'products']) }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Товары</a>
+                                        <a href="{{ route('product.index', ['type' => 'materials']) }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Материалы</a>
+                                        <a href="{{ route('transport.index') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Весь
+                                            транспорт</a>
+                                        <a href="{{ route('transport.shift.index') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Смены</a>
+                                        <a href="{{ route('transportType.index') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Виды
+                                            ТС</a>
+                                        <a href="{{ route('delivery.index') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Доставка</a>
+                                        <a href="{{ route('shiping_price.index') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Прайс
+                                            (доставка)</a>
+                                        <a href="{{ route('category.index') }}"
+                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Категории
+                                            товаров</a>
                                     @endrole
                                 </div>
                             </div>
@@ -576,15 +581,20 @@
                                     <a href="{{ route('supply.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Приемки</a>
                                     <a href="{{ route('order_positions.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции заказов</a>
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции
+                                        заказов</a>
                                     <a href="{{ route('shipment_products.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции отгрузок</a>
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции
+                                        отгрузок</a>
                                     <a href="{{ route('supply_positions.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции приёмок</a>
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции
+                                        приёмок</a>
                                     <a href="{{ route('operator.orders') }}"
-                                       class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Оператор заказы</a>
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Оператор
+                                        заказы</a>
                                     <a href="{{ route('operator.shipments') }}"
-                                       class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Оператор отгрузки</a>
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Оператор
+                                        отгрузки</a>
                                 @endrole
                             </div>
                         </div>
@@ -614,13 +624,13 @@
                                         АМО</a>
                                 </div>
                             </div>
-                        @role('admin')
-                            <a href="{{ route('users.all') }}"
-                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Пользователи</a>
+                            @role('admin')
+                                <a href="{{ route('users.all') }}"
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Пользователи</a>
 
-                            <a href="{{ route('option.index') }}"
-                                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Опции</a>
-                        @endrole
+                                <a href="{{ route('option.index') }}"
+                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Опции</a>
+                            @endrole
                         @endrole
 
                         <div class="-mx-3">
@@ -639,15 +649,15 @@
                             <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
 
                                 @role('admin|manager|audit')
-                                <a href="{{ route('manager.index') }}"
-                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
-                                    - Менеджеры</a>
+                                    <a href="{{ route('manager.index') }}"
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
+                                        - Менеджеры</a>
                                 @endrole
 
                                 @role('admin|manager|audit')
-                                <a href="{{ route('report.delivery') }}"
-                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
-                                    - Все доставки</a>
+                                    <a href="{{ route('report.delivery') }}"
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
+                                        - Все доставки</a>
                                 @endrole
 
                                 @role('admin|manager|audit')
@@ -665,6 +675,12 @@
                                     <a href="{{ route('report.transporter') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
                                         - Перевозчик</a>
+                                @endrole
+
+                                @role('admin|manager|dispatcher|carrier|audit')
+                                    <a href="{{ route('report.cash.index') }}"
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
+                                        - Платежи</a>
                                 @endrole
 
                                 @role('admin|manager|audit')
@@ -705,7 +721,6 @@
 
 
     <script>
-
         const menuToggles = document.querySelectorAll('.menu-toggle');
 
 

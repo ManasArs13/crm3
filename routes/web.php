@@ -20,6 +20,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Report\CashController;
 use App\Http\Controllers\Report\CounterpartyController;
 use App\Http\Controllers\Report\ReportDeliveryController;
 use App\Http\Controllers\Report\TransportController as ReportTransportController;
@@ -77,6 +78,10 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
         Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
         Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
         Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+
+        Route::get('/report/cash', [CashController::class, 'index'])->name('cash.index');
+        Route::get('/report/cash/in', [CashController::class, 'cashin'])->name('cash.cashin');
+        Route::get('/report/cash/out', [CashController::class, 'cashout'])->name('cash.cashout');
     });
 });
 
