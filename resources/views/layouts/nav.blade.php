@@ -282,6 +282,12 @@
                                         </x-dropdown-link>
                                     @endrole
 
+                                    @role('admin|manager|audit')
+                                        <x-dropdown-link :href="route('report.delivery_deviations')">
+                                            Сводка - Отклонения доставок
+                                        </x-dropdown-link>
+                                    @endrole
+
                                     @role('admin|manager|dispatcher|audit')
                                         <x-dropdown-link :href="route('report.transport')">
                                             Сводка - Транспорт
@@ -642,6 +648,11 @@
                                 <a href="{{ route('report.delivery') }}"
                                    class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
                                     - Все доставки</a>
+                                @endrole
+
+                                @role('admin|manager|audit')
+                                <a href="{{ route('report.delivery_deviations') }}"
+                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Отклонения доставок</a>
                                 @endrole
 
                                 @role('admin|manager|dispatcher|audit')

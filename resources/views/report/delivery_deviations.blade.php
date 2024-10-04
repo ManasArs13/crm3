@@ -3,16 +3,14 @@
     @if (isset($entity) && $entity != '')
         <x-slot:title>
             {{ __('entity.' . $entity) }}
-        </x-slot>
-    @endif
+            </x-slot>
+            @endif
 
             <x-slot:head>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
                 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js" integrity="sha512-t3XNbzH2GEXeT9juLjifw/5ejswnjWWMMDxsdCg4+MmvrM+MwqGhxlWeFJ53xN/SBHPDnW0gXYvBx/afZZfGMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-                </x-slot>
+            </x-slot>
 
 
                 <div class="w-11/12 mx-auto py-8 max-w-10xl">
@@ -36,8 +34,74 @@
                         <div class="border-b-2 border-neutral-100">
                             <div class="flex flex-row w-full p-3 justify-between">
                                 <form method="get" action="{{ route($urlFilter) }}" class="flex gap-1">
-                                    <input type="hidden" name="id" value="{{ request()->id }}">
-                                    <input type="hidden" name="hash" value="{{ request()->hash }}">
+                                    <div>
+                                        <x-dropdown align="left" width="64" outside='false'>
+                                            <x-slot name="trigger">
+                                                <button type="button"
+                                                        class="inline-flex rounded border-2 border-blue-600 text-blue-600 px-4 py-2 text-md font-medium leading-normal hover:bg-blue-700 hover:text-white">
+                                                    столбцы
+                                                    <div class="ms-1 mt-1">
+                                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                                  clip-rule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </x-slot>
+
+                                            <x-slot name="content">
+                                                <div class="grid grid-cols-3 w-100 p-4 gap-1">
+                                                    <div class="flex basis-1/3">
+                                                        <label>
+                                                            <input type="checkbox" id="change_all">
+                                                            Выбрать все
+                                                        </label>
+                                                    </div>
+                                                    @foreach ($resColumnsAll as $key => $column)
+                                                        <div class="flex basis-1/3">
+                                                            <label>
+                                                                <input name="columns[]" class="columns_all" type="checkbox"
+                                                                       value="{{ $key }}" id="checkbox-{{ $key }}"
+                                                                       @if ($column['checked'] == true) checked @endif>
+                                                                {{ $column['name_rus'] }}
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                                <div class="mt-4 flex justify-start mb-4 ml-4">
+                                                    <button type="submit"
+                                                            class="rounded bg-blue-600 border-2 border-blue-600 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-blue-700">
+                                                        поиск
+                                                    </button>
+                                                    <button type="button" id="reset-button"
+                                                            class="ml-2 rounded bg-slate-300 border-2 border-slate-300 px-4 py-1 text-md font-medium leading-normal text-white hover:bg-slate-400">
+                                                        Сбросить
+                                                    </button>
+                                                </div>
+                                                <script>
+                                                    document.addEventListener("DOMContentLoaded", function(event) {
+                                                        var checkboxAll = document.querySelector("#change_all");
+                                                        checkboxAll.addEventListener('change', function() {
+                                                            let inputs = document.querySelectorAll(".columns_all")
+
+                                                            if (this.checked) {
+                                                                inputs.forEach(element => {
+                                                                    element.checked = true
+                                                                });
+                                                            } else {
+                                                                inputs.forEach(element => {
+                                                                    element.checked = false
+                                                                });
+                                                            }
+                                                        });
+
+                                                    });
+                                                </script>
+                                            </x-slot>
+                                        </x-dropdown>
+                                    </div>
                                     <div>
                                         <x-dropdown align="left" width="64" outside='false'>
                                             <x-slot name="trigger">
@@ -146,28 +210,18 @@
                                             </x-slot>
                                         </x-dropdown>
                                     </div>
-
                                 </form>
-                                <div class="flex px-3 text-center font-bold">
-                                    <button id="print-table"
-                                       class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
-                                        {{ __('label.print') }}
-                                    </button>
-                                </div>
-
                             </div>
                         </div>
 
                         {{-- body --}}
-                        <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto get-print print:text-[3mm]">
+                        <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
                             <table class="text-left text-md text-nowrap">
                                 <thead>
                                 <tr class="bg-neutral-200 font-semibold py-2">
                                     @foreach ($resColumns as $key => $column)
                                         @if ($key === 'remainder')
                                             <th scope="col" class="px-6 py-4">{{ $column }}</th>
-                                        @elseif ($key === 'delivery_price_norm')
-                                                <th scope="col" class="px-6 py-4">{{ $column }}</th>
                                         @elseif(isset($orderBy) && $orderBy == 'desc')
                                             <th scope="col" class="px-6 py-4"
                                                 @if (
@@ -212,6 +266,7 @@
                                     $totalDeliveryPriceNorm = 0;
                                     $totalDeliverySum = 0;
                                     $totalPaidSum = 0;
+                                    $totalSaldoSum = 0;
                                 @endphp
                                 @foreach ($entityItems as $entityItem)
                                     @php
@@ -232,6 +287,10 @@
 
                                     @php
                                         $totalPaidSum += $entityItem->paid_sum;
+                                    @endphp
+
+                                    @php
+                                        $totalSaldoSum += $entityItem->saldo;
                                     @endphp
 
                                     <tr class="border-b-2 py-2">
@@ -256,7 +315,10 @@
                                                     @if ($column == 'contact_id')
                                                         {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
                                                     @elseif($column == 'order_id')
-                                                        {{ $entityItem->$column }}
+                                                        <a href="{{ route('order.show', $entityItem->id) }}"
+                                                           class="text-blue-500 hover:text-blue-600">
+                                                            {{ $entityItem->$column }}
+                                                        </a>
                                                     @elseif($column == 'delivery_id')
                                                         {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
                                                     @elseif($column == 'transport_id')
@@ -268,6 +330,12 @@
                                                     @endif
                                                 @elseif($column == 'status')
                                                     {{ $entityItem->$column }}
+                                                @elseif($column == 'carrier')
+                                                    {{ $entityItem->carrier->name ?? '-' }}
+                                                @elseif($column == 'car_number')
+                                                    {{ $entityItem->transport->car_number ?? '-' }}
+                                                @elseif($column == 'delivery_address')
+                                                    {{ $entityItem->delivery->name ?? '-' }}
                                                 @elseif($column == 'remainder')
                                                     @if ($entityItem->residual_norm !== 0 && $entityItem->residual_norm !== null && $entityItem->type !== 'не выбрано')
                                                         {{ round(($entityItem->residual / $entityItem->residual_norm) * 100) }}
@@ -290,11 +358,15 @@
                                                         </svg>
                                                     </a>
                                                 @elseif($column == 'name' || $column == 'id')
-                                                    @if ($entityItem->$column == null)
-                                                        ---
-                                                    @else
-                                                        {{ $entityItem->$column }}
-                                                    @endif
+                                                    <a href="{{ route($urlShow, $entityItem->id) }}"
+                                                       class="text-blue-500 hover:text-blue-600">
+
+                                                        @if ($entityItem->$column == null)
+                                                            ---
+                                                        @else
+                                                            {{ $entityItem->$column }}
+                                                        @endif
+                                                    </a>
                                                 @elseif($column == 'products_count')
                                                     @php
                                                         $total_quantity = 0;
@@ -347,10 +419,6 @@
                                                 @endif
                                             </td>
                                         @endforeach
-
-                                        {{-- Management --}}
-                                        <td class="text-nowrap px-6 py-2 flex"></td>
-
                                     </tr>
                                 @endforeach
                                 <tr class="border-b-2 bg-gray-100 py-2">
@@ -379,12 +447,15 @@
                                             <td class="overflow-auto px-6 py-4 text-right">
                                                 {{ number_format((int) $totalPaidSum, 0, ',', ' ') }}
                                             </td>
+                                        @elseif($column == 'saldo')
+                                            <td class="overflow-auto px-6 py-4 text-right">
+                                                {{ number_format((int) $totalSaldoSum, 0, ',', ' ') }}
+                                            </td>
                                         @else
                                             <td>
                                             </td>
                                         @endif
                                     @endforeach
-                                        <td class="px-6 py-2"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -398,11 +469,6 @@
                 </div>
 
                 <style>
-                    @media print {
-                        @page {
-                            size: landscape;
-                        }
-                    }
                     .select2, .select2-selection{
                         width: 100% !important;
                         min-height: 42px !important;
@@ -420,13 +486,8 @@
                     }
 
                 </style>
-
                 <script>
                     $(document).ready(function(){
-
-                        $("#print-table").on("click", function(){
-                            $('.get-print').print();
-                        })
 
                         function initSelect2(elementId, url) {
                             $(elementId).select2({
@@ -457,8 +518,69 @@
                         initSelect2("#carriers_select", '/api/carriers/get');
                     });
 
+                    function printShipment(shipmentId) {
+                        var printUrl = '{{ route('print.shipment') }}';
+
+
+                        fetch(printUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                id: shipmentId
+                            })
+                        })
+                            .then(response => response.text())
+                            .then(html => {
+
+                                var printFrame = document.createElement('iframe');
+                                printFrame.style.position = 'absolute';
+                                printFrame.style.width = '0px';
+                                printFrame.style.height = '0px';
+                                printFrame.style.border = 'none';
+
+
+                                document.body.appendChild(printFrame);
+
+
+                                var frameDoc = printFrame.contentWindow.document;
+                                frameDoc.open();
+                                frameDoc.write(html);
+                                frameDoc.close();
+
+                                printFrame.onload = function() {
+                                    printFrame.contentWindow.focus();
+                                    printFrame.contentWindow.print();
+
+                                    document.body.removeChild(printFrame);
+                                };
+                            })
+                            .catch(error => {
+                                console.error('Ошибка:', error);
+                            });
+                    }
 
                     document.addEventListener("DOMContentLoaded", function(event) {
+
+                        $("#reset-button").on("click", function(){
+                            const checkedCheckboxes = [{!! '"' . implode('", "', array_values($select)) . '"' !!}];
+
+
+                            const allCheckboxes = document.querySelectorAll('.columns_all');
+                            allCheckboxes.forEach(checkbox => {
+                                checkbox.checked = false;
+                            });
+
+
+                            checkedCheckboxes.forEach(id => {
+                                const checkbox = document.getElementById(`checkbox-${id}`);
+                                if (checkbox) {
+                                    checkbox.checked = true;
+                                }
+                            });
+                        });
 
                         $("#reset-button2").on("click", function(){
                             const dateInputs = document.querySelectorAll('.date-default');
