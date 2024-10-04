@@ -20,6 +20,8 @@ class CarrierController extends Controller
         if($hash !== hash('sha256', $id . $signature)){
             abort(404);
         }
+
+        $transport_filter = isset($request->filters['transport']) && $request->filters['transport'] != 'index' ? $request->filters['transport'] : 'index';
         $urlEdit = "shipment.edit";
         $urlShow = "shipment.show";
         $urlDelete = "shipment.destroy";
@@ -30,67 +32,46 @@ class CarrierController extends Controller
         // Shipments
         $builder = Shipment::query()
             ->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products')
-            ->where('carrier_id', 102);
+            ->where('carrier_id', 102)
+            ->when(isset($request->filters['transport']) && $request->filters['transport'] != 'index', function($query) use ($request) {
+                return $query->where('transport_id', $request->filters['transport']);
+            });
+
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
+            $entityItems = $builder->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
+            $entityItems = $builder->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
+            $entityItems = $builder->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
         // Columns
         $all_columns = [
-            "name",
-            "order_id",
-            "ms_id",
             "id",
-            "created_at",
             "contact_id",
-            //            "counterparty_link",
-            "suma",
-            "status",
-            "products_count",
-            //            "shipment_address",
-            "description",
-            "delivery_price",
-            "delivery_price_norm",
-            "saldo",
-            "delivery_fee",
             "delivery_id",
-            "transport_type_id",
             "transport_id",
-            "sostav",
-            "service_link",
-            "paid_sum",
-            "updated_at",
-            "weight",
-            'ms_link'
+            "products_count",
+            "delivery_price_norm",
+            "delivery_price",
         ];
 
 
         $select = [
-            "name",
-            "order_id",
-            "created_at",
+            "id",
             "contact_id",
-            "suma",
-            "status",
-            "products_count",
-            "description",
-            "delivery_price",
-            "delivery_price_norm",
-            "delivery_fee",
             "delivery_id",
-            "transport_type_id",
             "transport_id",
+            "products_count",
+            "delivery_price_norm",
+            "delivery_price",
         ];
 
         $selected = $request->columns ?? $select;
@@ -103,35 +84,6 @@ class CarrierController extends Controller
             }
         }
 
-        // Filters
-        $minCreated = Shipment::query()->min('created_at');
-        $minCreatedCheck = '';
-        $maxCreated = Shipment::query()->max('created_at');
-        $maxCreatedCheck = '';
-        $minUpdated = Shipment::query()->min('updated_at');
-        $minUpdatedCheck = '';
-        $maxUpdated = Shipment::query()->max('updated_at');
-        $maxUpdatedCheck = '';
-
-        // Значения фильтра доставки
-        $deliveries = Delivery::select('id', 'name')->orderBy('distance')->get();
-        $deliveryValues[] = ['value' => 'index', 'name' => 'Все доставки'];
-
-        foreach ($deliveries as $delivery) {
-            $deliveryValues[] = ['value' => $delivery->id, 'name' => $delivery->name];
-        }
-
-        // Значения фильтра статуса
-        $statuses = Shipment::select('status')->groupBy('status')->distinct('status')->orderByDesc('status')->get();
-        $statusValues[] = ['value' => 'index', 'name' => 'Все статусы'];
-
-        foreach ($statuses as $status) {
-            if ($status->status) {
-                $statusValues[] = ['value' => $status->status, 'name' => $status->status];
-            } else {
-                $statusValues[] = ['value' => $status->status, 'name' => 'Не указано'];
-            }
-        }
 
         // Значение фильтра транспорта
         $transports = Transport::select('id', 'name')->orderBy('name')->get();
@@ -141,88 +93,26 @@ class CarrierController extends Controller
             $transportValues[] = ['value' => $transport->id, 'name' => $transport->name];
         }
 
-        $queryMaterial = 'index';
-        $queryDelivery = 'index';
-        $queryStatus = 'index';
         $queryTransport = 'index';
-        $contacts = [];
-        $carriers = [];
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 switch ($key) {
-                    case 'created_at':
-                        if ($value['max']) {
-                            $maxCreatedCheck = $value['max'];
-                        }
-                        if ($value['min']) {
-                            $minCreatedCheck = $value['min'];
-                        }
-                        break;
-                    case 'updated_at':
-                        if ($value['max']) {
-                            $maxUpdatedCheck = $value['max'];
-                        }
-                        if ($value['min']) {
-                            $minUpdatedCheck = $value['min'];
-                        }
-                        break;
-                    case 'material':
-                        switch ($value) {
-                            case 'concrete':
-                                $queryMaterial = 'concrete';
-                                break;
-                            case 'block':
-                                $queryMaterial = 'block';
-                                break;
-                        }
-                        break;
-                    case 'delivery':
-                        $queryDelivery = $value;
-                        break;
-                    case 'status':
-                        $queryStatus = $value;
-                        break;
                     case 'transport':
                         $queryTransport = $value;
                         break;
-                    case 'contacts':
-                        $contact_names_get = Contact::WhereIn('id', $value)->get(['id', 'name']);
-                        if (isset($value)) {
-                            $contacts = [];
-                            foreach ($contact_names_get as $val){
-                                $contacts[] = [
-                                    'value' => $val->id,
-                                    'name' => $val->name
-                                ];
-                            }
-                        }
-                        break;
-                    case 'carriers':
-                        $carrier_names_get = Carrier::WhereIn('id', $value)->get(['id', 'name']);
-                        if (isset($value)) {
-                            $carriers = [];
-                            foreach ($carrier_names_get as $val){
-                                $carriers[] = [
-                                    'value' => $val->id,
-                                    'name' => $val->name
-                                ];
-                            }
-                        }
-                        break;
+
                 }
             }
         }
 
         $filters = [
             [
-                'type' => 'date',
-                'name' =>  'created_at',
-                'name_rus' => 'Дата',
-                'min' => substr($minCreated, 0, 10),
-                'minChecked' => $minCreatedCheck,
-                'max' => substr($maxCreated, 0, 10),
-                'maxChecked' => $maxCreatedCheck
+                'type' => 'select',
+                'name' => 'transport',
+                'name_rus' => 'Транспорт',
+                'values' => $transportValues,
+                'checked_value' => $queryTransport,
             ],
 
         ];
@@ -243,6 +133,5 @@ class CarrierController extends Controller
             'orderBy',
             'selectColumn'
         ));
-        return view('transport.carrier');
     }
 }
