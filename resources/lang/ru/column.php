@@ -184,5 +184,6 @@ return [
   'difference_price' => '- от цены',
   "difference_price_percent" => '- от цены %',
   "start_shift" => 'Начало смены',
-  "end_shift" => 'Конец смены'
+  "end_shift" => 'Конец смены',
+  'operation' => 'Операция'
 ];
