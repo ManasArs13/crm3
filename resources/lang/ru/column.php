@@ -114,6 +114,7 @@ return [
   'quantity_norm'  => 'Количество (норм)',
   'delivery_fee' => 'Стоимость',
   'delivery_price_norm' => 'Стоимость доставки Норм',
+  'delivery_price_norm_short' => 'Доставка норм',
   'saldo'=>'Сальдо',
   'processing' => 'Операция',
   'techchart_id' => 'Карта',
