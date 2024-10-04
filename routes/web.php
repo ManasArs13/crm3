@@ -71,6 +71,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
     Route::name('report.')->group(function () {
         // Доставки
         Route::get('/report/delivery', [ReportDeliveryController::class, 'index'])->name('delivery');
+        Route::get('/report/delivery/deviations', [ReportDeliveryController::class, 'deviations'])->name('delivery_deviations');
 
         // Контрагенты
         Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
