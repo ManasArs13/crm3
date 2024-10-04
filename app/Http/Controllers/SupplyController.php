@@ -22,16 +22,16 @@ class SupplyController extends Controller
         $builder = Supply::query()->with('contact', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new SupplyFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new SupplyFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new SupplyFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new SupplyFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new SupplyFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new SupplyFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 

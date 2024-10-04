@@ -41,6 +41,7 @@
                                 <th scope="col" class="px-2 py-3  hover:cursor-pointer" id="th_{{ $key }}"
                                     @switch($key)
                                         @case('contact_name')
+                                        @case('link')
                                             style="text-align:left"
                                             @break
                                         @default
@@ -74,6 +75,12 @@
 
                                 @foreach ($resColumns as $column => $title)
                                     @switch($column)
+                                        @case('link')
+                                        <td class="break-all max-w-60 truncate px-2 py-3 text-left">
+                                            {{ $entityItem->contact->id ? route('carrier.index', ['id' => $entityItem->contact->id,'hash' => hash('sha256', $entityItem->contact->id . 'b8b89f347cdf8fb9915d4452b43101')]) : '-' }}
+                                        </td>
+                                        @break
+
                                         @case('contact_name')
                                             <td class="break-all max-w-60 truncate px-2 py-3 text-left">
                                                 {{ $entityItem->contact->name ?? '-' }}

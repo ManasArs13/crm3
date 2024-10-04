@@ -25,16 +25,16 @@ class ShipmentProductController extends Controller
         $builder = ShipmentProduct::query()->with('product');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
+            $entityItems = (new ShipmentPositionFilter($builder, $request))->apply()->orderBy('id')->paginate(100);
             $selectColumn = null;
         }
 
@@ -244,14 +244,14 @@ class ShipmentProductController extends Controller
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderByDesc('sort')->paginate(50);
+            $entityItems = $entityItems->orderByDesc('sort')->paginate(100);
             $orderBy = 'desc';
         } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc('sort')->paginate(50);
+            $entityItems = $entityItems->orderByDesc('sort')->paginate(100);
             $orderBy = 'asc';
         } else {
             $orderBy = 'desc';
-            $entityItems =  $entityItems->orderByDesc('sort')->paginate(50);
+            $entityItems =  $entityItems->orderByDesc('sort')->paginate(100);
         }
 
         /* Фильтры для меню */

@@ -22,16 +22,16 @@ class ContactController extends Controller
         $builder = Contact::query();
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ContactFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new ContactFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ContactFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new ContactFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ContactFilter($builder, $request))->apply()->orderBy('id')->paginate(50);
+            $entityItems = (new ContactFilter($builder, $request))->apply()->orderBy('id')->paginate(100);
             $selectColumn = null;
         }
 
@@ -234,14 +234,14 @@ class ContactController extends Controller
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $entityItems = $entityItems->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
         } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
         } else {
             $orderBy = 'desc';
-            $entityItems =   $entityItems->paginate(50);
+            $entityItems =   $entityItems->paginate(100);
         }
 
         /* Фильтры для меню */

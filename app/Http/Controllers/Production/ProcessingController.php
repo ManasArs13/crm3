@@ -22,16 +22,16 @@ class ProcessingController extends Controller
         $builder = TechProcess::query()->with('tech_chart:id,name', 'products:id,name');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ProcessingFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new ProcessingFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ProcessingFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new ProcessingFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ProcessingFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new ProcessingFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
@@ -201,16 +201,16 @@ class ProcessingController extends Controller
         $builder = TechProcessProduct::query()->with('product:id,name');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
@@ -346,16 +346,16 @@ class ProcessingController extends Controller
         $builder = TechProcessMaterial::query()->with('product:id,name');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
