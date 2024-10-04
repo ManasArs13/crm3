@@ -76,7 +76,7 @@
                         </div>
                     @endrole
 
-                    @role('admin|audit')
+                    @role('admin|manager|dispatcher|carrier|audit')
                         {{-- Справочник --}}
                         <div class="hidden md:flex md:items-center md:ms-1">
                             <x-dropdown align="left" width="48">
@@ -97,34 +97,43 @@
                                 </x-slot>
 
                                 <x-slot name="content">
-                                    <x-dropdown-link :href="route('contact.index')">
-                                        Контакты
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('product.index', ['type' => 'products'])">
-                                        Товары
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('product.index', ['type' => 'materials'])">
-                                        Материалы
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('transport.index')">
-                                        Весь транспорт
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('transport.shift.index')">
-                                        Смены
-                                    </x-dropdown-link>
 
-                                    <x-dropdown-link :href="route('transportType.index')">
-                                        Виды ТС
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('delivery.index')">
-                                        Доставка
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('shiping_price.index')">
-                                        Прайс (доставка)
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('category.index')">
-                                        Категории товаров
-                                    </x-dropdown-link>
+                                    @role('admin|manager|dispatcher|carrier|audit')
+                                        <x-dropdown-link :href="route('report.transporter_fee')">
+                                            Перевозчики
+                                        </x-dropdown-link>
+                                    @endrole
+
+                                    @role('admin|audit')
+                                        <x-dropdown-link :href="route('contact.index')">
+                                            Контакты
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('product.index', ['type' => 'products'])">
+                                            Товары
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('product.index', ['type' => 'materials'])">
+                                            Материалы
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('transport.index')">
+                                            Весь транспорт
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('transport.shift.index')">
+                                            Смены
+                                        </x-dropdown-link>
+
+                                        <x-dropdown-link :href="route('transportType.index')">
+                                            Виды ТС
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('delivery.index')">
+                                            Доставка
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('shiping_price.index')">
+                                            Прайс (доставка)
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('category.index')">
+                                            Категории товаров
+                                        </x-dropdown-link>
+                                    @endrole
                                 </x-slot>
                             </x-dropdown>
                         </div>
@@ -282,10 +291,6 @@
                                     @role('admin|manager|dispatcher|carrier|audit')
                                         <x-dropdown-link :href="route('report.transporter')">
                                             Сводка - Перевозчик
-                                        </x-dropdown-link>
-
-                                        <x-dropdown-link :href="route('report.transporter_fee')">
-                                            Сводка - Перевозчик (оплата)
                                         </x-dropdown-link>
                                     @endrole
 
@@ -490,7 +495,7 @@
                         @endrole
 
 
-                        @role('admin|audit')
+                        @role('admin|manager|dispatcher|carrier|audit')
                             <div class="-mx-3">
                                 <button type="button"
                                     class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
@@ -506,6 +511,11 @@
 
 
                                 <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                    @role('admin|manager|dispatcher|carrier|audit')
+                                    <a href="{{ route('report.transporter_fee') }}"
+                                       class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Перевозчики</a>
+                                    @endrole
+                                    @role('admin|audit')
                                     <a href="{{ route('contact.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты</a>
                                     <a href="{{ route('product.index', ['type' => 'products']) }}"
@@ -528,6 +538,7 @@
                                     <a href="{{ route('category.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Категории
                                         товаров</a>
+                                    @endrole
                                 </div>
                             </div>
                         @endrole
@@ -643,9 +654,6 @@
                                     <a href="{{ route('report.transporter') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
                                         - Перевозчик</a>
-                                    <a href="{{ route('report.transporter_fee') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
-                                        - Перевозчик (оплата)</a>
                                 @endrole
 
                                 @role('admin|manager|audit')

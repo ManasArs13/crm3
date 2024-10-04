@@ -34,16 +34,16 @@ class ShipmentController extends Controller
         $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
@@ -277,7 +277,7 @@ class ShipmentController extends Controller
         ];
 
 
-        return view("shipment.index", compact(
+        return view("carrier.index", compact(
             'select',
             'entityItems',
             "resColumns",
@@ -307,16 +307,16 @@ class ShipmentController extends Controller
         $builder = Shipment::query()->with('order:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('shipments.id')->paginate(50);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('shipments.id')->paginate(100);
             $selectColumn = null;
         }
 

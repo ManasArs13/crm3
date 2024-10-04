@@ -17,16 +17,16 @@ class AmoOrderController extends Controller
         $builder = OrderAmo::query()->with(['status_amo', 'contact_amo']);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
@@ -45,7 +45,7 @@ class AmoOrderController extends Controller
             'manager_id',
             'is_success'
         ];
-    
+
         $select = [
             "id",
             "name",

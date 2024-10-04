@@ -12,18 +12,18 @@ class TransporterFeeController extends Controller
 {
     public function index(Request $request)
     {
-        $entityName = 'Сводка - Перевозчик (оплата)';
+        $entityName = 'Перевозчики';
 
         $month_list = array(
-            '01'  => 'январь',
-            '02'  => 'февраль',
-            '03'  => 'март',
-            '04'  => 'апрель',
-            '05'  => 'май',
-            '06'  => 'июнь',
-            '07'  => 'июль',
-            '08'  => 'август',
-            '09'  => 'сентябрь',
+            '01' => 'январь',
+            '02' => 'февраль',
+            '03' => 'март',
+            '04' => 'апрель',
+            '05' => 'май',
+            '06' => 'июнь',
+            '07' => 'июль',
+            '08' => 'август',
+            '09' => 'сентябрь',
             '10' => 'октябрь',
             '11' => 'ноябрь',
             '12' => 'декабрь'
@@ -57,6 +57,7 @@ class TransporterFeeController extends Controller
             ->get();
 
         $selected = [
+            "link",
             "contact_name",
             'debt',
             'current month',

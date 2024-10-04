@@ -19,7 +19,7 @@ class OutgoingController extends Controller
         $entityCreate = 'outgoings.create';
         $urlDelete = "outgoings.destroy";
 
-        $outgoings = Outgoing::with('products')->orderByDesc('id')->paginate(50);
+        $outgoings = Outgoing::with('products')->orderByDesc('id')->paginate(100);
 
         return view('goods.outgoing.index', compact(
             "entity",
@@ -204,7 +204,7 @@ class OutgoingController extends Controller
             foreach ($outgoing->products as $product) {
 
                 $product->balance += $product->pivot->quantity;
-                
+
                 $outgoing_summa -=  $product->pivot->summa;
 
                 DB::transaction(function () use ($product, $outgoing, $outgoing_summa) {

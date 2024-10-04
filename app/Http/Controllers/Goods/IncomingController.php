@@ -19,7 +19,7 @@ class IncomingController extends Controller
         $entityCreate = 'incomings.create';
         $urlDelete = "incomings.destroy";
 
-        $incomings = Incoming::with('products')->orderByDesc('id')->paginate(50);
+        $incomings = Incoming::with('products')->orderByDesc('id')->paginate(100);
 
         return view('goods.incoming.index', compact(
             "entity",
@@ -203,7 +203,7 @@ class IncomingController extends Controller
             foreach ($incoming->products as $product) {
 
                 $product->balance -= $product->pivot->quantity;
-                
+
                 $incoming_summa -=  $product->pivot->summa;
 
                 DB::transaction(function () use ($product, $incoming, $incoming_summa) {

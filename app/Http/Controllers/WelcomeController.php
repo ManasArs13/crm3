@@ -228,14 +228,14 @@ class WelcomeController extends Controller
 
         /* Сортировка */
         if (isset($request->orderBy) && $request->orderBy == 'asc') {
-            $products = $products->orderBy($column)->paginate(50);
+            $products = $products->orderBy($column)->paginate(100);
             $orderBy = 'desc';
         } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $products = $products->orderByDesc($column)->paginate(50);
+            $products = $products->orderByDesc($column)->paginate(100);
             $orderBy = 'asc';
         } else {
             $orderBy = 'desc';
-            $products = $products->orderBy('moment', 'desc')->paginate(50);
+            $products = $products->orderBy('moment', 'desc')->paginate(100);
         }
 
         return view("welcome", compact("entity", "products", 'urlFilter', 'orderBy', 'column'));

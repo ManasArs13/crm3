@@ -39,16 +39,16 @@ class OperatorController extends Controller
             ->where('date_plan', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $builder->orderBy($request->column)->paginate(50);
+            $entityItems = $builder->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $builder->orderByDesc($request->column)->paginate(50);
+            $entityItems = $builder->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = $builder->orderByDesc('id')->paginate(50);
+            $entityItems = $builder->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
@@ -233,16 +233,16 @@ class OperatorController extends Controller
             ->where('created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $builder->orderBy($request->column)->paginate(50);
+            $entityItems = $builder->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $builder->orderByDesc($request->column)->paginate(50);
+            $entityItems = $builder->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = $builder->orderByDesc('id')->paginate(50);
+            $entityItems = $builder->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 
