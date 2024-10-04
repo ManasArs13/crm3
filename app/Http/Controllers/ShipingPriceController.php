@@ -25,14 +25,14 @@ class ShipingPriceController extends Controller
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $entityItems = $entityItems->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
         } else if (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
         } else {
             $orderBy = 'desc';
-            $entityItems = $entityItems->paginate(50);
+            $entityItems = $entityItems->paginate(100);
         }
 
         $resColumns = [];
@@ -179,14 +179,14 @@ class ShipingPriceController extends Controller
 
         /* Сортировка */
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column)->paginate(50);
+            $entityItems = $entityItems->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
         } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column)->paginate(50);
+            $entityItems = $entityItems->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
         } else {
             $orderBy = 'desc';
-            $entityItems =   $entityItems->paginate(50);
+            $entityItems =   $entityItems->paginate(100);
         }
 
         $filters = [];

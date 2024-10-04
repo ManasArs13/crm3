@@ -1,31 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\report;
+namespace App\Http\Controllers;
 
 use App\Filters\ShipmentFilter;
-use App\Http\Controllers\Controller;
-use App\Models\Carrier;
 use App\Models\Contact;
+use App\Models\Carrier;
 use App\Models\Delivery;
-use App\Models\Product;
 use App\Models\Shipment;
 use App\Models\Transport;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ReportDeliveryController extends Controller
+class CarrierController extends Controller
 {
-    public function index(Request $request)
-    {
+    public function index(Request $request){
+
+        $id = $request->id;
+        $hash = $request->hash;
+        $signature = 'b8b89f347cdf8fb9915d4452b43101';
+        if($hash !== hash('sha256', $id . $signature)){
+            abort(404);
+        }
         $urlEdit = "shipment.edit";
         $urlShow = "shipment.show";
         $urlDelete = "shipment.destroy";
         $urlCreate = "shipment.create";
-        $urlFilter = 'report.delivery';
-        $entityName = 'Все доставки';
+        $urlFilter = 'carrier.index';
+        $entityName = 'Перевозки';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name,car_number', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()
+            ->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products')
+            ->where('carrier_id', 102);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
@@ -43,28 +48,25 @@ class ReportDeliveryController extends Controller
 
         // Columns
         $all_columns = [
-            "id",
-            "created_at",
-            "contact_id",
-            "products_count",
-            "delivery_price",
-            "delivery_address",
-            "shipment_address",
-            "carrier",
-            "car_number",
-            "transport_id",
             "name",
             "order_id",
             "ms_id",
+            "id",
+            "created_at",
+            "contact_id",
             //            "counterparty_link",
             "suma",
             "status",
+            "products_count",
+            //            "shipment_address",
             "description",
+            "delivery_price",
             "delivery_price_norm",
             "saldo",
             "delivery_fee",
             "delivery_id",
             "transport_type_id",
+            "transport_id",
             "sostav",
             "service_link",
             "paid_sum",
@@ -75,14 +77,19 @@ class ReportDeliveryController extends Controller
 
 
         $select = [
-            "id",
+            "name",
+            "order_id",
             "created_at",
             "contact_id",
+            "suma",
+            "status",
             "products_count",
+            "description",
             "delivery_price",
-            "delivery_address",
-            "carrier",
-            "car_number",
+            "delivery_price_norm",
+            "delivery_fee",
+            "delivery_id",
+            "transport_type_id",
             "transport_id",
         ];
 
@@ -211,65 +218,17 @@ class ReportDeliveryController extends Controller
             [
                 'type' => 'date',
                 'name' =>  'created_at',
-                'name_rus' => 'Дата создания',
+                'name_rus' => 'Дата',
                 'min' => substr($minCreated, 0, 10),
                 'minChecked' => $minCreatedCheck,
                 'max' => substr($maxCreated, 0, 10),
                 'maxChecked' => $maxCreatedCheck
             ],
-            [
-                'type' => 'date',
-                'name' =>  'updated_at',
-                'name_rus' => 'Дата обновления',
-                'min' => substr($minUpdated, 0, 10),
-                'minChecked' => $minUpdatedCheck,
-                'max' => substr($maxUpdated, 0, 10),
-                'maxChecked' => $maxUpdatedCheck
-            ],
-            [
-                'type' => 'select',
-                'name' => 'material',
-                'name_rus' => 'Материал',
-                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
-                'checked_value' => $queryMaterial,
-            ],
-            [
-                'type' => 'select',
-                'name' => 'delivery',
-                'name_rus' => 'Доставка',
-                'values' => $deliveryValues,
-                'checked_value' => $queryDelivery,
-            ],
-            [
-                'type' => 'select2',
-                'name' => 'contacts',
-                'name_rus' => 'Контакты',
-                'values' => $contacts,
-            ],
-            [
-                'type' => 'select2',
-                'name' => 'carriers',
-                'name_rus' => 'Перевозчики',
-                'values' => $carriers,
-            ],
-            [
-                'type' => 'select',
-                'name' => 'status',
-                'name_rus' => "Статус",
-                'values' => $statusValues,
-                'checked_value' => $queryStatus,
-            ],
-            [
-                'type' => 'select',
-                'name' => 'transport',
-                'name_rus' => 'Транспорт',
-                'values' => $transportValues,
-                'checked_value' => $queryTransport,
-            ],
+
         ];
 
 
-        return view("report.delivery", compact(
+        return view("carrier.index", compact(
             'select',
             'entityItems',
             "resColumns",
@@ -284,6 +243,6 @@ class ReportDeliveryController extends Controller
             'orderBy',
             'selectColumn'
         ));
+        return view('transport.carrier');
     }
-
 }

@@ -4,8 +4,10 @@ use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactAmoController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\DebtorController;
 use App\Http\Controllers\Goods\IncomingController;
 use App\Http\Controllers\Goods\OutgoingController;
 use App\Http\Controllers\ManagerController;
@@ -13,7 +15,6 @@ use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Amo\AmoOrderController;
-use App\Http\Controllers\DebtorController;
 use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
@@ -263,6 +264,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         'option' => OptionController::class,
     ]);
 });
+Route::get('/carrier/mypage', [CarrierController::class, 'index'])->name('carrier.index');
 
 
 require __DIR__ . '/auth.php';

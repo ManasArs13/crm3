@@ -37,16 +37,16 @@ class OrderController extends Controller
         $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(50);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(50);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(50);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
 

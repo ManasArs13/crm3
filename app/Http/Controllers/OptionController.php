@@ -11,7 +11,7 @@ class OptionController extends Controller
 {
     public function index()
     {
-        $entityItems = Option::query()->paginate(50);
+        $entityItems = Option::query()->paginate(100);
         $columns = Schema::getColumnListing('options');
 
         $needMenuForItem = true;
@@ -143,14 +143,14 @@ class OptionController extends Controller
         /* Фильтры для отображения */
 
         if (isset($request->orderBy)  && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->getColumn())->paginate(50);
+            $entityItems = $entityItems->orderBy($request->getColumn())->paginate(100);
             $orderBy = 'desc';
         } elseif (isset($request->orderBy)  && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->getColumn())->paginate(50);
+            $entityItems = $entityItems->orderByDesc($request->getColumn())->paginate(100);
             $orderBy = 'asc';
         } else {
             $orderBy = 'desc';
-            $entityItems =   $entityItems->paginate(50);
+            $entityItems =   $entityItems->paginate(100);
         }
 
         /* Фильтры для меню */
