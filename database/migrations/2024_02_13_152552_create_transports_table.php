@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("description")->nullable();
             $table->timestamps();
             $table->char('ms_id', 36)->nullable();
-            $table->char('phone', 36)->nullable();
+            $table->char('phone')->nullable();
         });
     }
 

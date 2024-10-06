@@ -522,6 +522,30 @@ class OptionSeeder extends Seeder
                 'code' => 'ms_price_lists_url',
                 'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/pricelist/',
                 'module' => 'ms'
+            ],
+            [
+                'name' => 'Длина забора',
+                'code' => 'ms_price_lists_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/pricelist/',
+                'module' => 'ms'
+            ],
+            [
+                'name' => '% от продажи блока',
+                'code' => 'percent_of_the_block_sale',
+                'value' => '0.003',
+                'module' => 'main'
+            ],
+            [
+                'name' => '% от продажи бетона',
+                'code' => 'percent_of_the_concrete_sale',
+                'value' => '0.001',
+                'module' => 'main'
+            ],
+            [
+                'name' => 'Организации:Адрес с которого берем организации',
+                'code' => 'ms_organization_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/organization/',
+                'module' => 'ms'
             ]
         ]);
     }
