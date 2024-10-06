@@ -455,6 +455,7 @@ $(document).ready(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
+            tags: 'true',
             maximumInputLength: 12,
             dropdownParent: $(this).parent(),
             ajax: {
@@ -665,6 +666,7 @@ $(document).ready(function(){
         var $this = $(this);
         $this.select2({
             width: '220px',
+            tags: 'true',
             dropdownParent: $(this).parent(),
             ajax: {
                 url: '/api/contacts/get/name',
