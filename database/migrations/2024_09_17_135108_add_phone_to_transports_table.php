@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transports', function (Blueprint $table) {
-            $table->char('phone')->nullable();
             $table->unsignedBigInteger('type_id')->nullable();
             $table->foreign('type_id')->references('id')->on('transport_types')->onDelete('set null');
         });
@@ -23,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('transports', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };
