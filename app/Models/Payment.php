@@ -69,7 +69,7 @@ class Payment extends Model
 
         switch ($value) {
             case 'supply':
-                $type = 'приход';
+                $type = 'поставка';
                 break;
 
             case 'demand':
