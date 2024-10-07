@@ -153,7 +153,13 @@ class ShiftController extends Controller
             ]);
         }
 
-        $shift->update(['end_shift' => $shift->end_shift ? null : Carbon::now()]);
+
+        if($request->has('description')){
+            $shift->update(['description' => $request->description]);
+            return json_encode(['success'=>true]);
+        }else{
+            $shift->update(['end_shift' => $shift->end_shift ? null : Carbon::now()]);
+        }
 
         return redirect()->back();
     }

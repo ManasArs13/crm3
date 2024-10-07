@@ -24,6 +24,7 @@ class ShiftChangeRequest extends FormRequest
         return [
             'id' => 'required|integer|max:1000000000',
             'date' => 'required|date',
+            'description' => 'nullable|string|max:5000',
         ];
     }
 }

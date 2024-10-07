@@ -438,6 +438,36 @@
 
         $('.shifts-hide').on('click', function() {
             $(this).closest('.hide-get').addClass('hidden');
+            $(".comment-success, .comment-sending").addClass("hidden");
+        });
+
+        let timeout = null;
+        $(".shift_description").on("input", function(){
+            let description = $(this).val();
+            let transport_id = $(this).attr("data-transport_id");
+            clearTimeout(timeout);
+
+            timeout = setTimeout(function() {
+                $.ajax({
+                    url: '/api/Shift/change?id=' + transport_id + '&date={{ $date }}',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        description: description
+                    },
+                    beforeSend: function (){
+                        $(".comment-sending").removeClass("hidden");
+                        $(".comment-success").addClass("hidden");
+                    },
+                    success: function() {
+                        $(".comment-success").removeClass("hidden");
+                        $(".comment-sending").addClass("hidden");
+                    },
+                    error: function(error) {
+                        console.log('Ошибка при отправке данных.', error);
+                    }
+                });
+            }, 1000);
         });
     </script>
 </x-app-layout>

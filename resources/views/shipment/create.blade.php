@@ -315,7 +315,7 @@
                                                 sum: pos.price * pos.quantity,
                                                 price: pos.price,
                                             }));
-                                            this.allSum = 
+                                            this.allSum =
                                             this.rows.map(item => item.price).reduce((prev,
                                                     curr) => prev + curr, 0)
                                             *

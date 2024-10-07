@@ -14,6 +14,7 @@ use App\Models\Product;
 use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Transport;
+use App\Models\Shifts;
 use App\Services\EntityMs\ShipmentMsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -738,6 +739,16 @@ class ShipmentController extends Controller
         $shipment->weight = $weight;
 
         $shipment->save();
+
+        if(isset($shipment->transport_id) &&
+            Shifts::Where('transport_id', $shipment->transport_id)
+                ->whereDate('start_shift', Carbon::now())
+                ->doesntExist()) {
+            Shifts::Create([
+                'transport_id' => $shipment->transport_id,
+                'start_shift' => Carbon::now()
+            ]);
+        }
 
         // Add shipment position
         if ($request->products) {

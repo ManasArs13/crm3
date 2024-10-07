@@ -32,12 +32,14 @@
                             </div>
                             <div class="mt-2 flex space-x-4">
                                 <div class="mt-1 w-full">
-                                    <label for="shift_description" class="block text-sm font-medium leading-6 text-gray-900 text-left">Комментарий</label>
+                                    <label class="block text-sm font-medium leading-6 text-gray-900 text-left">Комментарий</label>
                                     <div class="mt-2 w-full">
-                                        <textarea readonly class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" rows="5">{{ $shift->description ?? '' }}</textarea>
+                                        <textarea class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shift_description" data-transport_id="{{ $shift->transport_id }}" rows="5">{{ $shift->description ?? '' }}</textarea>
                                     </div>
                                 </div>
                             </div>
+                            <div class="text-right text-xs text-green-600 hidden comment-success">комментарии изменены</div>
+                            <div class="text-right text-xs text-yellow-600 hidden comment-sending">Отправка данных...</div>
                         </div>
                     </div>
                     <div id="shift_success" class="text-green-500 text-sm hidden">Изменения сохранены</div>
