@@ -45,10 +45,6 @@ class ProductService implements EntityInterface
                 $categoryId = $category->id;
             }
 
-            if (Arr::exists($row, 'quantity')) {
-                $entity->balance= $row['quantity'];
-            }
-
             $entity->category_id = $categoryId;
             if (Arr::exists($row, 'weight')) {
                 $entity->weight_kg = $row["weight"];
