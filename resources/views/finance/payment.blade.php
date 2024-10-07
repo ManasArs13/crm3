@@ -32,52 +32,82 @@
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex gap-2">
                         <div class="">
-                            @if (request()->routeIs('report.cash.index'))
-                                <a href="{{ route('report.cash.index', ['date' => $date]) }}"
+                            @if (request()->routeIs('finance.index'))
+                                <a href="{{ route('finance.index', ['date' => $date]) }}"
                                     class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
                             @else
-                                <a href="{{ route('report.cash.index', ['date' => $date]) }}"
+                                <a href="{{ route('finance.index', ['date' => $date]) }}"
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
                             @endif
                         </div>
                         <div>
-                            @if (request()->routeIs('report.cash.cashin'))
-                                <a href="{{ route('report.cash.cashin', ['date' => $date]) }}"
+                            @if (request()->routeIs('finance.cashin'))
+                                <a href="{{ route('finance.cashin', ['date' => $date]) }}"
                                     class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ПРИХОД</a>
                             @else
-                                <a href="{{ route('report.cash.cashin', ['date' => $date]) }}"
+                                <a href="{{ route('finance.cashin', ['date' => $date]) }}"
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ПРИХОД</a>
                             @endif
                         </div>
                         <div>
-                            @if (request()->routeIs('report.cash.cashout'))
-                                <a href="{{ route('report.cash.cashout', ['date' => $date]) }}"
+                            @if (request()->routeIs('finance.cashout'))
+                                <a href="{{ route('finance.cashout', ['date' => $date]) }}"
                                     class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">РАСХОД</a>
                             @else
-                                <a href="{{ route('report.cash.cashout', ['date' => $date]) }}"
+                                <a href="{{ route('finance.cashout', ['date' => $date]) }}"
                                     class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">РАСХОД</a>
+                            @endif
+                        </div>
+                        <div>
+                            @if (request()->routeIs('finance.paymentout'))
+                                <a href="{{ route('finance.paymentout', ['date' => $date]) }}"
+                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ИСХОДЯЩИЙ</a>
+                            @else
+                                <a href="{{ route('finance.paymentout', ['date' => $date]) }}"
+                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ИСХОДЯЩИЙ</a>
+                            @endif
+                        </div>
+                        <div>
+                            @if (request()->routeIs('finance.paymentin'))
+                                <a href="{{ route('finance.paymentin', ['date' => $date]) }}"
+                                    class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВХОДЯЩИЙ</a>
+                            @else
+                                <a href="{{ route('finance.paymentin', ['date' => $date]) }}"
+                                    class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВХОДЯЩИЙ</a>
                             @endif
                         </div>
                     </div>
 
                     <div class="flex px-3 text-center font-bold">
-                        @if (request()->routeIs('report.cash.index'))
-                            <a href="{{ route('report.cash.index', ['date' => $datePrev]) }}"
+                        @if (request()->routeIs('finance.index'))
+                            <a href="{{ route('finance.index', ['date' => $datePrev]) }}"
                                 class="mx-2 text-lg">&#9668;</a>
                             <p class="mx-2 text-lg">{{ $dateRus }}</p>
-                            <a href="{{ route('report.cash.index', ['date' => $dateNext]) }}"
+                            <a href="{{ route('finance.index', ['date' => $dateNext]) }}"
                                 class="mx-2 text-lg">&#9658;</a>
-                        @elseif(request()->routeIs('report.cash.cashin'))
-                            <a href="{{ route('report.cash.cashin', ['date' => $datePrev]) }}"
+                        @elseif(request()->routeIs('finance.cashin'))
+                            <a href="{{ route('finance.cashin', ['date' => $datePrev]) }}"
                                 class="mx-2 text-lg">&#9668;</a>
                             <p class="mx-2 text-lg">{{ $dateRus }}</p>
-                            <a href="{{ route('report.cash.cashin', ['date' => $dateNext]) }}"
+                            <a href="{{ route('finance.cashin', ['date' => $dateNext]) }}"
                                 class="mx-2 text-lg">&#9658;</a>
-                        @else
-                            <a href="{{ route('report.cash.cashout', ['date' => $datePrev]) }}"
+                        @elseif(request()->routeIs('finance.cashout'))
+                            <a href="{{ route('finance.cashout', ['date' => $datePrev]) }}"
                                 class="mx-2 text-lg">&#9668;</a>
                             <p class="mx-2 text-lg">{{ $dateRus }}</p>
-                            <a href="{{ route('report.cash.cashout', ['date' => $dateNext]) }}"
+                            <a href="{{ route('finance.cashout', ['date' => $dateNext]) }}"
+                                class="mx-2 text-lg">&#9658;</a>
+                        @elseif(request()->routeIs('finance.paymentout'))
+                            <a href="{{ route('finance.paymentout', ['date' => $datePrev]) }}"
+                                class="mx-2 text-lg">&#9668;</a>
+                            <p class="mx-2 text-lg">{{ $dateRus }}</p>
+                            <a href="{{ route('finance.paymentout', ['date' => $dateNext]) }}"
+                                class="mx-2 text-lg">&#9658;</a>
+                        @elseif(request()->routeIs('finance.paymentin'))
+                            <a href="{{ route('finance.paymentin', ['date' => $datePrev]) }}"
+                                class="mx-2 text-lg">&#9668;</a>
+                            <p class="mx-2 text-lg">{{ $dateRus }}</p>
+                            <a href="{{ route('finance.paymentin', ['date' => $dateNext]) }}"
                                 class="mx-2 text-lg">&#9658;</a>
                         @endif
                     </div>
@@ -163,17 +193,12 @@
                             </tr>
                         @endforeach
 
+                        <tr class="border-b-2">
+                            <td class="break-all max-w-96 truncate px-2 py-3" colspan="9">
+                                {{ $entityItems->appends(request()->query())->links() }}
 
-                        @if (!request()->routeIs('report.cash.index'))
-                            <tr class="border-b-2">
-                                <td class="break-all max-w-96 truncate px-2 py-3" colspan="9">
-                                    {{ $entityItems->appends(request()->query())->links() }}
-
-                                </td>
-                            </tr>
-                        @endif
-
-
+                            </td>
+                        </tr>
 
                     </tbody>
                 </table>

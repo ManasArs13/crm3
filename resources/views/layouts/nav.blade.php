@@ -24,6 +24,10 @@
                             Заказы
                         </x-nav-link>
 
+                        <x-nav-link :href="route('finance.index')" :active="request()->routeIs('finance.*')">
+                            Платежи
+                        </x-nav-link>
+
                         <x-nav-link :href="route('shipment.index')" :active="request()->routeIs('shipment.*') && !request()->routeIs('shipment.index2')">
                             {{ __('title.shipments') }}
                         </x-nav-link>
@@ -297,12 +301,6 @@
                                     @role('admin|manager|dispatcher|carrier|audit')
                                         <x-dropdown-link :href="route('report.transporter')">
                                             Сводка - Перевозчик
-                                        </x-dropdown-link>
-                                    @endrole
-
-                                    @role('admin|manager|dispatcher|carrier|audit')
-                                        <x-dropdown-link :href="route('report.cash.index')">
-                                            Сводка - Платежи
                                         </x-dropdown-link>
                                     @endrole
 
@@ -675,12 +673,6 @@
                                     <a href="{{ route('report.transporter') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
                                         - Перевозчик</a>
-                                @endrole
-
-                                @role('admin|manager|dispatcher|carrier|audit')
-                                    <a href="{{ route('report.cash.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
-                                        - Платежи</a>
                                 @endrole
 
                                 @role('admin|manager|audit')

@@ -5,13 +5,13 @@ namespace App\Console;
 use App\Console\Commands\CkeckContactsMs;
 use App\Console\Commands\ImportFromAmo\ImportFromAmo;
 use App\Console\Commands\ImportFromMS\ImportAll;
-use App\Console\Commands\ImportFromMS\ImportCash;
 use App\Console\Commands\ImportFromMS\ImportCategories;
 use App\Console\Commands\ImportFromMS\ImportColor;
 use App\Console\Commands\ImportFromMS\ImportContactMs;
 use App\Console\Commands\ImportFromMS\ImportDelivery;
 use App\Console\Commands\ImportFromMS\ImportDemand;
 use App\Console\Commands\ImportFromMS\ImportEmployee;
+use App\Console\Commands\ImportFromMS\ImportPayment;
 use App\Console\Commands\ImportFromMS\ImportOrderMs;
 use App\Console\Commands\ImportFromMS\ImportProcessing;
 use App\Console\Commands\ImportFromMS\ImportProducts;
@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
         ImportTransport::class,
         CkeckContactsMs::class,
         ImportEmployee::class,
-        ImportCash::class,
+        ImportPayment::class,
     ];
 
     protected function schedule(Schedule $schedule): void
@@ -75,7 +75,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('processing:late-and-no-shipment-for-the-order')->daily();
         $schedule->command('processing:deviation')->daily();
         $schedule->command('ms:import-price-list')->daily();
-        $schedule->command('ms:import-cash')->hourly();
+        $schedule->command('ms:import-payment')->hourly();
     }
 
     protected function commands(): void
