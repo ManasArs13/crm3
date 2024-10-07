@@ -342,6 +342,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mt-2 flex space-x-4">
+                                        <div class="mt-1 w-full">
+                                            <label for="shift_description" class="block text-sm font-medium leading-6 text-gray-900 text-left">Комментарий</label>
+                                            <div class="mt-2 w-full">
+                                                <textarea id="shift_description" name="description" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" name="" id="" cols="30" rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="shift_success" class="text-green-500 text-sm hidden">Изменения сохранены</div>
@@ -392,7 +400,12 @@
                     url: '{{ route('api.get.shift_create') }}',
                     method: 'post',
                     dataType: 'json',
-                    data: {transports: $("#transport").val(), time: $("#start_shift").val(), day: day},
+                    data: {
+                        transports: $("#transport").val(),
+                        time: $("#start_shift").val(),
+                        description: $("#shift_description").val(),
+                        day: day
+                    },
                     beforeSend: function(){
                         $("#shift_success").hide();
                     },

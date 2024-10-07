@@ -45,8 +45,9 @@ class ShiftController extends Controller
         ];
 
         $select = [
-            "id",
-            "name",
+            'id',
+            'name',
+            'description',
             'start_shift',
             'end_shift',
         ];
@@ -114,7 +115,7 @@ class ShiftController extends Controller
 
         Shifts::WhereIn('transport_id', $request->transports)
             ->whereDate('start_shift', $request->day)
-            ->update(['start_shift'=>$time]);
+            ->update(['start_shift'=>$time, 'description' => $request->description]);
 
         $existingTransports = Shifts::WhereIn('transport_id', $request->transports)
             ->whereDate('start_shift', $request->day)
@@ -127,6 +128,7 @@ class ShiftController extends Controller
         foreach($missingIds as $transport_id){
             $dataCreate[] = [
                 'transport_id' => $transport_id,
+                'description' => $request->description,
                 'start_shift' => $time,
                 'end_shift' => null
             ];
