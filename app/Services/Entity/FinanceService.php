@@ -3,15 +3,14 @@
 namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
-use App\Models\Cashin;
-use App\Models\Cashout;
 use App\Models\Contact;
 use App\Models\Option;
+use App\Models\Payment;
 use App\Services\Api\MoySkladService;
 use DateTime;
 use GuzzleHttp\Client;
 
-class CashService implements EntityInterface
+class FinanceService implements EntityInterface
 {
     private Option $options;
     private MoySkladService $service;
@@ -32,18 +31,14 @@ class CashService implements EntityInterface
 
     public function import(array $rows)
     {
-        if ($rows['meta']['type'] == 'cashout') {
-            $entity = Cashout::query();
-        } else if ($rows['meta']['type'] == 'cashin') {
-            $entity = Cashin::query();
-        }
-
         foreach ($rows['rows'] as $row) {
-            $entity = $entity->firstOrNew(['ms_id' => $row["id"]]);
+            $entity = Payment::query()->firstOrNew(['ms_id' => $row["id"]]);
 
             if ($entity->ms_id === null) {
                 $entity->ms_id = $row['id'];
             }
+
+            $entity->type = $rows['meta']['type'];
 
             $contact_db = null;
 

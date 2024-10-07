@@ -15,6 +15,7 @@ use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Amo\AmoOrderController;
+use App\Http\Controllers\Finance\PaymentController;
 use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
@@ -79,9 +80,9 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
         Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
         Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
 
-        Route::get('/report/cash', [CashController::class, 'index'])->name('cash.index');
-        Route::get('/report/cash/in', [CashController::class, 'cashin'])->name('cash.cashin');
-        Route::get('/report/cash/out', [CashController::class, 'cashout'])->name('cash.cashout');
+        // Route::get('/report/cash', [CashController::class, 'index'])->name('cash.index');
+        // Route::get('/report/cash/in', [CashController::class, 'cashin'])->name('cash.cashin');
+        // Route::get('/report/cash/out', [CashController::class, 'cashout'])->name('cash.cashout');
     });
 });
 
@@ -90,6 +91,13 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|dispatcher|audit'])->
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard-2', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-2');
     Route::get('/dashboard-3', [DashboardController::class, 'buildingsMaterialDashboard'])->name('dashboard-3');
+
+    // Финансы
+    Route::get('/finance', [PaymentController::class, 'index'])->name('finance.index');
+    Route::get('/finance/cashin', [PaymentController::class, 'cashin'])->name('finance.cashin');
+    Route::get('/finance/cashout', [PaymentController::class, 'cashout'])->name('finance.cashout');
+    Route::get('/finance/paymentin', [PaymentController::class, 'paymentin'])->name('finance.paymentin');
+    Route::get('/finance/paymentout', [PaymentController::class, 'paymentout'])->name('finance.paymentout');
 
     // API for dashboard
     Route::get('get-orders/{date}', [DashboardController::class, 'getOrders'])->name('get.orders');
@@ -177,12 +185,6 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
         'amo-order' => AmoOrderController::class,
     ]);
 
-    // Amo
-    //Route::r('/orders_amo', [AmoOrderController::class, 'index'])->name('amo.order.index');
-
-
-
-
     //Доп
     Route::get('shipments/createFromOrder/{orderId}', [ShipmentController::class, 'createFromOrder'])->name('shipment.createFromOrder');
     Route::post('shipments/createWithOrder', [ShipmentController::class, 'createWithOrder'])->name('shipment.createWithOrder');
@@ -196,15 +198,6 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
     Route::get('/shiping_prices/filter', [ShipingPriceController::class, 'filter'])->name('shiping_price.filter');
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
-//    Route::get('/shipmentproducts/filter', [ShipmentProductController::class, 'filter'])->name('shipmentproduct.filter');
-
-
-
-    // Приёмки
-    // Route::resource('supplies', SupplyController::class)->only([
-    //     'index', 'show'
-    // ]);
-
 
     // Приход
     Route::resource('incomings', IncomingController::class)->only([
@@ -270,6 +263,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         'option' => OptionController::class,
     ]);
 });
+
 Route::get('/carrier/mypage', [CarrierController::class, 'index'])->name('carrier.index');
 
 
