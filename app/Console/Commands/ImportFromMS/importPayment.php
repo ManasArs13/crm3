@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands\ImportFromMS;
 
-use App\Models\Option;
 use App\Services\Api\MoySkladService;
-use App\Services\Entity\PaymentService;
+use App\Services\Entity\FinanceService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -34,7 +33,7 @@ class ImportPayment extends Command
     /**
      * Выполнить консольную команду.
      */
-    public function handle(MoySkladService $service, PaymentService $PaymentService)
+    public function handle(MoySkladService $service, FinanceService $FinanceService)
     {
         $urlCashout = 'https://api.moysklad.ru/api/remap/1.2/entity/cashout';
         $urlCashin = 'https://api.moysklad.ru/api/remap/1.2/entity/cashin';
@@ -44,15 +43,15 @@ class ImportPayment extends Command
         $all = $this->option('all');
 
         if ($all) {
-            $service->createUrl($urlCashout, $PaymentService, []);
-            $service->createUrl($urlCashin, $PaymentService, []);
-            $service->createUrl($urlPaymentout, $PaymentService, []);
-            $service->createUrl($urlPaymentin, $PaymentService, []);
+            $service->createUrl($urlCashout, $FinanceService, []);
+            $service->createUrl($urlCashin, $FinanceService, []);
+            $service->createUrl($urlPaymentout, $FinanceService, []);
+            $service->createUrl($urlPaymentin, $FinanceService, []);
         } else {
-            $service->createUrl($urlCashout, $PaymentService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
-            $service->createUrl($urlCashin, $PaymentService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
-            $service->createUrl($urlPaymentout, $PaymentService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
-            $service->createUrl($urlPaymentin, $PaymentService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
+            $service->createUrl($urlCashout, $FinanceService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
+            $service->createUrl($urlCashin, $FinanceService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
+            $service->createUrl($urlPaymentout, $FinanceService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
+            $service->createUrl($urlPaymentin, $FinanceService, ["updated" => '>=' . Carbon::now()->subDays(3)]);
         }  
 
     }
