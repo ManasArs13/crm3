@@ -249,7 +249,7 @@
                                         class="relative m-0 flex basis-3/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
                                         placeholder="сумма" />
 
-                                    <button @click="removeRow(row)" type="button" 
+                                    <button @click="removeRow(row)" type="button"
                                         class="w-6 justify-center text-lg rounded-full mx-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             fill="currentColor" data-slot="icon"
@@ -449,7 +449,6 @@
         .select2-selection__arrow {
             top: 4px !important;
         }
-
     </style>
 
     <script>
@@ -464,19 +463,24 @@
                     url: '/api/contacts/get',
                     data: function(params) {
                         var queryParameters = {
-                            term: params.term
+                            term: params.term,
+                            page: params.page || 1
                         }
                         return queryParameters;
                     },
-                    processResults: function(data) {
+                    processResults: function(data, params) {
+                        params.current_page = params.current_page || 1;
                         return {
-                            results: $.map(data, function(item) {
+                            results: $.map(data.data, function(item) {
                                 return {
                                     text: item.name,
                                     id: item.id,
                                     attr1: item.phone,
                                 }
-                            })
+                            }),
+                            pagination: {
+                                more: (params.current_page * data.per_page) < data.total
+                            }
                         };
                     }
                 },
@@ -490,19 +494,24 @@
                     url: '/api/contacts/get',
                     data: function(params) {
                         var queryParameters = {
-                            term: params.term
+                            term: params.term,
+                            page: params.page || 1
                         }
                         return queryParameters;
                     },
-                    processResults: function(data) {
+                    processResults: function(data, params) {
+                        params.current_page = params.current_page || 1;
                         return {
-                            results: $.map(data, function(item) {
+                            results: $.map(data.data, function(item) {
                                 return {
                                     text: item.phone,
                                     id: item.id,
                                     attr1: item.name,
                                 }
-                            })
+                            }),
+                            pagination: {
+                                more: (params.current_page * data.per_page) < data.total
+                            }
                         };
                     }
                 },

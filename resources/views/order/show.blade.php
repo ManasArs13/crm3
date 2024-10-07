@@ -645,19 +645,24 @@
                     url: '/api/contacts/get',
                     data: function(params) {
                         var queryParameters = {
-                            term: params.term
+                            term: params.term,
+                            page: params.page || 1
                         }
                         return queryParameters;
                     },
-                    processResults: function(data) {
+                    processResults: function(data, params) {
+                        params.current_page = params.current_page || 1;
                         return {
-                            results: $.map(data, function(item) {
+                            results: $.map(data.data, function(item) {
                                 return {
                                     text: item.name,
                                     id: item.id,
                                     attr1: item.phone,
                                 }
-                            })
+                            }),
+                            pagination: {
+                                more: (params.current_page * data.per_page) < data.total
+                            }
                         };
                     }
                 },
@@ -671,19 +676,24 @@
                     url: '/api/contacts/get',
                     data: function(params) {
                         var queryParameters = {
-                            term: params.term
+                            term: params.term,
+                            page: params.page || 1
                         }
                         return queryParameters;
                     },
-                    processResults: function(data) {
+                    processResults: function(data, params) {
+                        params.current_page = params.current_page || 1;
                         return {
-                            results: $.map(data, function(item) {
+                            results: $.map(data.data, function(item) {
                                 return {
                                     text: item.phone,
                                     id: item.id,
                                     attr1: item.name,
                                 }
-                            })
+                            }),
+                            pagination: {
+                                more: (params.current_page * data.per_page) < data.total
+                            }
                         };
                     }
                 },
