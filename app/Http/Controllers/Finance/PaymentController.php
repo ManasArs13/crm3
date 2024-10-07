@@ -90,6 +90,8 @@ class PaymentController extends Controller
         $maxSum = (int) Payment::query()->max('sum');
         $maxSumCheck = '';
 
+        $checkedType = 'index';
+
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 if ($key == 'created_at') {
@@ -120,10 +122,25 @@ class PaymentController extends Controller
                     if ($value['max']) {
                         $maxSumCheck = $value['max'];
                     }
+                } else if ($key == 'type') {
+                    switch ($value) {
+                        case 'cashin':
+                            $checkedType = 'cashin';
+                            break;
+                        case 'cashout':
+                            $checkedType = 'cashout';
+                            break;
+                        case 'paymentin':
+                            $checkedType = 'paymentin';
+                            break;
+                        case 'paymentout':
+                            $checkedType = 'paymentout';
+                            break;
+                    }
                 }
             }
         }
-      
+
         $filters = [
             [
                 'type' => 'date',
@@ -161,8 +178,22 @@ class PaymentController extends Controller
                 'max' => substr($maxSum, 0, 10),
                 'maxChecked' => $maxSumCheck
             ],
+            [
+                'type' => 'select',
+                'name' => 'type',
+                'name_rus' => 'Материал',
+                'values' => [
+                    ['value' => 'index', 'name' => 'все'],
+                    ['value' => 'cashin', 'name' => 'приходный ордер'],
+                    ['value' => 'cashout', 'name' => 'расходный ордер'],
+                    ['value' => 'paymentin', 'name' => 'входящий платеж'],
+                    ['value' => 'paymentout', 'name' => 'исходящий платёж']
+
+                ],
+                'checked_value' => $checkedType,
+            ],
         ];
-     //   dd($filters);
+
         return view("finance.payment", compact(
             'entityItems',
             'entityName',
