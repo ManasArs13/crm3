@@ -24,6 +24,7 @@ class ShiftCreateRequest extends FormRequest
         return [
             'transports' => ['nullable', 'array'],
             'transports.*' => ['integer'],
+            'description' => 'nullable|string|max:5000',
             'day' => 'required|date',
             'time' => 'required|date_format:H:i',
         ];

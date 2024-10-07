@@ -277,7 +277,7 @@ class ShipmentController extends Controller
         ];
 
 
-        return view("carrier.index", compact(
+        return view("shipment.index", compact(
             'select',
             'entityItems',
             "resColumns",

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shifts extends Model
 {
     use HasFactory;
-    protected $fillable = ['transport_id', 'start_shift', 'end_shift'];
+    protected $fillable = ['transport_id', 'description', 'start_shift', 'end_shift'];
     public $timestamps = false;
 
     public function transport()
