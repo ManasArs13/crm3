@@ -2,64 +2,32 @@
 
 namespace App\Http\Controllers\Finance;
 
+use App\Filters\PaymentFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
-use DateTime;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $entityName = 'Платежи (Все)';
+        $entityName = 'Платежи';
+        $urlFilter = 'finance.index';
 
-        $month_list = array(
-            '01'  => 'январь',
-            '02'  => 'февраль',
-            '03'  => 'март',
-            '04'  => 'апрель',
-            '05'  => 'май',
-            '06'  => 'июнь',
-            '07'  => 'июль',
-            '08'  => 'август',
-            '09'  => 'сентябрь',
-            '10' => 'октябрь',
-            '11' => 'ноябрь',
-            '12' => 'декабрь'
-        );
-
-        if (isset($request->date)) {
-            $date = $request->date;
-        } else {
-            $date = date('m');
-        }
-
-        $dateY = date('Y');
-        $dateRus = $month_list[$date];
-
-        $date1 = new DateTime(date('Y') . $date . '01');
-        $date2 = new DateTime(date('Y') . $date . '01');
-
-        $datePrev = $date1->modify('-1 month')->format('m');
-        $dateNext = $date2->modify('+1 month')->format('m');
-
-        $entityItems = Payment::query()
-            ->with('contact')
-            ->whereMonth('created_at', $date)
-            ->whereYear('created_at', $dateY);
+        $builder = Payment::query()->with('contact');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column);
+            $entityItems = (new PaymentFilter($builder, $request))->apply()->orderBy($request->column);
 
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column);
+            $entityItems = (new PaymentFilter($builder, $request))->apply()->orderByDesc($request->column);
 
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
-            $entityItems = $entityItems->orderByDesc('id');
+            $entityItems = (new PaymentFilter($builder, $request))->apply()->orderByDesc('id');
 
             $orderBy = 'desc';
             $selectColumn = null;
@@ -67,7 +35,8 @@ class PaymentController extends Controller
 
         $entityItems = $entityItems->paginate(50);
 
-        $selected = [
+        // Columns
+        $all_columns = [
             "name",
             "type",
             "operation",
@@ -79,90 +48,9 @@ class PaymentController extends Controller
             'updated_at',
         ];
 
-        foreach ($selected as $column) {
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
-
-            if (in_array($column, $selected)) {
-                $resColumns[$column] = trans("column." . $column);
-            }
-        }
-        return view("finance.payment", compact(
-            'entityItems',
-            'entityName',
-            "resColumns",
-            "resColumnsAll",
-            'dateNext',
-            'datePrev',
-            'date',
-            'dateRus',
-            'orderBy',
-            'selectColumn'
-        ));
-    }
-
-    public function cashin(Request $request)
-    {
-        $entityName = 'Платежи (Приход)';
-
-        $month_list = array(
-            '01'  => 'январь',
-            '02'  => 'февраль',
-            '03'  => 'март',
-            '04'  => 'апрель',
-            '05'  => 'май',
-            '06'  => 'июнь',
-            '07'  => 'июль',
-            '08'  => 'август',
-            '09'  => 'сентябрь',
-            '10' => 'октябрь',
-            '11' => 'ноябрь',
-            '12' => 'декабрь'
-        );
-
-        if (isset($request->date)) {
-            $date = $request->date;
-        } else {
-            $date = date('m');
-        }
-
-        $dateY = date('Y');
-        $dateRus = $month_list[$date];
-
-        $date1 = new DateTime(date('Y') . $date . '01');
-        $date2 = new DateTime(date('Y') . $date . '01');
-
-        $datePrev = $date1->modify('-1 month')->format('m');
-        $dateNext = $date2->modify('+1 month')->format('m');
-
-        $entityItems = Payment::query()
-            ->where('type', 'cashin')
-            ->with('contact')
-            ->whereMonth('created_at', $date)
-            ->whereYear('created_at', $dateY);
-
-        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column);
-
-            $orderBy = 'desc';
-            $selectColumn = $request->column;
-        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column);
-
-            $orderBy = 'asc';
-            $selectColumn = $request->column;
-        } else {
-            $entityItems = $entityItems->orderByDesc('id');
-
-            $orderBy = 'desc';
-            $selectColumn = null;
-        }
-
-        $entityItems = $entityItems->paginate(50);
-
-        $selected = [
+        $select = [
             "name",
             "type",
-            "operation",
             "moment",
             'description',
             "contact_id",
@@ -171,300 +59,119 @@ class PaymentController extends Controller
             'updated_at',
         ];
 
-        foreach ($selected as $column) {
+        $selected = $request->columns ?? $select;
+
+        foreach ($all_columns as $column) {
             $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
 
             if (in_array($column, $selected)) {
                 $resColumns[$column] = trans("column." . $column);
             }
         }
-        return view("finance.payment", compact(
-            'entityItems',
-            'entityName',
-            "resColumns",
-            "resColumnsAll",
-            'dateNext',
-            'datePrev',
-            'date',
-            'dateRus',
-            'orderBy',
-            'selectColumn'
-        ));
-    }
 
-    public function cashout(Request $request)
-    {
-        $entityName = 'Платежи (Расход)';
+        // Filters
+        $minCreated = Payment::query()->min('created_at');
+        $minCreatedCheck = '';
+        $maxCreated = Payment::query()->max('created_at');
+        $maxCreatedCheck = '';
 
-        $month_list = array(
-            '01'  => 'январь',
-            '02'  => 'февраль',
-            '03'  => 'март',
-            '04'  => 'апрель',
-            '05'  => 'май',
-            '06'  => 'июнь',
-            '07'  => 'июль',
-            '08'  => 'август',
-            '09'  => 'сентябрь',
-            '10' => 'октябрь',
-            '11' => 'ноябрь',
-            '12' => 'декабрь'
-        );
+        $minUpdated = Payment::query()->min('updated_at');
+        $minUpdatedCheck = '';
+        $maxUpdated = Payment::query()->max('updated_at');
+        $maxUpdatedCheck = '';
 
-        if (isset($request->date)) {
-            $date = $request->date;
-        } else {
-            $date = date('m');
+        $minMoment = Payment::query()->min('moment');
+        $minMomentCkeck = '';
+        $maxMoment = Payment::query()->max('moment');
+        $maxMomentCheck = '';
+
+        $minSum = (int) Payment::query()->min('sum');
+        $minSumCkeck = '';
+        $maxSum = (int) Payment::query()->max('sum');
+        $maxSumCheck = '';
+
+        if (isset($request->filters)) {
+            foreach ($request->filters as $key => $value) {
+                if ($key == 'created_at') {
+                    if ($value['max']) {
+                        $maxCreatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minCreatedCheck = $value['min'];
+                    }
+                } else if ($key == 'updated_at') {
+                    if ($value['max']) {
+                        $maxUpdatedCheck = $value['max'];
+                    }
+                    if ($value['min']) {
+                        $minUpdatedCheck = $value['min'];
+                    }
+                } else if ($key == 'moment') {
+                    if ($value['min']) {
+                        $minMomentCkeck = $value['min'];
+                    }
+                    if ($value['max']) {
+                        $maxMomentCheck = $value['max'];
+                    }
+                } else if ($key == 'sum') {
+                    if ($value['min']) {
+                        $minSumCkeck = $value['min'];
+                    }
+                    if ($value['max']) {
+                        $maxSumCheck = $value['max'];
+                    }
+                }
+            }
         }
-
-        $dateY = date('Y');
-        $dateRus = $month_list[$date];
-
-        $date1 = new DateTime(date('Y') . $date . '01');
-        $date2 = new DateTime(date('Y') . $date . '01');
-
-        $datePrev = $date1->modify('-1 month')->format('m');
-        $dateNext = $date2->modify('+1 month')->format('m');
-
-        $entityItems = Payment::query()
-            ->where('type', 'cashout')
-            ->with('contact')
-            ->whereMonth('created_at', $date)
-            ->whereYear('created_at', $dateY);
-
-        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column);
-
-            $orderBy = 'desc';
-            $selectColumn = $request->column;
-        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column);
-
-            $orderBy = 'asc';
-            $selectColumn = $request->column;
-        } else {
-            $entityItems = $entityItems->orderByDesc('id');
-
-            $orderBy = 'desc';
-            $selectColumn = null;
-        }
-
-        $entityItems = $entityItems->paginate(50);
-
-        $selected = [
-            "name",
-            "type",
-            "operation",
-            "moment",
-            'description',
-            "contact_id",
-            "sum",
-            "created_at",
-            'updated_at',
+      
+        $filters = [
+            [
+                'type' => 'date',
+                'name' =>  'created_at',
+                'name_rus' => 'Дата создания',
+                'min' => substr($minCreated, 0, 10),
+                'minChecked' => $minCreatedCheck,
+                'max' => substr($maxCreated, 0, 10),
+                'maxChecked' => $maxCreatedCheck
+            ],
+            [
+                'type' => 'date',
+                'name' =>  'updated_at',
+                'name_rus' => 'Дата обновления',
+                'min' => substr($minUpdated, 0, 10),
+                'minChecked' => $minUpdatedCheck,
+                'max' => substr($maxUpdated, 0, 10),
+                'maxChecked' => $maxUpdatedCheck
+            ],
+            [
+                'type' => 'date',
+                'name' =>  'moment',
+                'name_rus' => 'Фактическая дата',
+                'min' => substr($minMoment, 0, 10),
+                'minChecked' => $minMomentCkeck,
+                'max' => substr($maxMoment, 0, 10),
+                'maxChecked' => $maxMomentCheck
+            ],
+            [
+                'type' => 'number',
+                'name' =>  'sum',
+                'name_rus' => 'Сумма',
+                'min' => substr($minSum, 0, 10),
+                'minChecked' => $minSumCkeck,
+                'max' => substr($maxSum, 0, 10),
+                'maxChecked' => $maxSumCheck
+            ],
         ];
-
-        foreach ($selected as $column) {
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
-
-            if (in_array($column, $selected)) {
-                $resColumns[$column] = trans("column." . $column);
-            }
-        }
+     //   dd($filters);
         return view("finance.payment", compact(
             'entityItems',
             'entityName',
+            'urlFilter',
             "resColumns",
             "resColumnsAll",
-            'dateNext',
-            'datePrev',
-            'date',
-            'dateRus',
             'orderBy',
-            'selectColumn'
-        ));
-    }
-
-    public function paymentin(Request $request)
-    {
-        $entityName = 'Платежи (Входящие)';
-
-        $month_list = array(
-            '01'  => 'январь',
-            '02'  => 'февраль',
-            '03'  => 'март',
-            '04'  => 'апрель',
-            '05'  => 'май',
-            '06'  => 'июнь',
-            '07'  => 'июль',
-            '08'  => 'август',
-            '09'  => 'сентябрь',
-            '10' => 'октябрь',
-            '11' => 'ноябрь',
-            '12' => 'декабрь'
-        );
-
-        if (isset($request->date)) {
-            $date = $request->date;
-        } else {
-            $date = date('m');
-        }
-
-        $dateY = date('Y');
-        $dateRus = $month_list[$date];
-
-        $date1 = new DateTime(date('Y') . $date . '01');
-        $date2 = new DateTime(date('Y') . $date . '01');
-
-        $datePrev = $date1->modify('-1 month')->format('m');
-        $dateNext = $date2->modify('+1 month')->format('m');
-
-        $entityItems = Payment::query()
-            ->where('type', 'paymentin')
-            ->with('contact')
-            ->whereMonth('created_at', $date)
-            ->whereYear('created_at', $dateY);
-
-        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column);
-
-            $orderBy = 'desc';
-            $selectColumn = $request->column;
-        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column);
-
-            $orderBy = 'asc';
-            $selectColumn = $request->column;
-        } else {
-            $entityItems = $entityItems->orderByDesc('id');
-
-            $orderBy = 'desc';
-            $selectColumn = null;
-        }
-
-        $entityItems = $entityItems->paginate(50);
-
-        $selected = [
-            "name",
-            "type",
-            "operation",
-            "moment",
-            'description',
-            "contact_id",
-            "sum",
-            "created_at",
-            'updated_at',
-        ];
-
-        foreach ($selected as $column) {
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
-
-            if (in_array($column, $selected)) {
-                $resColumns[$column] = trans("column." . $column);
-            }
-        }
-        return view("finance.payment", compact(
-            'entityItems',
-            'entityName',
-            "resColumns",
-            "resColumnsAll",
-            'dateNext',
-            'datePrev',
-            'date',
-            'dateRus',
-            'orderBy',
-            'selectColumn'
-        ));
-    }
-
-    public function paymentout(Request $request)
-    {
-        $entityName = 'Платежи (Входящие)';
-
-        $month_list = array(
-            '01'  => 'январь',
-            '02'  => 'февраль',
-            '03'  => 'март',
-            '04'  => 'апрель',
-            '05'  => 'май',
-            '06'  => 'июнь',
-            '07'  => 'июль',
-            '08'  => 'август',
-            '09'  => 'сентябрь',
-            '10' => 'октябрь',
-            '11' => 'ноябрь',
-            '12' => 'декабрь'
-        );
-
-        if (isset($request->date)) {
-            $date = $request->date;
-        } else {
-            $date = date('m');
-        }
-
-        $dateY = date('Y');
-        $dateRus = $month_list[$date];
-
-        $date1 = new DateTime(date('Y') . $date . '01');
-        $date2 = new DateTime(date('Y') . $date . '01');
-
-        $datePrev = $date1->modify('-1 month')->format('m');
-        $dateNext = $date2->modify('+1 month')->format('m');
-
-        $entityItems = Payment::query()
-            ->where('type', 'paymentout')
-            ->with('contact')
-            ->whereMonth('created_at', $date)
-            ->whereYear('created_at', $dateY);
-
-        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = $entityItems->orderBy($request->column);
-
-            $orderBy = 'desc';
-            $selectColumn = $request->column;
-        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = $entityItems->orderByDesc($request->column);
-
-            $orderBy = 'asc';
-            $selectColumn = $request->column;
-        } else {
-            $entityItems = $entityItems->orderByDesc('id');
-
-            $orderBy = 'desc';
-            $selectColumn = null;
-        }
-
-        $entityItems = $entityItems->paginate(50);
-
-        $selected = [
-            "name",
-            "type",
-            "operation",
-            "moment",
-            'description',
-            "contact_id",
-            "sum",
-            "created_at",
-            'updated_at',
-        ];
-
-        foreach ($selected as $column) {
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
-
-            if (in_array($column, $selected)) {
-                $resColumns[$column] = trans("column." . $column);
-            }
-        }
-        return view("finance.payment", compact(
-            'entityItems',
-            'entityName',
-            "resColumns",
-            "resColumnsAll",
-            'dateNext',
-            'datePrev',
-            'date',
-            'dateRus',
-            'orderBy',
-            'selectColumn'
+            'selectColumn',
+            'filters',
         ));
     }
 }
