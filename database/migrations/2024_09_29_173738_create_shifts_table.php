@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transport_id')->nullable();
+            $table->text('description')->nullable();
             $table->timestamp('start_shift')->nullable();
             $table->timestamp('end_shift')->nullable();
             $table->foreign('transport_id')->references('id')->on('transports')->onDelete('set null');

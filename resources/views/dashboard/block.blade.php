@@ -148,7 +148,6 @@
                         <th class="border-r-2 py-2 px-1">Статус</th>
                         <th class="py-2 px-1">База</th>
                         <th class="py-2 px-1">P</th>
-                        <th class="py-2 px-1"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -184,61 +183,21 @@
                                 }
                             @endphp
                             <tr class="border-b-2 {{ $statusColor }} group">
-                                <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transportNumber }}</td>
+                                <td class="px-1 m-2 border-r-2 py-3 text-center ships-group-show text-blue-700 cursor-pointer" data-ships="{{ $shipment->first()->id ?? '' }}">{{ $transportNumber }}</td>
                                 <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
                                     {{ $transportName ? $transportName : 'не указано' }}
                                 </td>
                                 <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
                                 <td class="px-1 m-2 border-x-2 text-center py-3 truncate">{{ $statusInfo }}</td>
                                 <td class="px-1 m-2 text-center py-3">{{ $firstToReturn->format('H:i') }}</td>
-                                <td class="border-l-2 text-nowrap px-2 py-2">
-                                    <button class="buttonForOpen text-normal font-bold text-blue-700 d-count"
-                                            data-id="shipment_{{ $key }}">{{ $shipment->count() }}</button>
-                                </td>
-                                <td class="border-l-2 px-2 m-2 pt-2">
-                                    @if(isset($shipment[0]['transport_id']))
-                                        <form action="{{ route('api.get.shift_change', ['id' => $shipment[0]['transport_id'], 'date' => $date]) }}" method="post">
-                                            <button>
-                                                <svg class="group-hover:fill-red-500 fill-red-200" width="10" height="17" viewBox="0 0 343 470" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M341.277 291.181C339.277 285.381 331.977 279.081 325.777 277.781C320.177 276.581 315.877 277.181 310.777 279.781C308.877 280.781 281.877 306.981 250.777 338.081L194.277 394.681L193.777 204.981L193.277 15.1812L190.777 10.6812C189.377 8.28117 186.277 4.88117 183.977 3.18117C179.977 0.481168 178.877 0.181168 171.777 0.181168C164.677 0.181168 163.577 0.481168 159.577 3.18117C157.277 4.88117 154.177 8.28117 152.777 10.6812L150.277 15.1812L149.777 204.981L149.277 394.681L92.2765 337.581C53.7765 299.081 33.9765 279.881 31.2765 278.581C20.8765 273.681 8.17651 278.281 2.67651 288.881C0.37651 293.481 0.17651 302.281 2.27651 307.481C4.47651 312.581 156.577 464.881 162.377 467.681C167.677 470.281 175.877 470.281 181.177 467.681C183.977 466.381 210.677 440.281 262.877 387.981C330.077 320.581 340.577 309.581 341.577 306.081C343.077 300.681 342.977 296.181 341.277 291.181Z"/>
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
+                                <td class="border-l-2 text-nowrap px-2 py-2">{{ $shipment->count() }}</td>
                             </tr>
-                            @foreach ($shipment as $num => $transport)
-                                @php
-                                    $createdAt = Carbon\Carbon::parse($transport->created_at);
-                                    $timeToCome = Carbon\Carbon::parse($transport->time_to_come);
-                                    $timeToOut = Carbon\Carbon::parse($transport->time_to_out);
-                                    $timeToReturn = Carbon\Carbon::parse($transport->time_to_return);
-                                @endphp
-                                <tr style="display: none;"
-                                    class="border-y-2 position_column_shipment_{{ $key }}">
-                                    <td class="px-1 m-2 border-r-2 py-3 text-center">
-                                        {{ $createdAt->format('H:i') }}
-                                    </td>
-                                    <td class="px-1 m-2 border-x-2 py-3 text-center">
-                                        {{ $timeToCome->format('H:i') }}
-                                    </td>
-                                    <td class="px-1 m-2 border-x-2 text-center py-3">
-                                        {{ $timeToOut->format('H:i') }}
-                                    </td>
-                                    <td class="px-1 m-2 text-center py-3" colspan="2">
-                                        {{ $timeToReturn->format('H:i') }}
-                                    </td>
-                                    <td class="border-l-2 text-nowrap px-2 py-2">
-                                        {{ $num + 1 }}
-                                    </td>
-                                </tr>
-                            @endforeach
                         @endif
                     @endforeach
                     @foreach($shifts as $shift)
                         @if(!isset($shift->end_shift))
                             <tr class="border-b-2 group">
-                                <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $shift->transport->car_number }}</td>
+                                <td class="px-1 m-2 border-r-2 py-3 text-center shifts-group-show text-blue-700 cursor-pointer" data-shifts="{{ $shift->id ?? '' }}">{{ $shift->transport->car_number }}</td>
                                 <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
                                     {{ $shift->transport->name ? $shift->transport->name : 'не указано' }}
                                 </td>
@@ -246,17 +205,6 @@
                                 <td class="px-1 m-2 border-x-2 text-center py-3 truncate">-</td>
                                 <td class="px-1 m-2 text-center py-3"></td>
                                 <td class="border-l-2 text-nowrap px-2 py-2"></td>
-                                <td class="border-l-2 px-2 m-2 pt-2">
-                                    <form action="{{ route('api.get.shift_change', ['id' => $shift->transport_id, 'date' => $date]) }}" method="post">
-                                        <form action="{{ route('api.get.shift_change', ['id' => $shift->transport_id, 'date' => $date]) }}" method="post">
-                                            <button>
-                                                <svg class="group-hover:fill-red-500 fill-red-200" width="10" height="17" viewBox="0 0 343 470" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M341.277 291.181C339.277 285.381 331.977 279.081 325.777 277.781C320.177 276.581 315.877 277.181 310.777 279.781C308.877 280.781 281.877 306.981 250.777 338.081L194.277 394.681L193.777 204.981L193.277 15.1812L190.777 10.6812C189.377 8.28117 186.277 4.88117 183.977 3.18117C179.977 0.481168 178.877 0.181168 171.777 0.181168C164.677 0.181168 163.577 0.481168 159.577 3.18117C157.277 4.88117 154.177 8.28117 152.777 10.6812L150.277 15.1812L149.777 204.981L149.277 394.681L92.2765 337.581C53.7765 299.081 33.9765 279.881 31.2765 278.581C20.8765 273.681 8.17651 278.281 2.67651 288.881C0.37651 293.481 0.17651 302.281 2.27651 307.481C4.47651 312.581 156.577 464.881 162.377 467.681C167.677 470.281 175.877 470.281 181.177 467.681C183.977 466.381 210.677 440.281 262.877 387.981C330.077 320.581 340.577 309.581 341.577 306.081C343.077 300.681 342.977 296.181 341.277 291.181Z"/>
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    </form>
-                                </td>
 
                             </tr>
                         @endif
@@ -278,7 +226,6 @@
                         <th class="border-r-2 py-2 px-1">Статус</th>
                         <th class="py-2 px-1">База</th>
                         <th class="py-2 px-1">P</th>
-                        <th class="py-2 px-1"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -288,6 +235,7 @@
                             isset($shipment->first()->transport->shifts[0]['end_shift']) &&
                             isset($shipment->first()->transport->shifts[0]['start_shift'])
                             )
+
                             @php
                                 $transportName = optional($shipment->first()->transport)->name ?? '-';
                                 $transportNumber = optional($shipment->first()->transport)->car_number ?? '-';
@@ -314,62 +262,22 @@
                                 }
                             @endphp
                             <tr class="border-b-2 {{ $statusColor }} group">
-                                <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transportNumber }}</td>
+                                <td class="px-1 m-2 border-r-2 py-3 text-center ships-group-show text-blue-700 cursor-pointer" data-ships="{{ $shipment->first()->id ?? '' }}">{{ $transportNumber }}</td>
                                 <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
                                     {{ $transportName ? $transportName : 'не указано' }}
                                 </td>
                                 <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
                                 <td class="px-1 m-2 border-x-2 text-center py-3 truncate">{{ $statusInfo }}</td>
                                 <td class="px-1 m-2 text-center py-3">{{ $firstToReturn->format('H:i') }}</td>
-                                <td class="border-l-2 text-nowrap px-2 py-2">
-                                    <button class="buttonForOpen text-normal font-bold text-blue-700 d-count"
-                                            data-id="shipment_{{ $key }}">{{ $shipment->count() }}</button>
-                                </td>
-                                <td class="border-l-2 px-2 m-2 pt-2">
-                                    @if(isset($shipment[0]['transport_id']))
-                                        <form action="{{ route('api.get.shift_change', ['id' => $shipment[0]['transport_id'], 'date' => $date]) }}" method="post">
-                                            <button>
-                                                <svg class="group-hover:fill-blue-600 fill-blue-300" width="10" height="17" viewBox="0 0 343 470" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M2.17355 178.631C4.17355 184.431 11.4735 190.731 17.6736 192.031C23.2736 193.231 27.5735 192.631 32.6736 190.031C34.5735 189.031 61.5735 162.831 92.6736 131.731L149.174 75.1312L149.674 264.831L150.174 454.631L152.674 459.131C154.074 461.531 157.174 464.931 159.474 466.631C163.474 469.331 164.574 469.631 171.674 469.631C178.774 469.631 179.874 469.331 183.874 466.631C186.174 464.931 189.274 461.531 190.674 459.131L193.174 454.631L193.674 264.831L194.174 75.1312L251.174 132.231C289.674 170.731 309.474 189.931 312.174 191.231C322.574 196.131 335.274 191.531 340.774 180.931C343.074 176.331 343.274 167.531 341.174 162.331C338.974 157.231 186.874 4.93115 181.074 2.13116C175.774 -0.468842 167.574 -0.468842 162.274 2.13116C159.474 3.43115 132.774 29.5312 80.5735 81.8311C13.3736 149.231 2.87357 160.231 1.87357 163.731C0.373566 169.131 0.473541 173.631 2.17355 178.631Z" />
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
+                                <td class="border-l-2 text-nowrap px-2 py-2">{{ $shipment->count() }}</td>
 
                             </tr>
-                            @foreach ($shipment as $num => $transport)
-                                @php
-                                    $createdAt = Carbon\Carbon::parse($transport->created_at);
-                                    $timeToCome = Carbon\Carbon::parse($transport->time_to_come);
-                                    $timeToOut = Carbon\Carbon::parse($transport->time_to_out);
-                                    $timeToReturn = Carbon\Carbon::parse($transport->time_to_return);
-                                @endphp
-                                <tr style="display: none;"
-                                    class="border-y-2 position_column_shipment_{{ $key }}">
-                                    <td class="px-1 m-2 border-r-2 py-3 text-center">
-                                        {{ $createdAt->format('H:i') }}
-                                    </td>
-                                    <td class="px-1 m-2 border-x-2 py-3 text-center">
-                                        {{ $timeToCome->format('H:i') }}
-                                    </td>
-                                    <td class="px-1 m-2 border-x-2 text-center py-3">
-                                        {{ $timeToOut->format('H:i') }}
-                                    </td>
-                                    <td class="px-1 m-2 text-center py-3" colspan="2">
-                                        {{ $timeToReturn->format('H:i') }}
-                                    </td>
-                                    <td class="border-l-2 text-nowrap px-2 py-2">
-                                        {{ $num + 1 }}
-                                    </td>
-                                </tr>
-                            @endforeach
                         @endif
                     @endforeach
                     @foreach($shifts as $shift)
                         @if(isset($shift->end_shift))
                             <tr class="border-b-2 group">
-                                <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $shift->transport->car_number }}</td>
+                                <td class="px-1 m-2 border-r-2 py-3 text-center shifts-group-show text-blue-700 cursor-pointer" data-shifts="{{ $shift->id ?? '' }}">{{ $shift->transport->car_number }}</td>
                                 <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
                                     {{ $shift->transport->name ? $shift->transport->name : 'не указано' }}
                                 </td>
@@ -377,15 +285,6 @@
                                 <td class="px-1 m-2 border-x-2 text-center py-3 truncate">-</td>
                                 <td class="px-1 m-2 text-center py-3"></td>
                                 <td class="border-l-2 text-nowrap px-2 py-2"></td>
-                                <td class="border-l-2 px-2 m-2 pt-2">
-                                    <form action="{{ route('api.get.shift_change', ['id' => $shift->transport_id, 'date' => $date]) }}" method="post">
-                                        <button>
-                                            <svg class="group-hover:fill-blue-600 fill-blue-300" width="10" height="17" viewBox="0 0 343 470" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M2.17355 178.631C4.17355 184.431 11.4735 190.731 17.6736 192.031C23.2736 193.231 27.5735 192.631 32.6736 190.031C34.5735 189.031 61.5735 162.831 92.6736 131.731L149.174 75.1312L149.674 264.831L150.174 454.631L152.674 459.131C154.074 461.531 157.174 464.931 159.474 466.631C163.474 469.331 164.574 469.631 171.674 469.631C178.774 469.631 179.874 469.331 183.874 466.631C186.174 464.931 189.274 461.531 190.674 459.131L193.174 454.631L193.674 264.831L194.174 75.1312L251.174 132.231C289.674 170.731 309.474 189.931 312.174 191.231C322.574 196.131 335.274 191.531 340.774 180.931C343.074 176.331 343.274 167.531 341.174 162.331C338.974 157.231 186.874 4.93115 181.074 2.13116C175.774 -0.468842 167.574 -0.468842 162.274 2.13116C159.474 3.43115 132.774 29.5312 80.5735 81.8311C13.3736 149.231 2.87357 160.231 1.87357 163.731C0.373566 169.131 0.473541 173.631 2.17355 178.631Z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </td>
 
                             </tr>
                         @endif
@@ -398,6 +297,11 @@
             </div>
         </div>
     </div>
+
+
+    <x-shipment-modal :shipments="$shipments" title="Отгрузки" :date="$date" />
+
+    <x-shift-modal :shifts="$shifts" title="Отгрузки" :date="$date" />
 
     <div class="relative z-10 hidden" id="shift_modal">
 
@@ -473,6 +377,7 @@
             modal.classList.toggle('hidden');
         }
 
+
         $(document).ready(function() {
             $("#shift_form").on("submit", function(){
                 $.ajax({
@@ -496,6 +401,20 @@
             $(".select2").select2({
                 tags: true,
                 closeOnSelect: false
+            });
+
+            $(".ships-group-show").on("click", function(){
+                var id = $(this).attr('data-ships');
+                $("#shipments_group_" + id).removeClass("hidden");
+            });
+
+            $(".shifts-group-show").on("click", function(){
+                var id = $(this).attr('data-shifts');
+                $("#shifts_group_" + id).removeClass("hidden");
+            });
+
+            $('.shifts-hide').on('click', function() {
+                $(this).closest('.hide-get').addClass('hidden');
             });
 
         });
