@@ -230,19 +230,19 @@
 
                                     </select>
 
-                                    <input x-model.number="row.count" min="0"
+                                    <input x-model.number="row.count" min="0" step="any"
                                         x-on:input.change="changeCount(row.product, row.id)" type="number"
                                         x-bind:name="`products[${row.id}][count]`" required
                                         class="relative m-0 flex basis-1/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
                                         placeholder="количество" />
 
-                                    <input x-model.number="row.price" type="number"
+                                    <input x-model.number="row.price" type="number" step="any"
                                         x-bind:name="`products[${row.id}][price]`" required
                                         x-on:input.change="changePrice(row.product, row.id)"
                                         class="relative m-0 flex basis-2/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
                                         placeholder="цена" />
 
-                                    <input x-model.number="row.sum" type="number"
+                                    <input x-model.number="row.sum" type="number" step="any"
                                         x-bind:name="`products[${row.id}][sum]`" required
                                         x-on:input.change="changeSum(row.product, row.id)"
                                         class="relative m-0 flex basis-3/12 border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary text-right"
