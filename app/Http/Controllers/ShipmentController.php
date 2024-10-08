@@ -925,16 +925,13 @@ class ShipmentController extends Controller
     }
 
     public function total($entityItems){
-        $shipment_totals = Shipment::query()
-            ->selectRaw('
-                SUM(shipments.suma) as total_sum,
-                SUM(shipments.delivery_price) as total_delivery_price,
-                SUM(shipments.delivery_price_norm) as total_delivery_price_norm,
-                SUM(shipments.delivery_fee) as total_delivery_sum,
-                SUM(shipments.paid_sum) as total_payed_sum
-            ')
-            ->whereIn('id', $entityItems->pluck('id'))
-            ->first();
+        $shipment_totals = [
+            'total_sum' => $entityItems->sum('suma'),
+            'total_delivery_price' => $entityItems->sum('delivery_price'),
+            'total_delivery_price_norm' => $entityItems->sum('delivery_price_norm'),
+            'total_delivery_sum' => $entityItems->sum('delivery_fee'),
+            'total_payed_sum' => $entityItems->sum('paid_sum'),
+        ];
 
         $shipment_position_total = ShipmentProduct::query()
             ->selectRaw('SUM(shipment_products.quantity) as positions_count')
@@ -943,7 +940,7 @@ class ShipmentController extends Controller
 
 
         return array_merge(
-            $shipment_totals->toArray() +
+            $shipment_totals +
             $shipment_position_total->toArray()
         );
     }
