@@ -255,7 +255,7 @@ class ContactMsService implements EntityInterface
 
     public function checkRows()
     {
-        $url = 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty';
+        $url = 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/';
 
 
         $contacts = Contact::chunkById(100, function ($contacts) use ($url) {
