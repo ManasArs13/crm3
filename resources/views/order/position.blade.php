@@ -278,18 +278,12 @@
                     </thead>
                     <tbody>
                         @php
-                            $totalQuantity = 0;
-                            $totalShipped = 0;
-                            $totalReserve = 0;
-                            $totalPrice = 0;
+                            $totalQuantity = $totals['total_quantity'];
+                            $totalShipped = $totals['total_shipped'];
+                            $totalReserve = $totals['total_reserve'];
+                            $totalPrice = $totals['total_price'];
                         @endphp
                         @foreach ($entityItems as $entityItem)
-                            @php
-                                $totalQuantity += $entityItem->quantity;
-                                $totalShipped += $entityItem->shipped;
-                                $totalReserve += $entityItem->reserve;
-                                $totalPrice += $entityItem->price;
-                            @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-64 xl:max-w-64 truncate px-6 py-2"

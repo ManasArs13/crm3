@@ -260,33 +260,14 @@
                                 </thead>
                                 <tbody>
                                 @php
-                                    $totalSum = 0;
-                                    $totalCount = 0;
-                                    $totalDeliveryPrice = 0;
-                                    $totalDeliveryPriceNorm = 0;
-                                    $totalDeliverySum = 0;
-                                    $totalPaidSum = 0;
+                                    $totalSum = $totals['total_sum'];
+                                    $totalCount = $totals['positions_count'];
+                                    $totalDeliveryPrice = $totals['total_delivery_price'];
+                                    $totalDeliveryPriceNorm = $totals['total_delivery_price_norm'];
+                                    $totalDeliverySum = $totals['total_delivery_sum'];
+                                    $totalPaidSum = $totals['total_payed_sum'];
                                 @endphp
                                 @foreach ($entityItems as $entityItem)
-                                    @php
-                                        $totalSum += $entityItem->suma;
-                                    @endphp
-
-                                    @php
-                                        $totalDeliveryPrice += $entityItem->delivery_price;
-                                    @endphp
-
-                                    @php
-                                        $totalDeliveryPriceNorm += $entityItem->delivery_price_norm;
-                                    @endphp
-
-                                    @php
-                                        $totalDeliverySum += $entityItem->delivery_fee;
-                                    @endphp
-
-                                    @php
-                                        $totalPaidSum += $entityItem->paid_sum;
-                                    @endphp
 
                                     <tr class="border-b-2 py-2">
                                         @foreach ($resColumns as $column => $title)
@@ -374,7 +355,6 @@
                                                                 $position->product->building_material !== 'не выбрано'
                                                             ) {
                                                                 $total_quantity += $position->quantity;
-                                                                $totalCount += $position->quantity;
                                                             }
                                                         @endphp
                                                     @endforeach
@@ -424,7 +404,7 @@
                                             </td>
                                         @elseif($column == 'products_count')
                                             <td class="overflow-auto px-6 py-4">
-                                                {{ $totalCount }}
+                                                {{ number_format((int) $totalCount, 0, ',', ' ') }}
                                             </td>
                                         @elseif($column == 'delivery_price')
                                             <td class="overflow-auto px-6 py-4 text-right">

@@ -278,12 +278,9 @@
                     </thead>
                     <tbody>
                         @php
-                            $totalPrice = 0;
+                            $totalPrice = $totals['total_price'];
                         @endphp
                         @foreach ($entityItems as $entityItem)
-                            @php
-                                $totalPrice += $entityItem->price;
-                            @endphp
                             <tr class="border-b-2">
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-60 xl:max-w-44 truncate px-6 py-2"

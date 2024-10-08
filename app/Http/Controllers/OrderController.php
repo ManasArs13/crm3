@@ -37,18 +37,23 @@ class OrderController extends Controller
         $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id');
             $selectColumn = null;
         }
+
+        // итоги в таблице
+        $totals = $this->total($entityItems);
+
+        $entityItems = $entityItems->paginate(100);
 
         // Columns
         $all_columns = [
@@ -273,7 +278,8 @@ class OrderController extends Controller
             'queryMaterial',
             'queryPlan',
             'select',
-            'entityName'
+            'entityName',
+            'totals'
         ));
     }
 
@@ -604,6 +610,41 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('order.index')->with('success', 'Заказ удалён');
+    }
+
+    public function total($entityItems){
+        $order_totals = Order::query()
+            ->selectRaw('
+                SUM(orders.sum) as total_sum,
+                SUM(orders.delivery_price) as total_delivery_price,
+                SUM(orders.payed_sum) as total_payed_sum,
+                SUM(orders.shipped_sum) as total_shipped_sum,
+                SUM(orders.reserved_sum) as total_reserved_sum,
+                SUM(orders.debt) as total_debt
+            ')
+            ->whereIn('id', $entityItems->pluck('id'))
+            ->first();
+
+        $order_position_total = OrderPosition::query()
+            ->selectRaw('SUM(order_positions.quantity) as positions_count')
+            ->whereIn('order_id', $entityItems->pluck('id'))
+            ->first();
+
+        $shipped_position_total = ShipmentProduct::query()
+            ->selectRaw('SUM(shipment_products.quantity) as shipped_count')
+            ->whereIn('shipment_id', function($query) use ($entityItems) {
+                $query->select('id')
+                    ->from('shipments')
+                    ->whereIn('order_id', $entityItems->pluck('id'));
+            })
+            ->first();
+
+
+        return array_merge(
+            $order_totals->toArray() +
+            $order_position_total->toArray() +
+            $shipped_position_total->toArray()
+        );
     }
 
     public function get_api(Request $request)

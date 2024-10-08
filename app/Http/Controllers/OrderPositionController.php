@@ -25,18 +25,23 @@ class OrderPositionController extends Controller
         $builder = OrderPosition::query()->with('product');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
+            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderBy($request->column);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
+            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderByDesc($request->column);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderBy('id')->paginate(100);
+            $entityItems = (new OrderPositionFilter($builder, $request))->apply()->orderBy('id');
             $selectColumn = null;
         }
+
+        // итоги в таблицах
+        $totals = $this->total($entityItems);
+
+        $entityItems= $entityItems->paginate(100);
 
         // Колонки
         $all_columns = Schema::getColumnListing('order_positions');
@@ -133,7 +138,8 @@ class OrderPositionController extends Controller
             'urlFilter',
             'filters',
             'orderBy',
-            'selectColumn'
+            'selectColumn',
+            'totals'
         ));
     }
 
@@ -289,5 +295,14 @@ class OrderPositionController extends Controller
             'urlReset',
             'orderBy'
         ));
+    }
+
+    public function total($entityItems){
+        return [
+            'total_quantity' => $entityItems->sum('quantity'),
+            'total_shipped' => $entityItems->sum('shipped'),
+            'total_reserve' => $entityItems->sum('reserve'),
+            'total_price' => $entityItems->sum('price'),
+        ];
     }
 }

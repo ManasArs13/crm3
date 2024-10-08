@@ -26,18 +26,23 @@ class SupplyPositionController extends Controller
         $builder = SupplyPosition::query()->with('supply', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new SupplyPositionFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
+            $entityItems = (new SupplyPositionFilter($builder, $request))->apply()->orderBy($request->column);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new SupplyPositionFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
+            $entityItems = (new SupplyPositionFilter($builder, $request))->apply()->orderByDesc($request->column);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new SupplyPositionFilter($builder, $request))->apply()->orderBy('id')->paginate(100);
+            $entityItems = (new SupplyPositionFilter($builder, $request))->apply()->orderBy('id');
             $selectColumn = null;
         }
+
+        // итоги в таблицах
+        $totals = $this->total($entityItems);
+
+        $entityItems = $entityItems->paginate(100);
 
         // Колонки
         $all_columns = [
@@ -132,7 +137,8 @@ class SupplyPositionController extends Controller
             'filters',
             'urlFilter',
             'orderBy',
-            'selectColumn'
+            'selectColumn',
+            'totals'
         ));
     }
 
@@ -158,6 +164,12 @@ class SupplyPositionController extends Controller
         $entityItem->delete();
 
         return redirect()->back();
+    }
+
+    public function total($entityItems){
+        return [
+            'total_price' => $entityItems->sum('price'),
+        ];
     }
 
 }

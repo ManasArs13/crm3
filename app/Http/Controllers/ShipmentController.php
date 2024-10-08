@@ -35,18 +35,23 @@ class ShipmentController extends Controller
         $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id');
             $selectColumn = null;
         }
+
+        // Итоги в таблице
+        $totals = $this->total($entityItems);
+
+        $entityItems = $entityItems->paginate(100);
 
         // Columns
         $all_columns = [
@@ -291,7 +296,8 @@ class ShipmentController extends Controller
             'urlFilter',
             "filters",
             'orderBy',
-            'selectColumn'
+            'selectColumn',
+            'totals'
         ));
     }
 
@@ -916,6 +922,30 @@ class ShipmentController extends Controller
         $entityItem->delete();
 
         return redirect()->route('shipment.index');
+    }
+
+    public function total($entityItems){
+        $shipment_totals = Shipment::query()
+            ->selectRaw('
+                SUM(shipments.suma) as total_sum,
+                SUM(shipments.delivery_price) as total_delivery_price,
+                SUM(shipments.delivery_price_norm) as total_delivery_price_norm,
+                SUM(shipments.delivery_fee) as total_delivery_sum,
+                SUM(shipments.paid_sum) as total_payed_sum
+            ')
+            ->whereIn('id', $entityItems->pluck('id'))
+            ->first();
+
+        $shipment_position_total = ShipmentProduct::query()
+            ->selectRaw('SUM(shipment_products.quantity) as positions_count')
+            ->whereIn('shipment_id', $entityItems->pluck('id'))
+            ->first();
+
+
+        return array_merge(
+            $shipment_totals->toArray() +
+            $shipment_position_total->toArray()
+        );
     }
 
     public function print(Request $request)
