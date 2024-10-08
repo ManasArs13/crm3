@@ -128,6 +128,24 @@
                                     </th>
                                 @endif
 
+                                @if (isset($orderBy) && $orderBy == 'desc')
+                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
+                                        <a class="text-black"
+                                           href="{{ route($urlFilter, ['column' => 'enough_days', 'orderBy' => 'desc']) }}">{{ __('column.enough_days') }}</a>
+                                        @if (isset($column) && $column == 'enough_days' && $orderBy == 'desc')
+                                            &#9650;
+                                        @endif
+                                    </th>
+                                @else
+                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
+                                        <a class="text-black"
+                                           href="{{ route($urlFilter, ['column' => 'enough_days', 'orderBy' => 'asc']) }}">{{ __('column.enough_days') }}</a>
+                                        @if (isset($column) && $column == 'enough_days' && $orderBy == 'asc')
+                                            &#9660;
+                                        @endif
+                                    </th>
+                                @endif
+
                                 <th scope="col" class="px-1 md:px-6 py-2 md:py-4  text-right">
                                     {{ __('column.need') }}
                                 </th>
@@ -198,6 +216,10 @@
                                             @endif
                                         </th>
 
+                                        <th class="text-right px-2 font-normal">
+                                            {{ $product->consumption_year }}
+                                        </th>
+
                                         <th class="font-normal text-right px-2">
                                             @if ($product->residual && $product->residual_norm)
                                                 @if ($product->residual - $product->residual_norm < 0)
@@ -252,6 +274,7 @@
                                             @endif
                                         </td>
                                         <td class="font-normal text-right px-2">{{ $pre_product->residual }}</td>
+                                        <td class="text-center">{{ $pre_product->residual && $pre_product->consumption_year ? round($pre_product->residual / $pre_product->consumption_year * 365) : '-' }}</td>
                                         <td class="px-1 py-2 text-right">
                                             @if ($pre_product->residual && $pre_product->residual_norm)
                                                 @if ($pre_product->residual - $pre_product->residual_norm < 0)

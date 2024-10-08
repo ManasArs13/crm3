@@ -66,9 +66,7 @@ class ResidualController extends Controller
 
     public function blocksCategories(FilterRequest $request)
     {
-        $entity = 'residuals';
         $urlFilter = 'residual.blocksCategories';
-        $column = $request->column;
 
         $products = Category::query()
             ->where('building_material', Category::BLOCK)->orwhere('building_material', Category::CONCRETE)->get();
