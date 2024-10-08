@@ -122,6 +122,10 @@ class ContactMsService implements EntityInterface
                     $entity->updated_at = $row['updated'];
                 }
 
+                if (isset($row["deleted"])) {
+                    $entity->deleted_at = $row["deleted"];
+                }
+
                 $entity->save();
 
                 if (Arr::exists($row, 'tags')) {
@@ -226,6 +230,10 @@ class ContactMsService implements EntityInterface
 
             if (Arr::exists($row, 'updated')) {
                 $entity->updated_at = $row['updated'];
+            }
+
+            if (isset($row["deleted"])) {
+                $entity->deleted_at = $row["deleted"];
             }
         }
         $entity->save();
