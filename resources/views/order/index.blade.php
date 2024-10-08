@@ -355,40 +355,17 @@
                     </thead>
                     <tbody>
                         @php
-                            $totalSum = 0;
-                            $totalCount = 0;
-                            $totalShipped = 0;
-                            $totalDeliveryPrice = 0;
-                            $totalPayedSum = 0;
-                            $totalShippedSum = 0;
-                            $totalReservedSum = 0;
-                            $totalDebt = 0;
+                            $totalSum = $totals['total_sum'];
+                            $totalCount = $totals['positions_count'];
+                            $totalShipped = $totals['shipped_count'];
+                            $totalDeliveryPrice = $totals['total_delivery_price'];
+                            $totalPayedSum = $totals['total_payed_sum'];
+                            $totalShippedSum = $totals['total_shipped_sum'];
+                            $totalReservedSum = $totals['total_reserved_sum'];
+                            $totalDebt = $totals['total_debt'];
                         @endphp
 
                         @foreach ($entityItems as $entityItem)
-                            @php
-                                $totalSum += $entityItem->sum;
-                            @endphp
-
-                            @php
-                                $totalReservedSum += $entityItem->reserved_sum;
-                            @endphp
-
-                            @php
-                                $totalDeliveryPrice += $entityItem->delivery_price;
-                            @endphp
-
-                            @php
-                                $totalShippedSum += $entityItem->shipped_sum;
-                            @endphp
-
-                            @php
-                                $totalPayedSum += $entityItem->payed_sum;
-                            @endphp
-
-                            @php
-                                $totalDebt += $entityItem->debt;
-                            @endphp
 
 
                             @php
@@ -403,7 +380,6 @@
                                         $position->product->building_material !== 'не выбрано'
                                     ) {
                                         $total_quantity += $position->quantity;
-                                        $totalCount += $position->quantity;
                                     }
                                 @endphp
                             @endforeach
@@ -412,7 +388,6 @@
                                 @foreach ($shipment->products as $position)
                                     @php
                                         $total_shipped_count += $position->quantity;
-                                        $totalShipped += $position->quantity;
                                     @endphp
                                 @endforeach
                             @endforeach
@@ -669,15 +644,15 @@
                                     </td>
                                 @elseif($column == 'positions_count')
                                     <td class="overflow-auto px-2 py-2" style="text-align:right">
-                                        {{ $totalCount }}
+                                        {{ number_format((int) $totalCount, 0, '.', ' ') }}
                                     </td>
                                 @elseif($column == 'shipped_count')
                                     <td class="overflow-auto px-2 py-2" style="text-align:right">
-                                        {{ $totalShipped }}
+                                        {{ number_format((int) $totalShipped, 0, '.', ' ') }}
                                     </td>
                                 @elseif($column == 'residual_count')
                                     <td class="overflow-auto px-2 py-2" style="text-align:right">
-                                        {{ $totalCount - $totalShipped }}
+                                        {{ number_format((int) $totalCount - $totalShipped, 0, '.', ' ') }}
                                     </td>
                                 @elseif($column == 'delivery_price')
                                     <td class="overflow-auto px-2 py-2" style="text-align:right">
