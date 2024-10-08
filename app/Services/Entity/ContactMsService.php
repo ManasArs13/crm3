@@ -274,6 +274,11 @@ class ContactMsService implements EntityInterface
 
                     $result = json_decode($response->getBody()->getContents(), true);
 
+                    if (isset($result["archived"])) {
+                        $contact->is_archived = $result["archived"];
+                        $contact->save();
+                    }
+
                     if (isset($result["deleted"])) {
                         $contact->deleted_at = $result["deleted"];
                         $contact->save();
