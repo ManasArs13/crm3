@@ -7,15 +7,29 @@ use App\Models\Option;
 use App\Models\Contact;
 use App\Models\ContactCategory;
 use App\Models\Manager;
+use App\Services\Api\MoySkladService;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Arr;
 
 class ContactMsService implements EntityInterface
 {
-    private $options;
+    private Option $options;
+    private MoySkladService $service;
+    private string $auth;
+    private $client;
 
-    public function __construct(Option $options)
-    {
+
+    public function __construct(
+        Option $options,
+        MoySkladService $service
+    ) {
+        $login = $options::where('code', '=', 'ms_login')->first()?->value;
+        $password = $options::where('code', '=', 'ms_password')->first()?->value;
         $this->options = $options;
+        $this->service = $service;
+        $this->auth = base64_encode($login . ':' . $password);
+        $this->client = new Client();
     }
 
     public function import(array $rows)
@@ -237,6 +251,45 @@ class ContactMsService implements EntityInterface
             }
         }
         $entity->save();
+    }
+
+    public function checkRows()
+    {
+        $url = 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty';
+
+
+        $contacts = Contact::chunkById(100, function ($contacts) use ($url) {
+
+            foreach ($contacts as $contact) {
+
+                try {
+                    usleep(200);
+
+                    $response = $this->client->request('GET', $url . $contact->ms_id, [
+                        'headers' => [
+                            'Accept-Encoding' => 'gzip',
+                            'Authorization' => 'Basic ' . $this->auth
+                        ],
+                    ]);
+
+                    $result = json_decode($response->getBody()->getContents(), true);
+
+                    if (isset($result["deleted"])) {
+                        $contact->deleted_at = $result["deleted"];
+                        $contact->save();
+                    }
+                } catch (RequestException  $e) {
+
+                    if ($e->getCode() == 404) {
+
+                        $contact->delete();
+
+                        info($e->getMessage());
+                        info('Contact №' . $contact->ms_id . ' has been deleted!');
+                    }
+                }
+            }
+        });
     }
 
     public function getGuidFromUrl($url): string
