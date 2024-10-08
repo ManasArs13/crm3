@@ -90,7 +90,7 @@ class SummaryController extends Controller
 
         $cntShipmentsSite=Shipment::whereNull('deleted_at')->count();
         $cntOrdersSite=Order::whereNull('deleted_at')->count();
-        $cntContactsSite=Contact::count();
+        $cntContactsSite=Contact::whereNull('deleted_at')->whereNot('is_archived', 1)->count();
 
 
         $urlContact = Option::where('code', '=', 'ms_counterparty_url')->first()?->value;
