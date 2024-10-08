@@ -34,7 +34,10 @@ class OrderController extends Controller
         $entityName = 'Заказы';
 
         // Orders
-        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments');
+        $builder = Order::query()
+            ->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'shipment_products')
+            ->withSum('positions', 'quantity')
+            ->withSum('shipment_products', 'quantity');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column);
@@ -613,6 +616,8 @@ class OrderController extends Controller
     }
 
     public function total($entityItems){
+        $itemCursor = $entityItems->cursor();
+
         $order_totals = [
             'total_sum' => $entityItems->sum('sum'),
             'total_delivery_price' => $entityItems->sum('delivery_price'),
@@ -620,28 +625,14 @@ class OrderController extends Controller
             'total_shipped_sum' => $entityItems->sum('shipped_sum'),
             'total_reserved_sum' => $entityItems->sum('reserved_sum'),
             'total_debt' => $entityItems->sum('debt'),
+            'shipped_count' => $itemCursor->sum('shipment_products_sum_quantity'),
+            'positions_count' => $itemCursor->sum('positions_sum_quantity'),
         ];
 
-        $order_position_total = OrderPosition::query()
-            ->selectRaw('SUM(order_positions.quantity) as positions_count')
-            ->whereIn('order_id', $entityItems->pluck('id'))
-            ->first();
-
-        $shipped_position_total = ShipmentProduct::query()
-            ->selectRaw('SUM(shipment_products.quantity) as shipped_count')
-            ->whereIn('shipment_id', function($query) use ($entityItems) {
-                $query->select('id')
-                    ->from('shipments')
-                    ->whereIn('order_id', $entityItems->pluck('id'));
-            })
-            ->first();
 
 
-        return array_merge(
-            $order_totals +
-            $order_position_total->toArray() +
-            $shipped_position_total->toArray()
-        );
+
+        return $order_totals;
     }
 
     public function get_api(Request $request)
