@@ -616,7 +616,6 @@ class OrderController extends Controller
     }
 
     public function total($entityItems){
-        $itemCursor = $entityItems->cursor();
 
         $order_totals = [
             'total_sum' => $entityItems->sum('sum'),
@@ -625,12 +624,14 @@ class OrderController extends Controller
             'total_shipped_sum' => $entityItems->sum('shipped_sum'),
             'total_reserved_sum' => $entityItems->sum('reserved_sum'),
             'total_debt' => $entityItems->sum('debt'),
-            'shipped_count' => $itemCursor->sum('shipment_products_sum_quantity'),
-            'positions_count' => $itemCursor->sum('positions_sum_quantity'),
+            'shipped_count' => 0,
+            'positions_count' => 0,
         ];
 
-
-
+        foreach ($entityItems->cursor() as $order) {
+            $order_totals['positions_count'] += $order->positions_sum_quantity;
+            $order_totals['shipped_count'] += $order->shipment_products_sum_quantity;
+        }
 
         return $order_totals;
     }
