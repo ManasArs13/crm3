@@ -613,17 +613,14 @@ class OrderController extends Controller
     }
 
     public function total($entityItems){
-        $order_totals = Order::query()
-            ->selectRaw('
-                SUM(orders.sum) as total_sum,
-                SUM(orders.delivery_price) as total_delivery_price,
-                SUM(orders.payed_sum) as total_payed_sum,
-                SUM(orders.shipped_sum) as total_shipped_sum,
-                SUM(orders.reserved_sum) as total_reserved_sum,
-                SUM(orders.debt) as total_debt
-            ')
-            ->whereIn('id', $entityItems->pluck('id'))
-            ->first();
+        $order_totals = [
+            'total_sum' => $entityItems->sum('sum'),
+            'total_delivery_price' => $entityItems->sum('delivery_price'),
+            'total_payed_sum' => $entityItems->sum('payed_sum'),
+            'total_shipped_sum' => $entityItems->sum('shipped_sum'),
+            'total_reserved_sum' => $entityItems->sum('reserved_sum'),
+            'total_debt' => $entityItems->sum('debt'),
+        ];
 
         $order_position_total = OrderPosition::query()
             ->selectRaw('SUM(order_positions.quantity) as positions_count')
@@ -641,7 +638,7 @@ class OrderController extends Controller
 
 
         return array_merge(
-            $order_totals->toArray() +
+            $order_totals +
             $order_position_total->toArray() +
             $shipped_position_total->toArray()
         );
