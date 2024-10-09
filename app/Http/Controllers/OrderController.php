@@ -34,10 +34,7 @@ class OrderController extends Controller
         $entityName = 'Заказы';
 
         // Orders
-        $builder = Order::query()
-            ->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'shipment_products')
-            ->withSum('positions', 'quantity')
-            ->withSum('shipment_products', 'quantity');
+        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'shipment_products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column);
@@ -54,7 +51,7 @@ class OrderController extends Controller
         }
 
         // итоги в таблице
-        $totals = $this->total($entityItems);
+        $totals = $this->total($entityItems, $request);
 
         $entityItems = $entityItems->paginate(100);
 
@@ -615,7 +612,14 @@ class OrderController extends Controller
         return redirect()->route('order.index')->with('success', 'Заказ удалён');
     }
 
-    public function total($entityItems){
+    public function total($entityItems, $request){
+        $order_builder = Order::query()->leftJoin('order_positions', 'orders.id', '=', 'order_positions.order_id');
+        $shipment_builder = Order::query()
+            ->leftJoin('shipments', 'orders.id', '=', 'shipments.order_id')
+            ->leftJoin('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id');
+
+        $order_sum = (new OrderFilter($order_builder, $request))->apply()->sum('quantity');
+        $shipment_sum = (new OrderFilter($shipment_builder, $request))->apply()->sum('quantity');
 
         $order_totals = [
             'total_sum' => $entityItems->sum('sum'),
@@ -624,14 +628,9 @@ class OrderController extends Controller
             'total_shipped_sum' => $entityItems->sum('shipped_sum'),
             'total_reserved_sum' => $entityItems->sum('reserved_sum'),
             'total_debt' => $entityItems->sum('debt'),
-            'shipped_count' => 0,
-            'positions_count' => 0,
+            'shipped_count' => $shipment_sum,
+            'positions_count' => $order_sum,
         ];
-
-        foreach ($entityItems->cursor() as $order) {
-            $order_totals['positions_count'] += $order->positions_sum_quantity;
-            $order_totals['shipped_count'] += $order->shipment_products_sum_quantity;
-        }
 
         return $order_totals;
     }
