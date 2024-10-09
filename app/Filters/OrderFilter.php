@@ -26,12 +26,12 @@ class OrderFilter
         }
 
         if ($this->request->status) {
-            $this->builder->whereIn('status_id', $this->request->status);
+            $this->builder->whereIn('orders.status_id', $this->request->status);
         }
 
         if(!isset($this->filters()['date_plan']['min']) && !isset($this->filters()['date_plan']['max']) && empty($this->filters())){
-            $this->builder->where('date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
-            ->where('date_plan', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
+            $this->builder->where('orders.date_plan', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+            ->where('orders.date_plan', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
         }
 
         return $this->builder;
@@ -40,33 +40,33 @@ class OrderFilter
     public function created_at($value)
     {
         if ($value['min']) {
-            $this->builder->where('created_at', '>=', $value['min'] . ' 00:00:00');
+            $this->builder->where('orders.created_at', '>=', $value['min'] . ' 00:00:00');
         }
 
         if ($value['max']) {
-            $this->builder->where('created_at', '<=', $value['max'] . ' 23:59:59');
+            $this->builder->where('orders.created_at', '<=', $value['max'] . ' 23:59:59');
         }
     }
 
     public function updated_at($value)
     {
         if ($value['min']) {
-            $this->builder->where('updated_at', '>=', $value['min'] . ' 00:00:00');
+            $this->builder->where('orders.updated_at', '>=', $value['min'] . ' 00:00:00');
         }
 
         if ($value['max']) {
-            $this->builder->where('updated_at', '<=', $value['max'] . ' 23:59:59');
+            $this->builder->where('orders.updated_at', '<=', $value['max'] . ' 23:59:59');
         }
     }
 
     public function date_plan($value)
     {
         if ($value['min']) {
-            $this->builder->where('date_plan', '>=', $value['min'] . ' 00:00:00');
+            $this->builder->where('orders.date_plan', '>=', $value['min'] . ' 00:00:00');
         }
 
         if ($value['max']) {
-            $this->builder->where('date_plan', '<=', $value['max'] . ' 23:59:59');
+            $this->builder->where('orders.date_plan', '<=', $value['max'] . ' 23:59:59');
         }
     }
 
