@@ -44,6 +44,7 @@ return [
   "type_id" => "Вид ТС",
   "balance" => "Баланс",
   'email' => "Почта",
+  'enough_days' => 'Хватит дней',
   'login' => "Логин",
   'fence_length' => "Длина забора",
   'number_of_columns' => "Кол-во столбов",

@@ -351,12 +351,9 @@
                     </thead>
                     <tbody>
                         @php
-                            $totalSum = 0;
+                            $totalSum = $totals['total_sum'];
                         @endphp
                         @foreach ($entityItems as $entityItem)
-                            @php
-                                $totalSum += $entityItem->sum;
-                            @endphp
                             <tr class="border-b-2">
 
                                 @if (count($entityItem->products) > 0)

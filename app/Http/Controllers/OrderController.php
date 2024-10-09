@@ -34,21 +34,29 @@ class OrderController extends Controller
         $entityName = 'Заказы';
 
         // Orders
-        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments');
+        $builder = Order::query()
+            ->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'shipment_products')
+            ->withSum('positions', 'quantity')
+            ->withSum('shipment_products', 'quantity');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column)->paginate(100);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc($request->column);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
+            $entityItems = (new OrderFilter($builder, $request))->apply()->orderByDesc('id');
             $selectColumn = null;
         }
+
+        // итоги в таблице
+        $totals = $this->total($entityItems);
+
+        $entityItems = $entityItems->paginate(100);
 
         // Columns
         $all_columns = [
@@ -273,7 +281,8 @@ class OrderController extends Controller
             'queryMaterial',
             'queryPlan',
             'select',
-            'entityName'
+            'entityName',
+            'totals'
         ));
     }
 
@@ -604,6 +613,27 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('order.index')->with('success', 'Заказ удалён');
+    }
+
+    public function total($entityItems){
+
+        $order_totals = [
+            'total_sum' => $entityItems->sum('sum'),
+            'total_delivery_price' => $entityItems->sum('delivery_price'),
+            'total_payed_sum' => $entityItems->sum('payed_sum'),
+            'total_shipped_sum' => $entityItems->sum('shipped_sum'),
+            'total_reserved_sum' => $entityItems->sum('reserved_sum'),
+            'total_debt' => $entityItems->sum('debt'),
+            'shipped_count' => 0,
+            'positions_count' => 0,
+        ];
+
+        foreach ($entityItems->cursor() as $order) {
+            $order_totals['positions_count'] += $order->positions_sum_quantity;
+            $order_totals['shipped_count'] += $order->shipment_products_sum_quantity;
+        }
+
+        return $order_totals;
     }
 
     public function get_api(Request $request)
