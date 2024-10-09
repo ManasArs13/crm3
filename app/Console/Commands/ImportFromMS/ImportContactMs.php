@@ -43,11 +43,11 @@ class ImportContactMs extends Command
         $all = $this->option('all');
 
         if ($all) {
-            $service->createUrl($url_1, $contactMsService, [] , '');
-            $service->createUrl($url_2, $contactMsService, [] , '');
+            $service->createUrl($url_1, $contactMsService, ["archived" => ["true", "false"]] , '');
+            $service->createUrl($url_2, $contactMsService, ["archived" => ["true", "false"]] , '');
         } else {
-            $service->createUrl($url_1, $contactMsService, ["updated" => '>=' . Carbon::now()->subMonths(3)], '');
-            $service->createUrl($url_2, $contactMsService, ["updated" => '>=' . Carbon::now()->subMonths(3)], '');
+            $service->createUrl($url_1, $contactMsService, ["updated" => '>=' . Carbon::now()->subMonths(3), "archived" => ["true", "false"]], '');
+            $service->createUrl($url_2, $contactMsService, ["updated" => '>=' . Carbon::now()->subMonths(3), "archived" => ["true", "false"]], '');
         }
     }
 }
