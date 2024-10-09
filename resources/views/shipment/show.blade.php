@@ -4,6 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js" integrity="sha512-t3XNbzH2GEXeT9juLjifw/5ejswnjWWMMDxsdCg4+MmvrM+MwqGhxlWeFJ53xN/SBHPDnW0gXYvBx/afZZfGMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         @vite(['resources/js/main.js'])
     </x-slot>
 
@@ -489,42 +490,23 @@
         function printShipment(shipmentId) {
             var printUrl = '{{ route('print.shipment') }}';
 
-
             fetch(printUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content')
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({
-                    id: shipmentId
-                })
+                body: JSON.stringify({ id: shipmentId })
             })
                 .then(response => response.text())
                 .then(html => {
 
-                    var printFrame = document.createElement('iframe');
-                    printFrame.style.position = 'absolute';
-                    printFrame.style.width = '0px';
-                    printFrame.style.height = '0px';
-                    printFrame.style.border = 'none';
+                    var printElement = $('<div></div>').html(html);
 
+                    $(printElement).print();
 
-                    document.body.appendChild(printFrame);
+                    printElement.remove();
 
-
-                    var frameDoc = printFrame.contentWindow.document;
-                    frameDoc.open();
-                    frameDoc.write(html);
-                    frameDoc.close();
-
-                    printFrame.onload = function() {
-                        printFrame.contentWindow.focus();
-                        printFrame.contentWindow.print();
-
-                        document.body.removeChild(printFrame);
-                    };
                 })
                 .catch(error => {
                     console.error('Ошибка:', error);
