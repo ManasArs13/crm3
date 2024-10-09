@@ -763,14 +763,13 @@
                 })
                     .then(response => response.text())
                     .then(html => {
-                        // Создаем временный элемент для печати
+
                         var printElement = $('<div></div>').html(html);
 
-                        // Используем jQuery.print для печати содержимого
                         $(printElement).print();
 
-                        // Удаляем временный элемент после печати
                         printElement.remove();
+
                     })
                     .catch(error => {
                         console.error('Ошибка:', error);

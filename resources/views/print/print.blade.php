@@ -6,57 +6,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <style>
 
+        @media print {
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
 
-        @page {
-            size: A4;
-            margin: 20mm;
-        }
+            body {
+                font-family: "Open Sans", sans-serif;
+                font-optical-sizing: auto;
+                font-style: normal;
+                font-size: 12pt;
+                margin: 0;
+                padding: 21mm;
+            }
 
-        body {
-            font-family: "Open Sans", sans-serif;
-            font-optical-sizing: auto;
-            font-style: normal;
-            font-size: 12pt;
-            margin: 0;
-            padding: 0;
-            margin: 21mm;
-        }
+            .container {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
 
-        .container {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+            .header, .footer {
+                text-align: left;
+                border-bottom: 2px solid #000;
+            }
 
-        .header, .footer {
-            text-align: left;
-            border-bottom: 2px solid #000;
-        }
+            .footer {
+                border-top: 1px solid #ddd;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
 
-        .footer {
-            border-top: 1px solid #ddd;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+            th, td {
+                border: 0.4mm solid #000;
+                padding: 8px;
+                text-align: left;
+            }
 
-        th, td {
-            border: 0.4mm solid #000;
-            padding: 8px;
-            text-align: left;
-        }
+            th {
+                font-weight: 600;
+            }
 
-        th{
-            font-weight: 600;
-        }
-
-        .no-print {
-            display: none;
+            .no-print {
+                display: none;
+            }
         }
 
     </style>
