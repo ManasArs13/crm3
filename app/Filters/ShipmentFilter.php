@@ -27,8 +27,8 @@ class ShipmentFilter
         }
 
         if(!isset($this->filters()['created_at']['min']) && !isset($this->filters()['created_at']['max']) && empty($this->filters())){
-            $this->builder->where('created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
-                ->where('created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
+            $this->builder->where('shipments.created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
+                ->where('shipments.created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
         }
 
         return $this->builder;
@@ -37,22 +37,22 @@ class ShipmentFilter
     public function created_at($value)
     {
         if ($value['min']) {
-            $this->builder->where('created_at', '>=', $value['min'] . ' 00:00:00');
+            $this->builder->where('shipments.created_at', '>=', $value['min'] . ' 00:00:00');
         }
 
         if ($value['max']) {
-            $this->builder->where('created_at', '<=', $value['max'] . ' 23:59:59');
+            $this->builder->where('shipments.created_at', '<=', $value['max'] . ' 23:59:59');
         }
     }
 
     public function updated_at($value)
     {
         if ($value['min']) {
-            $this->builder->where('updated_at', '>=', $value['min'] . ' 00:00:00');
+            $this->builder->where('shipments.updated_at', '>=', $value['min'] . ' 00:00:00');
         }
 
         if ($value['max']) {
-            $this->builder->where('updated_at', '<=', $value['max'] . ' 23:59:59');
+            $this->builder->where('shipments.updated_at', '<=', $value['max'] . ' 23:59:59');
         }
     }
 
@@ -82,21 +82,21 @@ class ShipmentFilter
     public function delivery($value)
     {
         if ($value !== 'index') {
-            $this->builder->where('delivery_id', $value);
+            $this->builder->where('shipments.delivery_id', $value);
         }
     }
 
     public function status($value)
     {
         if ($value !== 'index') {
-            $this->builder->where('status', $value);
+            $this->builder->where('shipments.status', $value);
         }
     }
 
     public function transport($value)
     {
         if ($value !== 'index') {
-            $this->builder->where('transport_id', $value);
+            $this->builder->where('shipments.transport_id', $value);
         }
     }
 
