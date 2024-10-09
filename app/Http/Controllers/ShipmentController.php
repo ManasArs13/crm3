@@ -49,7 +49,7 @@ class ShipmentController extends Controller
         }
 
         // Итоги в таблице
-        $totals = $this->total($entityItems);
+        $totals = $this->total($entityItems, $request);
 
         $entityItems = $entityItems->paginate(100);
 
@@ -924,25 +924,21 @@ class ShipmentController extends Controller
         return redirect()->route('shipment.index');
     }
 
-    public function total($entityItems){
+    public function total($entityItems, $request){
+        $shipment_builder = Shipment::query()->leftJoin('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id');
+        $shipment_sum = (new ShipmentFilter($shipment_builder, $request))->apply()->sum('quantity');
+
+
         $shipment_totals = [
             'total_sum' => $entityItems->sum('suma'),
             'total_delivery_price' => $entityItems->sum('delivery_price'),
             'total_delivery_price_norm' => $entityItems->sum('delivery_price_norm'),
             'total_delivery_sum' => $entityItems->sum('delivery_fee'),
             'total_payed_sum' => $entityItems->sum('paid_sum'),
+            'positions_count' => $shipment_sum,
         ];
 
-        $shipment_position_total = ShipmentProduct::query()
-            ->selectRaw('SUM(shipment_products.quantity) as positions_count')
-            ->whereIn('shipment_id', $entityItems->pluck('id'))
-            ->first();
-
-
-        return array_merge(
-            $shipment_totals +
-            $shipment_position_total->toArray()
-        );
+        return $shipment_totals;
     }
 
     public function print(Request $request)
