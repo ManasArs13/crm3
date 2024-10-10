@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\ShipmentFilter;
 use App\Http\Requests\ShipmentRequest;
 use App\Models\Contact;
-use App\Models\Carrier;
-use App\Models\Delivery;
 use App\Models\Shipment;
 use App\Models\Transport;
-use Illuminate\Http\Request;
 
 class CarrierController extends Controller
 {
@@ -22,7 +18,6 @@ class CarrierController extends Controller
             abort(404);
         }
 
-        $transport_filter = isset($request->filters['transport']) && $request->filters['transport'] != 'index' ? $request->filters['transport'] : 'index';
         $urlEdit = "shipment.edit";
         $urlShow = "shipment.show";
         $urlDelete = "shipment.destroy";
@@ -30,13 +25,24 @@ class CarrierController extends Controller
         $urlFilter = 'carrier.index';
         $entityName = 'Перевозки';
 
+        $contact = Contact::findOrFail($id);
+
         // Shipments
         $builder = Shipment::query()
             ->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products')
-            ->where('carrier_id', $id)
-            ->when(isset($request->filters['transport']) && $request->filters['transport'] != 'index', function($query) use ($request) {
+            ->where('contact_id', $contact->id)
+            ->when(isset($request->filters['transport']), function ($query) use ($request) {
                 return $query->where('transport_id', $request->filters['transport']);
             });
+
+        $positions_count = $builder->clone()->Join('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id')
+            ->sum('quantity');
+
+        $totals = [
+            'totalCount' => $positions_count,
+            'totalDeliveryPrice' => $builder->sum('delivery_price'),
+            'totalDeliveryPriceNorm' => $builder->sum('delivery_price_norm')
+        ];
 
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
@@ -52,6 +58,7 @@ class CarrierController extends Controller
             $entityItems = $builder->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
+
 
         // Columns
         $all_columns = [
@@ -85,13 +92,22 @@ class CarrierController extends Controller
             }
         }
 
+        $transports = Shipment::query()
+            ->with('transport')
+            ->whereNotNull('transport_id')
+            ->where('contact_id', $contact->id)
+            ->groupBy('transport_id')
+            ->get();
 
-        // Значение фильтра транспорта
-        $transports = Transport::select('id', 'name')->orderBy('name')->get();
-        $transportValues[] = ['value' => 'index', 'name' => 'Весь транспорт'];
+        $transportValues[] = ['value' => '', 'name' => 'Весь транспорт'];
 
-        foreach ($transports as $transport) {
-            $transportValues[] = ['value' => $transport->id, 'name' => $transport->name];
+        foreach ($transports as $shipment) {
+            if ($shipment->transport) {
+                $transportValues[] = [
+                    'value' => $shipment->transport->id,
+                    'name' => $shipment->transport->name
+                ];
+            }
         }
 
         $queryTransport = 'index';
@@ -132,7 +148,9 @@ class CarrierController extends Controller
             'urlFilter',
             "filters",
             'orderBy',
-            'selectColumn'
+            'selectColumn',
+            'contact',
+            'totals'
         ));
     }
 }

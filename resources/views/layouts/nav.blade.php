@@ -280,6 +280,12 @@
                                         </x-dropdown-link>
                                     @endrole
 
+{{--                                    @role('admin|manager|audit')--}}
+{{--                                        <x-dropdown-link :href="route('report.deviations_from_prices')">--}}
+{{--                                            Сводка - Отклонения от цен--}}
+{{--                                        </x-dropdown-link>--}}
+{{--                                    @endrole--}}
+
                                     @role('admin|manager|audit')
                                         <x-dropdown-link :href="route('report.delivery')">
                                             Сводка - Все доставки
@@ -651,6 +657,12 @@
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
                                         - Менеджеры</a>
                                 @endrole
+
+{{--                                @role('admin|manager|audit')--}}
+{{--                                <a href="{{ route('report.deviations_from_prices') }}"--}}
+{{--                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка--}}
+{{--                                    - Отклонения от цен</a>--}}
+{{--                                @endrole--}}
 
                                 @role('admin|manager|audit')
                                     <a href="{{ route('report.delivery') }}"

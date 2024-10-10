@@ -24,7 +24,7 @@
                     @endif
 
                     @if (isset($entityName) && $entityName != '')
-                        <h3 class="text-4xl font-bold mb-6">{{ $entityName }}</h3>
+                        <h3 class="text-4xl font-bold mb-6">{{ $contact->name }}</h3>
                     @endif
 
 
@@ -154,7 +154,6 @@
                                         {{ __('label.print') }}
                                     </button>
                                 </div>
-
                             </div>
                         </div>
 
@@ -174,7 +173,6 @@
                                                     $column == 'Имя' ||
                                                         $column == 'Дата создания' ||
                                                         $column == 'Сумма' ||
-                                                        $column == 'Кол-во' ||
                                                         $column == 'Дата обновления' ||
                                                         $column == 'Вес') style="text-align:right" @else style="text-align:left" @endif>
                                                 <a class="text-black"
@@ -187,10 +185,8 @@
                                             <th scope="col" class="px-6 py-4"
                                                 @if (
                                                     $column == 'Имя' ||
-                                                        $column == '№' ||
                                                         $column == 'Дата создания' ||
                                                         $column == 'Сумма' ||
-                                                        $column == 'Кол-во' ||
                                                         $column == 'Дата обновления' ||
                                                         $column == 'Вес') style="text-align:right" @else style="text-align:left" @endif>
                                                 <a class="text-black"
@@ -207,23 +203,15 @@
                                 <tbody>
                                 @php
                                     $totalSum = 0;
-                                    $totalCount = 0;
-                                    $totalDeliveryPrice = 0;
-                                    $totalDeliveryPriceNorm = 0;
+                                    $totalCount = $totals['totalCount'];
+                                    $totalDeliveryPrice = $totals['totalDeliveryPrice'];
+                                    $totalDeliveryPriceNorm = $totals['totalDeliveryPriceNorm'];
                                     $totalDeliverySum = 0;
                                     $totalPaidSum = 0;
                                 @endphp
                                 @foreach ($entityItems as $entityItem)
                                     @php
                                         $totalSum += $entityItem->suma;
-                                    @endphp
-
-                                    @php
-                                        $totalDeliveryPrice += $entityItem->delivery_price;
-                                    @endphp
-
-                                    @php
-                                        $totalDeliveryPriceNorm += $entityItem->delivery_price_norm;
                                     @endphp
 
                                     @php
@@ -238,8 +226,7 @@
                                         @foreach ($resColumns as $column => $title)
                                             <td class="break-all max-w-96 px-6 py-2 truncate"
                                                 @if (
-                                                    (is_int($entityItem->$column) ||
-                                                        $column == 'id' ||
+                                                    (
                                                         $column == 'name' ||
                                                         $column == 'payed_sum' ||
                                                         $column == 'positions_count' ||
@@ -254,7 +241,7 @@
                                                 @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                                 @if (preg_match('/_id\z/u', $column))
                                                     @if ($column == 'contact_id')
-                                                        {{ $entityItem->contact ? $entityItem->contact->name : '-' }}
+                                                        {{ $entityItem->contact->name ?? '-' }}
                                                     @elseif($column == 'order_id')
                                                         {{ $entityItem->$column }}
                                                     @elseif($column == 'delivery_id')
@@ -307,7 +294,6 @@
                                                                 $position->product->building_material !== 'не выбрано'
                                                             ) {
                                                                 $total_quantity += $position->quantity;
-                                                                $totalCount += $position->quantity;
                                                             }
                                                         @endphp
                                                     @endforeach
@@ -361,22 +347,22 @@
                                             </td>
                                         @elseif($column == 'products_count')
                                             <td class="overflow-auto px-6 py-4">
-                                                {{ $totalCount }}
+                                                {{ number_format((int) $totalCount, 0, ',', ' ') }}
                                             </td>
                                         @elseif($column == 'delivery_price')
-                                            <td class="overflow-auto px-6 py-4 text-right">
+                                            <td class="overflow-auto px-6 py-4">
                                                 {{ number_format((int) $totalDeliveryPrice, 0, ',', ' ') }}
                                             </td>
                                         @elseif($column == 'delivery_price_norm')
-                                            <td class="overflow-auto px-6 py-4 text-right">
+                                            <td class="overflow-auto px-6 py-4">
                                                 {{ number_format((int) $totalDeliveryPriceNorm, 0, ',', ' ') }}
                                             </td>
                                         @elseif($column == 'delivery_fee')
-                                            <td class="overflow-auto px-6 py-4 text-right">
+                                            <td class="overflow-auto px-6 py-4">
                                                 {{ number_format((int) $totalDeliverySum, 0, ',', ' ') }}
                                             </td>
                                         @elseif($column == 'paid_sum')
-                                            <td class="overflow-auto px-6 py-4 text-right">
+                                            <td class="overflow-auto px-6 py-4">
                                                 {{ number_format((int) $totalPaidSum, 0, ',', ' ') }}
                                             </td>
                                         @else
