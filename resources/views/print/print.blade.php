@@ -9,7 +9,6 @@
         @media print {
             @page {
                 size: A4;
-                margin: 20mm;
             }
 
             body {

@@ -71,6 +71,11 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
 
     // Сводка
     Route::name('report.')->group(function () {
+
+        // Отклонения от цен
+//        Route::get('/report/prices/deviations', [ReportDeliveryController::class, 'index'])->name('deviations_from_prices');
+
+
         // Доставки
         Route::get('/report/delivery', [ReportDeliveryController::class, 'index'])->name('delivery');
         Route::get('/report/delivery/deviations', [ReportDeliveryController::class, 'deviations'])->name('delivery_deviations');
