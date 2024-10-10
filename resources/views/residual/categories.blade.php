@@ -71,8 +71,8 @@
                                 </th>
 
                                 @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
-                                        <a class="text-black"
+                                    <th scope="col" class="px-1  py-2 md:py-4 text-right">
+                                        <a class="text-black text-right"
                                            href="{{ route($urlFilter, ['column' => 'residual_norm', 'orderBy' => 'desc']) }}">{{ __('column.residual_norm') }}</a>
                                         @if (isset($column) && $column == 'residual_norm' && $orderBy == 'desc')
                                             &#9650;
@@ -129,7 +129,7 @@
                                 @endif
 
                                 @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
+                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
                                         <a class="text-black"
                                            href="{{ route($urlFilter, ['column' => 'enough_days', 'orderBy' => 'desc']) }}">{{ __('column.enough_days') }}</a>
                                         @if (isset($column) && $column == 'enough_days' && $orderBy == 'desc')
@@ -137,7 +137,7 @@
                                         @endif
                                     </th>
                                 @else
-                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-center">
+                                    <th scope="col" class="px-1 md:px-6 py-2 md:py-4 text-right">
                                         <a class="text-black"
                                            href="{{ route($urlFilter, ['column' => 'enough_days', 'orderBy' => 'asc']) }}">{{ __('column.enough_days') }}</a>
                                         @if (isset($column) && $column == 'enough_days' && $orderBy == 'asc')
@@ -159,6 +159,20 @@
                             </thead>
                             <tbody>
                             @foreach ($products as $product)
+                                @php
+                                    $residual_category = 0;
+                                    $consumption_year_category = 0;
+                                @endphp
+
+                                @foreach($product->pre_products as $pre_product)
+                                    @if($pre_product->residual && $pre_product->consumption_year)
+                                        @php
+                                            $residual_category += $pre_product->residual;
+                                            $consumption_year_category += $pre_product->consumption_year;
+                                        @endphp
+                                    @endif
+                                @endforeach
+
                                 @if ($product->residual_norm)
                                     <tr class="border-b-2 font-normal py-2">
                                         <td class="text-nowrap px-2 py-2">
@@ -182,7 +196,7 @@
                                             @endif
                                         </th>
 
-                                        <th class="font-normal text-right px-2">
+                                        <th class="font-normal text-right px-2 md:px-6">
                                             @if ($product->residual_norm)
                                                 {{ $product->residual_norm }}
                                             @else
@@ -208,7 +222,7 @@
                                             </th>
                                         @endif
 
-                                        <th class="text-right px-2 font-normal">
+                                        <th class="text-right px-2 md:px-6 font-normal">
                                             @if ($product->residual)
                                                 {{ $product->residual }}
                                             @else
@@ -216,11 +230,11 @@
                                             @endif
                                         </th>
 
-                                        <th class="text-right px-2 font-normal">
-                                            {{ $product->consumption_year }}
+                                        <th class="text-right px-2 md:px-6 font-normal">
+                                            {{ $residual_category && $consumption_year_category ? round($residual_category / $consumption_year_category * 365) : '-' }}
                                         </th>
 
-                                        <th class="font-normal text-right px-2">
+                                        <th class="font-normal text-right px-2 md:px-6">
                                             @if ($product->residual && $product->residual_norm)
                                                 @if ($product->residual - $product->residual_norm < 0)
                                                     {{ abs($product->residual - $product->residual_norm) }}
@@ -233,7 +247,7 @@
                                         </th>
 
                                         @if (url()->current() !== route('residual.concretesMaterials') && url()->current() !== route('residual.blocksMaterials'))
-                                            <th class="font-normal text-right px-2">
+                                            <th class="font-normal text-right px-2 md:px-6">
                                                 @if ($product->making_day)
                                                     {{ $product->making_day }}
                                                 @else
