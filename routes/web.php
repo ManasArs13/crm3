@@ -21,6 +21,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Report\PriceController;
 use App\Http\Controllers\Report\CashController;
 use App\Http\Controllers\Report\CounterpartyController;
 use App\Http\Controllers\Report\ReportDeliveryController;
@@ -71,6 +72,11 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
 
     // Сводка
     Route::name('report.')->group(function () {
+
+        // Отклонения от цен
+        Route::get('/report/prices/deviations', [PriceController::class, 'index'])->name('deviations_from_prices');
+
+
         // Доставки
         Route::get('/report/delivery', [ReportDeliveryController::class, 'index'])->name('delivery');
         Route::get('/report/delivery/deviations', [ReportDeliveryController::class, 'deviations'])->name('delivery_deviations');

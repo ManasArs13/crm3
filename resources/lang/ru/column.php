@@ -33,6 +33,7 @@ return [
   "date_moment" => "Дата документа",
   "delivery_address" => "Объект",
   "debt" => "Долг",
+  "deviation_price" => "Цена отклонения",
   "payed_sum" => "Сумма оплачено",
   "shipped_sum" => "Сумма отгружено",
   "reserved_sum" => "Сумма зарезервировано",
