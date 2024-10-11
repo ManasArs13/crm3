@@ -14,7 +14,7 @@ class ShipmentProductObserver implements ShouldHandleEventsAfterCommit
     {
         $shipment = $shipmentProduct->shipment;
 
-        if($shipment->order && $shipment->order->positions) {
+        if ($shipment->order && $shipment->order->positions) {
             foreach ($shipment->order->positions as $position) {
                 if ($shipmentProduct->product_id == $position->product_id) {
                     $position->shipped_crm += $shipmentProduct->quantity;
@@ -22,7 +22,6 @@ class ShipmentProductObserver implements ShouldHandleEventsAfterCommit
                 }
             }
         }
-
     }
 
     /**
@@ -30,7 +29,18 @@ class ShipmentProductObserver implements ShouldHandleEventsAfterCommit
      */
     public function updated(ShipmentProduct $shipmentProduct): void
     {
+        if ($shipmentProduct->isDirty('quantity')) {
+            $shipment = $shipmentProduct->shipment;
 
+            if ($shipment->order && $shipment->order->positions) {
+                foreach ($shipment->order->positions as $position) {
+                    if ($shipmentProduct->product_id == $position->product_id) {
+                        $position->shipped_crm += $shipmentProduct->getOriginal('quantity') - $shipmentProduct->quantity;
+                        $position->push();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -40,7 +50,7 @@ class ShipmentProductObserver implements ShouldHandleEventsAfterCommit
     {
         $shipment = $shipmentProduct->shipment;
 
-        if($shipment->order && $shipment->order->positions) {
+        if ($shipment->order && $shipment->order->positions) {
             foreach ($shipment->order->positions as $position) {
                 if ($shipmentProduct->product_id == $position->product_id) {
                     $position->shipped_crm -= $shipmentProduct->quantity;
@@ -65,7 +75,7 @@ class ShipmentProductObserver implements ShouldHandleEventsAfterCommit
     {
         $shipment = $shipmentProduct->shipment;
 
-        if($shipment->order && $shipment->order->positions) {
+        if ($shipment->order && $shipment->order->positions) {
             foreach ($shipment->order->positions as $position) {
                 if ($shipmentProduct->product_id == $position->product_id) {
                     $position->shipped_crm -= $shipmentProduct->quantity;
