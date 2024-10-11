@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('shipment_products', function (Blueprint $table) {
-            $table->integer('deviation_price')->default(0)->nullable();
+            $table->integer('price_norm')->default(0)->nullable();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('shipment_products', function (Blueprint $table) {
-            $table->dropColumn('deviation_price');
+            $table->dropColumn('price_norm');
         });
     }
 };

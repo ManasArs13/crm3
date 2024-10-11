@@ -12,11 +12,12 @@ class ShipmentProduct extends Model
     protected $guarded = false;
 
     public $incrementing = false;
-    
+
     protected $fillable =[
         'shipment_id',
         'quantity',
         'product_id',
+        'price_norm'
     ];
 
     /**
