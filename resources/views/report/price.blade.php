@@ -3,14 +3,14 @@
     @if (isset($entity) && $entity != '')
         <x-slot:title>
             {{ __('entity.' . $entity) }}
-            </x-slot>
-            @endif
+        </x-slot>
+    @endif
 
             <x-slot:head>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
                 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-                </x-slot>
+            </x-slot>
 
 
                 <div class="w-11/12 mx-auto py-8 max-w-10xl">
@@ -307,7 +307,7 @@
                                                 @elseif($column == 'status')
                                                     {{ $entityItem->$column }}
                                                 @elseif($column == 'deviation_price')
-                                                    {{ $entityItem->products->first()->deviation_price }}
+                                                    {{ isset($entityItem->products) ? $entityItem->products->sum('price_norm') : 0 }}
                                                 @elseif($column == 'carrier')
                                                     {{ $entityItem->carrier->name ?? '-' }}
                                                 @elseif($column == 'car_number')
