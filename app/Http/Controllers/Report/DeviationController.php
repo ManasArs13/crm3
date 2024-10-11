@@ -13,83 +13,85 @@ use App\Models\ShipmentProduct;
 use App\Models\Transport;
 use Illuminate\Http\Request;
 
-class PriceController extends Controller
+class DeviationController extends Controller
 {
-    public function index(ShipmentRequest $request){
+    public function index(ShipmentRequest $request)
+    {
         $urlEdit = "shipment.edit";
         $urlShow = "shipment.show";
         $urlDelete = "shipment.destroy";
         $urlCreate = "shipment.create";
-        $urlFilter = 'report.deviations_from_prices';
-        $entityName = 'Отклонения от цен';
+        $urlFilter = 'report.deviations';
+        $entityName = 'Отклонения';
 
         // Shipments
         $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name,car_number', 'transport_type:id,name', 'delivery:id,name', 'products');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply(true)->orderBy($request->column);
             $orderBy = 'desc';
             $selectColumn = $request->column;
         } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc($request->column);
+            $entityItems = (new ShipmentFilter($builder, $request))->apply(true)->orderByDesc($request->column);
             $orderBy = 'asc';
             $selectColumn = $request->column;
         } else {
             $orderBy = 'desc';
-            $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderByDesc('id');
+            $entityItems = (new ShipmentFilter($builder, $request))->apply(true)->orderByDesc('id');
             $selectColumn = null;
         }
 
         // Итоги в таблице
-        $totals = $this->total($entityItems);
+        $totals = $this->total($entityItems, $request);
 
         $entityItems = $entityItems->paginate(100);
 
         // Columns
         $all_columns = [
             "id",
-            "created_at",
             "contact_id",
             "products_count",
-            "delivery_price",
             "delivery_address",
+            "suma",
+            "deviation_price",
+            "saldo",
+            "delivery_price",
+            "delivery_price_norm",
+            "delivery_saldo",
             "shipment_address",
             "carrier",
             "car_number",
             "transport_id",
-            "deviation_price",
             "name",
             "order_id",
             "ms_id",
             //            "counterparty_link",
-            "suma",
             "status",
             "description",
-            "delivery_price_norm",
-            "saldo",
             "delivery_fee",
             "delivery_id",
             "transport_type_id",
             "sostav",
             "service_link",
             "paid_sum",
-            "updated_at",
             "weight",
-            'ms_link'
+            'ms_link',
+            "updated_at",
+            "created_at",
         ];
 
 
         $select = [
             "id",
-            "created_at",
             "contact_id",
-            "products_count",
-            "delivery_price",
             "delivery_address",
-            "carrier",
-            "car_number",
-            "transport_id",
-            "deviation_price"
+            "suma",
+            "deviation_price",
+            "saldo",
+            "delivery_price",
+            "delivery_price_norm",
+            "delivery_saldo",
+            "created_at",
         ];
 
         $selected = $request->columns ?? $select;
@@ -189,7 +191,7 @@ class PriceController extends Controller
                         $contact_names_get = Contact::WhereIn('id', $value)->get(['id', 'name']);
                         if (isset($value)) {
                             $contacts = [];
-                            foreach ($contact_names_get as $val){
+                            foreach ($contact_names_get as $val) {
                                 $contacts[] = [
                                     'value' => $val->id,
                                     'name' => $val->name
@@ -201,7 +203,7 @@ class PriceController extends Controller
                         $carrier_names_get = Carrier::WhereIn('id', $value)->get(['id', 'name']);
                         if (isset($value)) {
                             $carriers = [];
-                            foreach ($carrier_names_get as $val){
+                            foreach ($carrier_names_get as $val) {
                                 $carriers[] = [
                                     'value' => $val->id,
                                     'name' => $val->name
@@ -216,7 +218,7 @@ class PriceController extends Controller
         $filters = [
             [
                 'type' => 'date',
-                'name' =>  'created_at',
+                'name' => 'created_at',
                 'name_rus' => 'Дата создания',
                 'min' => substr($minCreated, 0, 10),
                 'minChecked' => $minCreatedCheck,
@@ -225,7 +227,7 @@ class PriceController extends Controller
             ],
             [
                 'type' => 'date',
-                'name' =>  'updated_at',
+                'name' => 'updated_at',
                 'name_rus' => 'Дата обновления',
                 'min' => substr($minUpdated, 0, 10),
                 'minChecked' => $minUpdatedCheck,
@@ -275,7 +277,7 @@ class PriceController extends Controller
         ];
 
 
-        return view("report.price", compact(
+        return view("report.deviation", compact(
             'select',
             'entityItems',
             "resColumns",
@@ -293,25 +295,20 @@ class PriceController extends Controller
         ));
     }
 
-    public function total($entityItems){
+    public function total($entityItems, $request){
+        $shipment_builder = Shipment::query()->leftJoin('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id');
+        $shipment_sum = (new ShipmentFilter($shipment_builder, $request))->apply()->sum('quantity');
+
+
         $shipment_totals = [
             'total_sum' => $entityItems->sum('suma'),
             'total_delivery_price' => $entityItems->sum('delivery_price'),
             'total_delivery_price_norm' => $entityItems->sum('delivery_price_norm'),
             'total_delivery_sum' => $entityItems->sum('delivery_fee'),
             'total_payed_sum' => $entityItems->sum('paid_sum'),
-            'total_saldo' => $entityItems->sum('saldo'),
+            'positions_count' => $shipment_sum,
         ];
 
-        $shipment_position_total = ShipmentProduct::query()
-            ->selectRaw('SUM(shipment_products.quantity) as positions_count')
-            ->whereIn('shipment_id', $entityItems->pluck('id'))
-            ->first();
-
-
-        return array_merge(
-            $shipment_totals +
-            $shipment_position_total->toArray()
-        );
+        return $shipment_totals;
     }
 }

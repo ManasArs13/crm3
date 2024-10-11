@@ -10,7 +10,7 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
                 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-            </x-slot>
+                </x-slot>
 
 
                 <div class="w-11/12 mx-auto py-8 max-w-10xl">
@@ -138,7 +138,7 @@
                                                                         <input name="filters[{{ $filter['name'] }}][min]"
                                                                                step="0.1" type="{{ $filter['type'] }}"
                                                                                min="{{ $filter['min'] }}" max="{{ $filter['max'] }}"
-                                                                               value="{{ $filter['minChecked'] == '' && !request()->has('filters') && $filter['name'] == 'created_at' ? date('Y-m-d') : $filter['minChecked'] }}"
+                                                                               value="{{ $filter['minChecked'] == '' && !request()->has('filters') && $filter['name'] == 'created_at' ? date('Y-m-01') : $filter['minChecked'] }}"
                                                                                class="date-default relative m-0 block w-[1px] min-w-0 flex-auto rounded-r border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary">
                                                                     </div>
                                                                 </div>
@@ -266,9 +266,15 @@
                                     $totalDeliveryPriceNorm = $totals['total_delivery_price_norm'];
                                     $totalDeliverySum = $totals['total_delivery_sum'];
                                     $totalPaidSum = $totals['total_payed_sum'];
-                                    $totalSaldoSum = $totals['total_saldo'];
                                 @endphp
                                 @foreach ($entityItems as $entityItem)
+                                    @php
+                                        $suma_price_norm = 0;
+                                        foreach($entityItem->products as $prdouct){
+                                            $suma_price_norm += $prdouct->price_norm * $prdouct->quantity;
+                                        }
+                                        $saldo = $suma_price_norm != 0 ? $suma_price_norm - ($entityItem->suma - $entityItem->delivery_price) : 0;
+                                    @endphp
 
                                     <tr class="border-b-2 py-2">
                                         @foreach ($resColumns as $column => $title)
@@ -307,6 +313,8 @@
                                                     @endif
                                                 @elseif($column == 'status')
                                                     {{ $entityItem->$column }}
+                                                @elseif($column == 'deviation_price')
+                                                    {{ number_format((int) $suma_price_norm, 0, ',', ' ') }}
                                                 @elseif($column == 'carrier')
                                                     {{ $entityItem->carrier->name ?? '-' }}
                                                 @elseif($column == 'car_number')
@@ -382,13 +390,18 @@
                                                         -
                                                     @endif
                                                 @else
-                                                    @if (
-                                                        $column == 'suma' ||
-                                                            $column == 'paid_sum' ||
+                                                    @if ($column == 'suma')
+                                                        {{ isset($entityItem->$column) ? number_format((int) $entityItem->$column - $entityItem->delivery_price, 0, ',', ' ') : '' }}
+                                                    @elseif($column == 'delivery_saldo')
+                                                        {{ number_format((int) $entityItem->delivery_price_norm - $entityItem->delivery_price, 0, ',', ' ') }}
+                                                    @elseif($column == 'paid_sum' ||
                                                             $column == 'delivery_price' ||
                                                             $column == 'delivery_price_norm' ||
                                                             $column == 'delivery_fee')
+
                                                         {{ isset($entityItem->$column) ? number_format((int) $entityItem->$column, 0, ',', ' ') : '' }}
+                                                    @elseif($column == 'saldo')
+                                                        {{ number_format((int) $saldo, 0, ',', ' ') }}
                                                     @else
                                                         {{ $entityItem->$column }}
                                                     @endif
@@ -422,10 +435,6 @@
                                         @elseif($column == 'paid_sum')
                                             <td class="overflow-auto px-6 py-4 text-right">
                                                 {{ number_format((int) $totalPaidSum, 0, ',', ' ') }}
-                                            </td>
-                                        @elseif($column == 'saldo')
-                                            <td class="overflow-auto px-6 py-4 text-right">
-                                                {{ number_format((int) $totalSaldoSum, 0, ',', ' ') }}
                                             </td>
                                         @else
                                             <td>
