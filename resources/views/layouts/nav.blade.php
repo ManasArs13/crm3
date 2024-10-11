@@ -281,20 +281,14 @@
                                     @endrole
 
                                     @role('admin|manager|audit')
-                                        <x-dropdown-link :href="route('report.deviations_from_prices')">
-                                            Сводка - Отклонения от цен
+                                        <x-dropdown-link :href="route('report.deviations')">
+                                            Сводка - Отклонения
                                         </x-dropdown-link>
                                     @endrole
 
                                     @role('admin|manager|audit')
                                         <x-dropdown-link :href="route('report.delivery')">
                                             Сводка - Все доставки
-                                        </x-dropdown-link>
-                                    @endrole
-
-                                    @role('admin|manager|audit')
-                                        <x-dropdown-link :href="route('report.delivery_deviations')">
-                                            Сводка - Отклонения доставок
                                         </x-dropdown-link>
                                     @endrole
 
@@ -659,20 +653,14 @@
                                 @endrole
 
                                 @role('admin|manager|audit')
-                                <a href="{{ route('report.deviations_from_prices') }}"
-                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
-                                    - Отклонения от цен</a>
+                                <a href="{{ route('report.deviations') }}"
+                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Отклонения</a>
                                 @endrole
 
                                 @role('admin|manager|audit')
                                     <a href="{{ route('report.delivery') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
                                         - Все доставки</a>
-                                @endrole
-
-                                @role('admin|manager|audit')
-                                <a href="{{ route('report.delivery_deviations') }}"
-                                   class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Отклонения доставок</a>
                                 @endrole
 
                                 @role('admin|manager|dispatcher|audit')

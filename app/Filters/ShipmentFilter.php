@@ -18,7 +18,7 @@ class ShipmentFilter
         $this->request = $request;
     }
 
-    public function apply()
+    public function apply($month = null)
     {
         foreach ($this->filters() as $filter => $value) {
             if (method_exists($this, $filter)) {
@@ -26,9 +26,18 @@ class ShipmentFilter
             }
         }
 
-        if(!isset($this->filters()['created_at']['min']) && !isset($this->filters()['created_at']['max']) && empty($this->filters())){
-            $this->builder->where('shipments.created_at', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
-                ->where('shipments.created_at', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
+        if (!isset($this->filters()['created_at']['min']) && !isset($this->filters()['created_at']['max']) && empty($this->filters())) {
+
+            if ($month) {
+                $startDate = Carbon::now()->startOfMonth()->format('Y-m-d') . ' 00:00:00';
+                $endDate = Carbon::now()->endOfMonth()->format('Y-m-d') . ' 23:59:59';
+            } else {
+                $startDate = Carbon::now()->format('Y-m-d') . ' 00:00:00';
+                $endDate = Carbon::now()->format('Y-m-d') . ' 23:59:59';
+            }
+
+            $this->builder->where('shipments.created_at', '>=', $startDate)
+                ->where('shipments.created_at', '<=', $endDate);
         }
 
         return $this->builder;
