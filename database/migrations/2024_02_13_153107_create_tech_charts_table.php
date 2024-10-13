@@ -15,9 +15,9 @@ return new class extends Migration
         Schema::create('tech_charts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name')->nullable();
-            $table->string('description')->nullable();
-            $table->unsignedDecimal('cost', 8, 2)->nullable();
+            $table->string('name')->nullable()->index();
+            $table->string('description')->nullable()->index();
+            $table->unsignedDecimal('cost', 8, 2)->nullable()->index();
             $table->enum('group',[
                 TechChart::CONCRETE, TechChart::PRESS
             ])->nullable();

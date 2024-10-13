@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('transport_types', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 190);
-            $table->boolean("is_manipulator")->default(0);
-            $table->integer("unloading_price")->default(0);
-            $table->integer("min_price")->default(0);
-            $table->decimal("coefficient", 5, 1)->default(0.0);
-            $table->integer("min_tonnage")->default(0);
+            $table->string("name", 190)->index();
+            $table->boolean("is_manipulator")->default(0)->index();
+            $table->integer("unloading_price")->default(0)->index();
+            $table->integer("min_price")->default(0)->index();
+            $table->decimal("coefficient", 5, 1)->default(0.0)->index();
+            $table->integer("min_tonnage")->default(0)->index();
             $table->integer("sort")->default(100)->nullable();
             $table->timestamps();
-            $table->char('ms_id', 36)->nullable();
+            $table->char('ms_id', 36)->nullable()->index();
         });
     }
 

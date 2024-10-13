@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('colors', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 190);
-            $table->string("hex", 6)->default(000000)->nullable(true);
+            $table->string("name", 190)->index();
+            $table->string("hex", 6)->default(000000)->nullable(true)->index();
             $table->text("font_color")->nullable();
             $table->timestamps();
-            $table->char('ms_id', 36)->nullable();
+            $table->char('ms_id', 36)->nullable()->index();
         });
     }
 

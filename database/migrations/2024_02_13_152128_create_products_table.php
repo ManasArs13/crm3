@@ -14,39 +14,39 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 190);
-            $table->string("short_name", 190)->nullable();
-            $table->integer("price")->default(0);
-            $table->integer("balance")->default(0);
-            $table->decimal("weight_kg", 8, 1)->default(0.0);
-            $table->integer("count_pallets", false, true)->default(0);
+            $table->string("name", 190)->index();
+            $table->string("short_name", 190)->nullable()->index();
+            $table->integer("price")->default(0)->index();
+            $table->integer("balance")->default(0)->index();
+            $table->decimal("weight_kg", 8, 1)->default(0.0)->index();
+            $table->integer("count_pallets", false, true)->default(0)->index();
             $table->foreignId("category_id")->nullable()->index()->constrained("categories");
             $table->foreignId("color_id")->nullable()->index()->constrained("colors");
-            $table->boolean("is_active")->default(0);
+            $table->boolean("is_active")->default(0)->index();
             $table->enum('materials', [
                 'не указано',
                 'нет',
                 'да'
-            ])->default('не указано');
-            $table->integer("min_balance")->default(0);
+            ])->default('не указано')->index();
+            $table->integer("min_balance")->default(0)->index();
             $table->enum('type', [
                 Product::NOT_SELECTED,
                 Product::MATERIAL,
                 Product::PRODUCTS
-            ]);
-            $table->integer('residual_norm')->nullable();
-            $table->integer('consumption_year')->nullable();
+            ])->index();
+            $table->integer('residual_norm')->nullable()->index();
+            $table->integer('consumption_year')->nullable()->index();
             $table->enum('building_material', [
                 Product::NOT_SELECTED,
                 Product::CONCRETE,
                 Product::BLOCK,
                 Product::DELIVERY
-            ])->default(Product::NOT_SELECTED);
-            $table->integer('residual')->nullable();
-            $table->integer('release')->nullable();
-            $table->string('sort')->nullable();
+            ])->default(Product::NOT_SELECTED)->index();
+            $table->integer('residual')->nullable()->index();
+            $table->integer('release')->nullable()->index();
+            $table->string('sort')->nullable()->index();
             $table->timestamps();
-            $table->char('ms_id', 36)->nullable();
+            $table->char('ms_id', 36)->nullable()->index();
         });
     }
 

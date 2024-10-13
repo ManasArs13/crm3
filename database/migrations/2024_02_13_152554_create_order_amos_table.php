@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('order_amos', function (Blueprint $table) {
             $table->id();
-            $table->string("name",190);
+            $table->string("name",190)->index();
             $table->foreignId("status_amo_id")->nullable()->index()->constrained("status_amos");
             $table->foreignId("contact_amo_id")->nullable()->index()->constrained("contact_amos");
             $table->foreignId("contact_amo2_id")->nullable()->index()->constrained("contact_amos");
-            $table->integer("price")->unsigned()->nullable();
+            $table->integer("price")->unsigned()->nullable()->index();
             $table->string("comment")->nullable();
             $table->boolean("is_exist")->default(0);
             $table->string("order_link")->nullable();
             $table->string("order_id")->nullable();
+            $table->foreignId("manager_id")->nullable()->references('id')->on("managers");
             $table->timestamps();
         });
     }

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tech_chart_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tech_chart_id')->on('tech_charts')->onDelete('cascade')->cascadeOnUpdate();
-            $table->foreignId('product_id')->on('products')->onDelete('cascade')->cascadeOnUpdate();
-            $table->unsignedDecimal('quantity', 8, 2);
+            $table->foreignId('tech_chart_id')->on('tech_charts')->onDelete('cascade')->cascadeOnUpdate()->index();
+            $table->foreignId('product_id')->on('products')->onDelete('cascade')->cascadeOnUpdate()->index();
+            $table->unsignedDecimal('quantity', 8, 2)->index();
             $table->timestamps();
             $table->char('ms_id', 36)->nullable();
         });

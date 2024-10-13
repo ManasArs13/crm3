@@ -14,9 +14,11 @@ return new class extends Migration
     {
         Schema::create('shipment_products', function (Blueprint $table) {
             $table->id();
-            $table->integer("quantity")->unsigned()->default(0);
+            $table->unsignedDecimal("quantity", 10, 1)->default(0)->index();
             $table->foreignId("shipment_id")->nullable()->index()->constrained("shipments")->onDelete('cascade');
             $table->foreignId("product_id")->nullable()->index()->constrained("products");
+            $table->integer('price_norm')->default(0)->nullable()->index();
+            $table->integer("price")->unsigned()->default(0)->index();
             $table->timestamps();
             $table->char('ms_id', 36)->nullable();
         });

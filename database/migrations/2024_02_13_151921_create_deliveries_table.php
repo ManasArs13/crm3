@@ -10,12 +10,13 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 190);
-        //    $table->string("original_name", 190)->nullable();
-            $table->integer("distance")->nullable();
-            $table->integer("ton_price")->nullable();
+            $table->string("name", 190)->index();
+            $table->integer("distance")->nullable()->index();
+            $table->integer("ton_price")->nullable()->index();
+            $table->integer('km_fact')->index();
+            $table->integer("time_minute")->index();
             $table->timestamps();
-            $table->char('ms_id', 36)->nullable();
+            $table->char('ms_id', 36)->nullable()->index();
         });
     }
 
