@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class OptionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('options')->insert([
@@ -302,12 +299,6 @@ class OptionSeeder extends Seeder
                 'module' => 'ms'
             ],
             [
-                'name' => 'Базовый домен',
-                'code' => 'base_domain',
-                'value' => 'euroblock.amocrm.ru',
-                'module' => 'amo'
-            ],
-            [
                 'name' => 'Виджет: Ид интеграции',
                 'code' => 'amo_widget_client_id',
                 'value' => 'db9a7088-061e-4531-af59-958a37072fb9',
@@ -389,12 +380,6 @@ class OptionSeeder extends Seeder
                 'name' => 'Виджет: Секретный ключ',
                 'code' => 'amo_widget_client_secret',
                 'value' => 'BaZUHQqB5IQuBoVTlFbrKoUGlSxnCN5I5uUXJX1yvkmGc9Ae3oRCFWmu0nZHfvQ4',
-                'module' => 'amo'
-            ],
-            [
-                'name' => 'Виджет: Ид интеграции',
-                'code' => 'amo_widget_client_id',
-                'value' => 'db9a7088-061e-4531-af59-958a37072fb9',
                 'module' => 'amo'
             ],
             [
@@ -524,12 +509,6 @@ class OptionSeeder extends Seeder
                 'module' => 'ms'
             ],
             [
-                'name' => 'Длина забора',
-                'code' => 'ms_price_lists_url',
-                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/pricelist/',
-                'module' => 'ms'
-            ],
-            [
                 'name' => '% от продажи блока',
                 'code' => 'percent_of_the_block_sale',
                 'value' => '0.003',
@@ -541,12 +520,6 @@ class OptionSeeder extends Seeder
                 'value' => '0.001',
                 'module' => 'main'
             ],
-            [
-                'name' => 'Организации:Адрес с которого берем организации',
-                'code' => 'ms_organization_url',
-                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/organization/',
-                'module' => 'ms'
-            ]
         ]);
     }
 }

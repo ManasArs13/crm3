@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->timestamp('moment', $precision = 0);
-            $table->string('name')->nullable();
+            $table->string('name')->nullable()->index();
             $table->string('description')->nullable();
-            $table->foreignId('tech_chart_id')->on('tech_carts')->nullable();
-            $table->decimal('quantity', 8, 1)->nullable();
-            $table->decimal("sum", 10, 1)->default(0.0);
+            $table->foreignId('tech_chart_id')->on('tech_carts')->nullable()->index();
+            $table->decimal('quantity', 8, 1)->nullable()->index();
+            $table->decimal("sum", 10, 1)->default(0.0)->index();
             $table->unsignedInteger('hours')->nullable();
             $table->unsignedInteger('cycles')->nullable();
             $table->unsignedInteger('defective')->nullable();  

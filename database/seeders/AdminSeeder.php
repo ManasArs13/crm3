@@ -28,12 +28,13 @@ class AdminSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ],
         );
+
         DB::table('roles')->insert([
-            ['name' => 'admin','guard_name' => 'web'],
-            ['name' => 'operator','guard_name' => 'web'],
-            ['name' => 'manager','guard_name' => 'web'],
-            ['name' => 'dispatcher','guard_name' => 'web'],
-            ['name' => 'carrier','guard_name' => 'web'],
+            ['name' => 'admin', 'guard_name' => 'web'],
+            ['name' => 'operator', 'guard_name' => 'web'],
+            ['name' => 'manager', 'guard_name' => 'web'],
+            ['name' => 'dispatcher', 'guard_name' => 'web'],
+            ['name' => 'carrier', 'guard_name' => 'web'],
         ]);
     }
 }

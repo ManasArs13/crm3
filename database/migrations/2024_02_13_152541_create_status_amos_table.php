@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('status_amos', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 190);
+            $table->string("name", 190)->index();
             $table->foreignId("status")->nullable()->index()->constrained("statuses");
             $table->timestamps();
         });

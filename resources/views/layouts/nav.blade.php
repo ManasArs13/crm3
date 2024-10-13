@@ -167,14 +167,6 @@
                                 <x-slot name="content">
 
                                     @role('admin|audit')
-                                        <x-dropdown-link :href="route('incomings.index')">
-                                            Приход
-                                        </x-dropdown-link>
-
-                                        <x-dropdown-link :href="route('outgoings.index')">
-                                            Расход
-                                        </x-dropdown-link>
-
                                         <x-dropdown-link :href="route('supply.index')">
                                             Приёмки
                                         </x-dropdown-link>
@@ -572,10 +564,6 @@
                                 @endrole
 
                                 @role('admin|audit')
-                                    <a href="{{ route('incomings.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Приход</a>
-                                    <a href="{{ route('outgoings.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Расход</a>
                                     <a href="{{ route('supply.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Приемки</a>
                                     <a href="{{ route('order_positions.index') }}"

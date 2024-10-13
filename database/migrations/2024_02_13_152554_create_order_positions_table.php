@@ -15,15 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId("product_id")->nullable()->index()->constrained("products");
             $table->foreignId("order_id")->index()->constrained("orders")->onDelete('cascade');
-
-            $table->integer("quantity")->unsigned()->default(0);
-            $table->integer("shipped")->unsigned()->default(0);
-            $table->integer("reserve")->unsigned()->default(0);
-            $table->integer("price")->unsigned()->default(0);
-
-            $table->integer("count_pallets")->unsigned()->default(0)->nullable();
-            $table->unsignedDecimal("weight_kg", 10, 1)->unsigned()->nullable();
-
+            $table->unsignedDecimal("quantity", 10, 1)->default(0)->index();
+            $table->integer("shipped")->unsigned()->default(0)->index();
+            $table->unsignedDecimal("shipped_crm", 10, 1)->default(0)->index();
+            $table->integer("reserve")->unsigned()->default(0)->index();
+            $table->integer("price")->unsigned()->default(0)->index();
+            $table->integer("count_pallets")->unsigned()->default(0)->nullable()->index();
+            $table->unsignedDecimal("weight_kg", 10, 1)->unsigned()->nullable()->index();
             $table->timestamps();
             $table->char('ms_id', 36)->nullable();
         });

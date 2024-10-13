@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class DateSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $sql = <<<SQL

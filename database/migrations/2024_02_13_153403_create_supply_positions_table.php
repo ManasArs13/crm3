@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('supply_positions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('supply_id')->on('supplies')->onDelete('cascade')->cascadeOnUpdate();
-            $table->foreignId('product_id')->on('products')->onDelete('cascade')->cascadeOnUpdate();
-            $table->unsignedDecimal('quantity', 8, 1);
+            $table->foreignId('supply_id')->on('supplies')->onDelete('cascade')->cascadeOnUpdate()->index();
+            $table->foreignId('product_id')->on('products')->onDelete('cascade')->cascadeOnUpdate()->index();
+            $table->unsignedDecimal('quantity', 8, 1)->index();
             $table->decimal("price", 10, 2)->default(0.0);
             $table->char('ms_id', 36)->nullable();
         });

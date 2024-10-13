@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('contact_amos', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 150)->nullable();
-            $table->string("phone",56)->nullable();
-            $table->string("phone1",56)->nullable();
+            $table->string("name", 150)->nullable()->index();
+            $table->string("phone",56)->nullable()->index();
+            $table->string("phone1",56)->nullable()->index();
             $table->string("email")->nullable();
-            $table->string("phone_norm", 56)->nullable();
-            $table->string("contact_ms_id")->nullable();
-            $table->index('contact_ms_id');
+            $table->string("phone_norm", 56)->nullable()->index();
+            $table->string("contact_ms_id")->nullable()->index();
             $table->string("contact_ms_link")->nullable();
             $table->boolean("is_exist")->default(0);
             $table->boolean("is_dublash")->default(0);
+            $table->boolean("is_success")->nullable();
             $table->timestamps();
         });
     }

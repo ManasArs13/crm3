@@ -204,28 +204,6 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');
 
-    // Приход
-    Route::resource('incomings', IncomingController::class)->only([
-        'index',
-        'show',
-        'store',
-        'create',
-        'update',
-        'destroy'
-    ]);
-    Route::get('/incoming/products', [IncomingController::class, 'products'])->name('incomings.products');
-
-    // Расход
-    Route::resource('outgoings', OutgoingController::class)->only([
-        'index',
-        'show',
-        'store',
-        'create',
-        'update',
-        'destroy'
-    ]);
-    Route::get('/outgoing/products', [OutgoingController::class, 'products'])->name('outgoings.products');
-
     // Техкарты
     Route::resource('techcharts', TechChartController::class)->only([
         'index',

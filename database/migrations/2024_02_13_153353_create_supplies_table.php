@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('supplies', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("name",190)->nullable();
+            $table->string("name",190)->nullable()->index();
             $table->foreignId("contact_id")->nullable()->index()->constrained("contacts");
-            $table->dateTime("moment")->nullable();
+            $table->dateTime("moment")->nullable()->index();
             $table->text('description')->nullable();
-            $table->decimal("sum", 10, 2)->default(0.0);
+            $table->decimal("sum", 10, 2)->default(0.0)->index();
             $table->string("incoming_number", 190)->nullable();
             $table->dateTime("incoming_date")->nullable();
             $table->char('ms_id', 36)->nullable();

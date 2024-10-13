@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("operation", 190)->nullable()->index();
             $table->dateTime("moment")->nullable()->index();
             $table->text("description")->nullable();
-            $table->foreignId("contact_id")->nullable()->index()->constrained("contacts");
+            $table->foreignId("contact_id")->nullable()->index()->constrained("contacts")->onDelete('set null');
             $table->decimal("sum", 10, 1)->default(0.0)->index();
             $table->char('ms_id', 36)->nullable()->index();
             $table->timestamps();

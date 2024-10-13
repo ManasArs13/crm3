@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('shiping_prices', function (Blueprint $table) {
             $table->id();
-            $table->integer("distance")->unsigned();
-            $table->decimal("tonnage", 8, 1)->unsigned();
-            $table->integer("price")->unsigned();
+            $table->integer("distance")->unsigned()->index();
+            $table->decimal("tonnage", 8, 1)->unsigned()->index();
+            $table->integer("price")->unsigned()->index();
             $table->foreignId("transport_type_id")->index()->constrained("transport_types");
             $table->timestamps();
-            $table->char('ms_id', 36)->nullable();
+            $table->char('ms_id', 36)->nullable()->index();
         });
     }
 
