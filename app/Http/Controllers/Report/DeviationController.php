@@ -25,7 +25,18 @@ class DeviationController extends Controller
         $entityName = 'Отклонения';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name,car_number', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()
+            ->with([
+                'order:id,name',
+                'carrier:id,name',
+                'contact:id,name',
+                'transport:id,name,car_number',
+                'transport_type:id,name',
+                'delivery:id,name',
+                'products' => function ($query) {
+                    $query->with('product:id,building_material');
+                }
+            ]);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply(true)->orderBy($request->column);

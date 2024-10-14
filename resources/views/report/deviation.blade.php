@@ -272,11 +272,13 @@
                                         $suma_price_norm = 0;
                                         $suma_products = 0;
                                         foreach($entityItem->products as $product){
-                                            if(!is_null($product->price)){
-                                                $suma_products += $product->price * $product->quantity;
-                                            }
-                                            if(!is_null($product->price_norm)){
-                                                $suma_price_norm += $product->price_norm * $product->quantity;
+                                            if($product->product->building_material != 'доставка'){
+                                                if(!is_null($product->price)){
+                                                    $suma_products += $product->price * $product->quantity;
+                                                }
+                                                if(!is_null($product->price_norm)){
+                                                    $suma_price_norm += $product->price_norm * $product->quantity;
+                                                }
                                             }
                                         }
                                         $saldo = $suma_price_norm - $suma_products;
@@ -285,20 +287,6 @@
                                     <tr class="border-b-2 py-2">
                                         @foreach ($resColumns as $column => $title)
                                             <td class="break-all max-w-96 px-6 py-2 truncate"
-                                                @if (
-                                                    (is_int($entityItem->$column) ||
-                                                        $column == 'id' ||
-                                                        $column == 'name' ||
-                                                        $column == 'payed_sum' ||
-                                                        $column == 'positions_count' ||
-                                                        $column == 'residual_count' ||
-                                                        $column == 'shipped_count' ||
-                                                        $column == 'shipped_sum' ||
-                                                        $column == 'reserved_sum' ||
-                                                        $column == 'weight' ||
-                                                        $column == 'debt') &&
-                                                        !preg_match('/_id\z/u', $column) &&
-                                                        $column !== 'sostav') style="text-align:right" @else style="text-align:left" @endif
                                                 @if ($entityItem->$column) title="{{ $entityItem->$column }}" @endif>
                                                 @if (preg_match('/_id\z/u', $column))
                                                     @if ($column == 'contact_id')
