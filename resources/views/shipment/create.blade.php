@@ -333,9 +333,11 @@
                                         product: '',
                                         count: 0,
                                         residual: 0,
-                                        sum: 0,
+                                        weight_kg: 0,
                                         weight: 0,
                                         price: 0,
+                                        sum: 0,
+
                                     }],
 
                                     allSum: 0,
@@ -345,6 +347,7 @@
                                     changeProduct(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
                                                 this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
                                                     this
                                                         .rows[index].count
@@ -366,6 +369,7 @@
                                     changeCount(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
                                                 this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
                                                     this
                                                         .rows[index].count
@@ -386,6 +390,7 @@
                                     changePrice(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
                                                 this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
                                                     this
                                                         .rows[index].count
@@ -406,6 +411,7 @@
                                     changeSum(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight_kg = +this.entities.find(x => x.id == Id).weight_kg
                                                 this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
                                                     this
                                                         .rows[index].count

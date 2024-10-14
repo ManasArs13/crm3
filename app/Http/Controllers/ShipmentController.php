@@ -533,16 +533,7 @@ class ShipmentController extends Controller
             ->orderBy('name')
             ->get();
 
-        $positions = "[{
-            id: 0,
-            product: '',
-            count: 0,
-            residual: 0,
-            weight_kg: 0,
-            weight: 0,
-            price: 0,
-            sum: 0
-        }]";
+        $positions = "[]";
 
         return view('shipment.create', compact(
             'action',
