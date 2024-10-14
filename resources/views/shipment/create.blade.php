@@ -290,6 +290,10 @@
                                         <label>ИТОГО:</label>
                                         <span class="" x-text="allSum">
                                     </div>
+                                    <div class="flex justify-between px-6">
+                                        <label></label>
+                                        <span class="text-xs" x-text="allWeight">
+                                    </div>
                                 </div>
 
                             </div>
@@ -330,22 +334,30 @@
                                         count: 0,
                                         residual: 0,
                                         sum: 0,
+                                        weight: 0,
                                         price: 0,
                                     }],
 
                                     allSum: 0,
-                                    allWeight: 0,
+                                    allWeight: 'Вес: ' + 0,
                                     allCount: 0,
 
                                     changeProduct(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                        .rows[index].count
                                                this.rows[index].price = this.entities.find(x => x.id == Id).price
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                 curr) => prev +
+                                                    curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -354,11 +366,18 @@
                                     changeCount(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                        .rows[index].count
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                 curr) => prev +
+                                                    curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -367,11 +386,18 @@
                                     changePrice(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                        .rows[index].count
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                                 this.rows[index].sum = this.rows[index].price * this.rows[index].count
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                 curr) => prev +
+                                                    curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -380,11 +406,18 @@
                                     changeSum(Id, index) {
                                         if (this.entities.find(x => x.id == Id) !== undefined) {
                                             if (this.rows[index]) {
+                                                this.rows[index].weight = +this.entities.find(x => x.id == Id).weight_kg *
+                                                    this
+                                                        .rows[index].count
                                                 this.rows[index].price =  Math.round(this.rows[index].sum / this.rows[index].count)
                                                 this.rows[index].residual = this.entities.find(x => x.id == Id).residual
                                             }
                                             this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev +
                                                 curr, 0);
+                                            this.allWeight = 'Вес: ' + Math.round(this.rows.map(item => item.weight).reduce(
+                                                (prev,
+                                                 curr) => prev +
+                                                    curr, 0) * 100) / 100;
                                             this.allCount = this.rows.map(item => item.count).reduce((prev, curr) => prev +
                                                 curr, 0);
                                         }
@@ -396,6 +429,7 @@
                                             product: '',
                                             count: 0,
                                             weight_kg: 0,
+                                            weight: 0,
                                             price: 0,
                                             residual: 0,
                                             sum: 0
@@ -406,6 +440,9 @@
                                         this.rows.splice(this.rows.indexOf(row), 1);
                                         this.allSum = this.rows.map(item => item.sum).reduce((prev, curr) => prev + curr,
                                             0);
+                                        this.allWeight = 'Вес: ' + this.rows.map(item => item.weight).reduce((prev, curr) =>
+                                            prev +
+                                            curr, 0);
                                         this.allCount = this.rows.map(item => item.count).reduce((prev,
                                                 curr) =>
                                             prev +
