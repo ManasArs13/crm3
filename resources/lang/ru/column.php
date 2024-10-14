@@ -87,6 +87,7 @@ return [
   'driver' => 'Водитель',
   'paid_sum' => 'Сумма оплачено',
   'suma' => 'Сумма',
+  'suma_product' => 'Сумма продуктов',
   'service_link' => 'Путь к сервису',
   'counterparty_link' => 'Контрагент',
   'shipment_address' => 'Адрес доставки',

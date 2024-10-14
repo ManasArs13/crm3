@@ -384,8 +384,8 @@
                                                         -
                                                     @endif
                                                 @else
-                                                    @if ($column == 'suma')
-                                                        {{ isset($entityItem->$column) ? number_format((int) $suma_products, 0, ',', ' ') : '' }}
+                                                    @if ($column == 'suma_product')
+                                                        {{ number_format((int) $suma_products, 0, ',', ' ') }}
                                                     @elseif($column == 'delivery_saldo')
                                                         {{ number_format((int) $entityItem->delivery_price_norm - $entityItem->delivery_price, 0, ',', ' ') }}
                                                     @elseif($column == 'paid_sum' ||
@@ -406,7 +406,7 @@
                                 @endforeach
                                 <tr class="border-b-2 bg-gray-100 py-2">
                                     @foreach ($resColumns as $column => $title)
-                                        @if ($column == 'suma')
+                                        @if ($column == 'suma_product')
                                             <td class="px-6 py-2">
                                                 {{ number_format((int) $totalSum, 0, ',', ' ') }}
                                             </td>
