@@ -270,8 +270,12 @@
                                 @foreach ($entityItems as $entityItem)
                                     @php
                                         $suma_price_norm = 0;
-                                        foreach($entityItem->products as $prdouct){
-                                            $suma_price_norm += $prdouct->price_norm * $prdouct->quantity;
+                                        foreach($entityItem->products as $product){
+                                            if ($product->quantity > 0) {
+                                                $suma_price_norm += $product->price_norm * $product->quantity;
+                                            } else {
+                                                $suma_price_norm += $product->price_norm;
+                                            }
                                         }
                                         $saldo = $suma_price_norm != 0 ? $suma_price_norm - ($entityItem->suma - $entityItem->delivery_price) : 0;
                                     @endphp
