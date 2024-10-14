@@ -270,14 +270,16 @@
                                 @foreach ($entityItems as $entityItem)
                                     @php
                                         $suma_price_norm = 0;
+                                        $suma_products = 0;
                                         foreach($entityItem->products as $product){
-                                            if ($product->quantity > 0) {
+                                            if(!is_null($product->price)){
+                                                $suma_products += $product->price * $product->quantity;
+                                            }
+                                            if(!is_null($product->price_norm)){
                                                 $suma_price_norm += $product->price_norm * $product->quantity;
-                                            } else {
-                                                $suma_price_norm += $product->price_norm;
                                             }
                                         }
-                                        $saldo = $suma_price_norm != 0 ? $suma_price_norm - ($entityItem->suma - $entityItem->delivery_price) : 0;
+                                        $saldo = $suma_price_norm - $suma_products;
                                     @endphp
 
                                     <tr class="border-b-2 py-2">
@@ -395,7 +397,7 @@
                                                     @endif
                                                 @else
                                                     @if ($column == 'suma')
-                                                        {{ isset($entityItem->$column) ? number_format((int) $entityItem->$column - $entityItem->delivery_price, 0, ',', ' ') : '' }}
+                                                        {{ isset($entityItem->$column) ? number_format((int) $suma_products, 0, ',', ' ') : '' }}
                                                     @elseif($column == 'delivery_saldo')
                                                         {{ number_format((int) $entityItem->delivery_price_norm - $entityItem->delivery_price, 0, ',', ' ') }}
                                                     @elseif($column == 'paid_sum' ||
