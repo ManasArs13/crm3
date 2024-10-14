@@ -48,6 +48,7 @@ class DeviationController extends Controller
 
         // Columns
         $all_columns = [
+            "created_at",
             "id",
             "contact_id",
             "products_count",
@@ -77,11 +78,11 @@ class DeviationController extends Controller
             "weight",
             'ms_link',
             "updated_at",
-            "created_at",
         ];
 
 
         $select = [
+            "created_at",
             "id",
             "contact_id",
             "delivery_address",
@@ -91,7 +92,6 @@ class DeviationController extends Controller
             "delivery_price",
             "delivery_price_norm",
             "delivery_saldo",
-            "created_at",
         ];
 
         $selected = $request->columns ?? $select;
