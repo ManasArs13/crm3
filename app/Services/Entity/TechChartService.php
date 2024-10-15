@@ -55,7 +55,7 @@ class TechChartService implements EntityInterface
                     $entity_product = TechChartProduct::firstOrNew(['ms_id' => $product['id']]);
 
                     if ($entity_product->ms_id === null) {
-                        $entity_product->ms_id = $entity_product['id'];
+                        $entity_product->ms_id = $product['id'];
                     }
 
                     $entity_product->tech_chart_id = $entity->id;

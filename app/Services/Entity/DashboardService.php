@@ -39,7 +39,7 @@ class DashboardService
             "residual_count",
             "comment",
             "delivery_id",
-//            "ms_link",
+            //            "ms_link",
         ];
 
         $this->plant_capacity = Option::select('value')->where('code', 'plant_capacity')->first()?->value;
@@ -89,7 +89,7 @@ class DashboardService
             ->with([
                 'transport',
                 'delivery',
-                'transport.shifts' => function ($query) use ($date){
+                'transport.shifts' => function ($query) use ($date) {
                     $query->whereDate('start_shift', $date);
                 }
             ])->get()
@@ -210,8 +210,8 @@ class DashboardService
         }])->get();
 
         $isTransports = [];
-        foreach($shipments as $shipment){
-            if(isset($shipment->first()->transport_id)){
+        foreach ($shipments as $shipment) {
+            if (isset($shipment->first()->transport_id)) {
                 $isTransports[] = $shipment->first()->transport_id;
             }
         }
@@ -238,6 +238,7 @@ class DashboardService
     {
         $arUrl = explode("/", session('_previous.url'));
         $referer = explode("?", $arUrl[3])[0];
+        $roundPallet = $this->options::where('code', '=', "round_number")->first()?->value;
 
         if ($date_plan) {
             $date = $date_plan;
@@ -399,14 +400,33 @@ class DashboardService
                 }
             }
 
-            $shipped_count[$key] += $shipments->whereBetween('created_at', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->sum(function ($items) use ($count) {
+            $shipped_count[$key] += $shipments->whereBetween('created_at', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->sum(function ($items) use ($roundPallet) {
                 $sum = 0;
                 foreach ($items->products as $product) {
                     if (
                         $product->product->building_material !== 'доставка' &&
                         $product->product->building_material !== 'не выбрано'
                     ) {
-                        $sum += $product->$count;
+                        if ($product->product->count_pallets != 0) {
+                            $counts = $product->quantity / $product->count_pallets;
+
+                            $quantity_pallets = 0;
+
+                            if ($roundPallet != 0) {
+                                $numberNew = round($counts, 2);
+                                $drob = $numberNew - floor($numberNew);
+                                if ($drob > $roundPallet) {
+                                    $quantity_pallets = ceil($numberNew);
+                                }
+                                $quantity_pallets = floor($numberNew);
+                            } else {
+                                $quantity_pallets =  $counts;
+                            }
+
+                            $sum += $quantity_pallets;
+                        } else {
+                            $sum += $product->quantity;
+                        }
                     }
                 }
                 return $sum;
@@ -499,7 +519,7 @@ class DashboardService
             ->with([
                 'transport',
                 'delivery',
-                'transport.shifts' => function ($query) use ($date){
+                'transport.shifts' => function ($query) use ($date) {
                     $query->whereDate('start_shift', $date);
                 }
             ])->get()
@@ -629,8 +649,8 @@ class DashboardService
         }])->get();
 
         $isTransports = [];
-        foreach($shipments as $shipment){
-            if(isset($shipment->first()->transport_id)){
+        foreach ($shipments as $shipment) {
+            if (isset($shipment->first()->transport_id)) {
                 $isTransports[] = $shipment->first()->transport_id;
             }
         }
@@ -707,7 +727,7 @@ class DashboardService
             ->with([
                 'transport',
                 'delivery',
-                'transport.shifts' => function ($query) use ($date){
+                'transport.shifts' => function ($query) use ($date) {
                     $query->whereDate('start_shift', $date);
                 }
             ])->get()
@@ -828,8 +848,8 @@ class DashboardService
         }])->get();
 
         $isTransports = [];
-        foreach($shipments as $shipment){
-            if(isset($shipment->first()->transport_id)){
+        foreach ($shipments as $shipment) {
+            if (isset($shipment->first()->transport_id)) {
                 $isTransports[] = $shipment->first()->transport_id;
             }
         }
@@ -896,5 +916,19 @@ class DashboardService
             $date->load('delivery',);
         }
         return response()->json(['orderDates' => $orderDates]);
+    }
+
+    public function roundNumber($number, $round = 0.2)
+    {
+        if ($round != 0) {
+            $numberNew = round($number, 2);
+            $drob = $numberNew - floor($numberNew);
+            if ($drob > $round) {
+                return ceil($numberNew);
+            }
+            return floor($numberNew);
+        } else {
+            return $number;
+        }
     }
 }
