@@ -5,6 +5,7 @@ namespace App\Console\Commands\ImportFromMS;
 use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use App\Services\Entity\TechChartService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ImportTechChart extends Command
@@ -13,7 +14,7 @@ class ImportTechChart extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'ms:import-tech-chart';
+    protected $signature = 'ms:import-tech-chart {--all}';
 
     /**
      * Описание консольной команды.
@@ -36,7 +37,13 @@ class ImportTechChart extends Command
     public function handle(MoySkladService $service, TechChartService $techChart)
     {
         $url = Option::where('code', '=', 'ms_tech_chart_url')->first()?->value;
-     //   $date = Option::where('code', '=', 'ms_date_begin_change')->first()?->value;
-        $service->createUrl($url, $techChart);
+        $all = $this->option('all');
+
+        if ($all) {
+            $service->createUrl($url, $techChart);
+        } else {
+            $service->createUrl($url, $techChart, ["updated" => '>=' . Carbon::now()->subDays(3)]); 
+        } 
+
     }
 }
