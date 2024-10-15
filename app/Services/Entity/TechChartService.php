@@ -41,7 +41,7 @@ class TechChartService implements EntityInterface
             } else {
                 $entity->group = null;
             }
-            // dump($row);
+
             $entity->name = $row["name"];
             $entity->updated_at = $row["updated"];
 
