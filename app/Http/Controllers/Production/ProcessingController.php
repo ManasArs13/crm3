@@ -365,6 +365,8 @@ class ProcessingController extends Controller
             "processing_id",
             "product_id",
             "quantity",
+            "quantity_norm",
+            "saldo",
             "created_at",
             "updated_at",
             "ms_id"
@@ -378,6 +380,8 @@ class ProcessingController extends Controller
                 "processing_id",
                 "product_id",
                 "quantity",
+                "quantity_norm",
+                "saldo",
                 "created_at",
                 "updated_at",
                 "ms_id"
