@@ -11,6 +11,8 @@ class TechProcessMaterial extends Model
 
     protected $fillable = ['id'];
 
+    protected $guarded = false;
+
     public function processing()
     {
         return $this->belongsTo(TechProcess::class, 'processing_id');

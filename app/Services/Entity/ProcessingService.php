@@ -3,13 +3,8 @@
 namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
-use App\Models\Processing;
-use App\Models\ProcessingMaterials;
-use App\Models\ProcessingProducts;
 use App\Models\Product;
 use App\Models\TechChart;
-use App\Models\TechChartMaterial;
-use App\Models\TechChartProduct;
 use App\Models\TechProcess;
 use App\Models\TechProcessMaterial;
 use App\Models\TechProcessProduct;
@@ -36,7 +31,7 @@ class ProcessingService implements EntityInterface
 
             if (isset($row["processingPlan"])) {
                 $techchart_ms = $this->service->actionGetRowsFromJson($row['processingPlan']['meta']['href'], false);
-                $techchart_bd = TechChart::where('ms_id', $techchart_ms['id'])->first();
+                $techchart_bd = TechChart::select('id', 'ms_id')->where('ms_id', $techchart_ms['id'])->first();
                 $entity->tech_chart_id = $techchart_bd['id'];
             }
 
@@ -116,7 +111,8 @@ class ProcessingService implements EntityInterface
                     $entity_material->quantity = $material['quantity'];
 
                     $product_ms = $this->service->actionGetRowsFromJson($material['assortment']['meta']['href'], false);
-                    $product_bd = Product::select('id', 'price')->where('ms_id', $product_ms['id'])->first();
+
+                    $product_bd = isset($product_ms['id']) ? Product::select('id', 'price')->where('ms_id', $product_ms['id'])->first() : null;
 
                     if ($product_bd) {
                         $sum = $product_bd->price * $product['quantity'];
@@ -124,20 +120,10 @@ class ProcessingService implements EntityInterface
                         $entity_material->product_id = $product_bd['id'];
                         $entity_material->sum = $sum;
 
-                        if (isset($row["processingPlan"])) {
-                            $techart_material = TechChartMaterial::where('tech_chart_id', '=', $techchart_bd['id'])
-                                ->where('product_id', '=', $product_bd['id'])
-                                ->first();
-
-                            if ($techart_material) {
-                                $entity_material->quantity_norm = $row["quantity"] * $techart_material->quantity;
-                            }
-                        }
-
                         $entity_material->save();
                     }
                 }
-            }
+            } 
         }
     }
 }

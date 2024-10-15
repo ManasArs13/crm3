@@ -89,7 +89,8 @@
                 options: {
                     scales: {
                         y: {
-                            suggestedMin: 0,
+                            min: 0,
+                            suggestedMax: 20,
                          }
                     },
                     scale: {
