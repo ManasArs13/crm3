@@ -408,7 +408,7 @@ class DashboardService
                         $product->product->building_material !== 'не выбрано'
                     ) {
                         if ($product->product->count_pallets != 0) {
-                            $counts = $product->quantity / $product->count_pallets;
+                            $counts = $product->quantity / $product->product->count_pallets;
 
                             $quantity_pallets = 0;
 
