@@ -15,6 +15,7 @@ use App\Models\Transport;
 use App\Http\Requests\ShipmentRequest;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ReportDeliveryController extends Controller
@@ -337,7 +338,8 @@ class ReportDeliveryController extends Controller
             }], 'quantity')
             ->withSum(['shipments as shipment_price_sum' => function ($query) use ($date) {
                 $query->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
+                    ->whereYear('created_at', date('Y'))
+                    ->select(DB::raw('SUM(price * quantity)'));
             }], 'price')
             ->withSum(['supplies as supply_quantity_sum' => function ($query) use ($date) {
                 $query->whereMonth('created_at', $date)
@@ -345,7 +347,8 @@ class ReportDeliveryController extends Controller
             }], 'quantity')
             ->withSum(['supplies as supply_price_sum' => function ($query) use ($date) {
                 $query->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
+                    ->whereYear('created_at', date('Y'))
+                    ->select(DB::raw('SUM(price * quantity)'));
             }], 'price')
             ->get();
 
