@@ -44,6 +44,11 @@ class Product extends Model
         return $this->hasMany(ShipmentProduct::class);
     }
 
+    public function supplies()
+    {
+        return $this->hasMany(SupplyPosition::class);
+    }
+
     public function tech_charts()
     {
         return
