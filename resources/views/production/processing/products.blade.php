@@ -301,6 +301,10 @@
 
                                         @if ($column == 'name' || $column == 'id')
                                             {{ $entityItem->$column }}
+                                        @elseif($column == 'quantity' || $column == 'quantity_norm')
+                                            {{ number_format((int) $entityItem->$column, 0, ',', ' ' ) }}
+                                        @elseif ($column == 'saldo')
+                                            {{ !is_null($entityItem->quantity_norm) && !is_null($entityItem->quantity) ? number_format((int) $entityItem->quantity_norm - $entityItem->quantity, 0, ',', ' ' ) : '' }}
                                         @elseif($column == 'processing_id')
                                             @if ($entityItem->processing_id)
                                                 <a href="{{ route('processings.show', $entityItem->processing_id) }}"
@@ -313,7 +317,7 @@
                                         @elseif($column == 'product_id')
                                             <a href="{{ route('product.show', $entityItem->product_id) }}"
                                                 class="text-blue-500 hover:text-blue-600">
-                                                {{ $entityItem->product->name }}
+                                                {{ $entityItem->product->name ?? '' }}
                                             </a>
                                         @else
                                             @if($column == 'sum')
@@ -335,7 +339,7 @@
                             @foreach ($resColumns as $column => $title)
                                 @if ($column == 'quantity')
                                     <td class="px-3 py-4 text-right">
-                                        {{ $totalQuantity }}
+                                        {{ number_format((int) $totalQuantity, 0, ',', ' ') }}
                                     </td>
                                 @elseif ($column == 'sum')
                                     <td class="px-3 py-4 text-right">
