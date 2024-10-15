@@ -7,10 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Carrier;
 use App\Models\Contact;
 use App\Models\Delivery;
+use App\Models\Product;
 use App\Models\Shipment;
 use App\Models\ShipmentProduct;
+use App\Models\SupplyPosition;
 use App\Models\Transport;
 use App\Http\Requests\ShipmentRequest;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use DateTime;
 use Illuminate\Http\Request;
 
 class ReportDeliveryController extends Controller
@@ -289,6 +293,90 @@ class ReportDeliveryController extends Controller
             'orderBy',
             'selectColumn',
             'totals'
+        ));
+    }
+
+    public function category(Request $request){
+        $entityName = 'Сводка по доставке';
+
+        $month_list = array(
+            '01'  => 'январь',
+            '02'  => 'февраль',
+            '03'  => 'март',
+            '04'  => 'апрель',
+            '05'  => 'май',
+            '06'  => 'июнь',
+            '07'  => 'июль',
+            '08'  => 'август',
+            '09'  => 'сентябрь',
+            '10' => 'октябрь',
+            '11' => 'ноябрь',
+            '12' => 'декабрь'
+        );
+
+        if (isset($request->date)) {
+            $date = $request->date;
+        } else {
+            $date = date('m');
+        }
+
+        $dateRus = $month_list[$date];
+
+        $date1 = new DateTime(date('Y') . $date . '01');
+        $date2 = new DateTime(date('Y') . $date . '01');
+
+        $datePrev = $date1->modify('-1 month')->format('m');
+        $dateNext = $date2->modify('+1 month')->format('m');
+
+        // Managers
+        $entityItems = Product::query()
+            ->where('building_material', 'доставка')
+            ->withSum(['shipments as shipment_quantity_sum' => function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            }], 'quantity')
+            ->withSum(['shipments as shipment_price_sum' => function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            }], 'price')
+            ->withSum(['supplies as supply_quantity_sum' => function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            }], 'quantity')
+            ->withSum(['supplies as supply_price_sum' => function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'));
+            }], 'price')
+            ->get();
+
+
+
+        $selected = [
+            "sold",
+            "buy",
+            "saldo",
+            'sold_rub',
+            "buy_rub",
+            "saldo_rub",
+        ];
+
+        foreach ($selected as $column) {
+            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
+        }
+
+        return view("report.delivery_category", compact(
+            'entityItems',
+            'entityName',
+            "resColumns",
+            "resColumnsAll",
+            'dateNext',
+            'datePrev',
+            'date',
+            'dateRus',
         ));
     }
 
