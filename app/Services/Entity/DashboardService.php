@@ -238,7 +238,7 @@ class DashboardService
     {
         $arUrl = explode("/", session('_previous.url'));
         $referer = explode("?", $arUrl[3])[0];
-        $roundPallet = $this->options::where('code', '=', "round_number")->first()?->value;
+        $roundPallet = Option::where('code', '=', "round_number")->first()?->value;
 
         if ($date_plan) {
             $date = $date_plan;
