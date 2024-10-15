@@ -252,6 +252,8 @@ class DashboardService
         $shipped_count = [];
         $residual_count = [];
 
+        $count = 'count_pallets';
+
         $labels = [
             '00:00',
             '08:00',
@@ -325,6 +327,8 @@ class DashboardService
                     $queries->where('building_material', Product::CONCRETE);
                 });
             })->get();
+
+            $count = 'quantity';
         }
 
         foreach ($labels as $key => $label) {
@@ -333,21 +337,20 @@ class DashboardService
             $residual_count[$key] = 0;
         }
 
-
         foreach ($labels as $key => $label) {
 
             if ($key !== count($labels) - 1) {
                 $nextKey = $key + 1;
                 $thisTime = substr($label, 0, -1) . '1';
 
-                $position_count = $orders->whereBetween('date_plan', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->sum(function ($items) {
+                $position_count = $orders->whereBetween('date_plan', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->sum(function ($items) use ($count) {
                     $sum = 0;
                     foreach ($items->positions as $position) {
                         if (
                             $position->product->building_material !== 'доставка' &&
                             $position->product->building_material !== 'не выбрано'
                         ) {
-                            $sum += $position->quantity;
+                            $sum += $position->$count;
                         }
                     }
                     return $sum;
