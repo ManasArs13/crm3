@@ -54,12 +54,7 @@
                     <a href="{{ route('dashboard-3', ['date_plan' => $dateNext]) }}" class="mx-2 text-lg">&#9658;</a>
                 </div>
             </div>
-            @if (request()->routeIs('dashboard-3'))
-                @include('dashboard.components.canvasConcrete', ['date' => $date])
-            @else
-                @include('dashboard.components.canvas', ['date' => $date])
-            @endif
-
+            @include('dashboard.components.canvas', ['date' => $date])
             <div class="block border-t-2 py-5 overflow-x-scroll">
                 @include('dashboard.components.orderTable')
             </div>
