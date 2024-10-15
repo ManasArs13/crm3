@@ -87,6 +87,11 @@
                     ],
                 },
                 options: {
+                    scales: {
+                        y: {
+                            suggestedMin: 0,
+                         }
+                    },
                     scale: {
                         ticks: {
                             beginAtZero: true,
