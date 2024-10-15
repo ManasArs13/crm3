@@ -56,8 +56,24 @@
                                 </thead>
                             <tbody>
 
+                            @php
+                                $shipment_quantity_sum_total = 0;
+                                $supply_quantity_sum_total = 0;
+                                $quantity_saldo_total = 0;
+                                $shipment_price_sum_total = 0;
+                                $supply_price_sum_total = 0;
+                                $_price_saldo_total = 0;
+                            @endphp
 
                             @foreach ($entityItems as $entityItem)
+                                @php
+                                    $shipment_quantity_sum_total += $entityItem->shipment_quantity_sum ? $entityItem->shipment_quantity_sum : 0;
+                                    $supply_quantity_sum_total += $entityItem->supply_quantity_sum ? $entityItem->supply_quantity_sum : 0;
+                                    $quantity_saldo_total += $entityItem->shipment_quantity_sum && $entityItem->supply_quantity_sum ? $entityItem->shipment_quantity_sum - $entityItem->supply_quantity_sum : 0;
+                                    $shipment_price_sum_total += $entityItem->shipment_price_sum ? $entityItem->shipment_price_sum : 0;
+                                    $supply_price_sum_total += $entityItem->supply_price_sum ? $entityItem->supply_price_sum : 0;
+                                    $_price_saldo_total += $entityItem->shipment_price_sum && $entityItem->supply_price_sum ? $entityItem->shipment_price_sum - $entityItem->supply_price_sum : 0;
+                                @endphp
                                 <tr class="border-b-2">
                                     <td class="break-all max-w-96 truncate px-2 py-3">{{ $entityItem->name }}</td>
 
@@ -101,6 +117,16 @@
 
                                 </tr>
                             @endforeach
+
+                            <tr class="border-b-2 bg-neutral-100">
+                                <td class="break-all max-w-96 truncate px-2 py-3">Итоги: </td>
+                                <td class="break-all max-w-96 truncate px-2 py-3">{{ number_format($shipment_quantity_sum_total, 0, ',', ' ') }}</td>
+                                <td class="break-all max-w-96 truncate px-2 py-3">{{ number_format($supply_quantity_sum_total, 0, ',', ' ') }}</td>
+                                <td class="break-all max-w-96 truncate px-2 py-3">{{ number_format($quantity_saldo_total, 0, ',', ' ') }}</td>
+                                <td class="break-all max-w-96 truncate px-2 py-3">{{ number_format($shipment_price_sum_total, 0, ',', ' ') }}</td>
+                                <td class="break-all max-w-96 truncate px-2 py-3">{{ number_format($supply_price_sum_total, 0, ',', ' ') }}</td>
+                                <td class="break-all max-w-96 truncate px-2 py-3">{{ number_format($_price_saldo_total, 0, ',', ' ') }}</td>
+                            </tr>
 
                             </tbody>
                         </table>
