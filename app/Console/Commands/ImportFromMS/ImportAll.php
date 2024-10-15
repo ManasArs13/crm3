@@ -51,7 +51,7 @@ class ImportAll extends Command
 
         Artisan::call('ms:import-residual');
 
-        Artisan::call('ms:import-tech-chart');
+        Artisan::call('ms:import-tech-chart --all');
         Artisan::call('ms:import-processing --all');
 
     }

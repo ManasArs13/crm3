@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable()->index();
             $table->string('description')->nullable();
             $table->foreignId('tech_chart_id')->on('tech_carts')->nullable()->index();
-            $table->decimal('quantity', 8, 1)->nullable()->index();
+            $table->decimal('quantity', 8, 1)->nullable()->default(0.0)->index();
             $table->decimal("sum", 10, 1)->default(0.0)->index();
             $table->unsignedInteger('hours')->nullable();
             $table->unsignedInteger('cycles')->nullable();

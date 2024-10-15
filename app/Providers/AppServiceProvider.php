@@ -7,8 +7,10 @@ use App\Models\Order;
 use App\Models\OrderAmo;
 use App\Models\Product;
 use App\Models\ShipmentProduct;
+use App\Models\TechProcess;
 use App\Observers\OrderAmoObserver;
 use App\Observers\OrderMsObserver;
+use App\Observers\Production\ProcessingObserer;
 use App\Observers\ProductObserver;
 use App\Observers\Shipment\ShipmentProductObserver;
 use App\Services\Entity\ContactMsService;
@@ -39,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         OrderAmo::observe(OrderAmoObserver::class);
         Product::observe(ProductObserver::class);
         Contact::observe(ContactMsService::class);
-
+        TechProcess::observe(ProcessingObserer::class);
         ShipmentProduct::observe(ShipmentProductObserver::class);
 
         // \URL::forceRootUrl(\Config::get('app.url'));
