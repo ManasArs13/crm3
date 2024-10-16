@@ -307,17 +307,31 @@ class DeviationController extends Controller
     }
 
     public function total($entityItems, $request){
-        $shipment_builder = Shipment::query()->leftJoin('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id');
-        $shipment_sum = (new ShipmentFilter($shipment_builder, $request))->apply()->sum('quantity');
+        $shipment_builder = Shipment::query()
+            ->leftJoin('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id')
+            ->leftJoin('products', 'shipment_products.product_id', '=', 'products.id')
+            ->where('products.building_material', '!=', 'доставка');
 
+        $filtered_shipment_builder = (new ShipmentFilter($shipment_builder, $request))->apply();
+
+        $shipment_sum = $filtered_shipment_builder->sum('quantity');
+
+        $totals = $filtered_shipment_builder
+            ->selectRaw('
+                SUM(shipment_products.price * shipment_products.quantity) as total_price,
+                SUM(shipment_products.price_norm * shipment_products.quantity) as total_price_norm
+            ')
+            ->first();
 
         $shipment_totals = [
-            'total_sum' => $entityItems->sum('suma'),
+            'total_sum' => $totals->total_price,
             'total_delivery_price' => $entityItems->sum('delivery_price'),
             'total_delivery_price_norm' => $entityItems->sum('delivery_price_norm'),
             'total_delivery_sum' => $entityItems->sum('delivery_fee'),
             'total_payed_sum' => $entityItems->sum('paid_sum'),
             'positions_count' => $shipment_sum,
+            'price_norm' => $totals->total_price_norm,
+            'saldo' => $totals->total_price_norm - $totals->total_price,
         ];
 
         return $shipment_totals;

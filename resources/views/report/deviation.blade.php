@@ -266,6 +266,8 @@
                                     $totalDeliveryPriceNorm = $totals['total_delivery_price_norm'];
                                     $totalDeliverySum = $totals['total_delivery_sum'];
                                     $totalPaidSum = $totals['total_payed_sum'];
+                                    $totalPriceNorm = $totals['price_norm'];
+                                    $totalSaldo = $totals['saldo'];
                                 @endphp
                                 @foreach ($entityItems as $entityItem)
                                     @php
@@ -417,6 +419,14 @@
                                         @elseif($column == 'delivery_price')
                                             <td class="overflow-auto px-6 py-4 text-right">
                                                 {{ number_format((int) $totalDeliveryPrice, 0, ',', ' ') }}
+                                            </td>
+                                        @elseif($column == 'deviation_price')
+                                            <td class="overflow-auto px-6 py-4 text-left">
+                                                {{ number_format((int) $totalPriceNorm, 0, ',', ' ') }}
+                                            </td>
+                                        @elseif($column == 'saldo')
+                                            <td class="overflow-auto px-6 py-4 text-left">
+                                                {{ number_format((int) $totalSaldo, 0, ',', ' ') }}
                                             </td>
                                         @elseif($column == 'delivery_price_norm')
                                             <td class="overflow-auto px-6 py-4 text-right">
