@@ -121,9 +121,6 @@ class ProcessingService implements EntityInterface
                         $entity_material->product_id = $product_bd['id'];
                         $entity_material->sum = $sum;
 
-                        $entity_material->save();
-
-
                         $total_quantity_norm = 0;
 
                         if (count($entity->products) > 0) {
