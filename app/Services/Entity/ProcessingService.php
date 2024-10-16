@@ -122,35 +122,35 @@ class ProcessingService implements EntityInterface
                         $entity_material->sum = $sum;
 
                         $entity_material->save();
-                    }
 
 
-                    $total_quantity_norm = 0;
-   
-                    if (count($entity->products) > 0) {
-                        foreach ($entity->products as $product) {
+                        $total_quantity_norm = 0;
 
-                            $techChart = TechChart::query()
-                                ->with('materials')
-                                ->join('tech_chart_products', function (JoinClause $join) use ($product) {
-                                    $join->on('tech_charts.id', '=', 'tech_chart_products.tech_chart_id')
-                                        ->where('tech_chart_products.product_id', '=', $product->id);
-                                })
-                                ->First();
-  
-                            if ($techChart && isset($techChart->materials) && count($techChart->materials) > 0) {
-                                foreach ($techChart->materials as $techChartMaterial) {
+                        if (count($entity->products) > 0) {
+                            foreach ($entity->products as $product) {
 
-                                    if ($techChartMaterial->id == $product_bd['id']) {
-                                        $total_quantity_norm += $techChartMaterial->pivot->quantity * $product->pivot->quantity;
+                                $techChart = TechChart::query()
+                                    ->with('materials')
+                                    ->join('tech_chart_products', function (JoinClause $join) use ($product) {
+                                        $join->on('tech_charts.id', '=', 'tech_chart_products.tech_chart_id')
+                                            ->where('tech_chart_products.product_id', '=', $product->id);
+                                    })
+                                    ->First();
+
+                                if ($techChart && isset($techChart->materials) && count($techChart->materials) > 0) {
+                                    foreach ($techChart->materials as $techChartMaterial) {
+
+                                        if ($techChartMaterial->id == $product_bd['id']) {
+                                            $total_quantity_norm += $techChartMaterial->pivot->quantity * $product->pivot->quantity;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    $entity_material->quantity_norm = $total_quantity_norm;
-                    $entity_material->save();
+                        $entity_material->quantity_norm = $total_quantity_norm;
+                        $entity_material->save();
+                    }
                 }
             }
         }
