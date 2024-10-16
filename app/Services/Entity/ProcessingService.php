@@ -9,6 +9,7 @@ use App\Models\TechProcess;
 use App\Models\TechProcessMaterial;
 use App\Models\TechProcessProduct;
 use App\Services\Api\MoySkladService;
+use Illuminate\Database\Query\JoinClause;
 
 class ProcessingService implements EntityInterface
 {
@@ -122,8 +123,36 @@ class ProcessingService implements EntityInterface
 
                         $entity_material->save();
                     }
+
+
+                    $total_quantity_norm = 0;
+   
+                    if (count($entity->products) > 0) {
+                        foreach ($entity->products as $product) {
+
+                            $techChart = TechChart::query()
+                                ->with('materials')
+                                ->join('tech_chart_products', function (JoinClause $join) use ($product) {
+                                    $join->on('tech_charts.id', '=', 'tech_chart_products.tech_chart_id')
+                                        ->where('tech_chart_products.product_id', '=', $product->id);
+                                })
+                                ->First();
+  
+                            if ($techChart && isset($techChart->materials) && count($techChart->materials) > 0) {
+                                foreach ($techChart->materials as $techChartMaterial) {
+
+                                    if ($techChartMaterial->id == $product_bd['id']) {
+                                        $total_quantity_norm += $techChartMaterial->pivot->quantity * $product->pivot->quantity;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    $entity_material->quantity_norm = $total_quantity_norm;
+                    $entity_material->save();
                 }
-            } 
+            }
         }
     }
 }
