@@ -437,7 +437,7 @@
                                                 {{ number_format((int) $totalDeliverySum, 0, ',', ' ') }}
                                             </td>
                                         @elseif($column == 'paid_sum')
-                                            <td class="overflow-auto px-6 py-4 text-right">
+                                            <td class="overflow-auto px-6 py-4 text-left">
                                                 {{ number_format((int) $totalPaidSum, 0, ',', ' ') }}
                                             </td>
                                         @else

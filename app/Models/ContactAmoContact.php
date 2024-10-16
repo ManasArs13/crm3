@@ -20,6 +20,6 @@ class ContactAmoContact extends Model
 
     public function AmoContact()
     {
-        return $this->belongsTo(ContactAmo::class );
+        return $this->belongsTo(ContactAmo::class, 'contact_amo_id' );
     }
 }

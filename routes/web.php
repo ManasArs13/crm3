@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AmoContactsBanchController;
 use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactAmoController;
@@ -167,6 +168,8 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
 
     // Moy Sklad
     Route::resources([
+        // Amo CRM
+        'amo-order' => AmoOrderController::class,
         'product' => ProductController::class,
         'transport' => TransportController::class,
         'transportType' => TransportTypeController::class,
@@ -180,16 +183,14 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
         'supply' => SupplyController::class,
         'supply_positions' => SupplyPositionController::class,
     ]);
+    Route::get('bunch_of_contacts', [AmoContactsBanchController::class, 'index'])->name('bunch_of_contacts');
+
 
     Route::prefix('transports')->name('transport.')->group(function () {
         Route::resource('shift', ShiftController::class)->only(['index', 'update']);
         Route::get('/{shift}', [ShiftController::class, 'index'])->where('shift', 'onshift|offshift')->name('shifts');
     });
 
-    // Amo CRM
-    Route::resources([
-        'amo-order' => AmoOrderController::class,
-    ]);
 
     //Доп
     Route::get('shipments/createFromOrder/{orderId}', [ShipmentController::class, 'createFromOrder'])->name('shipment.createFromOrder');

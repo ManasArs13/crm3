@@ -234,6 +234,9 @@
                                     <x-dropdown-link :href="route('contactAmo.index')">
                                         Контакты АМО
                                     </x-dropdown-link>
+                                    <x-dropdown-link :href="route('bunch_of_contacts')">
+                                        Связка контактов
+                                    </x-dropdown-link>
                                 </x-slot>
                             </x-dropdown>
                         </div>
@@ -612,8 +615,9 @@
                                     <a href="{{ route('amo-order.index') }}"
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Заказы</a>
                                     <a href="{{ route('contactAmo.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты
-                                        АМО</a>
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты АМО</a>
+                                    <a href="{{ route('bunch_of_contacts') }}"
+                                       class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Связка контактов</a>
                                 </div>
                             </div>
                             @role('admin')
