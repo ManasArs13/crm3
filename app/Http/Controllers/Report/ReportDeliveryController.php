@@ -341,15 +341,22 @@ class ReportDeliveryController extends Controller
                     ->whereYear('created_at', date('Y'))
                     ->select(DB::raw('SUM(price * quantity)'));
             }], 'price')
+
             ->withSum(['supplies as supply_quantity_sum' => function ($query) use ($date) {
-                $query->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
+                $query->whereHas('supply', function ($subQuery) use ($date) {
+                    $subQuery->whereMonth('moment', $date)
+                        ->whereYear('moment', date('Y'));
+                });
             }], 'quantity')
             ->withSum(['supplies as supply_price_sum' => function ($query) use ($date) {
-                $query->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'))
+                $query->whereHas('supply', function ($subQuery) use ($date) {
+                    $subQuery->whereMonth('moment', $date)
+                        ->whereYear('moment', date('Y'));
+                })
                     ->select(DB::raw('SUM(price * quantity)'));
             }], 'price')
+
+
             ->get();
 
 
