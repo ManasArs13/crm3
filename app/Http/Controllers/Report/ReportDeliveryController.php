@@ -333,12 +333,16 @@ class ReportDeliveryController extends Controller
         $entityItems = Product::query()
             ->where('building_material', 'доставка')
             ->withSum(['shipments as shipment_quantity_sum' => function ($query) use ($date) {
-                $query->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'));
+                $query->whereHas('shipment', function ($subQuery) use ($date) {
+                    $subQuery->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                });
             }], 'quantity')
             ->withSum(['shipments as shipment_price_sum' => function ($query) use ($date) {
-                $query->whereMonth('created_at', $date)
-                    ->whereYear('created_at', date('Y'))
+                $query->whereHas('shipment', function ($subQuery) use ($date) {
+                    $subQuery->whereMonth('created_at', $date)
+                        ->whereYear('created_at', date('Y'));
+                })
                     ->select(DB::raw('SUM(price * quantity)'));
             }], 'price')
             ->withSum(['supplies as supply_quantity_sum' => function ($query) use ($date) {

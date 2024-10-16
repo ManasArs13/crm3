@@ -15,6 +15,11 @@ class ContactAmo extends Model
         'id'
     ];
 
+    public function amo_order()
+    {
+        return $this->hasMany(OrderAmo::class, 'contact_amo_id');
+    }
+
     public function contact(): HasOneThrough
     {
         return $this->hasOneThrough(ContactAmo::class, ContactAmoContact::class, 'contact_amo_id', 'id', 'id', 'contact_id');
