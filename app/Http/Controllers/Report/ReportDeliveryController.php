@@ -329,7 +329,7 @@ class ReportDeliveryController extends Controller
         $datePrev = $date1->modify('-1 month')->format('m');
         $dateNext = $date2->modify('+1 month')->format('m');
 
-        // Managers
+
         $entityItems = Product::query()
             ->where('building_material', 'доставка')
             ->withSum(['shipments as shipment_quantity_sum' => function ($query) use ($date) {
@@ -341,7 +341,6 @@ class ReportDeliveryController extends Controller
                     ->whereYear('created_at', date('Y'))
                     ->select(DB::raw('SUM(price * quantity)'));
             }], 'price')
-
             ->withSum(['supplies as supply_quantity_sum' => function ($query) use ($date) {
                 $query->whereHas('supply', function ($subQuery) use ($date) {
                     $subQuery->whereMonth('moment', $date)
@@ -355,8 +354,6 @@ class ReportDeliveryController extends Controller
                 })
                     ->select(DB::raw('SUM(price * quantity)'));
             }], 'price')
-
-
             ->get();
 
 
@@ -371,7 +368,6 @@ class ReportDeliveryController extends Controller
         ];
 
         foreach ($selected as $column) {
-            $resColumnsAll[$column] = ['name_rus' => trans("column." . $column), 'checked' => in_array($column, $selected)];
 
             if (in_array($column, $selected)) {
                 $resColumns[$column] = trans("column." . $column);
@@ -382,7 +378,6 @@ class ReportDeliveryController extends Controller
             'entityItems',
             'entityName',
             "resColumns",
-            "resColumnsAll",
             'dateNext',
             'datePrev',
             'date',
