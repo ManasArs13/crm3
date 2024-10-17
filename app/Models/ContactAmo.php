@@ -22,7 +22,7 @@ class ContactAmo extends Model
 
     public function contact(): HasOneThrough
     {
-        return $this->hasOneThrough(ContactAmo::class, ContactAmoContact::class, 'contact_amo_id', 'id', 'id', 'contact_id');
+        return $this->hasOneThrough(Contact::class, ContactAmoContact::class, 'contact_amo_id', 'id', 'id', 'contact_id');
     }
 
     public function manager()

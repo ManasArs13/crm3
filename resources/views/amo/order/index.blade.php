@@ -1,5 +1,7 @@
 <x-app-layout>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         @if (session('success'))
@@ -174,6 +176,24 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                            @elseif ($filter['type'] == 'select2')
+                                                <div class="flex flex-row gap-1 w-100">
+                                                    <div class="basis-1/5">
+                                                        <p>
+                                                            {{ $filter['name_rus'] }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="basis-4/5 mb-4">
+                                                        <select
+                                                            class="contact change_name select-default2" multiple="multiple"
+                                                            name="filters[{{ $filter['name'] }}][]"
+                                                            id="contact_name" data-placeholder="Выберите контакт">
+                                                            @foreach($filter['values'] as $value)
+                                                                <option value="{{ $value['value'] }}" selected>{{ $value['name'] }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             @elseif($filter['type'] == 'checkbox')
                                                 <div class="flex flex-row gap-1 w-100">
                                                     <div class="basis-1/5">
@@ -212,54 +232,7 @@
                                 </x-slot>
                             </x-dropdown>
                         </div>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function(event) {
-
-                                document.getElementById('reset-button').addEventListener('click', function() {
-                                    // Список ID чекбоксов, которые нужно отметить
-                                    const checkedCheckboxes = [{!! '"' . implode('", "', array_values($select)) . '"' !!}];
-
-                                    // Сбрасываем все чекбоксы
-                                    const allCheckboxes = document.querySelectorAll('.columns_all');
-                                    allCheckboxes.forEach(checkbox => {
-                                        checkbox.checked = false;
-                                    });
-
-                                    // Включаем нужные чекбоксы
-                                    checkedCheckboxes.forEach(id => {
-                                        const checkbox = document.getElementById(`checkbox-${id}`);
-                                        if (checkbox) {
-                                            checkbox.checked = true;
-                                        }
-                                    });
-                                });
-
-                                document.getElementById('reset-button2').addEventListener('click', function() {
-
-
-                                    const dateInputs = document.querySelectorAll('.date-default');
-                                    dateInputs.forEach(dateInput => {
-                                        dateInput.value = '';
-                                    });
-
-                                    const selects = document.querySelectorAll('.select-default');
-                                    selects.forEach(select => {
-                                        if (select.options.length > 0) {
-                                            select.selectedIndex = 0;
-                                        }
-                                    });
-
-                                    const allCheckboxes = document.querySelectorAll('.columns_all2');
-                                    allCheckboxes.forEach(checkbox => {
-                                        checkbox.checked = true;
-                                    });
-
-                                });
-
-                            });
-                        </script>
                     </form>
-
                 </div>
             </div>
 
@@ -335,5 +308,94 @@
         </div>
 
     </div>
+    <style>
+        .select2, .select2-selection{
+            width: 100% !important;
+            min-height: 42px !important;
+            overflow: auto;
+            max-height: 120px !important;
 
+        }
+        .select2-search__field{
+            width: 200px !important;
+        }
+        .select2-selection, .select2-selection--multiple{
+            padding-top: 3px;
+            padding-left: 7px;
+            border: 1px solid #d4d4d4 !important;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function(){
+            $(".select2").select2();
+
+            $("#contact_name").select2({
+                width: '372px',
+                tags: true,
+                ajax: {
+                    delay: 250,
+                    url: '/api/contacts_amo/get',
+                    data: function(params) {
+                        var queryParameters = {
+                            term: params.term,
+                            page: params.page || 1
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function(data, params) {
+                        params.current_page = params.current_page || 1;
+                        return {
+                            results: $.map(data.data, function(item) {
+                                return {
+                                    text: item.phone,
+                                    id: item.id,
+                                    attr1: item.name,
+                                }
+                            }),
+                            pagination: {
+                                more: (params.current_page * data.per_page) < data.total
+                            }
+                        };
+                    }
+                },
+            });
+
+            $("#reset-button").on("click", function(){
+                const checkedCheckboxes = [{!! '"' . implode('", "', array_values($select)) . '"' !!}];
+
+                const allCheckboxes = document.querySelectorAll('.columns_all');
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                checkedCheckboxes.forEach(id => {
+                    const checkbox = document.getElementById(`checkbox-${id}`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            });
+
+            $("#reset-button2").on("click", function(){
+                const dateInputs = document.querySelectorAll('.date-default');
+                dateInputs.forEach(dateInput => {
+                    dateInput.value = '';
+                });
+
+                const selects = document.querySelectorAll('.select-default');
+                selects.forEach(select => {
+                    if (select.options.length > 0) {
+                        select.selectedIndex = 0;
+                    }
+                });
+
+                const allCheckboxes = document.querySelectorAll('.columns_all2');
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+                $('.select-default2').empty();
+            });
+        });
+    </script>
 </x-app-layout>

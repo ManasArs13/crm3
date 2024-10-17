@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Filters\ContactAmoFilter;
 use App\Http\Requests\FilterRequest;
 use App\Models\ContactAmoContact;
+use App\Models\ContactAmo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class AmoContactsBanchController extends Controller
 {
@@ -139,6 +141,67 @@ class AmoContactsBanchController extends Controller
             'filters',
             'orderBy',
             'selectColumn'
+        ));
+    }
+    public function doubleOrders(Request $request){
+        $entityName = 'Дубли сделок';
+
+        $month_list = array(
+            '01'  => 'январь',
+            '02'  => 'февраль',
+            '03'  => 'март',
+            '04'  => 'апрель',
+            '05'  => 'май',
+            '06'  => 'июнь',
+            '07'  => 'июль',
+            '08'  => 'август',
+            '09'  => 'сентябрь',
+            '10' => 'октябрь',
+            '11' => 'ноябрь',
+            '12' => 'декабрь'
+        );
+
+        if (isset($request->date)) {
+            $date = $request->date;
+        } else {
+            $date = date('m');
+        }
+
+        $dateRus = $month_list[$date];
+
+        $date1 = new DateTime(date('Y') . $date . '01');
+        $date2 = new DateTime(date('Y') . $date . '01');
+
+        $datePrev = $date1->modify('-1 month')->format('m');
+        $dateNext = $date2->modify('+1 month')->format('m');
+
+
+        $entityItems = ContactAmo::query()
+            ->with('contact')
+            ->withCount('amo_order')
+            ->paginate(100);
+
+        $selected = [
+            "id",
+            "contact_amo_id",
+            "count_orders",
+        ];
+
+        foreach ($selected as $column) {
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
+        }
+
+        return view("amo.order.doubles", compact(
+            'entityItems',
+            'entityName',
+            "resColumns",
+            'dateNext',
+            'datePrev',
+            'date',
+            'dateRus',
         ));
     }
 }

@@ -851,7 +851,7 @@
                         checkbox.checked = true;
                     });
                     $('.select-default2').empty();
-                })
+                });
 
 
             });

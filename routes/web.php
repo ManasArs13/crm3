@@ -184,6 +184,7 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
         'supply_positions' => SupplyPositionController::class,
     ]);
     Route::get('bunch_of_contacts', [AmoContactsBanchController::class, 'index'])->name('bunch_of_contacts');
+    Route::get('double_of_orders', [AmoContactsBanchController::class, 'doubleOrders'])->name('double_of_orders');
 
 
     Route::prefix('transports')->name('transport.')->group(function () {
