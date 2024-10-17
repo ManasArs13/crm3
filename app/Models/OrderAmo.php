@@ -14,6 +14,10 @@ class OrderAmo extends Model
         '*'
     ];
 
+    protected $casts = [
+        'closed_at' => 'Y-m-d H:i:s',
+    ];
+
     public function getColumns()
     {
         return $this->AllColumns;
