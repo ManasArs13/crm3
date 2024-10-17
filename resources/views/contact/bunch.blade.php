@@ -284,9 +284,9 @@
                                             @elseif($column == 'created_at_amo')
                                                 {{ $entityItem->AmoContact->created_at ?? '' }}
                                             @elseif($column == 'shipment_id_ms')
-                                                {{ $entityItem->contact->shipments->sum('products_sum_quantity_price') }}
+                                                {{ $entityItem->contact->shipments->sum('products_sum_quantity_price') ?? '' }}
                                             @elseif($column == 'shipment_id_amo')
-                                                {{ $entityItem->AmoContact->amo_order->sum('price') }}
+                                                {{ $entityItem->AmoContact->amo_order->sum('price') ?? '' }}
                                             @elseif($column == 'manager_id_ms')
                                                 {{ $entityItem->contact->manager->name ?? '' }}
                                             @elseif($column == 'manager_id_amo')
