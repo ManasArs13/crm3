@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -54,8 +55,11 @@ class OrderAmo extends Model
         );
     }
 
-    public function setClosedAtAttribute($value)
+    protected function closed_at(): Attribute
     {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value)->format('d-m-Y H:i'),
+            set: fn (string $value) => Carbon::parse($value)->format('Y-m-d H:i:s'),
+        );
     }
 }
