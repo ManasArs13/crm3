@@ -14,9 +14,10 @@ class TalkAmoService implements EntityInterface
      */
     public function import(array $datas): void
     {
+        // TODO дописать импорт бесед
         foreach ($datas as $data) {
             foreach ($data as $row) {
-                dd($row);
+
                 $entity = TalkAmo::firstOrNew(['id' => $row->getId()]);
                 if ($entity->id === null) {
                     $entity->id = $row->getId();
