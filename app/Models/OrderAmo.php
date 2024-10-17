@@ -54,12 +54,4 @@ class OrderAmo extends Model
             'order_id'
         );
     }
-
-    protected function closed_at(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => Carbon::parse($value)->format('d-m-Y H:i'),
-            set: fn (string $value) => Carbon::parse($value)->format('Y-m-d H:i:s'),
-        );
-    }
 }

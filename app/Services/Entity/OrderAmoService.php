@@ -36,7 +36,7 @@ class OrderAmoService implements EntityInterface
                     $entity->status_amo_id = $row->getStatusId();
 
                     if ($row->getStatusId() == 142 || $row->getStatusId() == 143) {
-                        $entity->closed_at = $row->getClosedAt();
+                        $entity->closed_at = date('Y-m-d H:i:s', $row->getClosedAt());
                     }
                 }
 
