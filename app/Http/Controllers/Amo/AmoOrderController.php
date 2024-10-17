@@ -201,8 +201,10 @@ class AmoOrderController extends Controller
         $entityItems = ContactAmo::query()
             ->with('contact')
             ->withCount('amo_order')
-            ->whereMonth('created_at', $date)
-            ->whereYear('created_at', date('Y'))
+            ->whereHas('amo_order', function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                ->whereYear('created_at', date('Y'));
+            })
             ->having('amo_order_count', '>', 1)
             ->paginate(100);
 
