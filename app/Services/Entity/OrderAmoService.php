@@ -23,8 +23,6 @@ class OrderAmoService implements EntityInterface
 
                 $entity->name = $row->getName();
                 $entity->is_exist = 1;
-                $entity->created_at = $row->getCreatedAt();
-                $entity->closed_at = $row->getClosedAt();
 
                 $msOrder = null;
                 $msOrderLink = null;
@@ -34,6 +32,10 @@ class OrderAmoService implements EntityInterface
 
                 if ($row->getStatusId()) {
                     $entity->status_amo_id = $row->getStatusId();
+
+                    if ($row->getStatusId() == 142 || $row->getStatusId() == 143) {
+                        $entity->closed_at = $row->getClosedAt();
+                    }
                 }
 
                 $entity->price = $row->getPrice();
