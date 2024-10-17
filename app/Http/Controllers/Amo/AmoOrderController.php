@@ -199,14 +199,23 @@ class AmoOrderController extends Controller
 
 
         $entityItems = ContactAmo::query()
-            ->with('contact')
-            ->withCount('amo_order')
+            ->with(['contact', 'amo_order' => function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                ->whereYear('created_at', date('Y'));
+            }])
             ->whereHas('amo_order', function ($query) use ($date) {
                 $query->whereMonth('created_at', $date)
                 ->whereYear('created_at', date('Y'));
             })
+            ->withCount(['amo_order' => function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                ->whereYear('created_at', date('Y'));
+            }])
             ->having('amo_order_count', '>', 1)
             ->paginate(100);
+
+        $firstTime = date("Y-$date-01");
+        $lastTime = date("Y-$date-t");
 
         $selected = [
             "id",
@@ -229,6 +238,8 @@ class AmoOrderController extends Controller
             'datePrev',
             'date',
             'dateRus',
+            'firstTime',
+            'lastTime'
         ));
     }
 }

@@ -74,7 +74,7 @@
 
                                                 @case('count_orders')
                                                     @if(isset($entityItem->amo_order_count) && $entityItem->amo_order_count > 0)
-                                                        <a href="{{ route('amo-order.index', ['filters[contacts][]' => $entityItem->id]) }}" class="text-blue-700">
+                                                        <a href="{{ route('amo-order.index', ['filters[contacts][]' => $entityItem->id, 'filters[created_at][min]' => $firstTime, 'filters[created_at][max]' => $lastTime]) }}" class="text-blue-700">
                                                             {{ $entityItem->amo_order_count }}
                                                         </a>
                                                     @else
