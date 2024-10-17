@@ -276,9 +276,25 @@
                                             @if($column == 'created_at')
                                                 {{ $entityItem->created_at ?? '' }}
                                             @elseif($column == 'contact_id')
-                                                {{ $entityItem->contact->name ?? '' }}
+
+                                                @if(isset($entityItem->contact->contact_amo_link))
+                                                    <a href="{{ $entityItem->contact->contact_amo_link }}" target="_blank" class="text-blue-700">
+                                                        {{ $entityItem->contact->name ?? '' }}
+                                                    </a>
+                                                @else
+                                                    {{ $entityItem->contact->name ?? '' }}
+                                                @endif
+
                                             @elseif($column == 'contact_amo_id')
-                                                {{ $entityItem->AmoContact->name ?? '' }}
+
+                                                @if(isset($entityItem->AmoContact->contact_ms_link))
+                                                    <a href="{{ $entityItem->AmoContact->contact_ms_link }}" target="_blank" class="text-blue-700">
+                                                        {{ $entityItem->AmoContact->name ?? '' }}
+                                                    </a>
+                                                @else
+                                                    {{ $entityItem->AmoContact->name ?? '' }}
+                                                @endif
+
                                             @elseif($column == 'created_at_ms')
                                                 {{ $entityItem->contact->created_at ?? '' }}
                                             @elseif($column == 'created_at_amo')
