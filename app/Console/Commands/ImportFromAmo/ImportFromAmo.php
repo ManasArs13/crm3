@@ -38,6 +38,9 @@ class ImportFromAmo extends Command
         // $amoService->getProducts();
         $amoService->getContacts();
         $amoService->getLeadsWithContacts();
+
+        $amoService->getTalks();
+
         Option::query()
            ->where('code',AmoService::LAST_DATE_CODE)
            ->update(['value' => Carbon::now()->subDays(3)]);

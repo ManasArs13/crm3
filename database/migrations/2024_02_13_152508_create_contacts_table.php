@@ -25,7 +25,7 @@ return new class extends Migration
             $table->boolean("is_dublash")->default(0);
             $table->integer('is_archived')->nullable();
             $table->index('contact_amo_id');
-            $table->foreignId("manager_id")->nullable()->references('id')->on("managers")->index();
+            $table->foreignId("manager_id")->nullable()->references('id')->on("managers");
             $table->timestamps();
             $table->char('ms_id', 36)->nullable()->index();
             $table->softDeletes('deleted_at', 0);
