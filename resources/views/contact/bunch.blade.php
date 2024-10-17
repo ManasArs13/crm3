@@ -306,7 +306,7 @@
                                             @elseif($column == 'manager_id_ms')
                                                 {{ $entityItem->contact->manager->name ?? '' }}
                                             @elseif($column == 'manager_id_amo')
-                                                {{ $entityItem->contact->manager->name ?? '' }}
+                                                {{ $entityItem->AmoContact->manager->name ?? '' }}
                                             @endif
                                         </td>
                                     @endforeach

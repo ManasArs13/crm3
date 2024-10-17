@@ -21,7 +21,7 @@ class AmosContactController extends Controller
 
         // Contacts Amo
         $builder = ContactAmoContact::query()
-            ->with('contact.manager', 'AmoContact.amo_order')
+            ->with('contact.manager', 'AmoContact.amo_order', 'AmoContact.manager')
             ->with(['contact.shipments' => function($query) {
                 $query->withSum('products', DB::raw('quantity * price'));
             }]);
