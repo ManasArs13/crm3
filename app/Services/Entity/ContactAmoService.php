@@ -5,6 +5,7 @@ namespace App\Services\Entity;
 use App\Contracts\EntityInterface;
 use App\Models\Contact;
 use App\Models\ContactAmo;
+use App\Models\Manager;
 use App\Models\Order;
 use App\Models\Shipment;
 use GuzzleHttp\Client;
@@ -78,16 +79,23 @@ class ContactAmoService implements EntityInterface
                             $phone1 = (string)$values[1]->getValue();
                         }
                     }
+
+                    $managerField = $customFields->getBy('fieldId', 611253);
+                    if ($managerField != null) {
+                        $managerName = $managerField->getValues()[0]->getValue();
+                        $manager = Manager::where('name', 'LIKE', "%$managerName%")->first()?->id;
+                    }
                 }
 
-                    $entity->phone = $phones;
-                    $entity->phone_norm = $phoneNorm;
-                    $entity->phone1 = $phone1;
-                    $entity->is_success = $contactType;
-                    $entity->email = $email;
-                    $entity->contact_ms_id = $msContact;
-                    $entity->contact_ms_link = $msContactLink;
-                    $entity->save();
+                $entity->manager_id = $manager;
+                $entity->phone = $phones;
+                $entity->phone_norm = $phoneNorm;
+                $entity->phone1 = $phone1;
+                $entity->is_success = $contactType;
+                $entity->email = $email;
+                $entity->contact_ms_id = $msContact;
+                $entity->contact_ms_link = $msContactLink;
+                $entity->save();
             }
         }
     }

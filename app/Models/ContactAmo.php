@@ -25,6 +25,11 @@ class ContactAmo extends Model
         return $this->hasOneThrough(ContactAmo::class, ContactAmoContact::class, 'contact_amo_id', 'id', 'id', 'contact_id');
     }
 
+    public function manager()
+    {
+        return $this->hasOne(Manager::class, 'id', 'manager_id');
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
