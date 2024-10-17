@@ -8,6 +8,8 @@ use App\Http\Requests\Amo\AmoOrderRequest;
 use App\Models\ContactAmo;
 use App\Models\Order;
 use App\Models\OrderAmo;
+use Illuminate\Http\Request;
+use DateTime;
 
 class AmoOrderController extends Controller
 {
@@ -160,6 +162,71 @@ class AmoOrderController extends Controller
             'selectColumn',
             'filters',
             'select'
+        ));
+    }
+
+    public function doubleOrders(Request $request){
+        $entityName = 'Дубли сделок';
+
+        $month_list = array(
+            '01'  => 'январь',
+            '02'  => 'февраль',
+            '03'  => 'март',
+            '04'  => 'апрель',
+            '05'  => 'май',
+            '06'  => 'июнь',
+            '07'  => 'июль',
+            '08'  => 'август',
+            '09'  => 'сентябрь',
+            '10' => 'октябрь',
+            '11' => 'ноябрь',
+            '12' => 'декабрь'
+        );
+
+        if (isset($request->date)) {
+            $date = $request->date;
+        } else {
+            $date = date('m');
+        }
+
+        $dateRus = $month_list[$date];
+
+        $date1 = new DateTime(date('Y') . $date . '01');
+        $date2 = new DateTime(date('Y') . $date . '01');
+
+        $datePrev = $date1->modify('-1 month')->format('m');
+        $dateNext = $date2->modify('+1 month')->format('m');
+
+
+        $entityItems = ContactAmo::query()
+            ->with('contact')
+            ->withCount('amo_order')
+            ->whereMonth('created_at', $date)
+            ->whereYear('created_at', date('Y'))
+            ->having('amo_order_count', '>', 1)
+            ->paginate(100);
+
+        $selected = [
+            "id",
+            "contact_amo_id",
+            "count_orders",
+        ];
+
+        foreach ($selected as $column) {
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
+        }
+
+        return view("amo.order.doubles", compact(
+            'entityItems',
+            'entityName',
+            "resColumns",
+            'dateNext',
+            'datePrev',
+            'date',
+            'dateRus',
         ));
     }
 }
