@@ -23,6 +23,7 @@ class OrderAmoService implements EntityInterface
 
                 $entity->name = $row->getName();
                 $entity->is_exist = 1;
+                $entity->created_at = $row->getCreatedAt();
 
                 $msOrder = null;
                 $msOrderLink = null;
