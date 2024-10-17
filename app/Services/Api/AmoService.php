@@ -17,6 +17,7 @@ use App\Services\Entity\ContactAmoService;
 use App\Services\Entity\OrderAmoService;
 use App\Services\Entity\ProductAmoService;
 use App\Services\Entity\StatusAmoService;
+use App\Services\Entity\TalkAmoService;
 use Illuminate\Support\Facades\Log;
 use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Exception;
@@ -33,6 +34,8 @@ class AmoService
     private $orderAmoService;
     private $productAmoService;
 
+    private $talkAmoService;
+
     private $statusAmoService;
     protected $uploadsTokenFile;
 
@@ -42,11 +45,13 @@ class AmoService
         OrderAmoService $orderAmoService,
         StatusAmoService $statusAmoService,
         ProductAmoService $productAmoService,
+        TalkAmoService $talkAmoService
     ) {
         $this->contactAmoService = $contactAmoService;
         $this->orderAmoService = $orderAmoService;
         $this->statusAmoService = $statusAmoService;
         $this->productAmoService = $productAmoService;
+        $this->talkAmoService = $talkAmoService;
 
         $options = Option::query()->where("module", "amo")->get();
         $this->uploadsTokenFile = 'token_amocrm_widget.json';
@@ -217,7 +222,6 @@ class AmoService
                 $this->contactAmoService->import([$contacts]);
                 $i++;
             }
-         //   echo $i;
         } catch (AmoCRMApiNoContentException $exception) {
             Log::error(__METHOD__ . ' getContacts:' . $exception->getMessage());
         }
@@ -353,5 +357,43 @@ class AmoService
         } catch (AmoCRMApiNoContentException $exception) {
             Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
         }
+    }
+
+    public function getTalks()
+    {
+        $accessToken = $this->getToken();
+        $accessToken = $this->isExpiredToken($accessToken);
+        $baseDomain = $accessToken->getValues()['baseDomain'];
+
+        $this->apiClient->setAccessToken($accessToken)
+        ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+
+        // $filter = new ContactsFilter();
+        // $range = new BaseRangeFilter();
+        // $range->setFrom($this->options["last_date"]);
+        // $time = time();
+        // $range->setTo((int)$time);
+        // $filter->setUpdatedAt($range);
+        // $filter->setLimit(250);
+
+        $talkCollection = [];
+
+        try {
+            $talkCollection = $this->apiClient->talks()->get();
+            $this->talkAmoService->import([$talkCollection]);
+
+            // $i = 2;
+
+            // while ($talkCollection->getNextPageLink() != null) {
+            //     $filter->setPage($i);
+            //     $talkCollection = $this->apiClient->talks()->get($filter);
+            //     $this->talkAmoService->import([$talkCollection]);
+            //     $i++;
+            // }
+        } catch (AmoCRMApiException $exception) {
+            Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
+        }
+
+        return $talkCollection;
     }
 }
