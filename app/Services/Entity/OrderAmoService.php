@@ -6,6 +6,7 @@ use App\Contracts\EntityInterface;
 use App\Models\Manager;
 use App\Models\Order;
 use App\Models\OrderAmo;
+use Illuminate\Support\Facades\Log;
 
 class OrderAmoService implements EntityInterface
 {
@@ -36,6 +37,7 @@ class OrderAmoService implements EntityInterface
 
                     if ($row->getStatusId() == 142 || $row->getStatusId() == 143) {
                         $entity->closed_at = $row->getClosedAt();
+                        Log::debug($row->getClosedAt());
                     }
                 }
 
