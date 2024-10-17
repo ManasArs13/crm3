@@ -27,6 +27,11 @@ class Manager extends Model
         return $this->hasMany(Contact::class);
     }
 
+    public function contactAmos()
+    {
+        return $this->hasMany(ContactAmo::class);
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
