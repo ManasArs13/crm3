@@ -277,8 +277,8 @@
                                                 {{ $entityItem->created_at ?? '' }}
                                             @elseif($column == 'contact_id')
 
-                                                @if(isset($entityItem->contact->contact_amo_link))
-                                                    <a href="{{ $entityItem->contact->contact_amo_link }}" target="_blank" class="text-blue-700">
+                                                @if(isset($entityItem->AmoContact->contact_ms_link))
+                                                    <a href="{{ $entityItem->AmoContact->contact_ms_link }}" target="_blank" class="text-blue-700">
                                                         {{ $entityItem->contact->name ?? '' }}
                                                     </a>
                                                 @else
@@ -287,8 +287,8 @@
 
                                             @elseif($column == 'contact_amo_id')
 
-                                                @if(isset($entityItem->AmoContact->contact_ms_link))
-                                                    <a href="{{ $entityItem->AmoContact->contact_ms_link }}" target="_blank" class="text-blue-700">
+                                                @if(isset($entityItem->contact->contact_amo_link))
+                                                    <a href="{{ $entityItem->contact->contact_amo_link }}" target="_blank" class="text-blue-700">
                                                         {{ $entityItem->AmoContact->name ?? '' }}
                                                     </a>
                                                 @else

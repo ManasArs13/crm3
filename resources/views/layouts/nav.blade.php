@@ -237,6 +237,9 @@
                                     <x-dropdown-link :href="route('bunch_of_contacts')">
                                         Связка контактов
                                     </x-dropdown-link>
+                                    <x-dropdown-link :href="route('double_of_orders')">
+                                        Дубли сделок
+                                    </x-dropdown-link>
                                 </x-slot>
                             </x-dropdown>
                         </div>
@@ -618,6 +621,8 @@
                                         class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Контакты АМО</a>
                                     <a href="{{ route('bunch_of_contacts') }}"
                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Связка контактов</a>
+                                    <a href="{{ route('double_of_orders') }}"
+                                       class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Дубли сделок</a>
                                 </div>
                             </div>
                             @role('admin')

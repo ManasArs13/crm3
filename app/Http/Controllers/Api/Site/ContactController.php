@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api\Site;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ContactAmo;
 use App\Models\Contact;
 
 class ContactController extends Controller
@@ -12,6 +13,16 @@ class ContactController extends Controller
         ->where('phone', 'LIKE', '%'.$request->query('term') . '%')
         ->orWhere('name', 'LIKE', '%'.$request->query('term') . '%')
         ->orderBy('name')->paginate(10);
+
+        return response()->json($phones);
+    }
+
+    public function getAmoContacts(Request $request)
+    {
+        $phones = ContactAmo::query()
+            ->where('phone', 'LIKE', '%'.$request->query('term') . '%')
+            ->orWhere('name', 'LIKE', '%'.$request->query('term') . '%')
+            ->orderBy('name')->paginate(10);
 
         return response()->json($phones);
     }

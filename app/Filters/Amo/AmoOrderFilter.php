@@ -52,16 +52,14 @@ class AmoOrderFilter
         }
     }
 
-    // public function date_plan($value)
-    // {
-    //     if ($value['min']) {
-    //         $this->builder->where('date_plan', '>=', $value['min'] . ' 00:00:00');
-    //     }
-
-    //     if ($value['max']) {
-    //         $this->builder->where('date_plan', '<=', $value['max'] . ' 23:59:59');
-    //     }
-    // }
+    public function contacts($value)
+    {
+        if (isset($value)) {
+            $this->builder->whereHas('contact_amo', function ($query) use ($value) {
+                $query->whereIn('id', $value);
+            });
+        }
+    }
 
     public function filters()
     {
