@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
@@ -12,10 +13,6 @@ class OrderAmo extends Model
 
     protected $fillable = [
         '*'
-    ];
-
-    protected $casts = [
-        'closed_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function getColumns()
@@ -55,5 +52,10 @@ class OrderAmo extends Model
             'ms_id',
             'order_id'
         );
+    }
+
+    public function setClosedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 }
