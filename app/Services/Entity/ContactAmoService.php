@@ -37,6 +37,7 @@ class ContactAmoService implements EntityInterface
                 $msContactLink = null;
                 $msContact = null;
                 $contactType = false;
+                $manager = null;
 
                 if ($customFields != null) {
                     //Получим значение поля по его ID

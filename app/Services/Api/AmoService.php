@@ -236,11 +236,23 @@ class AmoService
         $this->apiClient->setAccessToken($accessToken)
             ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
 
+        //Создадим фильтр по id сделки и ответственному пользователю
+        $filter = new ContactsFilter();
+        $filter->setLimit(250);
+
         $contacts = [];
 
         try {
-            $contacts = $this->apiClient->contacts()->get();
+            $contacts = $this->apiClient->contacts()->get($filter);
             $this->contactAmoService->import([$contacts]);
+
+            $i = 2;
+            while ($contacts->getNextPageLink() != null) {
+                $filter->setPage($i);
+                $contacts = $this->apiClient->contacts()->get($filter);
+                $this->contactAmoService->import([$contacts]);
+                $i++;
+            }
         } catch (AmoCRMApiNoContentException $exception) {
             Log::error(__METHOD__ . ' getContacts:' . $exception->getMessage());
         }
