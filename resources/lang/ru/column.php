@@ -190,7 +190,7 @@ return [
   'order_link' => 'Ссылка на заказ',
   "all_orders" => 'Всего сделок',
   "success_orders" => 'Успешные сделки',
-  "success_transactions" => 'Успешных сдлок',
+  "success_transactions" => 'Успешных сделок',
   "sold" => 'Продали',
   "sold_rub" => 'Продали руб',
   "saldo_rub" => 'Сальдо руб',
