@@ -54,6 +54,12 @@
                                                 @case('contacts_amo')
                                                     {{ $counts['contact_amos'] }}
                                                 @break
+                                                @case('success_transactions')
+                                                    {{ $counts['success_transactions'] }}
+                                                @break
+                                                @case('closed_transactions')
+                                                    {{ $counts['closed_transactions'] }}
+                                                @break
                                                 @case('count_shipments')
                                                     {{ $counts['shipments'] }}
                                                 @break
@@ -82,6 +88,12 @@
                                             @break
                                             @case('contacts_amo')
                                                 {{ $totals['contact_amos'] }}
+                                            @break
+                                            @case('success_transactions')
+                                                {{ $totals['success_transactions'] }}
+                                            @break
+                                            @case('closed_transactions')
+                                                {{ $totals['closed_transactions'] }}
                                             @break
                                             @case('count_shipments')
                                                 {{ $totals['shipments'] }}
