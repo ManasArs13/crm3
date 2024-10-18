@@ -13,7 +13,7 @@ class ImportFromAmo extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'amo:import-amo';
+    protected $signature = 'amo:import-amo {--all}';
 
     /**
      * Описание консольной команды.
@@ -34,12 +34,22 @@ class ImportFromAmo extends Command
      */
     public function handle(AmoService $amoService): void
     {
+        $all = $this->option('all');
+
+
         $amoService->getStatuses();
         // $amoService->getProducts();
+
+        if ($all) {
+            $amoService->getContactsAll();
+        } else {
+            $amoService->getContacts();
+        }
+
         $amoService->getContacts();
         $amoService->getLeadsWithContacts();
         Option::query()
-           ->where('code',AmoService::LAST_DATE_CODE)
-           ->update(['value' => Carbon::now()->subDays(3)]);
+            ->where('code', AmoService::LAST_DATE_CODE)
+            ->update(['value' => Carbon::now()->subDays(3)]);
     }
 }

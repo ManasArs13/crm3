@@ -227,6 +227,25 @@ class AmoService
         }
     }
 
+    public function getContactsAll(): void
+    {
+        $accessToken = $this->getToken();
+        $accessToken = $this->isExpiredToken($accessToken);
+        $baseDomain = $accessToken->getValues()['baseDomain'];
+
+        $this->apiClient->setAccessToken($accessToken)
+            ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+
+        $contacts = [];
+
+        try {
+            $contacts = $this->apiClient->contacts()->get();
+            $this->contactAmoService->import([$contacts]);
+        } catch (AmoCRMApiNoContentException $exception) {
+            Log::error(__METHOD__ . ' getContacts:' . $exception->getMessage());
+        }
+    }
+
     public function updateContacts(): void
     {
         $accessToken = $this->getToken();
@@ -312,7 +331,7 @@ class AmoService
         $statusesService = $this->apiClient->statuses($this->options["pipeline_id"]);
 
         $statusesCollection = [];
-        
+
         try {
             $statusesCollection[] = $statusesService->get();
             $this->statusAmoService->import($statusesCollection);
@@ -366,7 +385,7 @@ class AmoService
         $baseDomain = $accessToken->getValues()['baseDomain'];
 
         $this->apiClient->setAccessToken($accessToken)
-        ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+            ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
 
         // $filter = new ContactsFilter();
         // $range = new BaseRangeFilter();
