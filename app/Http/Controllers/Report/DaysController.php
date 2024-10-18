@@ -48,7 +48,7 @@ class DaysController extends Controller
         $startOfMonth = Carbon::createFromDate($year, $date, 1)->startOfMonth()->toDateString();
         $endOfMonth = Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString();
 
-        $tables = ['order_amos', 'contact_amos', 'shipments', 'contacts', 'sum_shipments'];
+        $tables = ['order_amos', 'contact_amos', 'shipments', 'contacts', 'sum_shipments', 'success_transactions', 'closed_transactions'];
         $report = [];
         $totals = [];
 
@@ -65,7 +65,21 @@ class DaysController extends Controller
                     ->groupBy(DB::raw('DATE(shipments.created_at)'))
                     ->get();
 
-            }else{
+            }elseif($table === 'success_transactions'){
+                $records = DB::table('order_amos')
+                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+                    ->where('is_success', 1)
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->get();
+            }elseif($table === 'closed_transactions'){
+                $records = DB::table('order_amos')
+                    ->select(DB::raw('DATE(closed_at) as date'), DB::raw('COUNT(*) as count'))
+                    ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->get();
+            }
+            else{
                 $records = DB::table($table)
                     ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
@@ -102,6 +116,8 @@ class DaysController extends Controller
             "date",
             "amo_orders",
             "contacts_amo",
+            "success_transactions",
+            "closed_transactions",
             "count_shipments",
             "sum_shipments",
             "contacts_ms",
