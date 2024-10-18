@@ -53,7 +53,7 @@ class DaysController extends Controller
         $totals = [];
 
         foreach ($tables as $table) {
-            if($table === 'sum_shipments'){
+            if ($table === 'sum_shipments'){
                 $records = DB::table('shipments')
                     ->select(
                         DB::raw('DATE(shipments.created_at) as date'),
@@ -65,21 +65,30 @@ class DaysController extends Controller
                     ->groupBy(DB::raw('DATE(shipments.created_at)'))
                     ->get();
 
-            }elseif($table === 'success_transactions'){
+            } elseif($table === 'order_amos'){
                 $records = DB::table('order_amos')
                     ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
                     ->where('is_success', 1)
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(created_at)'))
                     ->get();
-            }elseif($table === 'closed_transactions'){
+            } elseif($table === 'success_transactions'){
                 $records = DB::table('order_amos')
                     ->select(DB::raw('DATE(closed_at) as date'), DB::raw('COUNT(*) as count'))
+                    ->where('is_success', 1)
+                    ->where('status_amo_id', 142)
                     ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->groupBy(DB::raw('DATE(closed_at)'))
                     ->get();
-            }
-            else{
+            } elseif($table === 'closed_transactions'){
+                $records = DB::table('order_amos')
+                    ->select(DB::raw('DATE(closed_at) as date'), DB::raw('COUNT(*) as count'))
+                    ->where('is_success', 1)
+                    ->where('status_amo_id', 143)
+                    ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(closed_at)'))
+                    ->get();
+            } else{
                 $records = DB::table($table)
                     ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
