@@ -23,6 +23,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
 use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Report\DaysController;
 use App\Http\Controllers\Report\DeviationController;
 use App\Http\Controllers\Report\CashController;
 use App\Http\Controllers\Report\CounterpartyController;
@@ -74,6 +75,8 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
 
     // Сводка
     Route::name('report.')->group(function () {
+        // Сводка по дням
+        Route::get('/report/days', [DaysController::class, 'index'])->name('days');
 
         // Отклонения от цен
         Route::get('/report/deviations', [DeviationController::class, 'index'])->name('deviations');
