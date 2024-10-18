@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer("balance")->default(0)->index();
             $table->decimal("weight_kg", 8, 1)->default(0.0)->index();
             $table->integer("count_pallets", false, true)->default(0)->index();
+            $table->integer("pieces_cycle")->nullable();
             $table->foreignId("category_id")->nullable()->index()->constrained("categories");
             $table->foreignId("color_id")->nullable()->index()->constrained("colors");
             $table->boolean("is_active")->default(0)->index();

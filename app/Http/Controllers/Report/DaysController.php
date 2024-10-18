@@ -124,9 +124,9 @@ class DaysController extends Controller
         $selected = [
             "date",
             "amo_orders",
-            "contacts_amo",
-            "success_transactions",
             "closed_transactions",
+            "success_transactions",
+            "contacts_amo",
             "count_shipments",
             "sum_shipments",
             "contacts_ms",
