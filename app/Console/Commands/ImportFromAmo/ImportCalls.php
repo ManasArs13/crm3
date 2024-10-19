@@ -7,13 +7,13 @@ use App\Services\Api\AmoService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class ImportFromAmo extends Command
+class ImportCalls extends Command
 {
     /**
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'amo:import-amo {--all}';
+    protected $signature = 'amo:import-calls {--all}';
 
     /**
      * Описание консольной команды.
@@ -36,22 +36,11 @@ class ImportFromAmo extends Command
     {
         $all = $this->option('all');
 
-
-        $amoService->getStatuses();
-        // $amoService->getProducts();
-
         if ($all) {
-            $amoService->getContactsAll();
             $amoService->getCallsAll();
         } else {
-            $amoService->getContacts();
             $amoService->getCalls();
         }
 
-        $amoService->getContacts();
-        $amoService->getLeadsWithContacts();
-        Option::query()
-            ->where('code', AmoService::LAST_DATE_CODE)
-            ->update(['value' => Carbon::now()->subDays(3)]);
     }
 }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean("is_exist")->default(0);
             $table->string("order_link")->nullable();
             $table->string("order_id")->nullable();
+            $table->boolean("is_success")->nullable()->comment('Да сделка');
             $table->foreignId("manager_id")->nullable()->references('id')->on("managers");
             $table->timestamps();
         });
