@@ -9,10 +9,13 @@ use AmoCRM\Exceptions\AmoCRMMissedTokenException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\BaseRangeFilter;
 use AmoCRM\Filters\ContactsFilter;
+use AmoCRM\Filters\EventsFilter;
 use AmoCRM\Filters\LeadsFilter;
 use AmoCRM\Models\LeadModel;
 use AmoCRM\OAuth2\Client\Provider\AmoCRM;
+use App\Helpers\Parse;
 use App\Models\Option;
+use App\Services\Entity\CallService;
 use App\Services\Entity\ContactAmoService;
 use App\Services\Entity\OrderAmoService;
 use App\Services\Entity\ProductAmoService;
@@ -35,6 +38,7 @@ class AmoService
     private $productAmoService;
 
     private $talkAmoService;
+    private $callService;
 
     private $statusAmoService;
     protected $uploadsTokenFile;
@@ -45,13 +49,15 @@ class AmoService
         OrderAmoService $orderAmoService,
         StatusAmoService $statusAmoService,
         ProductAmoService $productAmoService,
-        TalkAmoService $talkAmoService
+        TalkAmoService $talkAmoService,
+        CallService $callService
     ) {
         $this->contactAmoService = $contactAmoService;
         $this->orderAmoService = $orderAmoService;
         $this->statusAmoService = $statusAmoService;
         $this->productAmoService = $productAmoService;
         $this->talkAmoService = $talkAmoService;
+        $this->callService = $callService;
 
         $options = Option::query()->where("module", "amo")->get();
         $this->uploadsTokenFile = 'token_amocrm_widget.json';
@@ -426,5 +432,87 @@ class AmoService
         }
 
         return $talkCollection;
+    }
+
+    public function getCalls()
+    {
+        $accessToken = $this->getToken();
+        $accessToken = $this->isExpiredToken($accessToken);
+        $baseDomain = $accessToken->getValues()['baseDomain'];
+
+        $this->apiClient->setAccessToken($accessToken)
+            ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+
+        $filter = new EventsFilter();
+        $range = new BaseRangeFilter();
+        $range->setFrom($this->options["last_date"]);
+        $time = time();
+        $range->setTo((int)$time);
+        $filter->setCreatedAt($this->parseIntOrIntRangeFilter($range));
+        $filter->setLimit(250);
+
+        $callCollections = [];
+
+        try {
+            $callCollections[] = $this->apiClient->events()->get($filter);
+            $this->callService->import($callCollections);
+
+            $i = 2;
+
+            while ($callCollections[0]->getNextPageLink() != null) {
+                $filter->setPage($i);
+                $callCollections[] = $this->apiClient->events()->get($filter);
+                $this->callService->import($callCollections);
+                $i++;
+            }
+        } catch (AmoCRMApiException $exception) {
+            Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
+        }
+
+        return $callCollections;
+    }
+
+    public function getCallsAll()
+    {
+        $accessToken = $this->getToken();
+        $accessToken = $this->isExpiredToken($accessToken);
+        $baseDomain = $accessToken->getValues()['baseDomain'];
+
+        $this->apiClient->setAccessToken($accessToken)
+            ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+
+        $filter = new EventsFilter();
+        $filter->setLimit(250);
+
+        $callCollections = [];
+
+        try {
+            $callCollections[] = $this->apiClient->events()->get($filter);
+            $this->callService->import($callCollections);
+
+            $i = 2;
+
+            while ($callCollections[0]->getNextPageLink() != null) {
+                $filter->setPage($i);
+                $callCollections[] = $this->apiClient->events()->get($filter);
+                $this->callService->import($callCollections);
+                $i++;
+            }
+        } catch (AmoCRMApiException $exception) {
+            Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
+        }
+
+        return $callCollections;
+    }
+
+    public function parseIntOrIntRangeFilter($value)
+    {
+        if ($value instanceof BaseRangeFilter) {
+            $value = $value->toFilter();
+        } elseif (!is_int($value) || $value < 0) {
+            $value = null;
+        }
+
+        return $value;
     }
 }
