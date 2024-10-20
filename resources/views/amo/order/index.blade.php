@@ -283,7 +283,17 @@
                                             @break
 
                                             @case('contact_amo_id')
-                                                {{ $entityItem->contact_amo ? $entityItem->contact_amo->name : '-' }}
+                                                @if(isset($entityItem->contact_amo->id))
+                                                    <a target="_blank" href="{{ route('contactAmo.show', $entityItem->contact_amo->id) }}">
+                                                        {{ $entityItem->contact_amo->name }}
+                                                    </a>
+                                                @else
+                                                    -
+                                                @endif
+                                            @break
+
+                                            @case('manager_id')
+                                                {{ $entityItem->manager->name ?? '-' }}
                                             @break
 
                                             @default

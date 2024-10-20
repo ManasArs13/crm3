@@ -18,7 +18,7 @@ class AmoOrderController extends Controller
         $entityName = 'Заказы АМО';
 
         // Amo orders
-        $builder = OrderAmo::query()->with(['status_amo', 'contact_amo']);
+        $builder = OrderAmo::query()->with(['status_amo', 'contact_amo', 'manager']);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new AmoOrderFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
@@ -35,6 +35,7 @@ class AmoOrderController extends Controller
         }
 
         $all_columns = [
+            'created_at',
             "id",
             "name",
             'status_amo_id',
@@ -44,13 +45,13 @@ class AmoOrderController extends Controller
             'is_exist',
             'order_link',
             'order_id',
-            'created_at',
             'updated_at',
             'manager_id',
             'is_success'
         ];
 
         $select = [
+            'created_at',
             "id",
             "name",
             'status_amo_id',
@@ -60,8 +61,6 @@ class AmoOrderController extends Controller
             'is_exist',
             'order_link',
             'order_id',
-            'created_at',
-            'updated_at',
             'manager_id',
             'is_success'
         ];

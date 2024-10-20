@@ -130,6 +130,7 @@ class DaysController extends Controller
             "count_shipments",
             "sum_shipments",
             "contacts_ms",
+            "pieces_cycle",
         ];
 
         foreach ($selected as $column) {
