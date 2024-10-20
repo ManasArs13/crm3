@@ -69,6 +69,9 @@
                                                 @case('contacts_ms')
                                                     {{ $counts['contacts'] }}
                                                 @break
+                                                @case('pieces_cycle')
+                                                    {{ $counts['contacts'] }}
+                                                @break
 
                                             @endswitch
                                         </td>
