@@ -50,10 +50,14 @@
                                                     {{ $day }}
                                                 @break
                                                 @case('amo_orders')
-                                                    {{ $counts['order_amos'] }}
+                                                    <a target="_blank" href="{{ route('amo-order.index', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ $counts['order_amos'] }}
+                                                    </a>
                                                 @break
                                                 @case('contacts_amo')
-                                                    {{ $counts['contact_amos'] }}
+                                                    <a target="_blank" href="{{ route('contactAmo.index', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ $counts['contact_amos'] }}
+                                                    </a>
                                                 @break
                                                 @case('success_transactions')
                                                     {{ $counts['success_transactions'] }}
@@ -62,25 +66,37 @@
                                                     {{ $counts['closed_transactions'] }}
                                                 @break
                                                 @case('count_shipments')
-                                                    {{ $counts['shipments'] }}
+                                                    <a target="_blank" href="{{ route('shipment.index', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ $counts['shipments'] }}
+                                                    </a>
                                                 @break
                                                 @case('sum_shipments')
-                                                    {{ number_format((int) $counts['sum_shipments'], 0, ',', ' ') }}
+                                                    <a target="_blank" href="{{ route('shipment.index', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ number_format((int) $counts['sum_shipments'], 0, ',', ' ') }}
+                                                    </a>
                                                 @break
                                                 @case('contacts_ms')
-                                                    {{ $counts['contacts'] }}
+                                                    <a target="_blank" href="{{ route('contact.index', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ $counts['contacts'] }}
+                                                    </a>
                                                 @break
                                                 @case('pieces_cycle')
-                                                    {{ $counts['contacts'] }}
+                                                    {{ number_format((int) $counts['cycles'], 0, ',', ' ') }}
                                                 @break
                                                 @case('incoming_calls')
-                                                    {{ $counts['calls'] }}
+                                                    <a target="_blank" href="{{ route('calls', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ $counts['incoming_calls'] }}
+                                                    </a>
                                                 @break
                                                 @case('outgoing_calls')
-                                                    {{ $counts['talk_amos'] }}
+                                                    <a target="_blank" href="{{ route('calls', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ $counts['outgoing_calls'] }}
+                                                    </a>
                                                 @break
                                                 @case('conversations')
-                                                    {{ $counts['talk_amos'] }}
+                                                    <a target="_blank" href="{{ route('conversations', ['filters[created_at][min]' => $day, 'filters[created_at][max]' => $day]) }}">
+                                                        {{ $counts['talk_amos'] }}
+                                                    </a>
                                                 @break
 
                                             @endswitch
@@ -116,6 +132,18 @@
                                             @break
                                             @case('contacts_ms')
                                                 {{ $totals['contacts'] }}
+                                            @break
+                                            @case('pieces_cycle')
+                                                {{ number_format((int) $totals['cycles'], 0, ',', ' ') }}
+                                            @break
+                                            @case('incoming_calls')
+                                                {{ number_format((int) $totals['incoming_calls'], 0, ',', ' ') }}
+                                            @break
+                                            @case('outgoing_calls')
+                                                {{ number_format((int) $totals['outgoing_calls'], 0, ',', ' ') }}
+                                            @break
+                                            @case('conversations')
+                                                {{ number_format((int) $totals['talk_amos'], 0, ',', ' ') }}
                                             @break
 
                                         @endswitch
