@@ -18,7 +18,7 @@ class Call extends Model
 
     public function employee()
     {
-        return $this->hasOne(Manager::class, 'id', 'employee_amos_id');
+        return $this->hasOne(EmployeeAmo::class, 'id', 'employee_amo_id');
     }
 
     public function getCreatedAtAttribute($value)

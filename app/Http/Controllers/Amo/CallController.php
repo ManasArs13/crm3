@@ -14,7 +14,7 @@ class CallController extends Controller
         $entityName = 'Звонки';
 
         // calls
-        $builder = Call::query()->with(['manager']);
+        $builder = Call::query()->with(['employee']);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new CallFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
@@ -30,11 +30,13 @@ class CallController extends Controller
             $selectColumn = null;
         }
 
+
         $all_columns = [
             'created_at',
             'updated_at',
             'amo_id',
-            'manager_id',
+            'duration',
+            'employee_amo_id',
             'type',
         ];
 
@@ -42,7 +44,8 @@ class CallController extends Controller
             'created_at',
             'updated_at',
             'amo_id',
-            'manager_id',
+            'duration',
+            'employee_amo_id',
             'type',
         ];
 
