@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('calls', function (Blueprint $table) {
             $table->id();
             $table->string("amo_id",190)->index()->comment('ид в амо');
-            $table->foreignId("manager_id")->nullable()->references('id')->on("managers")->comment('менеджер');
+            $table->string("duration",190)->index()->nullable()->comment('длительность, c');
+            $table->foreignId("employee_amo_id")->nullable()->references('id')->on("employee_amos")->comment('менеджер');
             $table->enum('type', ['incoming_call', 'outgoing_call'])->comment('входящий/исходящий');
             $table->timestamps();
         });

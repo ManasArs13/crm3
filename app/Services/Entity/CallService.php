@@ -4,6 +4,7 @@ namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
 use App\Models\Call;
+use App\Models\EmployeeAmo;
 use App\Models\Manager;
 use App\Models\Order;
 use App\Models\OrderAmo;
@@ -15,6 +16,7 @@ class CallService implements EntityInterface
     public function import(array $rows)
     {
         foreach ($rows as $rows) {
+            
             foreach ($rows as $row) {
                 
                 if ($row->type == 'outgoing_call' || $row->type == 'incoming_call') {
@@ -28,19 +30,11 @@ class CallService implements EntityInterface
                     $entity->type = $row->type;
                     $entity->created_at = $row->getCreatedAt();
 
-                    $manager_id = null;
+                    $employee_amo_id = EmployeeAmo::query()->where('amo_id', $row->created_by)->First()?->id;
 
-                    switch ($row->created_by) {
-                        case '11198626':
-                            $manager_id = 2;
-                            break;
+                    $entity->employee_amo_id = $employee_amo_id;
 
-                        case '9267290':
-                            $manager_id = 1;
-                            break;
-                    }
-
-                    $entity->manager_id = $manager_id;
+                    $entity->duration = $row->valueAfter[0]['note']['duration'];
                     $entity->save();
                 }
             }
