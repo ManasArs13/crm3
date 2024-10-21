@@ -45,6 +45,7 @@
                                     @foreach ($resColumns as $column => $title)
                                         <td class="break-all max-w-96 truncate px-2 py-3">
                                             @switch($column)
+
                                                 @case('date')
                                                     {{ $day }}
                                                 @break
@@ -71,6 +72,15 @@
                                                 @break
                                                 @case('pieces_cycle')
                                                     {{ $counts['contacts'] }}
+                                                @break
+                                                @case('incoming_calls')
+                                                    {{ $counts['calls'] }}
+                                                @break
+                                                @case('outgoing_calls')
+                                                    {{ $counts['talk_amos'] }}
+                                                @break
+                                                @case('conversations')
+                                                    {{ $counts['talk_amos'] }}
                                                 @break
 
                                             @endswitch
