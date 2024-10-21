@@ -12,7 +12,7 @@ class ImportTalks extends Command
      *
      * @var string
      */
-    protected $signature = 'app:import-talks';
+    protected $signature = 'amo:import-talks {--all}';
 
     /**
      * The console command description.
@@ -25,7 +25,13 @@ class ImportTalks extends Command
      * Execute the console command.
      */
     public function handle(AmoService $amoService)
-    {
-        // TODO Доаисать импорт бесед
+    { // TODO import talks
+        // $all = $this->option('all');
+
+        // if ($all) {
+        //     $amoService->getTalks();
+        // } else {
+        //     $amoService->getTalks();
+        // }
     }
 }
