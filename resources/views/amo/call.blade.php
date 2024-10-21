@@ -267,6 +267,10 @@
                                                     @endif
                                                 @break
 
+                                                @case('employee_amo_id')
+                                                    {{ $entityItem->employee->name ?? '-' }}
+                                                @break
+
                                                 @case('manager_id')
                                                     {{ $entityItem->manager->name ?? '-' }}
                                                 @break
@@ -276,7 +280,7 @@
                                                 @break
 
                                                 @default
-                                                {{ $entityItem->$column }}
+                                                    {{ $entityItem->$column }}
                                             @endswitch
                                         </td>
                                     @endforeach
