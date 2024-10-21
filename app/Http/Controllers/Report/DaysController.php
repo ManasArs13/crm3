@@ -48,7 +48,7 @@ class DaysController extends Controller
         $startOfMonth = Carbon::createFromDate($year, $date, 1)->startOfMonth()->toDateString();
         $endOfMonth = Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString();
 
-        $tables = ['order_amos', 'contact_amos', 'shipments', 'contacts', 'sum_shipments', 'success_transactions', 'closed_transactions'];
+        $tables = ['order_amos', 'contact_amos', 'shipments', 'contacts', 'sum_shipments', 'success_transactions', 'closed_transactions', 'calls', 'talk_amos'];
         $report = [];
         $totals = [];
 
@@ -64,7 +64,6 @@ class DaysController extends Controller
                     ->whereBetween(DB::raw('DATE(shipments.created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(shipments.created_at)'))
                     ->get();
-
             } elseif($table === 'order_amos'){
                 $records = DB::table('order_amos')
                     ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
@@ -131,6 +130,9 @@ class DaysController extends Controller
             "sum_shipments",
             "contacts_ms",
             "pieces_cycle",
+            "incoming_calls",
+            "outgoing_calls",
+            "conversations",
         ];
 
         foreach ($selected as $column) {

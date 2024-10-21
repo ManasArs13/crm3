@@ -17,6 +17,7 @@ use App\Http\Controllers\OptionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Amo\AmoOrderController;
 use App\Http\Controllers\Amo\AmosContactController;
+use App\Http\Controllers\Amo\CallController;
 use App\Http\Controllers\Finance\PaymentController;
 use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
@@ -187,6 +188,11 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
         'supply' => SupplyController::class,
         'supply_positions' => SupplyPositionController::class,
     ]);
+
+    // звонки и беседы
+    Route::get('calls', [CallController::class, 'index'])->name('calls');
+    Route::get('conversations', [CallController::class, 'conversations'])->name('conversations');
+
     Route::get('bunch_of_contacts', [AmosContactController::class, 'index'])->name('bunch_of_contacts');
     Route::get('double_of_orders', [AmoOrderController::class, 'doubleOrders'])->name('double_of_orders');
 
