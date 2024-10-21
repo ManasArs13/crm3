@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Models\ContactAmo;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +47,19 @@ class DaysController extends Controller
         $startOfMonth = Carbon::createFromDate($year, $date, 1)->startOfMonth()->toDateString();
         $endOfMonth = Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString();
 
-        $tables = ['order_amos', 'contact_amos', 'shipments', 'contacts', 'sum_shipments', 'success_transactions', 'closed_transactions', 'calls', 'talk_amos'];
+        $tables = [
+            'order_amos',
+            'contact_amos',
+            'shipments',
+            'contacts',
+            'sum_shipments',
+            'success_transactions',
+            'closed_transactions',
+            'incoming_calls',
+            'outgoing_calls',
+            'talk_amos',
+            'cycles'
+        ];
         $report = [];
         $totals = [];
 
@@ -87,6 +98,30 @@ class DaysController extends Controller
                     ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(closed_at)'))
                     ->get();
+            } elseif($table === 'cycles'){
+                $records = DB::table('tech_process_products')
+                    ->join('products', 'tech_process_products.product_id', '=', 'products.id')
+                    ->select(DB::raw('DATE(tech_process_products.created_at) as date'), DB::raw('SUM(tech_process_products.quantity / products.pieces_cycle) as count'))
+                    ->whereBetween(DB::raw('DATE(tech_process_products.created_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(tech_process_products.created_at)'))
+                    ->get();
+
+            } elseif($table === 'incoming_calls'){
+                $records = DB::table('calls')
+                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
+                    ->where('type', 'incoming_call')
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->get();
+
+            } elseif($table === 'outgoing_calls'){
+                $records = DB::table('calls')
+                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
+                    ->where('type', 'outgoing_call')
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->get();
+
             } else{
                 $records = DB::table($table)
                     ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
@@ -100,7 +135,6 @@ class DaysController extends Controller
                 $report[$record->date][$table] = $record->count;
             }
         }
-
 
         for ($i = 0; $i < $daysInMonth; $i++) {
             $day = Carbon::createFromDate($year, $date, 1)->startOfMonth()->addDays($i)->toDateString();
