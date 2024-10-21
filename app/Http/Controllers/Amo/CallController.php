@@ -133,7 +133,7 @@ class CallController extends Controller
         $entityName = 'Беседы';
 
         // Amo orders
-        $builder = TalkAmo::query()->with(['manager', 'contact_amo']);
+        $builder = TalkAmo::query()->with(['employee', 'contact_amo']);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new CallFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
@@ -155,7 +155,7 @@ class CallController extends Controller
             'name',
             'phone',
             'contact_amo_id',
-            'manager_id',
+            'employee_amo_id'
         ];
 
         $select = [
@@ -164,7 +164,7 @@ class CallController extends Controller
             'name',
             'phone',
             'contact_amo_id',
-            'manager_id',
+            'employee_amo_id'
         ];
 
         $selected = $request->columns ?? $select;

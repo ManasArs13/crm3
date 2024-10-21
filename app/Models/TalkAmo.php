@@ -13,9 +13,9 @@ class TalkAmo extends Model
         '*'
     ];
 
-    public function manager()
+    public function employee()
     {
-        return $this->hasOne(Manager::class, 'id', 'manager_id');
+        return $this->hasOne(EmployeeAmo::class, 'id', 'employee_amo_id');
     }
 
     public function contact_amo()

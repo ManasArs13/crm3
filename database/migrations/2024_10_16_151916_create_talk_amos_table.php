@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("name", 150)->nullable()->index();
             $table->string("phone",56)->nullable()->index();
             $table->string("contact_amo_id")->nullable();
-            $table->foreignId("manager_id")->nullable()->references('id')->on("managers");
+            $table->foreignId("employee_amo_id")->nullable()->references('id')->on("employee_amos");
             $table->timestamps();
         });
     }
