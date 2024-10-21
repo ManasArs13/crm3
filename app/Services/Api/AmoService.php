@@ -500,14 +500,14 @@ class AmoService
         $callCollections = [];
 
         try {
-            $callCollections[] = $this->apiClient->events()->get($filter);
+            $callCollections[] = $this->apiClient->events()->get($filter, [EventModel::NOTE]);
             $this->callService->import($callCollections);
 
             $i = 2;
 
             while ($callCollections[0]->getNextPageLink() != null) {
                 $filter->setPage($i);
-                $callCollections[] = $this->apiClient->events()->get($filter);
+                $callCollections[] = $this->apiClient->events()->get($filter, [EventModel::NOTE]);
                 $this->callService->import($callCollections);
                 $i++;
             }
