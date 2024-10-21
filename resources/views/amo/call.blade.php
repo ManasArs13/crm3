@@ -271,10 +271,6 @@
                                                     {{ $entityItem->employee->name ?? '-' }}
                                                 @break
 
-                                                @case('manager_id')
-                                                    {{ $entityItem->manager->name ?? '-' }}
-                                                @break
-
                                                 @case('type')
                                                     {{ $entityItem->type && $type[$entityItem->type] ? $type[$entityItem->type] : '-' }}
                                                 @break
