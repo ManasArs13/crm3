@@ -100,11 +100,13 @@ class SupplyController extends Controller
         $maxSumCheck = '';
 
         // Значения фильтра контакта
-        $contacts = Supply::with('contact')->select('contact_id')->groupBy('contact_id')->distinct('contact_id')->orderByDesc('contact_id')->get();
+        $contacts = Supply::with('contact')->select('contact_id')->groupBy('contact_id')->distinct('contact_id')->orderByDesc('contact_id')->offset(30)->limit(5)->get();
         $contactValues[] = ['value' => 'index', 'name' => 'Все контакты'];
 
         foreach ($contacts as $contact) {
-            $contactValues[] = ['value' => $contact->contact->id, 'name' => $contact->contact->name];
+            if(isset($contact->contact)){
+                $contactValues[] = ['value' => $contact->contact->id, 'name' => $contact->contact->name];
+            }
         }
 
         $queryContact = 'index';
