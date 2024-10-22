@@ -101,9 +101,13 @@ class DaysController extends Controller
             } elseif($table === 'cycles'){
                 $records = DB::table('tech_process_products')
                     ->join('products', 'tech_process_products.product_id', '=', 'products.id')
-                    ->select(DB::raw('DATE(tech_process_products.created_at) as date'), DB::raw('SUM(tech_process_products.quantity / products.pieces_cycle) as count'))
-                    ->whereBetween(DB::raw('DATE(tech_process_products.created_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(tech_process_products.created_at)'))
+                    ->join('tech_processes', 'tech_process_products.processing_id', '=', 'tech_processes.id')
+                    ->select(
+                        DB::raw('DATE(tech_processes.moment) as date'),
+                        DB::raw('SUM(tech_process_products.quantity / products.pieces_cycle) as count')
+                    )
+                    ->whereBetween(DB::raw('DATE(tech_processes.moment)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(tech_processes.moment)'))
                     ->get();
 
             } elseif($table === 'incoming_calls'){
