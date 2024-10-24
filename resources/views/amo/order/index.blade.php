@@ -170,7 +170,7 @@
                                                             @foreach ($filter['values'] as $value)
                                                                 <option
                                                                     @if ($value['value'] == $filter['checked_value']) selected @endif
-                                                                    value="{{ $value['value'] }} ">
+                                                                    value="{{ $value['value'] }}">
                                                                     {{ $value['name'] }}</option>
                                                             @endforeach
                                                         </select>
