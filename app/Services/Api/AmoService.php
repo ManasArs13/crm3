@@ -431,7 +431,7 @@ class AmoService
 
             while ($talkCollection[0]->getNextPageLink() != null) {
                 $filter->setPage($i);
-                $talkCollection[] = $this->apiClient->events()->get($filter, ['talk_name']);
+                $talkCollection[] = $this->apiClient->events()->get($filter);
                 $this->talkAmoService->import([$talkCollection]);
                 $i++;
             }
