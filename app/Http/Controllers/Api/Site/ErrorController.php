@@ -15,7 +15,7 @@ class ErrorController extends Controller
 
         // Контакты АМО без менеджера
 
-        $types = ErrorTypes::where('id', 11)->first();
+        $types = ErrorTypes::where('id', 1)->first();
         $now = now();
 
         ContactAmo::chunkById(500, function ($contacts) use ($types, $now) {
