@@ -4,6 +4,7 @@ namespace App\Console\Commands\ImportFromAmo;
 
 use App\Services\Api\AmoService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class ImportTalks extends Command
 {
@@ -25,13 +26,13 @@ class ImportTalks extends Command
      * Execute the console command.
      */
     public function handle(AmoService $amoService)
-    { // TODO import talks
-        // $all = $this->option('all');
+    { 
+        $all = $this->option('all');
 
-        // if ($all) {
-        //     $amoService->getTalks();
-        // } else {
-        //     $amoService->getTalks();
-        // }
+        if ($all) {
+            $amoService->getTalksAll();
+        } else {
+            $amoService->getTalks();
+        }
     }
 }

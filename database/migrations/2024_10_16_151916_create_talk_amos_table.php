@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('talk_amos', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 150)->nullable()->index();
+            $table->string("amo_id",190)->index()->comment('ид в амо');
             $table->string("phone",56)->nullable()->index();
-            $table->string("contact_amo_id")->nullable();
+            $table->string("contact_amo_id")->nullable()->references('id')->on("contact_amos");
             $table->foreignId("employee_amo_id")->nullable()->references('id')->on("employee_amos");
             $table->timestamps();
         });
