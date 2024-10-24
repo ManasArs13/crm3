@@ -70,11 +70,7 @@ class ErrorTypeController extends Controller
 
     public function destroy($id)
     {
-        $type = ErrorTypes::find($id);
-        if($type){
-            $type->delete();
-        }
-        return redirect()->back();
+        return abort(404);
     }
 
 }

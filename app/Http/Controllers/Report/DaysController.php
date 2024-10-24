@@ -115,6 +115,7 @@ class DaysController extends Controller
                     ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->where('type', 'incoming_call')
+                    ->where('duration', '>', 0)
                     ->groupBy(DB::raw('DATE(created_at)'))
                     ->get();
 
@@ -123,6 +124,14 @@ class DaysController extends Controller
                     ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->where('type', 'outgoing_call')
+                    ->where('duration', '>', 0)
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->get();
+
+            } elseif($table === 'talk_amos'){
+                $records = DB::table($table)
+                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(DISTINCT contact_amo_id) as count'))
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(created_at)'))
                     ->get();
 

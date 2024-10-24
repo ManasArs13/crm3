@@ -152,7 +152,7 @@ class CallController extends Controller
         $all_columns = [
             'created_at',
             'updated_at',
-            'name',
+            'amo_id',
             'phone',
             'contact_amo_id',
             'employee_amo_id'
@@ -161,7 +161,7 @@ class CallController extends Controller
         $select = [
             'created_at',
             'updated_at',
-            'name',
+            'amo_id',
             'phone',
             'contact_amo_id',
             'employee_amo_id'
