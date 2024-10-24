@@ -3,32 +3,37 @@
 namespace App\Services\Entity;
 
 use App\Contracts\EntityInterface;
+use App\Models\EmployeeAmo;
 use App\Models\TalkAmo;
+use App\Services\Api\AmoService;
+use Illuminate\Support\Facades\Log;
 
 class TalkAmoService implements EntityInterface
 {
-
-    /**
-     * @param array $datas
-     * @return void
-     */
     public function import(array $datas): void
     {
-        // TODO дописать импорт бесед
-        foreach ($datas as $data) {
-            foreach ($data as $row) {
+        foreach ($datas[0] as $data) {
 
-                $entity = TalkAmo::firstOrNew(['id' => $row->getId()]);
-                if ($entity->id === null) {
-                    $entity->id = $row->getId();
+            foreach ($data as $row) {
+   
+                $entity = TalkAmo::query()->firstOrNew(['amo_id' => $row->id]);
+                
+                if ($entity->amo_id === null) {
+                    $entity->amo_id = $row->id;
                 }
 
-                $entity->name = $row->getName();
-                $entity->created_at = $row->getCreatedAt();
+                $entity->created_at = $row->created_at;
 
-                $entity->getContact();
+                $employee_amo_id = EmployeeAmo::query()->where('amo_id', $row->created_by)->First()?->id;
+                $entity->employee_amo_id = $employee_amo_id;
+
                 $entity->save();
             }
         }
+    }
+
+    public function importOne($data): void
+    {
+     //   dd($data);
     }
 }

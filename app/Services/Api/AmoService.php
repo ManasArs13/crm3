@@ -404,7 +404,7 @@ class AmoService
     }
 
     public function getTalks()
-    { // TODO import talks
+    {
         $accessToken = $this->getToken();
         $accessToken = $this->isExpiredToken($accessToken);
         $baseDomain = $accessToken->getValues()['baseDomain'];
@@ -412,32 +412,85 @@ class AmoService
         $this->apiClient->setAccessToken($accessToken)
             ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
 
-        // $filter = new ContactsFilter();
-        // $range = new BaseRangeFilter();
-        // $range->setFrom($this->options["last_date"]);
-        // $time = time();
-        // $range->setTo((int)$time);
-        // $filter->setUpdatedAt($range);
-        // $filter->setLimit(250);
+        $filter = new EventsFilter();
+        $range = new BaseRangeFilter();
+        $range->setFrom($this->options["last_date"]);
+        $time = time();
+        $range->setTo((int)$time);
+        $filter->setCreatedAt($this->parseIntOrIntRangeFilter($range));
+        $filter->setTypes(['talk_created']);
+        $filter->setLimit(250);
 
         $talkCollection = [];
 
         try {
-            // $talkCollection = $this->apiClient->getRequest();
+            $talkCollection[] = $this->apiClient->events()->get($filter);
+            $this->talkAmoService->import([$talkCollection]);
 
-            // $talks = new Talks($this->apiClient->getRequest());
-            // Log::debug($talks->get());
+            $i = 2;
 
-       //     $this->talkAmoService->import([$talkCollection]);
+            while ($talkCollection[0]->getNextPageLink() != null) {
+                $filter->setPage($i);
+                $talkCollection[] = $this->apiClient->talks()->get($filter);
+                $this->talkAmoService->import([$talkCollection]);
+                $i++;
+            }
+        } catch (AmoCRMApiException $exception) {
+            Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
+        }
 
-            // $i = 2;
+        return $talkCollection;
+    }
 
-            // while ($talkCollection->getNextPageLink() != null) {
-            //     $filter->setPage($i);
-            //     $talkCollection = $this->apiClient->talks()->get($filter);
-            //     $this->talkAmoService->import([$talkCollection]);
-            //     $i++;
-            // }
+    public function getTalksAll()
+    {
+        $accessToken = $this->getToken();
+        $accessToken = $this->isExpiredToken($accessToken);
+        $baseDomain = $accessToken->getValues()['baseDomain'];
+
+        $this->apiClient->setAccessToken($accessToken)
+            ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+
+        $filter = new EventsFilter();
+        $filter->setTypes(['talk_created']);
+        $filter->setLimit(250);
+
+        $talkCollection = [];
+
+        try {
+            $talkCollection[] = $this->apiClient->events()->get($filter);
+            $this->talkAmoService->import([$talkCollection]);
+
+            $i = 2;
+
+            while ($talkCollection[0]->getNextPageLink() != null) {
+                $filter->setPage($i);
+                $talkCollection[] = $this->apiClient->talks()->get($filter);
+                $this->talkAmoService->import([$talkCollection]);
+                $i++;
+            }
+        } catch (AmoCRMApiException $exception) {
+            Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
+        }
+
+        return $talkCollection;
+    }
+
+    public function getTalk($id)
+    {
+        $accessToken = $this->getToken();
+        $accessToken = $this->isExpiredToken($accessToken);
+        $baseDomain = $accessToken->getValues()['baseDomain'];
+
+        $this->apiClient->setAccessToken($accessToken)
+            ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+
+        $talkCollection = null;
+
+        try {
+            $talkCollection = $this->apiClient->talks()->getOne($id);
+            $this->talkAmoService->importOne($talkCollection);
+
         } catch (AmoCRMApiException $exception) {
             Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
         }
@@ -468,7 +521,7 @@ class AmoService
         try {
             $callCollections[] = $this->apiClient->events()->get($filter, [EventModel::NOTE]);
             $this->callService->import($callCollections);
-            
+
             $i = 2;
 
             while ($callCollections[0]->getNextPageLink() != null) {
@@ -494,7 +547,7 @@ class AmoService
             ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
 
         $filter = new EventsFilter();
-        
+
         $filter->setLimit(250);
         $filter->setTypes(['outgoing_call', 'incoming_call']);
         $callCollections = [];
@@ -540,7 +593,7 @@ class AmoService
         try {
             $callCollections[] = $this->apiClient->users()->get($filter);
             $this->employeeAmoService->import($callCollections);
-            
+
             $i = 2;
 
             while ($callCollections[0]->getNextPageLink() != null) {

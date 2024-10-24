@@ -7,12 +7,14 @@ use App\Models\Order;
 use App\Models\OrderAmo;
 use App\Models\Product;
 use App\Models\ShipmentProduct;
+use App\Models\TalkAmo;
 use App\Models\TechProcess;
 use App\Observers\OrderAmoObserver;
 use App\Observers\OrderMsObserver;
 use App\Observers\Production\ProcessingObserer;
 use App\Observers\ProductObserver;
 use App\Observers\Shipment\ShipmentProductObserver;
+use App\Observers\TalkAmoObserver;
 use App\Services\Entity\ContactMsService;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
         Order::class => [OrderMsObserver::class],
         OrderAmo::class => [OrderAmoObserver::class],
         Product::class => [ProductObserver::class],
-        ShipmentProduct::class => [ShipmentProductObserver::class]
+        ShipmentProduct::class => [ShipmentProductObserver::class],
+        TalkAmo::class => [TalkAmoObserver::class]
     ];
     /**
      * Register any application services.
@@ -43,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         Contact::observe(ContactMsService::class);
         TechProcess::observe(ProcessingObserer::class);
         ShipmentProduct::observe(ShipmentProductObserver::class);
+        TalkAmo::observe(TalkAmoObserver::class);
 
         // \URL::forceRootUrl(\Config::get('app.url'));
         // if (str_contains(\Config::get('app.url'), 'https://')) {
