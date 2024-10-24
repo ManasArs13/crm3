@@ -19,4 +19,9 @@ class TalkAmoObserver
     {
         $this->amoService->getTalk($talkAmo->amo_id);
     }
+
+    public function updated(TalkAmo $talkAmo): void
+    {
+        $this->amoService->getTalk($talkAmo->amo_id);
+    }
 }
