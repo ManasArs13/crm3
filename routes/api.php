@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\Api\Site\ErrorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,7 @@ Route::get('/shipments/get/month_category', [App\Http\Controllers\Api\Site\Shipm
 Route::post('/shipment_ms/create', [ShipmentController::class, 'setShipmentToMs'])->name("api.post.ms.shipment");
 Route::post('/Shift/create', [ShiftController::class, 'create'])->name('api.get.shift_create');
 Route::post('/Shift/change', [ShiftController::class, 'change'])->name('api.get.shift_change');
+Route::post('/errors/update', [ErrorController::class, 'update'])->name('api.update.errors');
 
 Route::post('/order_ms/create2', [MsOrderController::class, 'setOrderToMs'])->name("api.post.ms.order2");
 Route::post('/order_ms/create', [MsOrderController::class, 'setOrderFromCalculator'])->name("api.post.ms.order");

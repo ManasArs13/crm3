@@ -9,6 +9,8 @@ use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DebtorController;
+use App\Http\Controllers\ErrorController;
+use App\Http\Controllers\ErrorTypeController;
 use App\Http\Controllers\Goods\IncomingController;
 use App\Http\Controllers\Goods\OutgoingController;
 use App\Http\Controllers\ManagerController;
@@ -187,6 +189,8 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
         'shipment_products' => ShipmentProductController::class,
         'supply' => SupplyController::class,
         'supply_positions' => SupplyPositionController::class,
+        'errors' => ErrorController::class,
+        'errorTypes' => ErrorTypeController::class,
     ]);
 
     // звонки и беседы

@@ -137,6 +137,12 @@
                                         <x-dropdown-link :href="route('category.index')">
                                             Категории товаров
                                         </x-dropdown-link>
+                                        <x-dropdown-link :href="route('errors.index')">
+                                            Реестр ошибок
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('errorTypes.index')">
+                                            справочник ошибок
+                                        </x-dropdown-link>
                                     @endrole
                                 </x-slot>
                             </x-dropdown>
@@ -563,6 +569,10 @@
                                         <a href="{{ route('category.index') }}"
                                             class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Категории
                                             товаров</a>
+                                        <a href="{{ route('errors.index') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Реестр ошибок</a>
+                                        <a href="{{ route('errorTypes.index') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">справочник ошибок</a>
                                     @endrole
                                 </div>
                             </div>
