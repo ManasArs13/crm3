@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 class TalkAmoObserver
 {
     private $amoService;
-    
+
     public function __construct(AmoService $amoService)
     {
         $this->amoService = $amoService;
@@ -17,11 +17,15 @@ class TalkAmoObserver
 
     public function created(TalkAmo $talkAmo): void
     {
-        $this->amoService->getTalk($talkAmo->amo_id);
+        if ($talkAmo->amo_id) {
+            $this->amoService->getTalk($talkAmo->amo_id);
+        }
     }
 
     public function updated(TalkAmo $talkAmo): void
     {
-        $this->amoService->getTalk($talkAmo->amo_id);
+        if ($talkAmo->amo_id) {
+            $this->amoService->getTalk($talkAmo->amo_id);
+        }
     }
 }
