@@ -17,6 +17,6 @@ class TalkAmoObserver
 
     public function created(TalkAmo $talkAmo): void
     {
-    //    $this->amoService->getTalk($talkAmo->amo_id);
+        $this->amoService->getTalk($talkAmo->amo_id);
     }
 }
