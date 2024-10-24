@@ -43,9 +43,11 @@ class ImportFromAmo extends Command
         if ($all) {
             $amoService->getContactsAll();
             $amoService->getCallsAll();
+            $amoService->getTalksAll();
         } else {
             $amoService->getContacts();
             $amoService->getCalls();
+            $amoService->getTalks();
         }
 
         $amoService->getContacts();
