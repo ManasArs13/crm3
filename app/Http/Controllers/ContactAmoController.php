@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\ContactAmoFilter;
 use App\Http\Requests\FilterRequest;
 use App\Models\ContactAmo;
+use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -84,6 +85,12 @@ class ContactAmoController extends Controller
         $minUpdated = ContactAmo::query()->min('updated_at');
         $maxUpdated = ContactAmo::query()->max('updated_at');
 
+        $queryManager = 'index';
+        $queryIsSuccess = 'index';
+        $managers = Manager::all()->map(function ($item) {
+                        return ['value' => $item->id, 'name' => $item->name];
+                    });
+
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
                 if ($key == 'created_at') {
@@ -101,6 +108,12 @@ class ContactAmoController extends Controller
                     if ($value['min']) {
                         $minUpdatedCheck = $value['min'];
                     }
+                }
+                else if ($key == 'managers') {
+                    $queryManager = isset($value) ? $value : 'all';
+                }
+                else if ($key == 'is_success') {
+                    $queryIsSuccess = isset($value) ? $value : 'all';
                 }
             }
         }
@@ -123,6 +136,20 @@ class ContactAmoController extends Controller
                 'minChecked' => $minUpdatedCheck,
                 'max' => substr($maxUpdated, 0, 10),
                 'maxChecked' => $maxUpdatedCheck
+            ],
+            [
+                'type' => 'select',
+                'name' => 'managers',
+                'name_rus' => 'Менеджеры',
+                'values' => $managers,
+                'checked_value' => $queryManager
+            ],
+            [
+                'type' => 'select',
+                'name' => 'is_success',
+                'name_rus' => 'Успешная сделка',
+                'values' => [['value'=>'1', 'name' => 'Успешно'], ['value'=>'0', 'name' => 'Не успешно']],
+                'checked_value' => $queryIsSuccess
             ],
         ];
 

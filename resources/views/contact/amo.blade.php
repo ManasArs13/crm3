@@ -166,8 +166,8 @@
                                                                 value="all">Все</option>
                                                             @foreach ($filter['values'] as $value)
                                                                 <option
-                                                                    @if ($value['category_id'] == $filter['checked_value']) selected @endif
-                                                                    value="{{ $value['category_id'] }} ">
+                                                                    @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                                    value="{{ $value['value'] }} ">
                                                                     {{ $value['name'] }}</option>
                                                             @endforeach
                                                         </select>

@@ -23,9 +23,9 @@ class AmoOrderFilter
             }
         }
 
-        // if ($this->request->status) {
-        //     $this->builder->whereIn('status_id', $this->request->status);
-        // }
+         if ($this->request->status) {
+             $this->builder->whereIn('status_amo_id', $this->request->status);
+         }
 
         return $this->builder;
     }
@@ -49,6 +49,20 @@ class AmoOrderFilter
 
         if ($value['max']) {
             $this->builder->where('updated_at', '<=', $value['max'] . ' 23:59:59');
+        }
+    }
+
+    public function managers($value)
+    {
+        if (isset($value) && $value != 'index') {
+            $this->builder->where('manager_id', $value);
+        }
+    }
+
+    public function is_success($value)
+    {
+        if (isset($value) && $value != 'index') {
+            $this->builder->where('is_success', $value);
         }
     }
 

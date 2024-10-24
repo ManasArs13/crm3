@@ -48,6 +48,20 @@ class ContactAmoFilter
         }
     }
 
+    public function managers($value)
+    {
+        if (isset($value) && $value != 'all') {
+            $this->builder->where('manager_id', $value);
+        }
+    }
+
+    public function is_success($value)
+    {
+        if (isset($value) && $value != 'all') {
+            $this->builder->where('is_success', $value);
+        }
+    }
+
     public function filters()
     {
         return $this->request->filters ? $this->request->filters : [];

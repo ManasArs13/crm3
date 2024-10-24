@@ -6,8 +6,10 @@ use App\Filters\Amo\AmoOrderFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Amo\AmoOrderRequest;
 use App\Models\ContactAmo;
+use App\Models\Manager;
 use App\Models\Order;
 use App\Models\OrderAmo;
+use App\Models\StatusAmo;
 use Illuminate\Http\Request;
 use DateTime;
 
@@ -76,22 +78,41 @@ class AmoOrderController extends Controller
         }
 
         // Filters
-        $minCreated = Order::query()->min('created_at');
+        $minCreated = OrderAmo::query()->min('created_at');
         $minCreatedCheck = '';
-        $maxCreated = Order::query()->max('created_at');
+        $maxCreated = OrderAmo::query()->max('created_at');
         $maxCreatedCheck = '';
 
-        $minUpdated = Order::query()->min('updated_at');
+        $minUpdated = OrderAmo::query()->min('updated_at');
         $minUpdatedCheck = '';
-        $maxUpdated = Order::query()->max('updated_at');
+        $maxUpdated = OrderAmo::query()->max('updated_at');
         $maxUpdatedCheck = '';
 
+
         $contacts = [];
+        $queryIsSuccess = 'index';
+        $queryManager = 'index';
 
+        $managers = collect([
+            ['value' => 'index', 'name' => 'Все менеджеры']
+        ])->merge(
+            Manager::all()->map(function ($item) {
+                return ['value' => $item->id, 'name' => $item->name];
+            })
+        )->toArray();
 
+        $statuses = StatusAmo::all()->map(function ($item) {
+            return ['value' => $item->id, 'name' => $item->name, 'checked' => true];
+        })->toArray();
 
-        $queryMaterial = 'index';
-        $queryPlan = 'today';
+        if (isset($request->status)) {
+            foreach ($statuses as $key => $status) {
+                if (!in_array($status['value'], $request->status)) {
+                    $statuses[$key]['checked'] = false;
+                }
+            }
+        }
+
 
         if (isset($request->filters)) {
             foreach ($request->filters as $key => $value) {
@@ -121,6 +142,10 @@ class AmoOrderController extends Controller
                             ];
                         }
                     }
+                } else if ($key == 'is_success') {
+                    $queryIsSuccess = isset($value) ? $value : 'index';
+                } else if ($key == 'managers') {
+                    $queryManager = isset($value) ? $value : 'index';
                 }
             }
         }
@@ -145,12 +170,34 @@ class AmoOrderController extends Controller
                 'maxChecked' => $maxUpdatedCheck
             ],
             [
+                'type' => 'select',
+                'name' => 'managers',
+                'name_rus' => 'Менеджеры',
+                'values' => $managers,
+                'checked_value' => $queryManager
+            ],
+            [
+                'type' => 'select',
+                'name' => 'is_success',
+                'name_rus' => 'Успешная сделка',
+                'values' => [['value'=>'index', 'name'=>'Все статусы'],['value'=>'1', 'name' => 'Успешно'], ['value'=>'0', 'name' => 'Не успешно']],
+                'checked_value' => $queryIsSuccess
+            ],
+            [
                 'type' => 'select2',
                 'name' => 'contacts',
                 'name_rus' => 'Контакты',
                 'values' => $contacts,
             ],
+            [
+                'type' => 'checkbox',
+                'name' => 'status',
+                'name_rus' => 'Статусы',
+                'values' => $statuses,
+                //    'checked_value' => $queryMaterial,
+            ],
         ];
+
 
         return view('amo.order.index', compact(
             "resColumns",
