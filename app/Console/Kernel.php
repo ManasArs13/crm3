@@ -77,7 +77,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ms:import-price-list')->daily();
         $schedule->command('ms:import-payment')->hourly();
 
-        $schedule->command('app:set-errors')->everyMinute();
+        $schedule->command('app:set-errors')->daily();
     }
 
     protected function commands(): void
