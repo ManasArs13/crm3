@@ -1,5 +1,6 @@
 <?php
 return [
+  "allowed" => "Допущен",
   "all_orders" => "Всего сделок",
   "all" => "Все",
   "another" => "Остальные",
@@ -18,7 +19,6 @@ return [
   "id" => "№",
   "ms_id" => "Uuid в МойСклад",
   "name" => "Имя",
-  "updated_at" => "Дата обновления",
   "days" => "Дни",
   "date_of_last_shipment" => "Дата последней отгрузки",
   "distance" => "Расстояние",
@@ -89,7 +89,10 @@ return [
   "fence_length" => "Длина забора",
   "fence_type_id" => "Тип забора",
   "login" => "Логин",
+  "link" => "Ссылка",
   "unloading_price" => "Цена разгрузки",
+  "updated_at" => "Дата обновления",
+  "user_description" => "Комментарий сотрудника",
   "value" => "Значение",
   "hours" => "Часы",
   //  "hex" => "hex",
@@ -117,6 +120,7 @@ return [
   "release" => "Выпуск",
   "residual_count" => "Остаток",
   "reserve" => "В резерве",
+  "responsible_user" => "Ответственный",
   "is_active" => "Активность",
   "is_manipulator" => "Манипулятор",
   "is_exist" => "Существует",

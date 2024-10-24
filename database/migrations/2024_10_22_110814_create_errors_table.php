@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->text("responsible_user")->nullable();
             $table->text("user_description")->nullable();
+            $table->integer("tab_id")->nullable();
             $table->timestamps();
         });
     }
