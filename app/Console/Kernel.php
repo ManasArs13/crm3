@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\CkeckContactsMs;
 use App\Console\Commands\ImportFromAmo\ImportFromAmo;
 use App\Console\Commands\ImportFromMS\ImportAll;
+use App\Console\Commands\ImportFromMS\ImportBalance;
 use App\Console\Commands\ImportFromMS\ImportCategories;
 use App\Console\Commands\ImportFromMS\ImportColor;
 use App\Console\Commands\ImportFromMS\ImportContactMs;
@@ -13,6 +14,7 @@ use App\Console\Commands\ImportFromMS\ImportDemand;
 use App\Console\Commands\ImportFromMS\ImportEmployee;
 use App\Console\Commands\ImportFromMS\ImportPayment;
 use App\Console\Commands\ImportFromMS\ImportOrderMs;
+use App\Console\Commands\ImportFromMS\ImportOrganization;
 use App\Console\Commands\ImportFromMS\ImportProcessing;
 use App\Console\Commands\ImportFromMS\ImportProducts;
 use App\Console\Commands\ImportFromMS\ImportResidual;
@@ -46,6 +48,8 @@ class Kernel extends ConsoleKernel
         CkeckContactsMs::class,
         ImportEmployee::class,
         ImportPayment::class,
+        ImportOrganization::class,
+        ImportBalance::class
     ];
 
     protected function schedule(Schedule $schedule): void
@@ -58,6 +62,8 @@ class Kernel extends ConsoleKernel
         //$schedule->command('ms:import-employee')->everySixHours();
 
         $schedule->command('ms:import-carrier')->everySixHours();
+        $schedule->command('ms:import-organization')->everySixHours();
+        $schedule->command('ms:import-balance')->everySixHours();
         $schedule->command('ms:import-color')->everySixHours();
         $schedule->command('ms:import-status')->everySixHours();
         $schedule->command('ms:import-transport-type')->everySixHours();
