@@ -291,6 +291,12 @@
                                     @endrole
 
                                     @role('admin|manager|audit')
+                                        <x-dropdown-link :href="route('manager.managerTwo')">
+                                            Сводка - Менеджеры 2
+                                        </x-dropdown-link>
+                                    @endrole
+
+                                    @role('admin|manager|audit')
                                         <x-dropdown-link :href="route('report.days')">
                                             Сводка по дням
                                         </x-dropdown-link>
@@ -677,8 +683,12 @@
 
                                 @role('admin|manager|audit')
                                     <a href="{{ route('manager.index') }}"
-                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка
-                                        - Менеджеры</a>
+                                        class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры</a>
+                                @endrole
+
+                                @role('admin|manager|audit')
+                                    <a href="{{ route('manager.managerTwo') }}"
+                                       class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры 2</a>
                                 @endrole
 
                                 @role('admin|manager|audit')

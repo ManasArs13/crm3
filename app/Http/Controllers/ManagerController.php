@@ -7,9 +7,11 @@ use App\Models\Manager;
 use App\Models\Option;
 use App\Models\OrderAmo;
 use App\Models\Product;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Cast\Double;
 
 class ManagerController extends Controller
@@ -1227,6 +1229,279 @@ class ManagerController extends Controller
             'selectedContacts',
             "resColumnsContacts",
             "resColumnsAllContacts",
+        ));
+    }
+
+    public function managerTwo(Request $request){
+        $entityName = 'Сводка менеджеров 2';
+
+        $month_list = array(
+            '01' => 'январь',
+            '02' => 'февраль',
+            '03' => 'март',
+            '04' => 'апрель',
+            '05' => 'май',
+            '06' => 'июнь',
+            '07' => 'июль',
+            '08' => 'август',
+            '09' => 'сентябрь',
+            '10' => 'октябрь',
+            '11' => 'ноябрь',
+            '12' => 'декабрь'
+        );
+
+        if (isset($request->date)) {
+            $date = $request->date;
+        } else {
+            $date = date('m');
+        }
+
+        $dateRus = $month_list[$date];
+
+        $date1 = new DateTime(date('Y') . $date . '01');
+        $date2 = new DateTime(date('Y') . $date . '01');
+
+        $datePrev = $date1->modify('-1 month')->format('m');
+        $dateNext = $date2->modify('+1 month')->format('m');
+
+        $year = Carbon::now()->year;
+        $daysInMonth = Carbon::createFromDate($year, $date)->daysInMonth;
+        $startOfMonth = Carbon::createFromDate($year, $date, 1)->startOfMonth()->toDateString();
+        $endOfMonth = Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString();
+
+        $tables = [
+            'incoming_calls',
+            'outgoing_calls',
+            'talk_amos',
+            'orders_created',
+            'orders_closed',
+            'orders_success',
+            'conversion',
+            'shipments'
+        ];
+        $emptyValues = array_fill_keys($tables, 0);
+
+        $report = [];
+        $totals = [];
+        $managers = ['Yaroslav' => 'Ярослав', 'Ekatirina' => 'Екатерина', 'Other' => 'Остальные', 'All' => 'Всего'];
+
+
+        foreach ($tables as $table) {
+            if($table === 'incoming_calls'){
+                $records = DB::table('calls')
+                    ->select(
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('COUNT(*) as count'),
+                        DB::raw('CASE WHEN employee_amo_id = 7 THEN "Yaroslav" WHEN employee_amo_id = 11 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                    )
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
+                    ->where('type', 'incoming_call')
+                    ->where('duration', '>', 0)
+                    ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->get();
+
+
+            } elseif($table === 'outgoing_calls'){
+                $records = DB::table('calls')
+                    ->select(
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('COUNT(*) as count'),
+                        DB::raw('CASE WHEN employee_amo_id = 7 THEN "Yaroslav" WHEN employee_amo_id = 11 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                    )
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
+                    ->where('type', 'outgoing_call')
+                    ->where('duration', '>', 0)
+                    ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->get();
+            } elseif($table === 'talk_amos'){
+                $records = DB::table('talk_amos')
+                    ->select(
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('COUNT(*) as count'),
+                        DB::raw('CASE WHEN employee_amo_id = 7 THEN "Yaroslav" WHEN employee_amo_id = 11 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                    )
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->get();
+            } elseif($table === 'orders_created'){
+                $records = DB::table('order_amos')
+                    ->select(
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('COUNT(*) as count'),
+                        DB::raw('CASE WHEN manager_id = 1 THEN "Yaroslav" WHEN manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                    )
+                    ->where('is_success', 1)
+                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->get();
+            } elseif($table === 'orders_closed'){
+                $records = DB::table('order_amos')
+                    ->select(
+                        DB::raw('DATE(closed_at) as date'),
+                        DB::raw('COUNT(*) as count'),
+                        DB::raw('CASE WHEN manager_id = 1 THEN "Yaroslav" WHEN manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                    )
+                    ->where('is_success', 1)
+                    ->where('status_amo_id', 143)
+                    ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
+                    ->get();
+            } elseif($table === 'orders_success'){
+                $records = DB::table('order_amos')
+                    ->select(
+                        DB::raw('DATE(closed_at) as date'),
+                        DB::raw('COUNT(*) as count'),
+                        DB::raw('CASE WHEN manager_id = 1 THEN "Yaroslav" WHEN manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                    )
+                    ->where('is_success', 1)
+                    ->where('status_amo_id', 142)
+                    ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
+                    ->get();
+            } elseif ($table === 'shipments') {
+                $records = DB::table('order_amos')
+                    ->select(
+                        DB::raw('DATE(order_amos.created_at) as date'),
+                        DB::raw('SUM(CASE WHEN shipments.id IS NOT NULL THEN 1 ELSE 0 END) as count'), // Условный подсчет только с shipments
+                        DB::raw('CASE WHEN order_amos.manager_id = 1 THEN "Yaroslav" WHEN order_amos.manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                    )
+                    ->leftJoin('order_amo_orders', 'order_amos.id', '=', 'order_amo_orders.order_amo_id')
+                    ->leftJoin('orders', 'order_amo_orders.order_id', '=', 'orders.id')
+                    ->leftJoin('shipments', 'orders.id', '=', 'shipments.order_id')
+                    ->whereBetween(DB::raw('DATE(order_amos.created_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(order_amos.created_at)'), 'employee_group')
+                    ->get();
+
+            }
+
+            foreach ($records as $record) {
+                $report[$record->date][$record->employee_group][$table] = $record->count;
+            }
+        }
+
+
+        for ($i = 0; $i < $daysInMonth; $i++) {
+            $day = Carbon::createFromDate($year, $date, 1)->startOfMonth()->addDays($i)->toDateString();
+
+            if (!isset($report[$day])) {
+                $report[$day] = [
+                    'Yaroslav' => $emptyValues,
+                    'Ekatirina' => $emptyValues,
+                    'Other' => $emptyValues,
+                ];
+            }
+
+            $report[$day]['All'] = array_fill_keys($tables, 0);
+            foreach($report[$day] as $name){
+                foreach($tables as $table){
+                    $report[$day]['All'][$table] += $name[$table] ?? 0;
+                }
+            }
+
+        }
+
+
+        $employeeGroups = ['Yaroslav' => 7, 'Ekatirina' => 11, 'Other' => null];
+        $allDates = [];
+        for ($i = 1; $i <= $daysInMonth; $i++) {
+            $allDates[] = Carbon::createFromDate($year, $date, $i)->toDateString();
+        }
+
+        $successOrdersData = DB::table('order_amos')
+            ->select(
+                DB::raw('DATE(closed_at) as date'),
+                DB::raw('COUNT(*) as count'),
+                DB::raw('CASE WHEN manager_id = 1 THEN "Yaroslav" WHEN manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
+            )
+            ->where('is_success', 1)
+            ->where('status_amo_id', 142)
+            ->whereBetween(DB::raw('DATE(closed_at)'), [
+                Carbon::createFromDate($year, $date, 1)->subMonth()->startOfMonth()->toDateString(),
+                Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString()
+            ])
+            ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
+            ->get()
+            ->groupBy(['date', 'employee_group']);
+
+
+        $closedOrdersData = DB::table('order_amos')
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('COUNT(*) as count'),
+                DB::raw('CASE WHEN manager_id = 1 THEN "Yaroslav" WHEN manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
+            )
+            ->where('is_success', 1)
+            ->whereBetween(DB::raw('DATE(created_at)'), [
+                Carbon::createFromDate($year, $date, 1)->subMonth()->startOfMonth()->toDateString(),
+                Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString()
+            ])
+            ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+            ->get()
+            ->groupBy(['date', 'employee_group']);
+
+
+        foreach ($allDates as $currentDate) {
+            $startDate = Carbon::parse($currentDate)->subMonth()->toDateString();
+            $totalSuccessOrders = 0;
+            $totalClosedOrders = 0;
+
+            foreach ($employeeGroups as $groupName => $groupId) {
+                $successOrders = 0;
+                $closedOrders = 0;
+
+                foreach ($successOrdersData as $date => $groups) {
+                    if ($date >= $startDate && $date <= $currentDate && isset($groups[$groupName])) {
+                        $successOrders += $groups[$groupName]->sum('count');
+                    }
+                }
+
+                foreach ($closedOrdersData as $date => $groups) {
+                    if ($date >= $startDate && $date <= $currentDate && isset($groups[$groupName])) {
+                        $closedOrders += $groups[$groupName]->sum('count');
+                    }
+                }
+
+                $conversion = $closedOrders > 0 ? round($successOrders / $closedOrders, 1) : 0;
+                $report[$currentDate][$groupName]['conversion'] = $conversion;
+
+                $totalSuccessOrders += $successOrders;
+                $totalClosedOrders += $closedOrders;
+            }
+
+            $report[$currentDate]['All']['conversion'] = round($totalClosedOrders > 0 ? $totalSuccessOrders / $totalClosedOrders : 0, 1);
+        }
+
+
+
+        $selected = [
+            "incoming_calls",
+            "outgoing_calls",
+            "conversations",
+            "created_transactions",
+            "closed_transactions",
+            "success_transactions",
+            "conversion",
+            "shipments"
+        ];
+        foreach ($selected as $column) {
+
+            if (in_array($column, $selected)) {
+                $resColumns[$column] = trans("column." . $column);
+            }
+        }
+
+
+        return view("manager.byDays", compact(
+            'entityName',
+            "resColumns",
+            'dateNext',
+            'datePrev',
+            'date',
+            'dateRus',
+            'tables',
+            'report',
+            'totals',
+            'managers'
         ));
     }
 }
