@@ -215,6 +215,12 @@ class OptionSeeder extends Seeder
                 'module' => 'ms'
             ],
             [
+                'name' => 'Баланс организаций',
+                'code' => 'ms_balance_organization_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/report/money/byaccount',
+                'module' => 'ms'
+            ],
+            [
                 'name' => 'Заказ: Гуид аттрибута "Доставка" МС',
                 'code' => 'ms_order_delivery_guid',
                 'value' => 'ebd3862f-5c92-11ea-0a80-0535000bb626',
