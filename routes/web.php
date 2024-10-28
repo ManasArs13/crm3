@@ -75,6 +75,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|audit'])->group(funct
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
     Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
+    Route::get('/manager-two', [ManagerController::class, 'managerTwo'])->name('manager.managerTwo');
 
     // Сводка
     Route::name('report.')->group(function () {
