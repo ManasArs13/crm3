@@ -63,7 +63,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('ms:import-carrier')->everySixHours();
         $schedule->command('ms:import-organization')->everySixHours();
-        $schedule->command('ms:import-balance')->everySixHours();
+        $schedule->command('ms:import-balance')->everyTenMinutes();
         $schedule->command('ms:import-color')->everySixHours();
         $schedule->command('ms:import-status')->everySixHours();
         $schedule->command('ms:import-transport-type')->everySixHours();
