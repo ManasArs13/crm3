@@ -1359,17 +1359,15 @@ class ManagerController extends Controller
                     ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
                     ->get();
             } elseif ($table === 'shipments') {
-                $records = DB::table('order_amos')
+                $records = DB::table('orders')
                     ->select(
-                        DB::raw('DATE(order_amos.created_at) as date'),
-                        DB::raw('SUM(CASE WHEN shipments.id IS NOT NULL THEN 1 ELSE 0 END) as count'), // Условный подсчет только с shipments
-                        DB::raw('CASE WHEN order_amos.manager_id = 1 THEN "Yaroslav" WHEN order_amos.manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
+                        DB::raw('DATE(shipments.created_at) as date'),
+                        DB::raw('COUNT(shipments.id) as count'),
+                        DB::raw('CASE WHEN orders.manager_id = 1 THEN "Yaroslav" WHEN orders.manager_id = 2 THEN "Ekatirina" ELSE "Other" END as employee_group')
                     )
-                    ->leftJoin('order_amo_orders', 'order_amos.id', '=', 'order_amo_orders.order_amo_id')
-                    ->leftJoin('orders', 'order_amo_orders.order_id', '=', 'orders.id')
-                    ->leftJoin('shipments', 'orders.id', '=', 'shipments.order_id')
-                    ->whereBetween(DB::raw('DATE(order_amos.created_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(order_amos.created_at)'), 'employee_group')
+                    ->Join('shipments', 'orders.id', '=', 'shipments.order_id')
+                    ->whereBetween(DB::raw('DATE(shipments.created_at)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(shipments.created_at)'), 'employee_group')
                     ->get();
 
             }
@@ -1461,14 +1459,14 @@ class ManagerController extends Controller
                     }
                 }
 
-                $conversion = $closedOrders > 0 ? round($successOrders / $closedOrders, 15) : 0;
+                $conversion = $closedOrders > 0 ? round(($successOrders / $closedOrders) * 100, 1) . '%' : 0;
                 $report[$currentDate][$groupName]['conversion'] = $conversion;
 
                 $totalSuccessOrders += $successOrders;
                 $totalClosedOrders += $closedOrders;
             }
 
-            $report[$currentDate]['All']['conversion'] = round($totalClosedOrders > 0 ? $totalSuccessOrders / $totalClosedOrders : 0, 15);
+            $report[$currentDate]['All']['conversion'] = $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100, 1) . '%' : 0;
         }
 
 
