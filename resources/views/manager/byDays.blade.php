@@ -64,6 +64,9 @@
                                                     @case('conversion')
                                                         <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['conversion'] ?? 0 }}</td>
                                                     @break
+                                                    @case('shipments')
+                                                        <td class="px-2 py-3 border-l-2 text-center">{{ number_format((int) ($counts[$managerKey]['shipments'] ?? 0), 0, ',', ' ') }}</td>
+                                                    @break
 
                                                 @endswitch
                                             @endforeach
