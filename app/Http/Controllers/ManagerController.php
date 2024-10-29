@@ -1461,14 +1461,14 @@ class ManagerController extends Controller
                     }
                 }
 
-                $conversion = $closedOrders > 0 ? round($successOrders / $closedOrders, 1) : 0;
+                $conversion = $closedOrders > 0 ? round($successOrders / $closedOrders, 15) : 0;
                 $report[$currentDate][$groupName]['conversion'] = $conversion;
 
                 $totalSuccessOrders += $successOrders;
                 $totalClosedOrders += $closedOrders;
             }
 
-            $report[$currentDate]['All']['conversion'] = round($totalClosedOrders > 0 ? $totalSuccessOrders / $totalClosedOrders : 0, 1);
+            $report[$currentDate]['All']['conversion'] = round($totalClosedOrders > 0 ? $totalSuccessOrders / $totalClosedOrders : 0, 15);
         }
 
 
