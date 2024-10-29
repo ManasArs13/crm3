@@ -1470,7 +1470,7 @@ class ManagerController extends Controller
                 $totalClosedOrders += $closedOrders;
 
 
-                $totals['conversion'][$groupName] += round(($successOrders / $closedOrders) * 100 / $daysInMonth, 1);
+                $totals['conversion'][$groupName] += $closedOrders > 0 ? round(($successOrders / $closedOrders) * 100 / $daysInMonth, 1) : 0;
             }
 
             $totals['conversion']['All'] += $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100 / $daysInMonth, 1) : 0;
