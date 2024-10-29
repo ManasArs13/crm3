@@ -1270,21 +1270,21 @@ class ManagerController extends Controller
         $endOfMonth = Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString();
 
         $tables = [
-            'incoming_calls',
-            'outgoing_calls',
-            'talk_amos',
-            'orders_created',
-            'orders_closed',
-            'orders_success',
-            'conversion',
-            'shipments'
+            "incoming_calls",
+            "outgoing_calls",
+            "conversations",
+            "created_transactions",
+            "closed_transactions",
+            "success_transactions",
+            "conversion",
+            "shipments"
         ];
+
         $emptyValues = array_fill_keys($tables, 0);
 
         $report = [];
-        $totals = [];
         $managers = ['Yaroslav' => 'Ярослав', 'Ekatirina' => 'Екатерина', 'Other' => 'Остальные', 'All' => 'Всего'];
-
+        $totals = array_fill_keys($tables, array_fill_keys(array_keys($managers), 0));
 
         foreach ($tables as $table) {
             if($table === 'incoming_calls'){
@@ -1313,7 +1313,7 @@ class ManagerController extends Controller
                     ->where('duration', '>', 0)
                     ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
                     ->get();
-            } elseif($table === 'talk_amos'){
+            } elseif($table === 'conversations'){
                 $records = DB::table('talk_amos')
                     ->select(
                         DB::raw('DATE(created_at) as date'),
@@ -1323,7 +1323,7 @@ class ManagerController extends Controller
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
                     ->get();
-            } elseif($table === 'orders_created'){
+            } elseif($table === 'created_transactions'){
                 $records = DB::table('order_amos')
                     ->select(
                         DB::raw('DATE(created_at) as date'),
@@ -1334,7 +1334,7 @@ class ManagerController extends Controller
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
                     ->get();
-            } elseif($table === 'orders_closed'){
+            } elseif($table === 'closed_transactions'){
                 $records = DB::table('order_amos')
                     ->select(
                         DB::raw('DATE(closed_at) as date'),
@@ -1346,7 +1346,7 @@ class ManagerController extends Controller
                     ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
                     ->get();
-            } elseif($table === 'orders_success'){
+            } elseif($table === 'success_transactions'){
                 $records = DB::table('order_amos')
                     ->select(
                         DB::raw('DATE(closed_at) as date'),
@@ -1373,8 +1373,10 @@ class ManagerController extends Controller
             }
 
             foreach ($records as $record) {
-                $report[$record->date][$record->employee_group][$table] = $record->count;
+                $totals[$table][$record->employee_group] += $record->count;
+                $report[$record->date][$record->employee_group][$table] = $table === 'shipments' ? $record->count : number_format((int) $record->count, 0, ',', ' ');
             }
+            $records = [];
         }
 
 
@@ -1392,6 +1394,7 @@ class ManagerController extends Controller
             $report[$day]['All'] = array_fill_keys($tables, 0);
             foreach($report[$day] as $name){
                 foreach($tables as $table){
+                    $totals[$table]['All'] += $name[$table] ?? 0;
                     $report[$day]['All'][$table] += $name[$table] ?? 0;
                 }
             }
@@ -1443,6 +1446,7 @@ class ManagerController extends Controller
             $totalSuccessOrders = 0;
             $totalClosedOrders = 0;
 
+
             foreach ($employeeGroups as $groupName => $groupId) {
                 $successOrders = 0;
                 $closedOrders = 0;
@@ -1464,12 +1468,14 @@ class ManagerController extends Controller
 
                 $totalSuccessOrders += $successOrders;
                 $totalClosedOrders += $closedOrders;
+
+
+                $totals['conversion'][$groupName] += round(($successOrders / $closedOrders) * 100 / $daysInMonth, 1);
             }
 
+            $totals['conversion']['All'] += $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100 / $daysInMonth, 1) : 0;
             $report[$currentDate]['All']['conversion'] = $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100, 1) . '%' : 0;
         }
-
-
 
         $selected = [
             "incoming_calls",
@@ -1481,13 +1487,13 @@ class ManagerController extends Controller
             "conversion",
             "shipments"
         ];
+
         foreach ($selected as $column) {
 
             if (in_array($column, $selected)) {
                 $resColumns[$column] = trans("column." . $column);
             }
         }
-
 
         return view("manager.byDays", compact(
             'entityName',

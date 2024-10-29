@@ -32,6 +32,7 @@
                                 <thead>
                                 <tr class="bg-neutral-200 font-semibold">
                                     <th class="px-2 py-3">{{ $manager }}</th>
+                                    <th class="px-2 py-3 font-medium">Итого</th>
                                     @foreach($report as $day => $counts)
                                         <th class="px-2 py-3 text-center">{{ Carbon\Carbon::parse($day)->day }}</th>
                                     @endforeach
@@ -41,34 +42,9 @@
                                     @foreach($resColumns as $key => $column)
                                         <tr class="border-b-2">
                                             <td class="break-all max-w-96 truncate px-2 py-3">{{ $column }}</td>
+                                            <td class="px-2 py-3 border-l-2 text-center">{{ $key == 'conversion' ? $totals[$key][$managerKey] . '%' : $totals[$key][$managerKey] }}</td>
                                             @foreach($report as $day => $counts)
-                                                @switch($key)
-                                                    @case('incoming_calls')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['incoming_calls'] ?? 0 }}</td>
-                                                    @break
-                                                    @case('outgoing_calls')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['outgoing_calls'] ?? 0 }}</td>
-                                                    @break
-                                                    @case('conversations')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['talk_amos'] ?? 0 }}</td>
-                                                    @break
-                                                    @case('created_transactions')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['orders_created'] ?? 0 }}</td>
-                                                    @break
-                                                    @case('closed_transactions')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['orders_closed'] ?? 0 }}</td>
-                                                    @break
-                                                    @case('success_transactions')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['orders_success'] ?? 0 }}</td>
-                                                    @break
-                                                    @case('conversion')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey]['conversion'] ?? 0 }}</td>
-                                                    @break
-                                                    @case('shipments')
-                                                        <td class="px-2 py-3 border-l-2 text-center">{{ number_format((int) ($counts[$managerKey]['shipments'] ?? 0), 0, ',', ' ') }}</td>
-                                                    @break
-
-                                                @endswitch
+                                                <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey][$key] ?? 0 }}</td>
                                             @endforeach
                                         </tr>
                                     @endforeach
