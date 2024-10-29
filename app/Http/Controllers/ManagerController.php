@@ -1298,6 +1298,7 @@ class ManagerController extends Controller
                     ->where('type', 'incoming_call')
                     ->where('duration', '>', 0)
                     ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->orderBy(DB::raw('DATE(created_at)'), 'asc')
                     ->get();
 
 
@@ -1312,6 +1313,7 @@ class ManagerController extends Controller
                     ->where('type', 'outgoing_call')
                     ->where('duration', '>', 0)
                     ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->orderBy(DB::raw('DATE(created_at)'), 'asc')
                     ->get();
             } elseif($table === 'conversations'){
                 $records = DB::table('talk_amos')
@@ -1322,6 +1324,7 @@ class ManagerController extends Controller
                     )
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->orderBy(DB::raw('DATE(created_at)'), 'asc')
                     ->get();
             } elseif($table === 'created_transactions'){
                 $records = DB::table('order_amos')
@@ -1333,6 +1336,7 @@ class ManagerController extends Controller
                     ->where('is_success', 1)
                     ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+                    ->orderBy(DB::raw('DATE(created_at)'), 'asc')
                     ->get();
             } elseif($table === 'closed_transactions'){
                 $records = DB::table('order_amos')
@@ -1345,6 +1349,7 @@ class ManagerController extends Controller
                     ->where('status_amo_id', 143)
                     ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
+                    ->orderBy(DB::raw('DATE(closed_at)'), 'asc')
                     ->get();
             } elseif($table === 'success_transactions'){
                 $records = DB::table('order_amos')
@@ -1357,6 +1362,7 @@ class ManagerController extends Controller
                     ->where('status_amo_id', 142)
                     ->whereBetween(DB::raw('DATE(closed_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
+                    ->orderBy(DB::raw('DATE(closed_at)'), 'asc')
                     ->get();
             } elseif ($table === 'shipments') {
                 $records = DB::table('orders')
@@ -1368,6 +1374,7 @@ class ManagerController extends Controller
                     ->Join('shipments', 'orders.id', '=', 'shipments.order_id')
                     ->whereBetween(DB::raw('DATE(shipments.created_at)'), [$startOfMonth, $endOfMonth])
                     ->groupBy(DB::raw('DATE(shipments.created_at)'), 'employee_group')
+                    ->orderBy(DB::raw('DATE(shipments.created_at)'), 'asc')
                     ->get();
 
             }
@@ -1421,6 +1428,7 @@ class ManagerController extends Controller
                 Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString()
             ])
             ->groupBy(DB::raw('DATE(closed_at)'), 'employee_group')
+            ->orderBy(DB::raw('DATE(closed_at)'), 'asc')
             ->get()
             ->groupBy(['date', 'employee_group']);
 
@@ -1437,6 +1445,7 @@ class ManagerController extends Controller
                 Carbon::createFromDate($year, $date, 1)->endOfMonth()->toDateString()
             ])
             ->groupBy(DB::raw('DATE(created_at)'), 'employee_group')
+            ->orderBy(DB::raw('DATE(created_at)'), 'asc')
             ->get()
             ->groupBy(['date', 'employee_group']);
 
