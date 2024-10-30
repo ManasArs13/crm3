@@ -256,9 +256,36 @@
                             </x-dropdown>
                         </div>
                         @role('admin')
-                            <x-nav-link :href="route('users.all')" :active="request()->routeIs('users')">
-                                Пользователи
-                            </x-nav-link>
+                            <div class="hidden md:flex md:items-center md:ms-6">
+                                <x-dropdown align="left" width="48">
+                                    <x-slot name="trigger">
+                                        <button
+                                            class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                            <div>Пользователи</div>
+
+                                            <div class="ms-1">
+                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                          clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    </x-slot>
+
+                                    <x-slot name="content">
+
+                                        <x-dropdown-link :href="route('users.all')">
+                                            Пользователи
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('permission')">
+                                            Разрешения
+                                        </x-dropdown-link>
+
+                                    </x-slot>
+                                </x-dropdown>
+                            </div>
                         @endrole
                     @endrole
 
@@ -658,8 +685,25 @@
                                 </div>
                             </div>
                             @role('admin')
-                                <a href="{{ route('users.all') }}"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Пользователи</a>
+                                <div class="-mx-3">
+                                    <button type="button"
+                                            class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                        Пользователи
+                                        <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor"
+                                             aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                                  clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+
+                                    <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                        <a href="{{ route('users.all') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Пользователи</a>
+                                        <a href="{{ route('permission') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Разрешения</a>
+                                    </div>
+                                </div>
 
                                 <a href="{{ route('option.index') }}"
                                     class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Опции</a>

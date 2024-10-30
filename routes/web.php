@@ -243,6 +243,9 @@ Route::middleware(['auth', 'verified', 'role:admin|audit'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    // Permission
+    Route::get('/permission', [UsersController::class, 'permission'])->name('permission');
+
     // Users
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [UsersController::class, 'users'])->name('all');

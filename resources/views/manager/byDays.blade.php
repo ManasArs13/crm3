@@ -42,7 +42,7 @@
                                     @foreach($resColumns as $key => $column)
                                         <tr class="border-b-2">
                                             <td class="break-all max-w-96 truncate px-2 py-3">{{ $column }}</td>
-                                            <td class="px-2 py-3 border-l-2 text-center">{{ $key == 'conversion' ? $totals[$key][$managerKey] . '%' : $totals[$key][$managerKey] }}</td>
+                                            <td class="px-2 py-3 border-l-2 text-center">{{ $totals[$key][$managerKey] }}</td>
                                             @foreach($report as $day => $counts)
                                                 <td class="px-2 py-3 border-l-2 text-center">{{ $counts[$managerKey][$key] ?? 0 }}</td>
                                             @endforeach

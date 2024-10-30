@@ -30,6 +30,7 @@ return [
     'techcharts' => 'Техкарты',
     'processings' => 'Техоперации',
     'processing' => 'Техоперация №',
+    'permission_roles' => 'Разрешения ролей',
     'techchart' => 'Техкарта ',
     'supplies' => 'Приёмки',
     'supplies_position' => 'Позиции приёмок',
