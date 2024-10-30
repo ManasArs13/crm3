@@ -1472,18 +1472,18 @@ class ManagerController extends Controller
                     }
                 }
 
-                $conversion = $closedOrders > 0 ? round(($successOrders / $closedOrders) * 100, 1) . '%' : 0;
+                $conversion = $closedOrders > 0 ? round(($successOrders / $closedOrders) * 100) : 0;
                 $report[$currentDate][$groupName]['conversion'] = $conversion;
 
                 $totalSuccessOrders += $successOrders;
                 $totalClosedOrders += $closedOrders;
 
 
-                $totals['conversion'][$groupName] += $closedOrders > 0 ? round(($successOrders / $closedOrders) * 100 / $daysInMonth, 1) : 0;
+                $totals['conversion'][$groupName] += $closedOrders > 0 ? round(($successOrders / $closedOrders) * 100 / $daysInMonth) : 0;
             }
 
-            $totals['conversion']['All'] += $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100 / $daysInMonth, 1) : 0;
-            $report[$currentDate]['All']['conversion'] = $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100, 1) . '%' : 0;
+            $totals['conversion']['All'] += $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100 / $daysInMonth) : 0;
+            $report[$currentDate]['All']['conversion'] = $totalClosedOrders > 0 ? round( ($totalSuccessOrders / $totalClosedOrders) * 100) : 0;
         }
 
         $selected = [

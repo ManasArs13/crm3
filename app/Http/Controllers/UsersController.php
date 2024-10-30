@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -62,6 +64,16 @@ class UsersController extends Controller
         $user = User::find($request->managment);
         $user->delete();
         return redirect()->route('users.all');
+    }
+
+    public function permission(){
+
+        $roles = Role::with('permissions')->orderBy('id', 'asc')->get();
+        $permissions = Permission::OrderBy('id', 'asc')->get();
+
+        $entity = 'permission_roles';
+
+        return view('users.permission.index', compact("entity", "roles", "permissions"));
     }
 
 }
