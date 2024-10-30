@@ -49,20 +49,6 @@
                             @endforeach
                             </tbody>
                         </table>
-                        {{-- header --}}
-                        <div class="border-b-2 border-neutral-100">
-                            <div class="flex flex-row w-full p-3 justify-between">
-                                <div class="flex flex-row gap-1">
-
-                                </div>
-                                <div class="flex px-3 text-center font-bold">
-                                    <a href="{{ route('users.managment.create') }}"
-                                       class="inline-flex items-center rounded bg-green-400 px-3 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
-                                        Сохранить
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
