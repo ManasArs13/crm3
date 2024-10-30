@@ -12,7 +12,8 @@ use Spatie\Permission\Models\Role;
 class UsersController extends Controller
 {
 
-    public function users($role = null){
+    public function users($role = null)
+    {
         if ($role) {
             $users = User::whereHas('roles', function ($query) use ($role) {
                 $query->where('name', $role);
@@ -25,13 +26,13 @@ class UsersController extends Controller
         return view('users.index', compact("entity", "users"));
     }
 
-
-    // Добавить пользователя
     public function create(){
         $entity = 'add_user';
         return view('users.create', compact('entity'));
     }
-    public function store(UserUpdateRequest $request){
+
+    public function store(UserUpdateRequest $request)
+    {
         $user = User::Create([
             'name' => $request->name,
             'email' => $request->login,
@@ -41,13 +42,14 @@ class UsersController extends Controller
         return redirect()->route('users.all');
     }
 
-    // Изменить пользователя
     public function edit($id){
         $entity = 'user';
         $user = User::with('roles')->find($id);
         return view('users/edit', compact('entity', 'user'));
     }
-    public function update(UserUpdateRequest $request){
+
+    public function update(UserUpdateRequest $request)
+    {
         $user = User::find($request->managment);
         $password = $request->password ?? $user->password;
         $user->Update([
@@ -59,14 +61,15 @@ class UsersController extends Controller
         return redirect()->route('users.all');
     }
 
-    // Удалить пользователя
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
         $user = User::find($request->managment);
         $user->delete();
         return redirect()->route('users.all');
     }
 
-    public function permission(){
+    public function permission()
+    {
 
         $roles = Role::with('permissions')->orderBy('id', 'asc')->get();
         $permissions = Permission::OrderBy('id', 'asc')->get();
