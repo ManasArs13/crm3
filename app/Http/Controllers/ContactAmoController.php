@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Schema;
 
 class ContactAmoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:amo_contact')->only(['index', 'filter']);
+        $this->middleware('permission:amo_contact_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(FilterRequest $request)
     {
         $urlEdit = "contactAmo.edit";

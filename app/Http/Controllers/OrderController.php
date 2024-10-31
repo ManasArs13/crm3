@@ -23,6 +23,12 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:order')->only(['index']);
+        $this->middleware('permission:order_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(OrderRequest $request)
     {
 

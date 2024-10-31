@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class ErrorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:error')->only(['index']);
+    }
+
     public function index(ErrorRequest $request){
         $entityName = 'Реестр ошибок';
 

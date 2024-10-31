@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class SupplyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:supply')->only(['index']);
+        $this->middleware('permission:supply_edit')->only(['show']);
+    }
+
     public function index(Request $request)
     {
         $entity = 'supplies';

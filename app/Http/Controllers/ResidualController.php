@@ -12,6 +12,11 @@ use Carbon\Carbon;
 
 class ResidualController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:residual')->only(['blocksMaterials', 'blocksCategories', 'blocksProducts', 'concretesMaterials']);
+    }
+
     public function index(FilterRequest $request)
     {
         $entity = 'residuals';

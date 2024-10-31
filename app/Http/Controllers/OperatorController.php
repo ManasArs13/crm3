@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Schema;
 
 class OperatorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:operator_order')->only(['orders']);
+        $this->middleware('permission:operator_shipment')->only(['shipments']);
+    }
+
     public function orders(OrderRequest $request)
     {
         $urlEdit = "order.edit";

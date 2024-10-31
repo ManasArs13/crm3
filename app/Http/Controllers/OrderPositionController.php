@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Schema;
 
 class OrderPositionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:order_position')->only(['index', 'filter']);
+        $this->middleware('permission:order_position_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(FilterRequest $request)
     {
         $urlEdit = "order_positions.edit";

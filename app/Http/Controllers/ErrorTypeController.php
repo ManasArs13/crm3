@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class ErrorTypeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:error_type')->only(['index', 'filter']);
+        $this->middleware('permission:error_type_edit')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         $entityName = 'Типы ошибок';

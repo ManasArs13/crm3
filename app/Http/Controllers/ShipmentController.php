@@ -22,6 +22,12 @@ use Illuminate\Support\Facades\DB;
 
 class ShipmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:shipment')->only(['index', 'index2', 'filter']);
+        $this->middleware('permission:shipment_edit')->only(['create', 'createWithOrder', 'createFromOrder', 'store', 'show', 'update', 'destroy']);
+    }
+
     public function index(ShipmentRequest $request)
     {
         $urlEdit = "shipment.edit";

@@ -15,6 +15,12 @@ use Illuminate\Support\Carbon;
 
 class SummaryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:report_summary')->only(['index']);
+        $this->middleware('permission:report_summary_remains')->only(['remains']);
+    }
+
     public function index(){
         $sumMaterials=Product::where("category_id", 8)->sum(DB::raw('residual * price'));
         $sumProducts=Product::whereIn("category_id", [5,6,7,11,12,15,16,21])->sum(DB::raw('residual * price'));

@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Schema;
 
 class SupplyPositionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:supply_position')->only(['index']);
+        $this->middleware('permission:supply_position_edit')->only(['create','store', 'edit', 'update', 'destroy']);
+    }
+
     public function index(FilterRequest $request){
         $urlEdit = "supply_positions.edit";
         $urlShow = "supply_positions.show";

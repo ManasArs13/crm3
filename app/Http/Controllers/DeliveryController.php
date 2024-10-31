@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Schema;
 
 class DeliveryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:delivery')->only(['index', 'filter']);
+        $this->middleware('permission:delivery_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(Request $request)
     {
         $entityItems = Delivery::query();

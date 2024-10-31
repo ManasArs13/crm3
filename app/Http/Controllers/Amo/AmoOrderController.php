@@ -15,6 +15,12 @@ use DateTime;
 
 class AmoOrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:amo_order')->only(['index']);
+        $this->middleware('permission:double_order')->only(['doubleOrders']);
+    }
+
     public function index(AmoOrderRequest $request)
     {
         $entityName = 'Заказы АМО';

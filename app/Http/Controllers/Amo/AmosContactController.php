@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class AmosContactController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:contact_link')->only(['index']);
+    }
+
     public function index(FilterRequest $request){
         $urlEdit = "contactAmo.edit";
         $urlShow = "contactAmo.show";

@@ -15,6 +15,11 @@ use Illuminate\Http\Request;
 
 class DeviationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:report_deviation')->only(['index']);
+    }
+
     public function index(ShipmentRequest $request)
     {
         $urlEdit = "shipment.edit";

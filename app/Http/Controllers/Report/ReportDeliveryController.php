@@ -20,6 +20,12 @@ use Illuminate\Http\Request;
 
 class ReportDeliveryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:report_delivery')->only(['index']);
+        $this->middleware('permission:report_delivery_category')->only(['category']);
+    }
+
     public function index(ShipmentRequest $request)
     {
         $urlEdit = "shipment.edit";

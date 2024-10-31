@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Schema;
 
 class ContactController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:contact')->only(['index', 'filter']);
+        $this->middleware('permission:contact_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(FilterRequest $request)
     {
         $urlEdit = "contact.edit";

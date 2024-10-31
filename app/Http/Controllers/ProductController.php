@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Schema;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:product')->only(['index', 'filter']);
+        $this->middleware('permission:product_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(Request $request)
     {
         $needMenuForItem = true;

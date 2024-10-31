@@ -26,6 +26,7 @@ class DashboardService
 
     public function __construct()
     {
+
         $this->currentDate = Carbon::now()->setTime(0, 0);
         $this->columns = [
             "name",

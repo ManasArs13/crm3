@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class DaysController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:report_day')->only(['index']);
+    }
+
     public function index(Request $request){
         $entityName = 'Сводка по дням';
 
