@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Schema;
 
 class ShipmentProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:shipment_position')->only(['index', 'filter']);
+        $this->middleware('permission:shipment_position_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(FilterRequest $request)
     {
         $urlEdit = "shipment_products.edit";

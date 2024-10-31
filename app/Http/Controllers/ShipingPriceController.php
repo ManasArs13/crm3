@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Schema;
 
 class ShipingPriceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:delivery_price')->only(['index', 'filter']);
+        $this->middleware('permission:delivery_price_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(Request $request)
     {
         $entityItems = ShipingPrice::query();

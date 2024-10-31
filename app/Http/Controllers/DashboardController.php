@@ -13,6 +13,7 @@ class DashboardController extends Controller
 
     public function __construct(DashboardService $service)
     {
+        $this->middleware('permission:home')->only(['dashboard', 'buildingsMaterialDashboard', 'getOrderDataForMap']);
         $this->service = $service;
     }
 

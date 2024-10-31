@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Schema;
 
 class OptionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:option')->only(['index', 'filter']);
+        $this->middleware('permission:option_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         $entityItems = Option::query()->paginate(100);

@@ -10,6 +10,12 @@ use App\Models\TalkAmo;
 
 class CallController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:call')->only(['index']);
+        $this->middleware('permission:conversation')->only(['conversations']);
+    }
+
     public function index(AmoOrderRequest $request){
         $entityName = 'Звонки';
 

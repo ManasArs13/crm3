@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class TransporterFeeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:transporter_fee')->only(['index']);
+    }
+
     public function index(Request $request)
     {
         $entityName = 'Перевозчики';

@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Schema;
 
 class TransportTypeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:transport_type')->only(['index', 'filter']);
+        $this->middleware('permission:transport_type_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(FilterRequest $request)
     {
         $entityItems = TransportType::query();

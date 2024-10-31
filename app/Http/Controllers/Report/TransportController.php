@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class TransportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:report_transport')->only(['index', 'block', 'concrete']);
+    }
+
     public function index(Request $request)
     {
         $entityName = 'Сводка - Транспорт';

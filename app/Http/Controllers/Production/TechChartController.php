@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class TechChartController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:techchart')->only(['index', 'show', 'products', 'materials']);
+    }
+
     public function index()
     {
         $needMenuForItem = true;
@@ -26,7 +31,7 @@ class TechChartController extends Controller
         $entity = 'techchart';
 
         $tech_chart = TechChart::with('materials', 'products')->find($techchart);
-        
+
         return view('production.techchart.show', compact("needMenuForItem", "entity", 'tech_chart'));
     }
 

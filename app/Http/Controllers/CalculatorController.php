@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 
 class CalculatorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:calculator')->only(['block']);
+    }
+
     public function block()
     {
         $entity = 'calculator';

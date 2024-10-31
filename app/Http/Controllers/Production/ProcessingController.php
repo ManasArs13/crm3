@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 
 class ProcessingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:techprocess')->only(['index', 'show', 'products', 'materials']);
+    }
+
     public function index(ProcessingRequest $request)
     {
         $urlShow = "processings.show";

@@ -16,6 +16,12 @@ use PhpParser\Node\Expr\Cast\Double;
 
 class ManagerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:report_manager')->only(['index', 'index_block', 'index_concrete']);
+        $this->middleware('permission:report_manager_two')->only(['managerTwo']);
+    }
+
     public function index(Request $request)
     {
         $urlEdit = "manager.edit";

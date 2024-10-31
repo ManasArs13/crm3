@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
 
 class ShiftController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:shift')->only(['index']);
+        $this->middleware('permission:shift_edit')->only(['update', 'create', 'change']);
+    }
+
     public function index(FilterRequest $request, $shift = null){
 
         $entityItems = Shifts::query()->WhereDate('start_shift', Carbon::now())->with('transport');

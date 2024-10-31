@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Schema;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:category_product')->only(['index', 'filter']);
+        $this->middleware('permission:category_product_edit')->only(['create','store', 'show', 'edit', 'update', 'destroy']);
+    }
+
     public function index(Request $request)
     {
         $needMenuForItem = true;

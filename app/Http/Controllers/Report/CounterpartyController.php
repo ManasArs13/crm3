@@ -12,6 +12,11 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class CounterpartyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:report_counterparty')->only(['index', 'block', 'concrete']);
+    }
+
     public function index(Request $request)
     {
         $entityName = 'Сводка - контрагенты';

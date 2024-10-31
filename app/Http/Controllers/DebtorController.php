@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class DebtorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:debtor')->only(['index']);
+    }
+
     public function index(Request $request, $debtor = null)
     {
         $entityName = 'Должники';

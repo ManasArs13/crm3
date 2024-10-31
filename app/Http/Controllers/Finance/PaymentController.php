@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:payment')->only(['index']);
+        $this->middleware('permission:payment_edit')->only(['cashin','cashout', 'paymentin', 'paymentout']);
+    }
+
     public function index(Request $request)
     {
         $entityName = 'Платежи';
