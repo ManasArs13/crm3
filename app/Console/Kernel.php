@@ -12,6 +12,7 @@ use App\Console\Commands\ImportFromMS\ImportContactMs;
 use App\Console\Commands\ImportFromMS\ImportDelivery;
 use App\Console\Commands\ImportFromMS\ImportDemand;
 use App\Console\Commands\ImportFromMS\ImportEmployee;
+use App\Console\Commands\ImportFromMS\ImportInventory;
 use App\Console\Commands\ImportFromMS\ImportPayment;
 use App\Console\Commands\ImportFromMS\ImportOrderMs;
 use App\Console\Commands\ImportFromMS\ImportOrganization;
@@ -49,7 +50,8 @@ class Kernel extends ConsoleKernel
         ImportEmployee::class,
         ImportPayment::class,
         ImportOrganization::class,
-        ImportBalance::class
+        ImportBalance::class,
+        ImportInventory::class
     ];
 
     protected function schedule(Schedule $schedule): void
@@ -76,6 +78,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ms:import-demand')->everyTenMinutes();
         $schedule->command('ms:import-supply')->everyTenMinutes();
         $schedule->command('ms:import-residual')->everyTenMinutes();
+        $schedule->command('ms:import-inventory')->hourly();
         $schedule->command('ms:import-tech-chart')->hourly();
         $schedule->command('ms:import-processing')->hourly();
         $schedule->command('processing:late-and-no-shipment-for-the-order')->daily();
