@@ -234,14 +234,67 @@
                             });
                         </script>
                     </form>
-                    @if (isset($urlCreate) && $urlCreate != '')
-                        <div class="flex px-3 text-center font-bold">
-                            <a href="{{ route($urlCreate) }}"
-                                class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
-                                {{ __('label.create') }}
-                            </a>
-                        </div>
-                    @endif
+
+                    @can('product_edit')
+                        @if (isset($urlCreate) && $urlCreate != '' && (request()->path() == 'product'))
+                            <div class="flex px-3 text-center font-bold">
+                                <a href="{{ route($urlCreate) }}"
+                                   class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                    {{ __('label.create') }}
+                                </a>
+                            </div>
+                        @endif
+                    @endcan
+                    @can('transport_type_edit')
+                        @if (isset($urlCreate) && $urlCreate != '' && (request()->path() == 'transportType'))
+                            <div class="flex px-3 text-center font-bold">
+                                <a href="{{ route($urlCreate) }}"
+                                   class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                    {{ __('label.create') }}
+                                </a>
+                            </div>
+                        @endif
+                    @endcan
+                    @can('delivery_edit')
+                        @if (isset($urlCreate) && $urlCreate != '' && (request()->path() == 'delivery'))
+                            <div class="flex px-3 text-center font-bold">
+                                <a href="{{ route($urlCreate) }}"
+                                   class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                    {{ __('label.create') }}
+                                </a>
+                            </div>
+                        @endif
+                    @endcan
+                    @can('delivery_price_edit')
+                        @if (isset($urlCreate) && $urlCreate != '' && (request()->path() == 'shiping_price'))
+                            <div class="flex px-3 text-center font-bold">
+                                <a href="{{ route($urlCreate) }}"
+                                   class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                    {{ __('label.create') }}
+                                </a>
+                            </div>
+                        @endif
+                    @endcan
+                    @can('category_product_edit')
+                        @if (isset($urlCreate) && $urlCreate != '' && (request()->path() == 'category'))
+                            <div class="flex px-3 text-center font-bold">
+                                <a href="{{ route($urlCreate) }}"
+                                   class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                    {{ __('label.create') }}
+                                </a>
+                            </div>
+                        @endif
+                    @endcan
+                    @can('option_edit')
+                        @if (isset($urlCreate) && $urlCreate != '' && (request()->path() == 'option'))
+                            <div class="flex px-3 text-center font-bold">
+                                <a href="{{ route($urlCreate) }}"
+                                   class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                    {{ __('label.create') }}
+                                </a>
+                            </div>
+                        @endif
+                    @endcan
                 </div>
             </div>
 

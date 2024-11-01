@@ -236,14 +236,16 @@
                                     });
                                 </script>
                             </form>
-                            @if (isset($urlCreate) && $urlCreate != '')
-                                <div class="flex px-3 text-center font-bold">
-                                    <a href="{{ route($urlCreate) }}"
-                                       class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
-                                        {{ __('label.create') }}
-                                    </a>
-                                </div>
-                            @endif
+                            @can('supply_position_edit')
+                                @if (isset($urlCreate) && $urlCreate != '')
+                                    <div class="flex px-3 text-center font-bold">
+                                        <a href="{{ route($urlCreate) }}"
+                                           class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                            {{ __('label.create') }}
+                                        </a>
+                                    </div>
+                                @endif
+                            @endcan
                         </div>
                     </div>
 

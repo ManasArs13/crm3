@@ -272,11 +272,11 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="flex">
-                <button class="text-blue-600 bg-neutral-200 p-2 rounded" onclick="toggleShiftModal()">Добавить в
-                    смену</button>
-            </div>
+            @can('shift_edit')
+                <div class="flex">
+                    <button class="text-blue-600 bg-neutral-200 p-2 rounded" onclick="toggleShiftModal()">Добавить в смену</button>
+                </div>
+            @endcan
         </div>
     </div>
 
