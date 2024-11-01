@@ -526,6 +526,18 @@ class OptionSeeder extends Seeder
                 'value' => '0.001',
                 'module' => 'main'
             ],
+            [
+                'name' => 'Адрес, с которого будем брать оприходования',
+                'code' => 'ms_enter_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/enter/',
+                'module' => 'ms'
+            ],
+            [
+                'name' => 'Адрес, с которого будем брать списания',
+                'code' => 'ms_loss_url',
+                'value' => 'https://api.moysklad.ru/api/remap/1.2/entity/loss/',
+                'module' => 'ms'
+            ],
         ]);
     }
 }
