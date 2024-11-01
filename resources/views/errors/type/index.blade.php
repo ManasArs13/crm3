@@ -26,15 +26,17 @@
 
                 <div
                     class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
-                    <div class="border-b-2 border-neutral-100">
-                        <div class="flex flex-row w-full p-3 justify-between">
-                            <div class="flex px-3 text-center font-bold">
-                                <a href="{{ route($urlCreate) }}" class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
-                                    {{ __('label.create') }}
-                                </a>
+                    @can('error_type_edit')
+                        <div class="border-b-2 border-neutral-100">
+                            <div class="flex flex-row w-full p-3 justify-between">
+                                <div class="flex px-3 text-center font-bold">
+                                    <a href="{{ route($urlCreate) }}" class="inline-flex items-center rounded bg-green-400 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-green-700">
+                                        {{ __('label.create') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endcan
 
 
                     {{-- body card --}}

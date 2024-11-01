@@ -37,7 +37,8 @@
                                     @foreach($roles as $role)
                                         <td class="px-6 py-2 max-w-[75px] border-l-2 text-center">
                                             <input
-                                                class="rounded-md cursor-pointer role-permission-checkbox"
+                                                @disabled($role->name === 'admin')
+                                                class="rounded-md disabled:opacity-55 disabled:cursor-default cursor-pointer role-permission-checkbox"
                                                 type="checkbox"
                                                 data-role-id="{{ $role->id }}"
                                                 data-permission-id="{{ $permission->id }}"
