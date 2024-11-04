@@ -70,6 +70,27 @@ class ErrorFilter
         }
     }
 
+    public function allowed($value)
+    {
+        if (isset($value) && $value !== 'index') {
+            $this->builder->where('allowed', $value);
+        }
+    }
+
+    public function status($value)
+    {
+        if (isset($value) && $value !== 'index') {
+            $this->builder->where('status', $value);
+        }
+    }
+
+    public function responsible($value)
+    {
+        if (isset($value) && $value !== 'index') {
+            $this->builder->where('responsible_user', $value);
+        }
+    }
+
     public function filters()
     {
         return $this->request->filters ? $this->request->filters : [];

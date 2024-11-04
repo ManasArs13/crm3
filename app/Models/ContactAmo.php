@@ -11,9 +11,7 @@ class ContactAmo extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'id'
-    ];
+    protected $guarded = ['created_at', 'updated_at'];
 
     public function amo_order()
     {

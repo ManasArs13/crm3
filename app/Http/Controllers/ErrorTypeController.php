@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ErrorTypes;
 use App\Http\Requests\ErrorTypeRequest;
-use DateTime;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ErrorTypeController extends Controller
@@ -65,12 +65,14 @@ class ErrorTypeController extends Controller
 
     public function create()
     {
-        return view('errors.type.create');
+        $responsible = User::All();
+        return view('errors.type.create', compact('responsible'));
     }
 
     public function store(ErrorTypeRequest $request)
     {
-        ErrorTypes::Create([ 'name' => $request->name ]);
+        $responsible = User::findOrFail($request->responsible);
+        ErrorTypes::Create([ 'name' => $request->name, 'responsible' => $responsible->id ]);
         return redirect()->route('errorTypes.index');
     }
 

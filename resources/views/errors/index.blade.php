@@ -248,28 +248,20 @@
                         <table class="text-left text-md text-nowrap">
                             <thead>
                             <tr class="bg-neutral-200 font-semibold">
-
                                 @foreach ($resColumns as $key => $column)
-                                    @if (isset($orderBy) && $orderBy == 'desc')
-                                        <th scope="col" class="px-2 py-2">
-                                            <a class="text-black"
-                                               href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
-                                            @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
-                                                &#9650;
-                                            @endif
-                                        </th>
-                                    @else
-                                        <th scope="col" class="px-2 py-2">
-                                            <a class="text-black"
-                                               href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
-                                            @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
-                                                &#9660;
-                                            @endif
-                                            @endif
-                                        </th>
-                                        @endforeach
+                                    <th scope="col" class="px-2 py-2 text-black">
+                                        @switch($key)
+                                            @case('status')
+                                                {{ __('column.status_id') }}
+                                            @break
 
-                                        <th></th>
+                                            @default
+                                                {{ $column }}
+                                        @endswitch
+                                    </th>
+
+                                @endforeach
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -285,18 +277,13 @@
                                                     {{ $entityItem->type->name ?? '-' }}
                                                 @break
 
-                                                @case('link')
-                                                    <a href="{{ $entityItem->$column }}" target="_blank">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                             fill="currentColor" class="bi bi-box-arrow-in-up-right"
-                                                             viewBox="0 0 16 16">
-                                                            <path fill-rule="evenodd"
-                                                                  d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
-                                                            </path>
-                                                            <path fill-rule="evenodd"
-                                                                  d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z">
-                                                            </path>
-                                                        </svg>
+                                                @case('responsible_user')
+                                                    {{ $entityItem->responsible->name ?? '-' }}
+                                                @break
+
+                                                @case('id')
+                                                    <a href="{{ $entityItem->link . '?error_fix=' . $entityItem->id }}" class="text-blue-700" target="_blank">
+                                                        {{ $entityItem->id ?? '-' }}
                                                     </a>
                                                 @break
 

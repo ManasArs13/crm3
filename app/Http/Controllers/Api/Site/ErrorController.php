@@ -40,6 +40,7 @@ class ErrorController extends Controller
                             'type_id' => $types->id,
                             'link' => $link,
                             'description' => 'Отсутствует менеджер id',
+                            'responsible_user' => $types->responsible,
                             'tab_id' => $contact->id,
                             'created_at' => $now,
                             'updated_at' => $now,

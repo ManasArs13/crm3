@@ -8,6 +8,11 @@
 
 
     <div class="w-11/12 mx-auto py-8 max-w-10xl">
+        @if (session('success'))
+            <div class="w-full mb-4 items-center rounded-lg text-lg bg-green-200 px-6 py-5 text-green-700 ">
+                {{ session('success') }}
+            </div>
+        @endif
         @if (isset($entity) && $entity != '')
             <h3 class="text-4xl font-bold mb-6">{{ __('entity.' . $entity) }} №{{ $entityItem->id }}</h3>
         @endif
@@ -65,6 +70,15 @@
                                 </div>
                             @endif
                         @endforeach
+                        @if(isset($error))
+                            <div class="flex flex-row mb-1">
+                                <input type="hidden" name="error_fix" value="{{ request()->error_fix }}">
+                                <label class="font-bold flex basis-1/3">Комментарий сотрудника</label>
+                                <div class="flex basis-2/3">
+                                    <textarea type="text" rows="5" placeholder="Ошибка исправлена..." name="responsible_description" class="rounded w-full">{{ $error->user_description ?? '' }}</textarea>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     <div class="p-5 w-full">
                         <button type="submit" class="w-full p-2 bg-green-400 hover:bg-green-600 rounded">{{__("label.save")}}</button>
