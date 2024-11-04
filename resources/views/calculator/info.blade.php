@@ -42,7 +42,7 @@
                         <input type="text" name="services[{{$type->id}}][price]" class="price-tt input input2" value="{{$type->price}}">
                     </div>
                     <div class="input-sim input-sum">
-                        <input type="text" class="input input2 deliveryPrice-tt" value={{($type->id==594)?$type->price*2:$type->price }} >
+                        <input type="text" class="input input2 deliveryPrice-tt total-service" data-id="{{ $type->id }}" data-name="{{ $type->name }}" value={{($type->id==594)?$type->price*2:$type->price }} >
                     </div>
                 </div>
             </div>
