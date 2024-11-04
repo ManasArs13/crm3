@@ -189,9 +189,22 @@
                 let PRODUCT_BETON =
                     `${select__head[13].innerText}; ${positions_beton_quantity} * ${price} = ${price_total} руб.;`;
 
+                // Услуги
+                let total_service = document.getElementsByClassName('total-service');
+                let SERVICES_TEXT = '';
+
+                Array.from(total_service).forEach(input => {
+                    let serviceElement = document.getElementById('service_' + input.getAttribute('data-id'));
+                    if (serviceElement && serviceElement.checked) {
+                        SERVICES_TEXT += `${input.getAttribute('data-name')}: ${input.value} р. \n`;
+                        price_delivery -= input.value;
+                    }
+                });
+
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     PRODUCT_BETON + `\n` +
                     `Доставка: ${price_delivery} р.` + `\n` +
+                    SERVICES_TEXT +
                     `ИТОГО С ДОСТАВКОЙ ${total} р.`;
 
                 copy_button = copy_text_button[2];
