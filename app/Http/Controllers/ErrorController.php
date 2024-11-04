@@ -6,6 +6,7 @@ use App\Filters\ErrorFilter;
 use App\Http\Requests\ErrorRequest;
 use App\Models\Errors;
 use App\Models\ErrorTypes;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ErrorController extends Controller
@@ -19,7 +20,7 @@ class ErrorController extends Controller
         $entityName = 'Реестр ошибок';
 
         // Amo orders
-        $builder = Errors::query()->with(['type']);
+        $builder = Errors::query()->with(['type', 'responsible']);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ErrorFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
@@ -34,6 +35,8 @@ class ErrorController extends Controller
             $entityItems = (new ErrorFilter($builder, $request))->apply()->orderByDesc('id')->paginate(100);
             $selectColumn = null;
         }
+
+
 
         $all_columns = [
             "id",
@@ -82,10 +85,21 @@ class ErrorController extends Controller
         $maxUpdatedCheck = '';
 
         $typeChecked = 'index';
+        $statusChecked = 'index';
+        $allowedChecked = 'index';
+        $responsibleChecked = 'index';
+
+        $status = [['value' => 'index', 'name' => 'Все'], ['value' => 1, 'name' => '1'], ['value' => 0, 'name' => '0']];
+        $allowed = [['value' => 'index', 'name' => 'Все'], ['value' => 1, 'name' => 'Допущен'], ['value' => 0, 'name' => 'Не допущен']];
+        $responsible[] = ['value' => 'index', 'name' => 'Все'];
         $types[] = ['value' => 'index', 'name' => 'Все типы'];
         $typesQuery = ErrorTypes::All();
         foreach ($typesQuery as $val){
             $types[] = [ 'value' => $val->id, 'name' => $val->name ];
+        }
+        $responsibleQuery = User::All();
+        foreach ($responsibleQuery as $val){
+            $responsible[] = [ 'value' => $val->id, 'name' => $val->name ];
         }
 
         if (isset($request->filters)) {
@@ -106,6 +120,12 @@ class ErrorController extends Controller
                     }
                 } else if ($key == 'type'){
                     $typeChecked = $value;
+                } else if ($key == 'status'){
+                    $statusChecked = $value;
+                } else if ($key == 'allowed'){
+                    $allowedChecked = $value;
+                } else if ($key == 'responsible'){
+                    $responsibleChecked = $value;
                 }
             }
         }
@@ -136,7 +156,32 @@ class ErrorController extends Controller
                 'values' => $types,
                 'checked_value' => $typeChecked,
             ],
+
+
+
+            [
+                'type' => 'select',
+                'name' => 'status',
+                'name_rus' => 'Статус',
+                'values' => $status,
+                'checked_value' => $statusChecked,
+            ],
+            [
+                'type' => 'select',
+                'name' => 'allowed',
+                'name_rus' => 'Допущен',
+                'values' => $allowed,
+                'checked_value' => $allowedChecked,
+            ],
+            [
+                'type' => 'select',
+                'name' => 'responsible',
+                'name_rus' => '	Ответственный',
+                'values' => $responsible,
+                'checked_value' => $responsibleChecked,
+            ],
         ];
+
 
         return view('errors.index', compact(
             "resColumns",

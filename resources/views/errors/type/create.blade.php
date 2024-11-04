@@ -13,9 +13,19 @@
                     <div class="min-h-6 p-5">
 
                         <div class="flex flex-row mb-1">
-                            <label for="input_name" class="font-bold flex basis-1/3">Имя</label>
+                            <label for="input_name" class="font-bold flex basis-1/3">Имя типа</label>
                             <div class="flex basis-2/3">
                                 <input type="text" class="rounded w-full" id="input_name" name="name" placeholder="Имя типа">
+                            </div>
+                        </div>
+                        <div class="flex flex-row mb-1">
+                            <label for="input_name" class="font-bold flex basis-1/3">Ответственный</label>
+                            <div class="flex basis-2/3">
+                                <select name="responsible" class="rounded w-full">
+                                    @foreach($responsible as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

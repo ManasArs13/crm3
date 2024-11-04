@@ -22,7 +22,8 @@ class ErrorTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|nullable|max:500'
+            'name' => 'string|nullable|max:500',
+            'responsible' => 'integer|nullable|min:1|max:1000000000'
         ];
     }
 }

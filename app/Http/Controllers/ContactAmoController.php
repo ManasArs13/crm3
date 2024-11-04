@@ -6,6 +6,8 @@ use App\Filters\ContactAmoFilter;
 use App\Http\Requests\FilterRequest;
 use App\Models\ContactAmo;
 use App\Models\Manager;
+use App\Models\Errors;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -208,22 +210,42 @@ class ContactAmoController extends Controller
         return view("own.show", compact('entityItem', 'columns'));
     }
 
-    public function edit(string $id)
+    public function edit(string $id, Request $request)
     {
         $entityItem = ContactAmo::find($id);
-        $columns = Schema::getColumnListing('contacts');
-        $entity = 'contacts';
-        $action = "contact.update";
+        $columns = Schema::getColumnListing('contact_amos');
+        $entity = 'contact_amos';
+        $action = "contactAmo.update";
+        $error = null;
+        if (isset($request->error_fix)) {
+            $errorRecord = Errors::find($request->error_fix);
 
-        return view("own.edit", compact('entityItem', 'columns', 'action', 'entity'));
+            if ($errorRecord && $errorRecord->responsible_user == Auth::id()) {
+                $error = $errorRecord;
+            }
+        }
+
+        return view("own.edit", compact('entityItem', 'columns', 'action', 'entity', 'error'));
     }
 
     public function update(Request $request, string $id)
     {
         $entityItem = ContactAmo::find($id);
+        if(!$entityItem){
+            abort(404);
+        }
         $entityItem->fill($request->post())->save();
 
-        return redirect()->route('contact.index');
+        if (isset($request->error_fix) && $request->has('responsible_description')) {
+            $errorRecord = Errors::find($request->error_fix);
+
+            if ($errorRecord && $errorRecord->responsible_user == Auth::id()) {
+                $errorRecord->user_description = $request->responsible_description;
+                $errorRecord->save();
+            }
+        }
+
+        return redirect()->back()->with('success', "Контакт №{$entityItem->id} успешно изменен");
     }
 
     public function destroy(string $id)
