@@ -51,7 +51,6 @@ class PaymentController extends Controller
             'description',
             "contact_id",
             "sum",
-            "balance",
             "created_at",
             'updated_at',
         ];
@@ -63,7 +62,6 @@ class PaymentController extends Controller
             'description',
             "contact_id",
             "sum",
-            "balance",
             "created_at",
             'updated_at',
         ];

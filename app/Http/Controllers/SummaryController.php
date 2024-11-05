@@ -32,10 +32,10 @@ class SummaryController extends Controller
         })->whereNot("balance",NULL)->sum("balance");
 
         $msBalance = Organization::Sum('balance');
-        $ourBalance = Payment::selectRaw("
+        $ourBalance = (Payment::selectRaw("
             SUM(CASE WHEN type IN ('cashin', 'paymentin') THEN sum ELSE 0 END) -
             SUM(CASE WHEN type IN ('cashout', 'paymentout') THEN sum ELSE 0 END) as balance
-        ")->value('balance') ?? 0;
+        ")->value('balance') ?? 0) / 100;
 
         $sumBuyer=Contact::whereHas('contact_categories', function($q) {
             $q->whereIn('contact_category_id', [4,5])->groupBy("contact_id");
