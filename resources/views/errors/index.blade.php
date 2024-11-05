@@ -282,7 +282,7 @@
                                                 @break
 
                                                 @case('link')
-                                                    <a href="{{ $entityItem->link }}" target="_blank">
+                                                    <a href="{{ $entityItem->link .'?error_fix=' . $entityItem->id }}" target="_blank">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
                                                             <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z">
                                                             </path>
@@ -293,7 +293,7 @@
                                                 @break
 
                                                 @case('id')
-                                                    <a href="{{ $entityItem->link . '?error_fix=' . $entityItem->id }}" class="text-blue-700" target="_blank">
+                                                    <a href="{{ route('errors.edit', $entityItem->id) }}" class="text-blue-700" target="_blank">
                                                         {{ $entityItem->id ?? '-' }}
                                                     </a>
                                                 @break
