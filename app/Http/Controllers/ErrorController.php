@@ -194,4 +194,18 @@ class ErrorController extends Controller
             'select'
         ));
     }
+
+    public function edit($id)
+    {
+        $error = Errors::findOrFail($id);
+        $errorTypes = ErrorTypes::All();
+        $users = User::All();
+        return view('errors.edit', compact('error', 'errorTypes', 'users'));
+    }
+
+    public function update(Request $request, string $id){
+        $error = Errors::find($id);
+        $error->fill($request->post())->save();
+        return redirect()->back()->with('success', 'Данные успешно сохранены');
+    }
 }

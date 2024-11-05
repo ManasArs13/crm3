@@ -57,51 +57,71 @@
         </div>
 
         @include('summary.canvas')
+        <div class="flex">
+            <div class="CEB__wrapTable mb-5">
+                <table class="sum">
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                            {{ __('summary.mutualSettlement') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
+                            {{ __('summary.mutualSettlementMain') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMutualSettlementMain, 1, '.', ' ') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{ __('summary.buyers') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumBuyer, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{ __('summary.carriers') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumCarriers, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{ __('column.another') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumAnother, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan=2></td>
+                    </tr>
 
-        <div class="CEB__wrapTable mb-5">
-            <table class="sum">
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
-                        {{ __('summary.mutualSettlement') }}</th>
-                    <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
-                </tr>
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
-                        {{ __('summary.mutualSettlementMain') }}</th>
-                    <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMutualSettlementMain, 1, '.', ' ') }}
-                    </td>
-                </tr>
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{ __('summary.buyers') }}
-                    </th>
-                    <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumBuyer, 1, '.', ' ') }}</td>
-                </tr>
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{ __('summary.carriers') }}
-                    </th>
-                    <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumCarriers, 1, '.', ' ') }}</td>
-                </tr>
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{ __('column.another') }}
-                    </th>
-                    <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumAnother, 1, '.', ' ') }}</td>
-                </tr>
-                <tr>
-                    <td colspan=2></td>
-                </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
+                            {{ __('summary.materials') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMaterials, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">
+                            {{ __('summary.products') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumProducts, 1, '.', ' ') }}</td>
+                    </tr>
 
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
-                        {{ __('summary.materials') }}</th>
-                    <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMaterials, 1, '.', ' ') }}</td>
-                </tr>
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">
-                        {{ __('summary.products') }}</th>
-                    <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumProducts, 1, '.', ' ') }}</td>
-                </tr>
-
-            </table>
+                </table>
+            </div>
+            <div class="CEB__wrapTable mb-5">
+                <table class="sum">
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                            {{ __('summary.balanceMs') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($msBalance, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                            {{ __('summary.balanceOur') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($ourBalance, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                            {{ __('summary.saldo') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($ourBalance - $msBalance, 1, '.', ' ') }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <div class="flex">

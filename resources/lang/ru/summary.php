@@ -1,5 +1,8 @@
 <?php
 return [
+    'balanceMs' => 'Баланс мс',
+    'balanceOur' => 'Баланс наш',
+    'saldo' => 'Сальдо',
     'mutualSettlement'=>'Взаиморасчеты',
     'mutualSettlementMain'=>'Основные поставщики',
     'materials'=>'Материалы',

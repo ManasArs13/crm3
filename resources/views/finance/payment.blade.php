@@ -380,7 +380,7 @@
 
                                         @case('balance')
                                             <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ number_format($entityItem->contact->balance, 0, '.', ' ') }}
+                                                {{ number_format($totalIn - $totalOut, 0, '.', ' ') }}
                                             </td>
                                         @break
 

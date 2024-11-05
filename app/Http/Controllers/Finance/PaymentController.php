@@ -20,6 +20,7 @@ class PaymentController extends Controller
         $entityName = 'Платежи';
         $urlFilter = 'finance.index';
 
+
         $builder = Payment::query()->with('contact');
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
