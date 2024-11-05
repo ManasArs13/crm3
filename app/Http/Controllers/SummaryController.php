@@ -37,6 +37,8 @@ class SummaryController extends Controller
             SUM(CASE WHEN type IN ('cashout', 'paymentout') THEN sum ELSE 0 END) as balance
         ")->value('balance') ?? 0) / 100;
 
+        $materialNorm = Option::where('code', 'norm_material')->first();
+
         $sumBuyer=Contact::whereHas('contact_categories', function($q) {
             $q->whereIn('contact_category_id', [4,5])->groupBy("contact_id");
         })->whereNot("balance",NULL)->sum("balance");
@@ -98,7 +100,7 @@ class SummaryController extends Controller
         "sumBuyer","sumAnother",
         "sumMutualSettlementMainDebt", "sumBuyerDebt",
         "sumAnotherDebt","sumCarriersDebt","shipments",
-        "msBalance", "ourBalance"));
+        "msBalance", "ourBalance", "materialNorm"));
     }
 
     public function remains( MoySkladService $service ){

@@ -68,7 +68,7 @@ class OptionController extends Controller
 
     public function store(Request $request)
     {
-        Option::create($request->post());
+        Option::create($request->except('debtors_balance'));
         return redirect()->route("option.index");
     }
 
