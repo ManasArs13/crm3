@@ -122,6 +122,25 @@
                     </tr>
                 </table>
             </div>
+            <div class="CEB__wrapTable mb-5">
+                <table class="sum">
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                            {{ __('summary.norm_material') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($materialNorm->value, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                            {{ __('summary.fact') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMaterials, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                            {{ __('summary.saldo') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMaterials - $materialNorm->value, 1, '.', ' ') }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <div class="flex">
