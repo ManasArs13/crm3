@@ -278,6 +278,12 @@
                                 @foreach ($resColumns as $column => $title)
                                     <td class="break-all max-w-96 truncate px-2 py-2">
                                         @switch($column)
+                                            @case('id')
+                                                <a href="{{ 'https://euroblock.amocrm.ru/leads/detail/' . $entityItem->id }}" target="_blank" class="text-blue-700">
+                                                    {{ $entityItem->id }}
+                                                </a>
+                                            @break
+
                                             @case('status_amo_id')
                                                 {{ $entityItem->status_amo->name }}
                                             @break

@@ -394,6 +394,10 @@
                                                     </path>
                                                 </svg>
                                             </a>
+                                        @elseif($column == 'id')
+                                            <a href="{{ 'https://euroblock.amocrm.ru/contacts/detail/' . $entityItem->id }}" target="_blank" class="text-blue-700">
+                                                {{ $entityItem->id }}
+                                            </a>
                                         @else
                                             {{ $entityItem->$column }}
                                         @endif

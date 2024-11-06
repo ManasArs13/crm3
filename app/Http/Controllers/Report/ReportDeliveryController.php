@@ -394,6 +394,9 @@ class ReportDeliveryController extends Controller
             'dateRus',
         ));
     }
+    public function object(){
+
+    }
 
     public function total($entityItems){
         $shipment_totals = [
