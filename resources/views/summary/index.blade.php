@@ -50,8 +50,6 @@
                             Сводка - Контрагенты</a>
                     </div>
 
-
-
                 </div>
             </div>
         </div>
@@ -127,17 +125,17 @@
                     <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
                             {{ __('summary.norm_material') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($materialNorm->value, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($materialNorm->value ?? 0, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
                             {{ __('summary.fact') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMaterials, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(($sumMaterials - $sumMutualSettlementMain), 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
                             {{ __('summary.saldo') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMaterials - $materialNorm->value, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(($sumMaterials - $sumMutualSettlementMain) - $materialNorm->value, 1, '.', ' ') }}</td>
                     </tr>
                 </table>
             </div>
