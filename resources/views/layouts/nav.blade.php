@@ -209,6 +209,16 @@
                                             Приёмки
                                         </x-dropdown-link>
                                     @endcan
+                                    @can('loss')
+                                        <x-dropdown-link :href="route('loss.index')">
+                                            Списания
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('enter')
+                                        <x-dropdown-link :href="route('enter.index')">
+                                            Оприходования
+                                        </x-dropdown-link>
+                                    @endcan
                                     @can('order_position')
                                         <x-dropdown-link :href="route('order_positions.index')">
                                             Позиции заказов

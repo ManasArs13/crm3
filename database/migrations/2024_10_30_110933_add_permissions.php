@@ -22,7 +22,8 @@ return new class extends Migration
             'supply_position_edit', 'operator_order', 'operator_shipment', 'amo_order', 'amo_contact', 'amo_contact_edit',
             'contact_link', 'double_order', 'call', 'conversation', 'user', 'user_permission', 'report_manager', 'report_manager_two',
             'report_day', 'report_deviation', 'report_delivery_category', 'report_delivery', 'report_transport', 'report_transporter',
-            'report_counterparty', 'report_summary', 'report_summary_remains', 'debtor', 'option', 'option_edit',
+            'report_counterparty', 'report_summary', 'report_summary_remains', 'debtor', 'option', 'option_edit', 'loss', 'loss_edit',
+            'loss_position', 'loss_position_edit', 'enter', 'enter_edit', 'enter_position', 'enter_position_edit'
         ];
 
         foreach ($permissions as $permission) {
