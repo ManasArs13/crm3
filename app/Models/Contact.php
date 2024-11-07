@@ -44,6 +44,11 @@ class Contact extends Model
         return $this->hasMany(Shipment::class);
     }
 
+    public function supplies()
+    {
+        return $this->hasMany(Supply::class);
+    }
+
     public function manager()
     {
         return $this->hasOne(Manager::class, 'id', 'manager_id');
