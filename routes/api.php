@@ -56,3 +56,4 @@ Route::get("/contacts/get", [App\Http\Controllers\Api\Site\ContactController::cl
 Route::get("/contacts_amo/get", [App\Http\Controllers\Api\Site\ContactController::class,"getAmoContacts"])->name("api.get.contact.amo");
 Route::get("/carriers/get", [App\Http\Controllers\Api\Site\CarrierController::class,"getCarriers"])->name("api.get.carrier");
 Route::get("/states/get/name", [App\Http\Controllers\Api\Site\StatusMsController::class,"getByName"])->name("api.get.state.name");
+Route::get("/mutual_settlements/get", [App\Http\Controllers\Api\Site\SummaryController::class,"getMutualSettlements"])->name("api.get.mutual_settlements");

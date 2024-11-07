@@ -141,120 +141,268 @@
             </div>
         </div>
 
-        <div class="flex">
-            <div class="CEB__wrapTable">
-                <table class="sum">
-                    <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
-                            {{ __('column.mutualSettlement') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2">
-                            {{ __('column.balance') }}</th>
-                    </tr>
-                    @foreach ($contactsMutualSettlement as $contact)
-                        <tr>
-                            <td>{{ $contact->name }}</td>
-                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">
-                                {{ number_format(ceil($contact->balance), 0, '.', ' ') }}</td>
-                        </tr>
-                    @endforeach
-                    <tr>
-                        <td></td>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">
-                            {{ number_format(ceil($sumMutualSettlementMainDebt), 0, '.', ' ') }}</td>
-                    </tr>
-                </table>
+
+        <div class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
+            {{-- header --}}
+            <div class="border-b-2 border-neutral-100 mb-2 py-2">
+                <div class="flex flex-row w-full p-3 justify-between">
+                    <div class="flex flex-row gap-1">
+                        <div>
+                            <button data-type="10" type="button" class="fetchMutualSettlements rounded bg-blue-600 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.suppliers') }}</button>
+                        </div>
+                        <div>
+                            <button data-type="8" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.mutualSettlementMain') }}</button>
+                        </div>
+                        <div>
+                            <button data-type="9" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.carriers') }}</button>
+                        </div>
+                        <div>
+                            <button data-type="21" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.carriers_main') }}</button>
+                        </div>
+                        <div>
+                            <button data-type="4" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.buyers') }}</button>
+                        </div>
+                        <div>
+                            <button data-type="24" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.others') }}</button>
+                        </div>
+                        <div>
+                            <button data-type="other" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.unfilled') }}</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            @if (count($contactsCarrier)>0)
-            <div class="CEB__wrapTable">
-                <table class="sum">
-                    <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
-                            {{ __('column.carrier') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2  ">
-                            {{ __('column.balance') }}</th>
-                    </tr>
-                    @foreach ($contactsCarrier as $contact)
-                        <tr>
-                            <td>{{ $contact->name }}</td>
-                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">
-                                {{ number_format(ceil($contact->balance), 0, '.', ' ') }}</td>
-                        </tr>
-                    @endforeach
-                    <tr>
-                        <td></td>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(ceil($sumCarriersDebt), 0, '.', ' ') }}</td>
-                    </tr>
-                </table>
-            </div>
-            @endif
 
-            @if (count($contactsBuyer)>0)
-            <div class="CEB__wrapTable">
-                <table class="sum">
-                    <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
-                            {{ __('column.buyer') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2 ">
-                            {{ __('column.balance') }}</th>
-                    </tr>
-                    @foreach ($contactsBuyer as $contact)
-                        <tr>
-                            <td>{{ $contact->name }}</td>
-                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">
-                                {{ number_format(ceil($contact->balance), 0, '.', ' ') }}</td>
-                        </tr>
-                    @endforeach
-                    <tr>
-                        <td></td>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(ceil($sumBuyerDebt), 0, '.', ' ') }}</td>
-                    </tr>
-                </table>
-            </div>
-            @endif
+            {{-- body card --}}
+            <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
+                <table class="text-left text-md text-nowrap" id="DebtorsTable">
+                    <thead>
 
-            @if (count($contactsAnother)>0)
-            <div class="CEB__wrapTable">
-                <table class="sum">
-                    <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
-                            {{ __('column.another') }}</th>
-                        <th class="bg-neutral-200 font-semibold text-end pl-2 pt-2 pb-2 pr-2 ">
+                    <tr class="bg-neutral-200 font-semibold">
+                        <th class="px-2 py-3 hover:cursor-pointer" onclick="orderBy(0)" id="th_name">
+                            {{ __('column.name') }}</th>
+                        <th class="px-2 py-3 hover:cursor-pointer text-right" onclick="orderBy(1)"
+                            id="th_date_of_last_shipment">
+                            {{ __('column.date_of_last_operation') }}</th>
+                        <th class="px-2 py-3 hover:cursor-pointer text-right" onclick="orderBy(2)" id="th_days">
+                            {{ __('column.days') }}</th>
+                        <th class="px-2 py-3 hover:cursor-pointer text-right" onclick="orderBy(3)" id="th_balance">
                             {{ __('column.balance') }}</th>
+                        <th class="px-2 py-3 hover:cursor-pointer" onclick="orderBy(4)" id="th_description">
+                            {{ __('column.description') }}</th>
                     </tr>
-                    @foreach ($contactsAnother as $contact)
-                        <tr>
-                            <td>{{ $contact->name }}</td>
-                            <td class="text-end pl-2 pt-2 pb-2 pr-2 ">
-                                {{ number_format(ceil($contact->balance), 0, '.', ' ') }}</td>
-                        </tr>
-                    @endforeach
-                    <tr>
-                        <td></td>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(ceil($sumAnotherDebt), 0, '.', ' ') }}
-                        </td>
-                    </tr>
+                    </thead>
+                    <tbody></tbody>
                 </table>
             </div>
-            @endif
+            <div class="border-t-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50">
+                <div id="pagination"></div>
+            </div>
+
+
+
+
         </div>
 
-        @if (count($shipments)>0)
-        <div class="CEB__wrapTable mt-5">
-            <table class="sum">
-                <tr>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('column.name')}}</th>
-                    <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{__('column.transport')}}</th>
-                </tr>
-                @foreach($shipments as $shipment)
-                    <tr>
-                        <td>{{$shipment->name}}</td>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2">{{$shipment->transportName}}</td>
+
+        <script type="text/javascript">
+            function orderBy(column) {
+
+                let sortedRows = Array.from(DebtorsTable.rows).slice(1, -1)
+                let totalRow = Array.from(DebtorsTable.rows).slice(DebtorsTable.rows.length - 1);
+
+                let th_column_name = document.getElementById('th_name');
+                let th_column_date_of_last_shipment = document.getElementById('th_date_of_last_shipment');
+                let th_column_days = document.getElementById('th_days');
+                let th_column_balance = document.getElementById('th_balance');
+                let th_column_description = document.getElementById('th_description');
+
+                switch (column) {
+                    case 0:
+                        if (th_column_name.innerText == `Имя ↓`) {
+                            th_column_name.innerText = `Имя ↑`
+                            sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText > rowB.cells[column].innerText ? 1 : -
+                                1);
+                        } else {
+                            th_column_name.innerText = `Имя ↓`;
+                            sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText < rowB.cells[column].innerText ? 1 : -
+                                1);
+                        }
+
+                        th_column_date_of_last_shipment.innerText = `Дата последней операции`;
+                        th_column_days.innerText = `Дни`;
+                        th_column_balance.innerText = `Баланс`;
+                        th_column_description.innerText = `Комментарий`;
+                        break;
+
+
+                    case 1:
+                        if (th_column_date_of_last_shipment.innerText == `Дата последней операции ↓`) {
+                            th_column_date_of_last_shipment.innerText = `Дата последней операции ↑`
+                            sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText > rowB.cells[column].innerText ? 1 : -
+                                1);
+                        } else {
+                            th_column_date_of_last_shipment.innerText = `Дата последней операции ↓`;
+                            sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText < rowB.cells[column].innerText ? 1 : -
+                                1);
+                        }
+
+                        th_column_name.innerText = `Имя`;
+                        th_column_days.innerText = `Дни`;
+                        th_column_balance.innerText = `Баланс`;
+                        th_column_description.innerText = `Комментарий`;
+                        break;
+
+                    case 2:
+                        if (th_column_days.innerText == `Дни ↓`) {
+                            th_column_days.innerText = `Дни ↑`
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowA.cells[column].innerText) - parseInt(rowB.cells[column].innerText)
+                            });
+                        } else {
+                            th_column_days.innerText = `Дни ↓`;
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowB.cells[column].innerText) - parseInt(rowA.cells[column].innerText)
+                            });
+                        }
+
+                        th_column_date_of_last_shipment.innerText = `Дата последней операции`;
+                        th_column_name.innerText = `Имя`;
+                        th_column_balance.innerText = `Баланс`;
+                        th_column_description.innerText = `Комментарий`;
+                        break;
+
+                    case 3:
+                        if (th_column_balance.innerText == `Баланс ↓`) {
+                            th_column_balance.innerText = `Баланс ↑`
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowA.cells[column].innerText) - parseInt(rowB.cells[column].innerText)
+                            });
+                        } else {
+                            th_column_balance.innerText = `Баланс ↓`;
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowB.cells[column].innerText) - parseInt(rowA.cells[column].innerText)
+                            });
+                        }
+
+                        th_column_date_of_last_shipment.innerText = `Дата последней операции`;
+                        th_column_days.innerText = `Дни`;
+                        th_column_name.innerText = `Имя`;
+                        th_column_description.innerText = `Комментарий`;
+                        break;
+
+                    case 4:
+                        if (th_column_description.innerText == `Комментарий ↓`) {
+                            th_column_description.innerText = `Комментарий ↑`
+                            sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText > rowB.cells[column].innerText ? 1 : -
+                                1);
+                        } else {
+                            th_column_description.innerText = `Комментарий ↓`;
+                            sortedRows.sort((rowA, rowB) => rowA.cells[column].innerText < rowB.cells[column].innerText ? 1 : -
+                                1);
+                        }
+
+                        th_column_date_of_last_shipment.innerText = `Дата последней операции`;
+                        th_column_days.innerText = `Дни`;
+                        th_column_balance.innerText = `Баланс`;
+                        th_column_name.innerText = `Имя`;
+                        break;
+                }
+
+                sortedRows.push(totalRow[0])
+                DebtorsTable.tBodies[0].append(...sortedRows);
+            }
+        </script>
+
+        <script>
+            let currentPage = 1;
+            let type = 10;
+            $(".fetchMutualSettlements").on("click", function() {
+                type = $(this).data('type');
+                $(".fetchMutualSettlements").removeClass("bg-blue-600").addClass("bg-blue-300");
+                $(this).addClass("bg-blue-600");
+
+                fetchMutualSettlements(1, type);
+            });
+
+
+            function fetchMutualSettlements(page, type) {
+                $.ajax({
+                    url: '{{ route('api.get.mutual_settlements') }}',
+                    type: 'GET',
+                    data: { type: type, page: page },
+                    success: function(response) {
+                        const totalBalance = response.data.reduce((sum, item) => sum + (parseFloat(item.balance) || 0), 0);
+                        const totalDays = response.data.reduce((sum, item) => sum + (parseFloat(item.days_since_latest) || 0), 0);
+
+
+                        renderTable(response.data, totalBalance, totalDays);
+                        renderPagination(response);
+
+                    },
+                    error: function(error) {
+                        console.log('Ошибка:', error);
+                    }
+                });
+            }
+
+
+            function renderTable(data, totalBalance, totalDays) {
+                const tableBody = $('#DebtorsTable tbody');
+                tableBody.empty();
+
+                data.forEach(item => {
+                    const row = `
+                        <tr class="bg-green-100">
+                            <td class="break-all max-w-60 truncate px-2 py-3 text-left">${item.name}</td>
+                            <td class="break-all max-w-60 truncate px-2 py-3 text-right">${item.latest_created_at !== "0000-00-00" ? item.latest_created_at : ''}</td>
+                            <td class="break-all max-w-60 truncate px-2 py-3 text-right">${item.days_since_latest !== null ? item.days_since_latest : 0}</td>
+                            <td class="break-all max-w-60 truncate px-2 py-3 text-right">${item.balance}</td>
+                            <td class="break-all max-w-60 truncate px-2 py-3">${item.description || '-'}</td>
+                        </tr>
+                    `;
+                    tableBody.append(row);
+                });
+
+                tableBody.append(`
+                    <tr class="border-b-2 bg-gray-100">
+                        <td class="break-all text-right overflow-auto px-6 py-3">ВСЕГО:</td>
+                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right"></td>
+                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">${totalDays}</td>
+                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">${totalBalance}</td>
+                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right"></td>
                     </tr>
-                @endforeach
-            </table>
-        </div>
-        @endif
+                `);
+            }
+
+            function renderPagination(response) {
+                const paginationContainer = $('#pagination');
+                paginationContainer.html(response.pagination);
+
+                paginationContainer.find('a').on('click', function(e) {
+                    e.preventDefault();
+                    const url = $(this).attr('href');
+                    const page = new URL(url).searchParams.get('page');
+                    const type = $(".fetchMutualSettlements.bg-blue-600").data('type');
+
+                    fetchMutualSettlements(page, type);
+                });
+            }
+
+            $(document).ready(function(){
+                fetchMutualSettlements(1, type);
+            })
+
+        </script>
+
     </div>
+
 
 </x-app-layout>

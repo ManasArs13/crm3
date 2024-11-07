@@ -21,6 +21,7 @@ return [
   "name" => "Имя",
   "days" => "Дни",
   "date_of_last_shipment" => "Дата последней отгрузки",
+  "date_of_last_operation" => "Дата последней операции",
   "distance" => "Расстояние",
   "difference_norm" => "- от нормы",
   "difference_norm_percent" => "- от нормы %",
