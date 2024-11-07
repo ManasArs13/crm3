@@ -38,6 +38,9 @@ return [
     'new shipment' => 'Новая отгрузка',
     'order_positions' => 'Позиции заказов',
     'shipment_products' => 'Позиции отгрузок',
-    'shifts' => 'Смены'
-
+    'shifts' => 'Смены',
+    'enters' => 'Оприходования',
+    'enter' => 'Оприходование',
+    'losses' => 'Списания',
+    'loss' => 'Списание'
 ];

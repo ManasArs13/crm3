@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AmoContactsBanchController;
 use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactAmoController;
@@ -11,8 +10,6 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DebtorController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\ErrorTypeController;
-use App\Http\Controllers\Goods\IncomingController;
-use App\Http\Controllers\Goods\OutgoingController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OptionController;
@@ -21,6 +18,8 @@ use App\Http\Controllers\Amo\AmoOrderController;
 use App\Http\Controllers\Amo\AmosContactController;
 use App\Http\Controllers\Amo\CallController;
 use App\Http\Controllers\Finance\PaymentController;
+use App\Http\Controllers\Inventory\EnterController as InventoryEnterController;
+use App\Http\Controllers\Inventory\LossController as InventoryLossController;
 use App\Http\Controllers\OrderPositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Production\ProcessingController;
@@ -28,7 +27,6 @@ use App\Http\Controllers\Production\TechChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Report\DaysController;
 use App\Http\Controllers\Report\DeviationController;
-use App\Http\Controllers\Report\CashController;
 use App\Http\Controllers\Report\CounterpartyController;
 use App\Http\Controllers\Report\ReportDeliveryController;
 use App\Http\Controllers\Report\TransportController as ReportTransportController;
@@ -42,7 +40,6 @@ use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\SupplyPositionController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TransportTypeController;
-//use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ShiftController;
@@ -50,20 +47,19 @@ use Illuminate\Support\Facades\Route;
 
 
 
-//Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
-//Route::get('/blocks_materials', [WelcomeController::class, 'blocksMaterials'])->name('welcome.blocksMaterials');
-//Route::get('/blocks_categories', [WelcomeController::class, 'blocksCategories'])->name('welcome.blocksCategories');
-//Route::get('/blocks_products', [WelcomeController::class, 'blocksProducts'])->name('welcome.blocksProducts');
-//Route::get('/concretes_materials', [WelcomeController::class, 'concretesMaterials'])->name('welcome.concretesMaterials');
-//Route::get('/paint', [WelcomeController::class, 'paint'])->name('welcome.paint');
-//Route::get('/processing', [WelcomeController::class, 'processing'])->name('welcome.processing');
-
-
 Route::middleware(['auth', 'verified'])->group(function () {
+
     // Operator windows
     Route::get('/operator/orders', [OperatorController::class, 'orders'])->name('operator.orders');
     Route::get('/operator/shipments', [OperatorController::class, 'shipments'])->name('operator.shipments');
 
+    // Списания
+    Route::get('/loss', [InventoryLossController::class, 'index'])->name('loss.index');
+    Route::get('/loss/{loss}', [InventoryLossController::class, 'show'])->name('loss.show');
+
+    // Оприходование
+    Route::get('/enter', [InventoryEnterController::class, 'index'])->name('enter.index');
+    Route::get('/enter/{enter}', [InventoryEnterController::class, 'show'])->name('enter.show');
 
     // Менеджеры
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
@@ -99,8 +95,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/residuals/blocks_categories', [ResidualController::class, 'blocksCategories'])->name('residual.blocksCategories');
     Route::get('/residuals/blocks_products', [ResidualController::class, 'blocksProducts'])->name('residual.blocksProducts');
     Route::get('/residuals/concretes_materials', [ResidualController::class, 'concretesMaterials'])->name('residual.concretesMaterials');
-//    Route::get('/residuals/paint', [ResidualController::class, 'paint'])->name('residual.paint');
-//    Route::get('/residuals/processing', [ResidualController::class, 'processing'])->name('residual.processing');
+    //    Route::get('/residuals/paint', [ResidualController::class, 'paint'])->name('residual.paint');
+    //    Route::get('/residuals/processing', [ResidualController::class, 'processing'])->name('residual.processing');
 
     // Калькулятор
     Route::get('/calculator', [CalculatorController::class, 'block'])->name('calculator.block');
@@ -134,7 +130,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Доставки
         Route::get('/report/delivery', [ReportDeliveryController::class, 'index'])->name('delivery');
         Route::get('/report/delivery_category', [ReportDeliveryController::class, 'category'])->name('delivery.category');
-//        Route::get('/report/delivery_object', [ReportDeliveryController::class, 'object'])->name('delivery.object');
+        //        Route::get('/report/delivery_object', [ReportDeliveryController::class, 'object'])->name('delivery.object');
 
         // Контрагенты
         Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
