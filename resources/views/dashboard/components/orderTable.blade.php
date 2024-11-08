@@ -647,7 +647,7 @@
                                 @endforeach
                             </tr>
                         @else
-                            <tr class="border-b-2">
+                            <tr class="border-b-2 {{ $entityItem->status_id == 7 ? 'bg-slate-200' : '' }}">
                                 @if (count($entityItem->shipments) > 0)
                                     <td class="text-nowrap px-2 py-2">
                                         <button class="buttonForOpen text-normal font-bold"
