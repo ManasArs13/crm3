@@ -148,7 +148,11 @@
                 <div class="flex flex-row w-full p-3 justify-between">
                     <div class="flex flex-row gap-1">
                         <div>
-                            <button data-type="10" type="button" class="fetchMutualSettlements rounded bg-blue-600 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                            <button data-type="all" type="button" class="fetchMutualSettlements rounded bg-blue-600 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
+                                {{ __('summary.all') }}</button>
+                        </div>
+                        <div>
+                            <button data-type="10" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                                 {{ __('summary.suppliers') }}</button>
                         </div>
                         <div>
