@@ -16,19 +16,21 @@ class SummaryController extends Controller
                 'contacts.*',
                 DB::raw('GREATEST(IFNULL(max_shipments.created_at, "0000-00-00"), IFNULL(max_supplies.created_at, "0000-00-00")) as latest_created_at'),
                 DB::raw('DATEDIFF(CURDATE(), GREATEST(IFNULL(max_shipments.created_at, "0000-00-00"), IFNULL(max_supplies.created_at, "0000-00-00"))) as days_since_latest')
-            )
-            ->whereHas('contact_categories', function ($q) use ($type) {
-                if ($type === 'other') {
-                    $q->whereNotIn('contact_category_id', [10, 8, 9, 21, 4]);
-                } else {
-                    $q->where('contact_category_id', '=', $type ?? 10);
-                }
+            )->when($type !== 'all', function ($query) use ($type){
+                $query->whereHas('contact_categories', function ($q) use ($type) {
+                    if ($type === 'other') {
+                        $q->whereNotIn('contact_category_id', [10, 8, 9, 21, 4]);
+                    } else {
+                        $q->where('contact_category_id', '=', $type ?? 10);
+                    }
+                });
             })
-            ->whereNotNull("balance")
+            ->whereNotNull("balance")->where('balance', '!=', '0')
             ->leftJoin(DB::raw('(SELECT contact_id, MAX(created_at) as created_at FROM shipments GROUP BY contact_id) as max_shipments'), 'contacts.id', '=', 'max_shipments.contact_id')
             ->leftJoin(DB::raw('(SELECT contact_id, MAX(created_at) as created_at FROM supplies GROUP BY contact_id) as max_supplies'), 'contacts.id', '=', 'max_supplies.contact_id');
 
-        $mutualSettlements = $query->paginate(100, ['*'], 'page', $page);
+
+        $mutualSettlements = $query->paginate(300, ['*'], 'page', $page);
 
         $paginationHtml = $mutualSettlements->appends(request()->query())->links()->render();
 

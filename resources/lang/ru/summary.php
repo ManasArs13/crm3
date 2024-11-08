@@ -1,5 +1,6 @@
 <?php
 return [
+    'all' => 'Все',
     'balanceMs' => 'Баланс мс',
     'balanceOur' => 'Баланс наш',
     'saldo' => 'Сальдо',
