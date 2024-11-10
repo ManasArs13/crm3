@@ -31,6 +31,10 @@ class SummaryController extends Controller
             $q->where('contact_category_id', '=', 8);
         })->whereNot("balance",NULL)->sum("balance");
 
+        $mainSuppliers = Contact::whereHas('contact_categories', function($q) {
+            $q->where('contact_category_id', '=', 10);
+        })->whereNot("balance",NULL)->sum("balance");
+
         $msBalance = Organization::Sum('balance');
         $ourBalance = (Payment::selectRaw("
             SUM(CASE WHEN type IN ('cashin', 'paymentin') THEN sum ELSE 0 END) -
@@ -44,8 +48,14 @@ class SummaryController extends Controller
         })->whereNot("balance",NULL)->sum("balance");
 
         $sumAnother=Contact::whereHas('contact_categories', function($q) {
-            $q->whereIn('contact_category_id',[4,5, 8,9])->groupBy("contact_id");
+            $q->whereIn('contact_category_id',[24])->groupBy("contact_id");
         })->whereNot("balance",NULL)->sum("balance");
+
+        $sumUnfilled=Contact::whereNotIn('contacts.id', function($subquery) {
+            $subquery->select('contact_id')
+                ->from('contact_contact_category')
+                ->whereIn('contact_category_id', [10, 8, 9, 21, 4]);
+        })->whereNotNull("balance")->where('balance', '!=', '0')->sum("balance");
 
         $sumCarriers=Contact::whereHas('contact_categories', function($q) {
             $q->where('contact_category_id', '=', 9);
@@ -54,8 +64,8 @@ class SummaryController extends Controller
 
         return view("summary.index", compact(
             "sumMaterials","sumProducts", "sumMutualSettlement",
-        "sumMutualSettlementMain", "sumCarriers", "materialNorm",
-        "sumBuyer","sumAnother", "msBalance", "ourBalance"
+        "sumMutualSettlementMain", "mainSuppliers", "sumCarriers", "materialNorm",
+        "sumBuyer","sumUnfilled", "sumAnother", "msBalance", "ourBalance"
         ));
     }
 

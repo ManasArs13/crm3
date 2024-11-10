@@ -1,4 +1,4 @@
-<div class="border-t-2 p-5">
+<div class="p-5">
     <div class="chart-container" style="height:20vh;">
         <canvas id="chart"></canvas>
     </div>
@@ -13,7 +13,7 @@
             await fetch('/api/shipments/get/month_category')
             .then((response) => response.json())
             .then((data) => {
-                    
+
                     labels=data.labels;
 
                     for (let item in data.datasets) {

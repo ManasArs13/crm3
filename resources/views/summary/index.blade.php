@@ -8,43 +8,44 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-        @vite(['resources/css/calculator.css', 'resources/js/jquery-ui.min.js', 'resources/js/jquery.ui.touch-punch.js'])
+        @vite(['resources/js/jquery-ui.min.js', 'resources/js/jquery.ui.touch-punch.js'])
     </x-slot>
     <div class="w-11/12 mx-auto py-8 max-w-10xl">
 
         <h3 class="text-4xl font-bold mb-6">{{ __('title.summary') }}</h3>
         {{-- header --}}
+
         <div class="border-b-2 border-neutral-100">
-            <div class="flex flex-row w-full p-3 justify-between">
-                <div class="flex flex-row gap-1">
-                    <div>
+            <div class="w-full mb-12 flex flex-wrap w-full p-3 items-start">
+                <div class="gap-1 flex flex-wrap flex-col sm:flex-row items-start">
+                    <div class="mt-2">
                         <a href="{{ route('summary.index') }}"
                                class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                             {{ __('title.summary') }}</a>
                     </div>
-                    <div>
+                    <div class="mt-2">
                         <a href="{{ route('manager.index') }}"
                            class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                             Сводка - Менеджеры</a>
 
                     </div>
-                    <div>
+                    <div class="mt-2">
                         <a href="{{ route('report.transport') }}"
                            class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                             Сводка - Транспорт</a>
 
                     </div>
-                    <div>
+                    <div class="mt-2">
                         <a href="{{ route('report.transporter') }}"
                            class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                             Сводка - Перевозчик</a>
                     </div>
-                    <div>
+                    <div class="mt-2">
                         <a href="{{ route('report.transporter_fee') }}"
                            class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                             Сводка - Перевозчик (оплата)</a>
                     </div>
-                    <div>
+                    <div class="mt-2">
                         <a href="{{ route('report.counteparty') }}"
                                class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                             Сводка - Контрагенты</a>
@@ -55,98 +56,167 @@
         </div>
 
         @include('summary.canvas')
-        <div class="flex">
-            <div class="CEB__wrapTable mb-5">
-                <table class="sum">
+        <div class="flex flex-wrap">
+            <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4 sm:pr-2">
+                <table class="sum border w-full">
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
-                            {{ __('summary.mutualSettlement') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
-                    </tr>
-                    <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.mutualSettlementMain') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMutualSettlementMain, 1, '.', ' ') }}
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMutualSettlementMain, 1, '.', ' ') }}
                         </td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">{{ __('summary.buyers') }}
-                        </th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumBuyer, 1, '.', ' ') }}</td>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.suppliers') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($mainSuppliers, 1, '.', ' ') }}
+                        </td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">{{ __('summary.carriers') }}
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.carriers') }}
                         </th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumCarriers, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumCarriers, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">{{ __('column.another') }}
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.buyers') }}
                         </th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumAnother, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumBuyer, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <td colspan=2></td>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.others') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumAnother, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.unfilled') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumUnfilled, 1, '.', ' ') }}</td>
                     </tr>
 
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2  pr-2">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.mutualSettlement') }}</th>
+                        <td class="text-end font-semibold pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4 xl:pr-2">
+                <table class="sum border w-full">
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.materials') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumMaterials, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMaterials, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2">
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.products') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($sumProducts, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumProducts, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.balanceMs') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($msBalance, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.total') }}</th>
+                        <td class="text-end font-semibold pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMaterials +$sumProducts + $msBalance, 1, '.', ' ') }}</td>
                     </tr>
 
                 </table>
             </div>
-            <div class="CEB__wrapTable mb-5">
-                <table class="sum">
+            <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4 sm:pr-2">
+                <table class="sum border w-full">
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.balanceMs') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($msBalance, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($msBalance, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.balanceOur') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($ourBalance, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.saldo') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($ourBalance - $msBalance, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance - $msBalance, 1, '.', ' ') }}</td>
                     </tr>
                 </table>
             </div>
-            <div class="CEB__wrapTable mb-5">
-                <table class="sum">
+            <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4">
+                <table class="sum border w-full">
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.norm_material') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format($materialNorm->value ?? 0, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($materialNorm->value ?? 0, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.fact') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(($sumMaterials - $sumMutualSettlementMain), 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(($sumMaterials - $sumMutualSettlementMain), 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 ">
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.saldo') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 ">{{ number_format(($sumMaterials - $sumMutualSettlementMain) - $materialNorm->value, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(($sumMaterials - $sumMutualSettlementMain) - $materialNorm->value, 1, '.', ' ') }}</td>
                     </tr>
                 </table>
             </div>
+
         </div>
 
 
         <div class="block rounded-lg bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)">
             {{-- header --}}
             <div class="border-b-2 border-neutral-100 mb-2 py-2">
-                <div class="flex flex-row w-full p-3 justify-between">
-                    <div class="flex flex-row gap-1">
+                <div class="flex flex-wrap w-full p-3 items-start">
+                    <div class="flex flex-wrap gap-1 flex-col sm:flex-row items-start">
                         <div>
                             <button data-type="all" type="button" class="fetchMutualSettlements rounded bg-blue-600 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                                 {{ __('summary.all') }}</button>
@@ -287,12 +357,16 @@
                         if (th_column_balance.innerText == `Баланс ↓`) {
                             th_column_balance.innerText = `Баланс ↑`
                             sortedRows.sort(function(rowA, rowB) {
-                                return parseInt(rowA.cells[column].innerText) - parseInt(rowB.cells[column].innerText)
+                                const valueA = parseFloat(rowA.cells[column].innerText.replace(/\s+/g, ''));
+                                const valueB = parseFloat(rowB.cells[column].innerText.replace(/\s+/g, ''));
+                                return valueA - valueB;
                             });
                         } else {
                             th_column_balance.innerText = `Баланс ↓`;
                             sortedRows.sort(function(rowA, rowB) {
-                                return parseInt(rowB.cells[column].innerText) - parseInt(rowA.cells[column].innerText)
+                                const valueA = parseFloat(rowA.cells[column].innerText.replace(/\s+/g, ''));
+                                const valueB = parseFloat(rowB.cells[column].innerText.replace(/\s+/g, ''));
+                                return valueB - valueA;
                             });
                         }
 
@@ -364,12 +438,12 @@
 
                 data.forEach(item => {
                     const row = `
-                        <tr class="bg-green-100">
-                            <td class="break-all max-w-60 truncate px-2 py-3 text-left">${item.name}</td>
-                            <td class="break-all max-w-60 truncate px-2 py-3 text-right">${item.latest_created_at !== "0000-00-00" ? item.latest_created_at : ''}</td>
-                            <td class="break-all max-w-60 truncate px-2 py-3 text-right">${item.days_since_latest !== null ? item.days_since_latest : 0}</td>
-                            <td class="break-all max-w-60 truncate px-2 py-3 text-right">${item.balance}</td>
-                            <td class="break-all max-w-60 truncate px-2 py-3">${item.description || '-'}</td>
+                        <tr class="bg-green-100 border">
+                            <td class="break-all border max-w-60 truncate px-2 py-3 text-left">${item.name}</td>
+                            <td class="break-all border max-w-60 truncate px-2 py-3 text-right">${item.latest_created_at !== "0000-00-00" ? item.latest_created_at : ''}</td>
+                            <td class="break-all border max-w-60 truncate px-2 py-3 text-right">${item.days_since_latest !== null ? item.days_since_latest : 0}</td>
+                            <td class="break-all border max-w-60 truncate px-2 py-3 text-right">${item.balance !== null ? Number(item.balance).toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : ''}</td>
+                            <td class="break-all border max-w-60 truncate px-2 py-3">${item.description || '-'}</td>
                         </tr>
                     `;
                     tableBody.append(row);
@@ -377,11 +451,11 @@
 
                 tableBody.append(`
                     <tr class="border-b-2 bg-gray-100">
-                        <td class="break-all text-right overflow-auto px-6 py-3">ВСЕГО:</td>
-                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right"></td>
-                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">${totalDays}</td>
-                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right">${totalBalance}</td>
-                        <td class="break-all max-w-60 overflow-hidden px-2 py-3 text-right"></td>
+                        <td class="break-all border text-right overflow-auto px-6 py-3">ВСЕГО:</td>
+                        <td class="break-all border max-w-60 overflow-hidden px-2 py-3 text-right"></td>
+                        <td class="break-all border max-w-60 overflow-hidden px-2 py-3 text-right">${totalDays.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}</td>
+                        <td class="break-all border max-w-60 overflow-hidden px-2 py-3 text-right">${totalBalance.toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}</td>
+                        <td class="break-all border max-w-60 overflow-hidden px-2 py-3 text-right"></td>
                     </tr>
                 `);
             }
