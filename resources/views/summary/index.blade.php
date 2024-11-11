@@ -94,8 +94,8 @@
 
                     <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
-                            {{ __('summary.mutualSettlement') }}</th>
-                        <td class="text-end font-semibold pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
+                            {{ __('summary.total') }}</th>
+                        <td class="text-end font-semibold pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($total, 1, '.', ' ') }}</td>
                     </tr>
 
                 </table>
@@ -150,9 +150,10 @@
                             {{ __('summary.balanceOur') }}</th>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance, 1, '.', ' ') }}</td>
                     </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
-                        <th class=""></th>
-                        <td class=""></td>
+                    <tr>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.mutualSettlementOur') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
                     </tr>
                     <tr class="h-[41px] border-x border-gray-200">
                         <th class=""></th>
@@ -171,6 +172,7 @@
                             {{ __('summary.saldo') }}</th>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance - $msBalance, 1, '.', ' ') }}</td>
                     </tr>
+
                 </table>
             </div>
             <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4">
@@ -232,10 +234,6 @@
                         <div>
                             <button data-type="9" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
                                 {{ __('summary.carriers') }}</button>
-                        </div>
-                        <div>
-                            <button data-type="21" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                                {{ __('summary.carriers_main') }}</button>
                         </div>
                         <div>
                             <button data-type="4" type="button" class="fetchMutualSettlements rounded bg-blue-300 px-6 py-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
