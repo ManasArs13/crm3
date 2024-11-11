@@ -11,24 +11,24 @@ class SummaryController extends Controller
     {
         $type = $request->input('type');
         $page = $request->input('page', 1);
-        $excludedCategories = [10, 8, 9, 21, 4];
+        $excludedCategories = [10, 8, 9, 24, 4];
 
         $query = Contact::select(
                 'contacts.*',
                 DB::raw('GREATEST(IFNULL(max_shipments.created_at, "0000-00-00"), IFNULL(max_supplies.created_at, "0000-00-00")) as latest_created_at'),
                 DB::raw('DATEDIFF(CURDATE(), GREATEST(IFNULL(max_shipments.created_at, "0000-00-00"), IFNULL(max_supplies.created_at, "0000-00-00"))) as days_since_latest')
             )->when($type !== 'all', function ($query) use ($type, $excludedCategories){
-            if ($type === 'other') {
-                $query->whereNotIn('contacts.id', function($subquery) use ($excludedCategories) {
-                    $subquery->select('contact_id')
-                        ->from('contact_contact_category')
-                        ->whereIn('contact_category_id', $excludedCategories);
-                });
-            } else {
-                $query->whereHas('contact_categories', function ($q) use ($type) {
-                    $q->where('contact_category_id', '=', $type ?? 10);
-                });
-            }
+                if ($type === 'other') {
+                    $query->whereNotIn('contacts.id', function($subquery) use ($excludedCategories) {
+                        $subquery->select('contact_id')
+                            ->from('contact_contact_category')
+                            ->whereIn('contact_category_id', $excludedCategories);
+                    });
+                } else {
+                    $query->whereHas('contact_categories', function ($q) use ($type) {
+                        $q->where('contact_category_id', '=', $type ?? 10);
+                    });
+                }
             })
             ->whereNotNull("balance")
             ->where('balance', '!=', '0')
