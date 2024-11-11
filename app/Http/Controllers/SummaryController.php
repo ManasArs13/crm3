@@ -54,7 +54,7 @@ class SummaryController extends Controller
         $sumUnfilled=Contact::whereNotIn('contacts.id', function($subquery) {
             $subquery->select('contact_id')
                 ->from('contact_contact_category')
-                ->whereIn('contact_category_id', [10, 8, 9, 21, 4]);
+                ->whereIn('contact_category_id', [10, 8, 9, 24, 4]);
         })->whereNotNull("balance")->where('balance', '!=', '0')->sum("balance"); // Незаполненные
 
         $sumCarriers=Contact::whereHas('contact_categories', function($q) {
