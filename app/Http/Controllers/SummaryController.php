@@ -26,14 +26,14 @@ class SummaryController extends Controller
     public function index(Request $request){
         $sumMaterials=Product::where("category_id", 8)->sum(DB::raw('residual * price'));
         $sumProducts=Product::whereIn("category_id", [5,6,7,11,12,15,16,21])->sum(DB::raw('residual * price'));
-        $sumMutualSettlement=Contact::whereNot("balance",NULL)->sum("balance");
+        $sumMutualSettlement=Contact::whereNot("balance",NULL)->sum("balance"); // Взаиморасчеты наши
         $sumMutualSettlementMain=Contact::whereHas('contact_categories', function($q) {
             $q->where('contact_category_id', '=', 8);
-        })->whereNot("balance",NULL)->sum("balance");
+        })->whereNot("balance",NULL)->sum("balance"); //Основные поставщики
 
         $mainSuppliers = Contact::whereHas('contact_categories', function($q) {
             $q->where('contact_category_id', '=', 10);
-        })->whereNot("balance",NULL)->sum("balance");
+        })->whereNot("balance",NULL)->sum("balance"); // Основные поставщики
 
         $msBalance = Organization::Sum('balance');
         $ourBalance = (Payment::selectRaw("
@@ -45,27 +45,29 @@ class SummaryController extends Controller
 
         $sumBuyer=Contact::whereHas('contact_categories', function($q) {
             $q->whereIn('contact_category_id', [4,5])->groupBy("contact_id");
-        })->whereNot("balance",NULL)->sum("balance");
+        })->whereNot("balance",NULL)->sum("balance"); // Покупатели
 
         $sumAnother=Contact::whereHas('contact_categories', function($q) {
             $q->whereIn('contact_category_id',[24])->groupBy("contact_id");
-        })->whereNot("balance",NULL)->sum("balance");
+        })->whereNot("balance",NULL)->sum("balance"); // Прочие
 
         $sumUnfilled=Contact::whereNotIn('contacts.id', function($subquery) {
             $subquery->select('contact_id')
                 ->from('contact_contact_category')
                 ->whereIn('contact_category_id', [10, 8, 9, 21, 4]);
-        })->whereNotNull("balance")->where('balance', '!=', '0')->sum("balance");
+        })->whereNotNull("balance")->where('balance', '!=', '0')->sum("balance"); // Незаполненные
 
         $sumCarriers=Contact::whereHas('contact_categories', function($q) {
             $q->where('contact_category_id', '=', 9);
         })->whereNot("balance",NULL)->sum("balance");
 
+        $total = $sumMutualSettlementMain + $mainSuppliers + $sumCarriers + $sumBuyer + $sumAnother + $sumUnfilled;
+
 
         return view("summary.index", compact(
             "sumMaterials","sumProducts", "sumMutualSettlement",
         "sumMutualSettlementMain", "mainSuppliers", "sumCarriers", "materialNorm",
-        "sumBuyer","sumUnfilled", "sumAnother", "msBalance", "ourBalance"
+        "sumBuyer","sumUnfilled", "sumAnother", "msBalance", "ourBalance", "total"
         ));
     }
 
