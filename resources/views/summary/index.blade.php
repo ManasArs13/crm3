@@ -141,17 +141,17 @@
             <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4 sm:pr-2">
                 <table class="sum border w-full">
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.balanceMs') }}</th>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($msBalance, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.balanceOur') }}</th>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.mutualSettlementOur') }}</th>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
                     </tr>
