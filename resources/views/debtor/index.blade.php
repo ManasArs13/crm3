@@ -66,18 +66,18 @@
                     <thead>
 
                         <tr class="bg-neutral-200 font-semibold">
-                            <th class="px-2 py-3  hover:cursor-pointer" onclick="orderBy(0)" id="th_name">
+                            <th class="px-2 py-3 hover:cursor-pointer" onclick="orderBy(0)" id="th_name">
                                 {{ __('column.name') }}</th>
-                            <th class="px-2 py-3  hover:cursor-pointer text-right" onclick="orderBy(1)"
+                            <th class="px-2 py-3 hover:cursor-pointer text-right" onclick="orderBy(1)"
                                 id="th_date_of_last_shipment">
                                 {{ __('column.date_of_last_shipment') }}</th>
-                            <th class="px-2 py-3  hover:cursor-pointer text-right" onclick="orderBy(2)" id="th_days">
+                            <th class="px-2 py-3 hover:cursor-pointer text-right" onclick="orderBy(2)" id="th_days">
                                 {{ __('column.days') }}</th>
-                            <th class="px-2 py-3  hover:cursor-pointer text-right" onclick="orderBy(3)" id="th_balance">
+                            <th class="px-2 py-3 hover:cursor-pointer text-right" onclick="orderBy(3)" id="th_balance">
                                 {{ __('column.balance') }}</th>
-                            <th class="px-2 py-3  hover:cursor-pointer" onclick="orderBy(4)" id="th_description">
+                            <th class="px-2 py-3 hover:cursor-pointer" onclick="orderBy(4)" id="th_description">
                                 {{ __('column.description') }}</th>
-                            <th class="px-2 py-3  hover:cursor-pointer text-center" onclick="orderBy(5)" id="th_cnt">
+                            <th class="px-2 py-3 hover:cursor-pointer text-center" onclick="orderBy(5)" id="th_cnt">
                                 {{ __('column.cnt') }}</th>
                         </tr>
                     </thead>
