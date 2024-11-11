@@ -399,7 +399,7 @@
 
         <script>
             let currentPage = 1;
-            let type = 10;
+            let type = 'all';
             $(".fetchMutualSettlements").on("click", function() {
                 type = $(this).data('type');
                 $(".fetchMutualSettlements").removeClass("bg-blue-600").addClass("bg-blue-300");
@@ -437,7 +437,7 @@
                 data.forEach(item => {
                     const row = `
                         <tr class="bg-green-100 border">
-                            <td class="break-all border max-w-60 truncate px-2 py-3 text-left"><a href='https://online.moysklad.ru/app/#Company/edit?id=${item.ms_id}' target='__blank'>${item.name}</a>${item.name}</td>
+                            <td class="break-all border max-w-60 truncate px-2 py-3 text-left"><a href='https://online.moysklad.ru/app/#Company/edit?id=${item.ms_id}' target='__blank'>${item.name}</a></td>
                             <td class="break-all border max-w-60 truncate px-2 py-3 text-right">${item.latest_created_at !== "0000-00-00" ? item.latest_created_at : ''}</td>
                             <td class="break-all border max-w-60 truncate px-2 py-3 text-right">${item.days_since_latest !== null ? item.days_since_latest : 0}</td>
                             <td class="break-all border max-w-60 truncate px-2 py-3 text-right">${item.balance !== null ? Number(item.balance).toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : ''}</td>
