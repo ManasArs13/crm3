@@ -33,7 +33,7 @@ class SummaryController extends Controller
             ->whereNotNull("balance")
             ->where('balance', '!=', '0')
             ->leftJoin(DB::raw('(SELECT contact_id, MAX(created_at) as created_at FROM shipments GROUP BY contact_id) as max_shipments'), 'contacts.id', '=', 'max_shipments.contact_id')
-            ->leftJoin(DB::raw('(SELECT contact_id, MAX(created_at) as created_at FROM supplies GROUP BY contact_id) as max_supplies'), 'contacts.id', '=', 'max_supplies.contact_id')
+            ->leftJoin(DB::raw('(SELECT contact_id, MAX(moment) as created_at FROM supplies GROUP BY contact_id) as max_supplies'), 'contacts.id', '=', 'max_supplies.contact_id')
             ->leftJoin(DB::raw('(SELECT contact_id, MAX(moment) as moment FROM payments GROUP BY contact_id) as max_payments'), 'contacts.id', '=', 'max_payments.contact_id');
 
 
