@@ -60,7 +60,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:sync-contact-ms-amo')->hourly();
         //$schedule->command('app:check-contact-amo')->hourly();
         //$schedule->command('app:update-counterparty')->hourly();
-        //$schedule->command('ms:ckeck-contacts-ms')->hourly();
+        $schedule->command('ms:ckeck-rows-ms')->dailyAt('01:00');
+        $schedule->command('ms:ckeck-contacts-ms')->dailyAt('03:00');
         //$schedule->command('ms:import-employee')->everySixHours();
 
         $schedule->command('ms:import-carrier')->everySixHours();

@@ -674,8 +674,6 @@ class OrderService implements EntityInterface
         return ["id" => $order->id, "name" => $order->name];
     }
 
-
-
     function updateOrderMs($msOrder)
     {
         $url = 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder';
