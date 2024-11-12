@@ -61,13 +61,29 @@ class SummaryController extends Controller
             $q->where('contact_category_id', '=', 9);
         })->whereNot("balance",NULL)->sum("balance");
 
+        $kassaAndTinkoff = Contact::WhereIn('name', ['Касса 2', 'Работникофф'])->first();
+
+        $carriers_two = Shipment::whereMonth('created_at', date('m'))->sum('delivery_fee');
+
+        $totals_two =
+            $kassaAndTinkoff->firstWhere('name', 'Работникофф')->balance +
+            $kassaAndTinkoff->firstWhere('name', 'Касса 2')->balance +
+            $sumMaterials +
+            $sumProducts +
+            $msBalance +
+            $sumMutualSettlementMain +
+            $sumCarriers +
+            $carriers_two;
+
+
         $total = $sumMutualSettlementMain + $mainSuppliers + $sumCarriers + $sumBuyer + $sumAnother + $sumUnfilled;
 
 
         return view("summary.index", compact(
             "sumMaterials","sumProducts", "sumMutualSettlement",
         "sumMutualSettlementMain", "mainSuppliers", "sumCarriers", "materialNorm",
-        "sumBuyer","sumUnfilled", "sumAnother", "msBalance", "ourBalance", "total"
+        "sumBuyer","sumUnfilled", "sumAnother", "msBalance", "ourBalance", "total",
+        "kassaAndTinkoff", "carriers_two", "totals_two"
         ));
     }
 
