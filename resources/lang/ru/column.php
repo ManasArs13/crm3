@@ -81,6 +81,7 @@ return [
   "count_contacts" => "Контактов всего",
   "count_contacts_new" => "Контактов новых",
   "count_orders" => "Количество заказов",
+  "count_quantity" => "Количество штук",
   "count_shipments" => "Отгрузок",
   "column_id" => "Высота колоны",
   "code" => "Код",
