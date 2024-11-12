@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterRequest;
 use App\Models\Category;
+use App\Models\OrderPosition;
 use App\Models\Product;
 use App\Models\TechChartMaterial;
 use App\Models\TechChartProduct;
@@ -84,6 +85,8 @@ class ResidualController extends Controller
 
             $goods = Product::query()->where('type', Product::PRODUCTS)->where('category_id', $product->id)->get();
 
+            $product->totalOrderQuantity = OrderPosition::whereIn('product_id', $goods->pluck('id'))->sum('quantity');
+            $product->totalOrderSum = OrderPosition::whereIn('product_id', $goods->pluck('id'))->distinct('order_id')->count('order_id');
 
             foreach ($goods as $good) {
                 if ($good->residual && $good->residual_norm && $good->release) {
@@ -94,6 +97,20 @@ class ResidualController extends Controller
             }
 
             $product->making_day = round($product->making_day, 0);
+
+            $preProductIds = $product->pre_products->pluck('id');
+
+            $preProductOrders = OrderPosition::whereIn('product_id', $preProductIds)
+                ->selectRaw('product_id, SUM(quantity) as totalOrderQuantity')
+                ->selectRaw('COUNT(DISTINCT order_id) as totalOrderSum')
+                ->groupBy('product_id')
+                ->get()
+                ->keyBy('product_id');
+
+            foreach ($product->pre_products as $preProduct) {
+                $preProduct->totalOrderQuantity = $preProductOrders[$preProduct->id]->totalOrderQuantity ?? 0;
+                $preProduct->totalOrderSum = $preProductOrders[$preProduct->id]->totalOrderSum ?? 0;
+            }
         }
 
         $entity = 'residuals';
