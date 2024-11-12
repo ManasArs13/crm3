@@ -41,6 +41,13 @@ class OrderController extends Controller
 
         // Orders
         $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'shipment_products');
+//            ->leftJoin('contacts', 'orders.contact_id', '=', 'contacts.id')
+//            ->leftJoin('deliveries', 'orders.delivery_id', '=', 'deliveries.id')
+//            ->addSelect([
+//                'orders.*',
+//                'contact_created_at' => 'contacts.created_at',
+//                'delivery_created_at' => 'deliveries.created_at',
+//            ]);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column);
@@ -628,12 +635,12 @@ class OrderController extends Controller
         $shipment_sum = (new OrderFilter($shipment_builder, $request))->apply()->sum('quantity');
 
         $order_totals = [
-            'total_sum' => $entityItems->sum('sum'),
-            'total_delivery_price' => $entityItems->sum('delivery_price'),
-            'total_payed_sum' => $entityItems->sum('payed_sum'),
-            'total_shipped_sum' => $entityItems->sum('shipped_sum'),
-            'total_reserved_sum' => $entityItems->sum('reserved_sum'),
-            'total_debt' => $entityItems->sum('debt'),
+            'total_sum' => $entityItems->sum('orders.sum'),
+            'total_delivery_price' => $entityItems->sum('orders.delivery_price'),
+            'total_payed_sum' => $entityItems->sum('orders.payed_sum'),
+            'total_shipped_sum' => $entityItems->sum('orders.shipped_sum'),
+            'total_reserved_sum' => $entityItems->sum('orders.reserved_sum'),
+            'total_debt' => $entityItems->sum('orders.debt'),
             'shipped_count' => $shipment_sum,
             'positions_count' => $order_sum,
         ];

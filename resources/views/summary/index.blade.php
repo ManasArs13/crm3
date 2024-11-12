@@ -91,6 +91,14 @@
                         </th>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumUnfilled, 1, '.', ' ') }}</td>
                     </tr>
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
 
                     <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
@@ -117,15 +125,23 @@
                             {{ __('summary.balanceMs') }}</th>
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($msBalance, 1, '.', ' ') }}</td>
                     </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
                         <th class=""></th>
                         <td class=""></td>
                     </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
                         <th class=""></th>
                         <td class=""></td>
                     </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
+                        <th class=""></th>
+                        <td class=""></td>
+                    </tr>
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
                         <th class=""></th>
                         <td class=""></td>
                     </tr>
@@ -151,26 +167,36 @@
                         <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
-                            {{ __('summary.mutualSettlementOur') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMutualSettlement, 1, '.', ' ') }}</td>
+                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.saldo') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance - $msBalance, 1, '.', ' ') }}</td>
                     </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
                         <th class=""></th>
                         <td class=""></td>
                     </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
                         <th class=""></th>
                         <td class=""></td>
                     </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
+                    <tr class="h-[41px] border-x border-gray-200 bg-gray-200">
                         <th class=""></th>
                         <td class=""></td>
                     </tr>
                     <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.norm_material') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($materialNorm->value ?? 0, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.fact') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(($sumMaterials - $sumMutualSettlementMain), 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.saldo') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($ourBalance - $msBalance, 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(($sumMaterials - $sumMutualSettlementMain) - $materialNorm->value, 1, '.', ' ') }}</td>
                     </tr>
 
                 </table>
@@ -178,35 +204,50 @@
             <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4">
                 <table class="sum border w-full">
                     <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
-                            {{ __('summary.norm_material') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($materialNorm->value ?? 0, 1, '.', ' ') }}</td>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.materials') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMaterials, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.products') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumProducts, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.balanceMs') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($msBalance, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
+                            {{ __('summary.mutualSettlementMain') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumMutualSettlementMain, 1, '.', ' ') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.carriers') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($sumCarriers, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.carriers_two') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($carriers_two, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.box_office') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($kassaAndTinkoff->firstWhere('name', 'Касса 2')->balance ?? 0, 1, '.', ' ') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.rabotnikoff') }}
+                        </th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($kassaAndTinkoff->firstWhere('name', 'Работникофф')->balance ?? 0, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
-                            {{ __('summary.fact') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(($sumMaterials - $sumMutualSettlementMain), 1, '.', ' ') }}</td>
-                    </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
-                        <th class=""></th>
-                        <td class=""></td>
-                    </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
-                        <th class=""></th>
-                        <td class=""></td>
-                    </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
-                        <th class=""></th>
-                        <td class=""></td>
-                    </tr>
-                    <tr class="h-[41px] border-x border-gray-200">
-                        <th class=""></th>
-                        <td class=""></td>
-                    </tr>
-                    <tr>
-                        <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
-                            {{ __('summary.saldo') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(($sumMaterials - $sumMutualSettlementMain) - $materialNorm->value, 1, '.', ' ') }}</td>
+                            {{ __('summary.total') }}</th>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format($totals_two, 1, '.', ' ') }}</td>
                     </tr>
                 </table>
             </div>
