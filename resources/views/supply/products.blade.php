@@ -4,7 +4,12 @@
         <x-slot:title>
             {{ __('entity.' . $entity) }}
             </x-slot>
-            @endif
+    @endif
+            <x-slot:head>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+                <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+            </x-slot>
 
 
             <div class="w-11/12 mx-auto py-8 max-w-10xl">
@@ -160,15 +165,31 @@
                                                             <div class="basis-4/5">
                                                                 <select
                                                                     class="select-default border border-solid border-neutral-300 rounded w-full py-2 mb-4"
-                                                                    name="filters[{{ $filter['name'] }}]"
+                                                                    , name="filters[{{ $filter['name'] }}]"
                                                                     data-offset="false">
-                                                                    <option @if ($filter['checked_value'] == 'all') selected @endif
-                                                                    value="all">Все</option>
                                                                     @foreach ($filter['values'] as $value)
                                                                         <option
-                                                                            @if ($value['category_id'] == $filter['checked_value']) selected @endif
-                                                                        value="{{ $value['category_id'] }} ">
+                                                                            @if ($value['value'] == $filter['checked_value']) selected @endif
+                                                                        value="{{ $value['value'] }} ">
                                                                             {{ $value['name'] }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    @elseif ($filter['type'] == 'select2')
+                                                        <div class="flex flex-row gap-1 w-100">
+                                                            <div class="basis-1/5">
+                                                                <p>
+                                                                    {{ $filter['name_rus'] }}
+                                                                </p>
+                                                            </div>
+                                                            <div class="basis-4/5 mb-4">
+                                                                <select
+                                                                    class="select-default2" multiple="multiple"
+                                                                    name="filters[{{ $filter['name'] }}][]"
+                                                                    id="{{ $filter['name'] }}_select" data-placeholder="Выберите контакт">
+                                                                    @foreach($filter['values'] as $value)
+                                                                        <option value="{{ $value['value'] }}" selected>{{ $value['name'] }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -437,5 +458,61 @@
                     </div>
                 </div>
             </div>
+            <style>
+                .select2, .select2-selection{
+                    width: 100% !important;
+                    min-height: 42px !important;
+                    overflow: auto;
+                    max-height: 120px !important;
 
+                }
+                .select2-search__field{
+                    width: 200px !important;
+                }
+                .select2-selection, .select2-selection--multiple{
+                    padding-top: 3px;
+                    padding-left: 7px;
+                    border: 1px solid #d4d4d4 !important;
+                }
+            </style>
+            <script>
+                $(document).ready(function(){
+
+                    function initSelect2(elementId, url) {
+                        $(elementId).select2({
+                            width: '372px',
+                            tags: true,
+                            ajax: {
+                                delay: 250,
+                                url: url,
+                                data: function(params) {
+                                    var queryParameters = {
+                                        term: params.term,
+                                        page: params.page || 1
+                                    }
+                                    return queryParameters;
+                                },
+                                processResults: function(data, params) {
+                                    params.current_page = params.current_page || 1;
+                                    return {
+                                        results: $.map(data.data, function(item) {
+                                            return {
+                                                text: item.phone,
+                                                id: item.id,
+                                                attr1: item.name,
+                                            }
+                                        }),
+                                        pagination: {
+                                            more: (params.current_page * data.per_page) < data.total
+                                        }
+                                    };
+                                }
+                            },
+                        });
+                    }
+
+                    initSelect2("#contacts_select", '/api/contacts/get');
+                    initSelect2("#carriers_select", '/api/carriers/get');
+                });
+            </script>
 </x-app-layout>
