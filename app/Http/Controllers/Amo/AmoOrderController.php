@@ -259,6 +259,11 @@ class AmoOrderController extends Controller
                 $query->whereMonth('created_at', $date)
                 ->whereYear('created_at', date('Y'));
             })
+            ->whereDoesntHave('amo_order', function ($query) use ($date) {
+                $query->whereMonth('created_at', $date)
+                    ->whereYear('created_at', date('Y'))
+                    ->where('is_success', '!=', 1);
+            })
             ->withCount(['amo_order' => function ($query) use ($date) {
                 $query->whereMonth('created_at', $date)
                 ->whereYear('created_at', date('Y'));
