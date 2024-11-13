@@ -65,19 +65,17 @@ class SummaryController extends Controller
 
         $carriers_two = Shipment::whereYear('created_at', date('Y'))->whereMonth('created_at', date('m'))->sum('delivery_fee');
 
+        $total = $sumMutualSettlementMain + $mainSuppliers + $sumCarriers + $sumBuyer + $sumAnother + $sumUnfilled;
 
         $totals_two =
-            abs($kassaAndTinkoff->firstWhere('name', 'Работникофф')->balance ?? 0) +
-            abs($kassaAndTinkoff->firstWhere('name', 'Касса 2')->balance ?? 0) +
+            (-$kassaAndTinkoff->firstWhere('name', 'Работникофф')->balance ?? 0) +
+            (-$kassaAndTinkoff->firstWhere('name', 'Касса 2')->balance ?? 0) +
             $sumMaterials +
             $sumProducts +
             $msBalance +
-            abs($sumMutualSettlementMain) +
-            abs($sumCarriers) +
+            -$sumMutualSettlementMain +
+            -$sumCarriers +
             (-1 * $carriers_two);
-
-
-        $total = $sumMutualSettlementMain + $mainSuppliers + $sumCarriers + $sumBuyer + $sumAnother + $sumUnfilled;
 
 
         return view("summary.index", compact(

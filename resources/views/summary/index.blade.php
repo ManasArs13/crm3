@@ -221,13 +221,13 @@
                     <tr>
                         <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
                             {{ __('summary.mutualSettlementMain') }}</th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(abs($sumMutualSettlementMain), 1, '.', ' ') }}
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(-$sumMutualSettlementMain, 1, '.', ' ') }}
                         </td>
                     </tr>
                     <tr>
                         <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.carriers') }}
                         </th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(abs($sumCarriers), 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(-$sumCarriers, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
                         <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.carriers_two') }}
@@ -237,12 +237,12 @@
                     <tr>
                         <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.box_office') }}
                         </th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(abs($kassaAndTinkoff->firstWhere('name', 'Касса 2')->balance ?? 0), 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(-$kassaAndTinkoff->firstWhere('name', 'Касса 2')->balance ?? 0, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
                         <th class="bg-neutral-200 font-normal text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ __('summary.rabotnikoff') }}
                         </th>
-                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(abs($kassaAndTinkoff->firstWhere('name', 'Работникофф')->balance ?? 0), 1, '.', ' ') }}</td>
+                        <td class="text-end pl-2 pt-2 pb-2 pr-2 border border-gray-300">{{ number_format(-$kassaAndTinkoff->firstWhere('name', 'Работникофф')->balance ?? 0, 1, '.', ' ') }}</td>
                     </tr>
                     <tr>
                         <th class="bg-neutral-200 font-semibold text-start pl-2 pt-2 pb-2 pr-2 border border-gray-300">
