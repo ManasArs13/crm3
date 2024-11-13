@@ -165,7 +165,7 @@
                                                             <div class="basis-4/5">
                                                                 <select
                                                                     class="select-default border border-solid border-neutral-300 rounded w-full py-2 mb-4"
-                                                                    , name="filters[{{ $filter['name'] }}]"
+                                                                    name="filters[{{ $filter['name'] }}]"
                                                                     data-offset="false">
                                                                     @foreach ($filter['values'] as $value)
                                                                         <option
@@ -210,52 +210,6 @@
                                         </x-slot>
                                     </x-dropdown>
                                 </div>
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function(event) {
-
-                                        document.getElementById('reset-button').addEventListener('click', function() {
-                                            // Список ID чекбоксов, которые нужно отметить
-                                            const checkedCheckboxes = [{!! '"' . implode('", "', array_values($all_columns)) . '"' !!}];
-
-                                            // Сбрасываем все чекбоксы
-                                            const allCheckboxes = document.querySelectorAll('.columns_all');
-                                            allCheckboxes.forEach(checkbox => {
-                                                checkbox.checked = false;
-                                            });
-
-                                            // Включаем нужные чекбоксы
-                                            checkedCheckboxes.forEach(id => {
-                                                const checkbox = document.getElementById(`checkbox-${id}`);
-                                                if (checkbox) {
-                                                    checkbox.checked = true;
-                                                }
-                                            });
-                                        });
-
-                                        document.getElementById('reset-button2').addEventListener('click', function() {
-
-
-                                            const dateInputs = document.querySelectorAll('.inp-default');
-                                            dateInputs.forEach(dateInput => {
-                                                dateInput.value = dateInput.getAttribute('data-default');
-                                            });
-
-                                            const selects = document.querySelectorAll('.select-default');
-                                            selects.forEach(select => {
-                                                if (select.options.length > 0) {
-                                                    select.selectedIndex = 0;
-                                                }
-                                            });
-
-                                            // const allCheckboxes = document.querySelectorAll('.columns_all2');
-                                            // allCheckboxes.forEach(checkbox => {
-                                            //     checkbox.checked = true;
-                                            // });
-
-                                        });
-
-                                    });
-                                </script>
                             </form>
                             @can('supply_position_edit')
                                 @if (isset($urlCreate) && $urlCreate != '')
@@ -513,6 +467,42 @@
 
                     initSelect2("#contacts_select", '/api/contacts/get');
                     initSelect2("#carriers_select", '/api/carriers/get');
+
+
+                    $("#reset-button").on("click", function(){
+                        document.getElementById('reset-button').addEventListener('click', function() {
+                            const checkedCheckboxes = [{!! '"' . implode('", "', array_values($all_columns)) . '"' !!}];
+
+                            const allCheckboxes = document.querySelectorAll('.columns_all');
+                            allCheckboxes.forEach(checkbox => {
+                                checkbox.checked = false;
+                            });
+
+                            checkedCheckboxes.forEach(id => {
+                                const checkbox = document.getElementById(`checkbox-${id}`);
+                                if (checkbox) {
+                                    checkbox.checked = true;
+                                }
+                            });
+                        });
+                    });
+
+
+                    $("#reset-button2").on("click", function(){
+                        const dateInputs = document.querySelectorAll('.inp-default');
+                        dateInputs.forEach(dateInput => {
+                            dateInput.value = dateInput.getAttribute('data-default');
+                        });
+
+                        const selects = document.querySelectorAll('.select-default');
+                        selects.forEach(select => {
+                            if (select.options.length > 0) {
+                                select.selectedIndex = 0;
+                            }
+                        });
+                        $('.select-default2').empty();
+                    });
                 });
+
             </script>
 </x-app-layout>

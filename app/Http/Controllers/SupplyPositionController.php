@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\SupplyPositionFilter;
 use App\Http\Requests\FilterRequest;
 use App\Models\Contact;
+use App\Models\Product;
 use App\Models\SupplyPosition;
 use Illuminate\Http\Request;
 
@@ -75,8 +76,14 @@ class SupplyPositionController extends Controller
         }
 
         /* Фильтры для меню */
-        $queryMaterial = 'index';
         $contacts = [];
+        $queryMaterial = 'index';
+        $materials = Product::Where('type', 'материал')->orderBy('name')->select('id', 'name')->get();
+        $materialValues[] = ['value' => 'index', 'name' => 'Все'];
+        foreach ($materials as $material) {
+            $materialValues[] = ['value' => $material->id, 'name' => $material->name];
+        }
+
         $minCreated = SupplyPosition::query()->min('created_at');
         $minCreatedCheck = '';
         $maxCreated = SupplyPosition::query()->max('created_at');
@@ -98,11 +105,7 @@ class SupplyPositionController extends Controller
                     }
                 }
                 if ($key == 'material'){
-                    if ($value == 'concrete') {
-                        $queryMaterial = 'concrete';
-                    }elseif($value == 'block'){
-                        $queryMaterial = 'block';
-                    }
+                    $queryMaterial = $value;
                 }
                 if ($key == 'updated_at') {
                     if ($value['max']) {
@@ -150,7 +153,7 @@ class SupplyPositionController extends Controller
                 'type' => 'select',
                 'name' => 'material',
                 'name_rus' => 'Материал',
-                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
+                'values' => $materialValues,
                 'checked_value' => $queryMaterial,
             ],
             [
@@ -160,6 +163,7 @@ class SupplyPositionController extends Controller
                 'values' => $contacts,
             ],
         ];
+
 
 
         return view("supply.products", compact(

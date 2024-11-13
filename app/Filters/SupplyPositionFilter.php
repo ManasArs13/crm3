@@ -51,18 +51,8 @@ class SupplyPositionFilter
 
     public function material($value)
     {
-        if ($value == 'concrete') {
-            $this->builder
-                ->whereHas('products', function ($query) {
-                    $query->where('building_material', Product::CONCRETE);
-                });
-        }
-
-        if ($value == 'block') {
-            $this->builder
-                ->whereHas('products', function ($query) {
-                    $query->where('building_material', Product::BLOCK);
-                });
+        if ($value != 'index') {
+            $this->builder->where('product_id', $value);
         }
     }
 
