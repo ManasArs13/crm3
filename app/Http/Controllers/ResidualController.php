@@ -83,12 +83,20 @@ class ResidualController extends Controller
             $product->pre_products = Product::query()->where('type', Product::PRODUCTS)->where('category_id', $product->id)->get();
             $product->making_day = 0;
 
-            $goods = Product::query()->where('type', Product::PRODUCTS)->where('category_id', $product->id)->get();
+            $product_ids = $product->pre_products->pluck('id');
 
-            $product->totalOrderQuantity = OrderPosition::whereIn('product_id', $goods->pluck('id'))->sum('quantity');
-            $product->totalOrderSum = OrderPosition::whereIn('product_id', $goods->pluck('id'))->distinct('order_id')->count('order_id');
+            $product->totalOrderQuantity = OrderPosition::whereIn('product_id', $product_ids)
+                ->whereHas('order', function ($query) {
+                    $query->where('status_id', 4);
+                })
+                ->sum('quantity');
+            $product->totalOrderSum = OrderPosition::whereIn('product_id', $product_ids)
+                ->distinct('order_id')
+                ->whereHas('order', function ($query) {
+                    $query->where('status_id', 4);
+                })->count('order_id');
 
-            foreach ($goods as $good) {
+            foreach ($product->pre_products as $good) {
                 if ($good->residual && $good->residual_norm && $good->release) {
                     if ($good->residual - $good->residual_norm < 0) {
                         $product->making_day += abs(($good->residual - $good->residual_norm) / $good->release);
@@ -98,9 +106,10 @@ class ResidualController extends Controller
 
             $product->making_day = round($product->making_day, 0);
 
-            $preProductIds = $product->pre_products->pluck('id');
-
-            $preProductOrders = OrderPosition::whereIn('product_id', $preProductIds)
+            $preProductOrders = OrderPosition::whereIn('product_id', $product_ids)
+                ->whereHas('order', function ($query) {
+                    $query->where('status_id', 4);
+                })
                 ->selectRaw('product_id, SUM(quantity) as totalOrderQuantity')
                 ->selectRaw('COUNT(DISTINCT order_id) as totalOrderSum')
                 ->groupBy('product_id')
