@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\ShipmentPositionFilter;
 use App\Filters\SupplyPositionFilter;
 use App\Http\Requests\FilterRequest;
-use App\Models\ShipmentProduct;
+use App\Models\Contact;
 use App\Models\SupplyPosition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 
 class SupplyPositionController extends Controller
 {
@@ -77,6 +75,8 @@ class SupplyPositionController extends Controller
         }
 
         /* Фильтры для меню */
+        $queryMaterial = 'index';
+        $contacts = [];
         $minCreated = SupplyPosition::query()->min('created_at');
         $minCreatedCheck = '';
         $maxCreated = SupplyPosition::query()->max('created_at');
@@ -97,12 +97,31 @@ class SupplyPositionController extends Controller
                         $minCreatedCheck = $value['min'];
                     }
                 }
+                if ($key == 'material'){
+                    if ($value == 'concrete') {
+                        $queryMaterial = 'concrete';
+                    }elseif($value == 'block'){
+                        $queryMaterial = 'block';
+                    }
+                }
                 if ($key == 'updated_at') {
                     if ($value['max']) {
                         $maxUpdatedCheck = $value['max'];
                     }
                     if ($value['min']) {
                         $minUpdatedCheck = $value['min'];
+                    }
+                }
+                if($key == 'contacts'){
+                    $contact_names_get = Contact::WhereIn('id', $value)->get(['id', 'name']);
+                    if (isset($value)) {
+                        $contacts = [];
+                        foreach ($contact_names_get as $val){
+                            $contacts[] = [
+                                'value' => $val->id,
+                                'name' => $val->name
+                            ];
+                        }
                     }
                 }
             }
@@ -126,6 +145,19 @@ class SupplyPositionController extends Controller
                 'minChecked' => $minUpdatedCheck,
                 'max' => substr($maxUpdated, 0, 10),
                 'maxChecked' => $maxUpdatedCheck
+            ],
+            [
+                'type' => 'select',
+                'name' => 'material',
+                'name_rus' => 'Материал',
+                'values' => [['value' => 'index', 'name' => 'Все'], ['value' => 'block', 'name' => 'Блок'], ['value' => 'concrete', 'name' => 'Бетон']],
+                'checked_value' => $queryMaterial,
+            ],
+            [
+                'type' => 'select2',
+                'name' => 'contacts',
+                'name_rus' => 'Контакты',
+                'values' => $contacts,
             ],
         ];
 

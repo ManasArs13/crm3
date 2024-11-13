@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use App\Models\Product;
 
 class SupplyPositionFilter
 {
@@ -45,6 +46,35 @@ class SupplyPositionFilter
 
         if ($value['max']) {
             $this->builder->where('updated_at', '<=', $value['max'] . ' 23:59:59');
+        }
+    }
+
+    public function material($value)
+    {
+        if ($value == 'concrete') {
+            $this->builder
+                ->whereHas('products', function ($query) {
+                    $query->where('building_material', Product::CONCRETE);
+                });
+        }
+
+        if ($value == 'block') {
+            $this->builder
+                ->whereHas('products', function ($query) {
+                    $query->where('building_material', Product::BLOCK);
+                });
+        }
+    }
+
+    public function contacts($value)
+    {
+        if (isset($value)) {
+            $this->builder
+                ->whereHas('supply', function ($query) use ($value) {
+                    $query->whereHas('contact', function ($query) use ($value) {
+                        $query->whereIn('id', $value);
+                    });
+                });
         }
     }
 
