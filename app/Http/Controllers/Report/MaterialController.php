@@ -227,6 +227,7 @@ class MaterialController extends Controller
 
 
     public function residual($endDate, $productIds){
+
         // incoming
         $suppliesRecords = DB::table('supplies')
             ->select(
