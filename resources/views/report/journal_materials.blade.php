@@ -77,13 +77,18 @@
                             </thead>
                             <tbody>
                             @php
-                                $residualDay = 0;
+                                $incomingTotal = 0;
+                                $outgoingTotal = 0;
                             @endphp
 
                             @foreach ($report as $day => $counts)
                                 <tr class="border-b-2">
 
                                     @foreach ($resColumns as $column => $title)
+                                        @php
+                                            $incomingTotal += $counts['incoming'];
+                                            $outgoingTotal += $counts['outgoing'];
+                                        @endphp
                                         <td class="break-all max-w-96 truncate px-2 py-3">
                                             @switch($column)
 
@@ -91,24 +96,16 @@
                                                     {{ $day }}
                                                 @break
                                                 @case('material')
-                                                    <a target="_blank">
-                                                        {{ $residual }}
-                                                    </a>
+                                                    {{ number_format((int) $residual, 1, '.', ' ') }}
                                                 @break
                                                 @case('incoming')
-                                                    <a target="_blank">
-                                                        {{ $counts['incoming'] }}
-                                                    </a>
+                                                    {{ number_format((int) $counts['incoming'], 1, '.', ' ') }}
                                                 @break
                                                 @case('outgoing')
-                                                    <a target="_blank">
-                                                        {{ $counts['outgoing'] }}
-                                                    </a>
+                                                    {{ number_format((int) $counts['outgoing'], 1, '.', ' ') }}
                                                 @break
                                                 @case('residual')
-                                                    <a target="_blank">
-                                                        {{ $residual = $residual + ($counts['incoming'] - $counts['outgoing']) }}
-                                                    </a>
+                                                    {{ number_format((int) $residual = $residual + ($counts['incoming'] - $counts['outgoing']), 1, '.', ' ') }}
                                                 @break
 
                                             @endswitch
@@ -122,40 +119,13 @@
                                     <td class="break-all max-w-96 truncate px-2 py-3">
                                         @switch($column)
                                             @case('date')
-                                            Итоги:
+                                                Итоги:
                                             @break
-                                            @case('amo_orders')
-                                            {{ $totals['order_amos'] }}
+                                            @case('incoming')
+                                                {{ number_format((int) $incomingTotal, 1, '.', ' ') }}
                                             @break
-                                            @case('contacts_amo')
-                                            {{ $totals['contact_amos'] }}
-                                            @break
-                                            @case('success_transactions')
-                                            {{ $totals['success_transactions'] }}
-                                            @break
-                                            @case('closed_transactions')
-                                            {{ $totals['closed_transactions'] }}
-                                            @break
-                                            @case('count_shipments')
-                                            {{ $totals['shipments'] }}
-                                            @break
-                                            @case('sum_shipments')
-                                            {{ number_format((int) $totals['sum_shipments'], 0, ',', ' ') }}
-                                            @break
-                                            @case('contacts_ms')
-                                            {{ $totals['contacts'] }}
-                                            @break
-                                            @case('pieces_cycle')
-                                            {{ number_format((int) $totals['cycles'], 0, ',', ' ') }}
-                                            @break
-                                            @case('incoming_calls')
-                                            {{ number_format((int) $totals['incoming_calls'], 0, ',', ' ') }}
-                                            @break
-                                            @case('outgoing_calls')
-                                            {{ number_format((int) $totals['outgoing_calls'], 0, ',', ' ') }}
-                                            @break
-                                            @case('conversations')
-                                            {{ number_format((int) $totals['talk_amos'], 0, ',', ' ') }}
+                                            @case('outgoing')
+                                                {{ number_format((int) $outgoingTotal, 1, '.', ' ') }}
                                             @break
 
                                         @endswitch
