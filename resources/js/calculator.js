@@ -1,4 +1,5 @@
 import Inputmask from "inputmask";
+import { data } from "jquery";
 import { jsPDF } from "jspdf";
 
 $(document).ready(function(){
@@ -423,6 +424,7 @@ $(document).ready(function(){
             type: "POST",
             data: $form.serialize(),
             beforeSend: function() {
+                console.log(data);
               $(".preloader").addClass("active");
             },
             success: function(data) {
