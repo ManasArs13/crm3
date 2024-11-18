@@ -13,7 +13,7 @@ class MaterialController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:journal_materials')->only(['index', 'index2', 'filter']);
+        $this->middleware('permission:journal_material')->only(['index']);
     }
     public function index(Request $request){
         $entityName = 'Журнал материалы';
