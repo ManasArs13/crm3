@@ -64,23 +64,23 @@ class MaterialController extends Controller
 
                 $suppliesRecords = DB::table('supplies')
                     ->select(
-                        DB::raw('DATE(supplies.created_at) as date'),
+                        DB::raw('DATE(supplies.moment) as date'),
                         DB::raw('SUM(supply_positions.quantity) as count')
                     )
                     ->join('supply_positions', 'supplies.id', '=', 'supply_positions.supply_id')
                     ->whereIn('supply_positions.product_id', $productIds)
-                    ->whereBetween(DB::raw('DATE(supplies.created_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(supplies.created_at)'));
+                    ->whereBetween(DB::raw('DATE(supplies.moment)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(supplies.moment)'));
 
                 $enterRecords = DB::table('enters')
                     ->select(
-                        DB::raw('DATE(enters.created_at) as date'),
+                        DB::raw('DATE(enters.moment) as date'),
                         DB::raw('SUM(enter_positions.quantity) as count')
                     )
                     ->join('enter_positions', 'enters.id', '=', 'enter_positions.enter_id')
                     ->whereIn('enter_positions.product_id', $productIds)
-                    ->whereBetween(DB::raw('DATE(enters.created_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(enters.created_at)'));
+                    ->whereBetween(DB::raw('DATE(enters.moment)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(enters.moment)'));
 
                 $records = $suppliesRecords
                     ->union($enterRecords)
@@ -97,13 +97,13 @@ class MaterialController extends Controller
             } else if ($table === 'outgoing'){
                 $techProcessesRecords = DB::table('tech_processes')
                     ->select(
-                        DB::raw('DATE(tech_processes.created_at) as date'),
+                        DB::raw('DATE(tech_processes.moment) as date'),
                         DB::raw('SUM(tech_process_materials.quantity) as count')
                     )
                     ->join('tech_process_materials', 'tech_processes.id', '=', 'tech_process_materials.processing_id')
                     ->whereIn('tech_process_materials.product_id', $productIds)
-                    ->whereBetween(DB::raw('DATE(tech_processes.created_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(tech_processes.created_at)'));
+                    ->whereBetween(DB::raw('DATE(tech_processes.moment)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(tech_processes.moment)'));
 
                 $shipmentRecords = DB::table('shipments')
                     ->select(
@@ -117,13 +117,13 @@ class MaterialController extends Controller
 
                 $lossRecords = DB::table('losses')
                     ->select(
-                        DB::raw('DATE(losses.created_at) as date'),
+                        DB::raw('DATE(losses.moment) as date'),
                         DB::raw('SUM(loss_positions.quantity) as count')
                     )
                     ->join('loss_positions', 'losses.id', '=', 'loss_positions.loss_id')
                     ->whereIn('loss_positions.product_id', $productIds)
-                    ->whereBetween(DB::raw('DATE(losses.created_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(losses.created_at)'));
+                    ->whereBetween(DB::raw('DATE(losses.moment)'), [$startOfMonth, $endOfMonth])
+                    ->groupBy(DB::raw('DATE(losses.moment)'));
 
                 $records = $techProcessesRecords
                     ->union($shipmentRecords)
@@ -138,13 +138,6 @@ class MaterialController extends Controller
                         ];
                     })
                     ->values();
-            } else{
-                $records = DB::table($table)
-                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
-                    ->whereBetween(DB::raw('DATE(created_at)'), [$startOfMonth, $endOfMonth])
-                    ->groupBy(DB::raw('DATE(created_at)'))
-                    ->get();
-
             }
 
             foreach ($records as $record) {
@@ -235,7 +228,7 @@ class MaterialController extends Controller
             )
             ->join('supply_positions', 'supplies.id', '=', 'supply_positions.supply_id')
             ->whereIn('supply_positions.product_id', $productIds)
-            ->where(DB::raw('DATE(supplies.created_at)'), '<', $endDate);
+            ->where(DB::raw('DATE(supplies.moment)'), '<', $endDate);
 
         $enterRecords = DB::table('enters')
             ->select(
@@ -243,7 +236,7 @@ class MaterialController extends Controller
             )
             ->join('enter_positions', 'enters.id', '=', 'enter_positions.enter_id')
             ->whereIn('enter_positions.product_id', $productIds)
-            ->where(DB::raw('DATE(enters.created_at)'), '<', $endDate);
+            ->where(DB::raw('DATE(enters.moment)'), '<', $endDate);
 
         // outgoing
         $techProcessesRecords = DB::table('tech_processes')
@@ -252,7 +245,7 @@ class MaterialController extends Controller
             )
             ->join('tech_process_materials', 'tech_processes.id', '=', 'tech_process_materials.processing_id')
             ->whereIn('tech_process_materials.product_id', $productIds)
-            ->where(DB::raw('DATE(tech_processes.created_at)'), '<', $endDate);
+            ->where(DB::raw('DATE(tech_processes.moment)'), '<', $endDate);
 
         $shipmentRecords = DB::table('shipments')
             ->select(
@@ -268,7 +261,7 @@ class MaterialController extends Controller
             )
             ->join('loss_positions', 'losses.id', '=', 'loss_positions.loss_id')
             ->whereIn('loss_positions.product_id', $productIds)
-            ->where(DB::raw('DATE(losses.created_at)'), '<', $endDate);
+            ->where(DB::raw('DATE(losses.moment)'), '<', $endDate);
 
         $incoming = $suppliesRecords
             ->union($enterRecords)
