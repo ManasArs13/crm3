@@ -35,11 +35,71 @@
                             {{ __('title.shipments') }}
                         </x-nav-link>
                     @endcan
-                    @can('residual')
-                        <x-nav-link :href="route('residual.blocksCategories')" :active="request()->routeIs('residual.*')">
-                            Остатки
-                        </x-nav-link>
+
+                    @can('calculator')
+                        {{-- Калькулятор --}}
+                        <div class="hidden md:flex md:items-center md:ms-1">
+                            <x-nav-link :href="route('calculator.block') . '#content-1'">
+                                Калькулятор
+                            </x-nav-link>
+                        </div>
                     @endcan
+
+                    @canany(['residual', 'supply', 'supply_position', 'loss', 'enter', 'journal_material'])
+                        {{-- Производство --}}
+                        <div class="hidden md:flex md:items-center md:ms-1">
+                            <x-dropdown align="left" width="48">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                        <div>Склад</div>
+
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                 viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                      clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    @can('residual')
+                                        <x-dropdown-link :href="route('residual.blocksCategories')" :active="request()->routeIs('residual.*')">
+                                            Остатки
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('supply')
+                                        <x-dropdown-link :href="route('supply.index')">
+                                            Приёмки
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('supply_position')
+                                        <x-dropdown-link :href="route('supply_positions.index')">
+                                            Позиции приёмок
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('loss')
+                                        <x-dropdown-link :href="route('loss.index')">
+                                            Списания
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('enter')
+                                        <x-dropdown-link :href="route('enter.index')">
+                                            Оприходования
+                                        </x-dropdown-link>
+                                    @endcan
+                                    @can('journal_material')
+                                        <x-dropdown-link :href="route('report.material_manager')">
+                                            Журнал материалы
+                                        </x-dropdown-link>
+                                    @endcan
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                    @endcanany
 
                     @canany(['techchart', 'techprocess'])
                         {{-- Производство --}}
@@ -76,15 +136,6 @@
                             </x-dropdown>
                         </div>
                     @endcanany
-
-                    @can('calculator')
-                        {{-- Калькулятор --}}
-                        <div class="hidden md:flex md:items-center md:ms-1">
-                            <x-nav-link :href="route('calculator.block') . '#content-1'">
-                                Калькулятор
-                            </x-nav-link>
-                        </div>
-                    @endcan
 
                     @canany([
                         'transporter_fee', 'contact',
@@ -204,21 +255,6 @@
                                 </x-slot>
 
                                 <x-slot name="content">
-                                    @can('supply')
-                                        <x-dropdown-link :href="route('supply.index')">
-                                            Приёмки
-                                        </x-dropdown-link>
-                                    @endcan
-                                    @can('loss')
-                                        <x-dropdown-link :href="route('loss.index')">
-                                            Списания
-                                        </x-dropdown-link>
-                                    @endcan
-                                    @can('enter')
-                                        <x-dropdown-link :href="route('enter.index')">
-                                            Оприходования
-                                        </x-dropdown-link>
-                                    @endcan
                                     @can('order_position')
                                         <x-dropdown-link :href="route('order_positions.index')">
                                             Позиции заказов
@@ -227,11 +263,6 @@
                                     @can('shipment_position')
                                         <x-dropdown-link :href="route('shipment_products.index')">
                                             Позиции отгрузок
-                                        </x-dropdown-link>
-                                    @endcan
-                                    @can('supply_position')
-                                        <x-dropdown-link :href="route('supply_positions.index')">
-                                            Позиции приёмок
                                         </x-dropdown-link>
                                     @endcan
                                     @can('operator_order')
@@ -390,12 +421,6 @@
                                     @can('report_manager_two')
                                         <x-dropdown-link :href="route('manager.managerTwo')">
                                             Сводка - Менеджеры 2
-                                        </x-dropdown-link>
-                                    @endcan
-
-                                    @can('report_manager_two')
-                                        <x-dropdown-link :href="route('report.material_manager')">
-                                            Журнал материалы
                                         </x-dropdown-link>
                                     @endcan
 
@@ -597,10 +622,6 @@
                             <a href="{{ route('shipment.index') }}"
                                 class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.shipments') }}</a>
                         @endcan
-                        @can('residual')
-                            <a href="{{ route('residual.blocksCategories') }}"
-                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Остатки</a>
-                        @endcan
 
                         @role('operator')
                             @can('operator_order')
@@ -612,6 +633,54 @@
                                     class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Отгрузки</a>
                             @endcan
                         @endrole
+
+                        @can('calculator')
+                            <a href="{{ route('calculator.block') . '#content-1' }}"
+                               class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Калькулятор</a>
+                        @endcan
+
+                        @canany(['residual', 'supply', 'supply_position', 'loss', 'enter', 'report_manager_two'])
+                            <div class="-mx-3">
+                                <button type="button"
+                                        class="menu-toggle flex !flex-row w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                    Склад
+
+                                    <svg class="menu-icon h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor"
+                                         aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                              clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <!-- 'Product' sub-menu, show/hide based on menu state. -->
+                                <div class="menu-content mt-2 space-y-2 hidden bg-gray-50 rounded-lg">
+                                    @can('residual')
+                                        <a href="{{ route('residual.blocksCategories') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Остатки</a>
+                                    @endcan
+                                    @can('supply')
+                                        <a href="{{ route('supply.index') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Приемки</a>
+                                    @endcan
+                                    @can('supply_position')
+                                        <a href="{{ route('supply_positions.index') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции приёмок</a>
+                                    @endcan
+                                    @can('loss')
+                                        <a href="{{ route('loss.index') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Списания</a>
+                                    @endcan
+                                    @can('enter')
+                                        <a href="{{ route('enter.index') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Оприходования</a>
+                                    @endcan
+                                    @can('journal_material')
+                                        <a href="{{ route('report.material_manager') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Журнал материалы</a>
+                                    @endcan
+                                </div>
+                            </div>
+                        @endcanany
 
                         @canany(['techchart', 'techprocess'])
                             <div class="-mx-3">
@@ -639,12 +708,6 @@
                                 </div>
                             </div>
                         @endcanany
-
-                            @can('calculator')
-                                <a href="{{ route('calculator.block') . '#content-1' }}"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Калькулятор</a>
-                            @endcan
-
 
                         @canany([
                             'transporter_fee', 'contact', 'product',
@@ -742,10 +805,6 @@
                                         <a href="{{ route('debtors') }}"
                                             class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.debtors') }}</a>
                                     @endcan
-                                    @can('supply')
-                                        <a href="{{ route('supply.index') }}"
-                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Приемки</a>
-                                    @endcan
                                     @can('order_position')
                                         <a href="{{ route('order_positions.index') }}"
                                             class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции заказов</a>
@@ -753,10 +812,6 @@
                                     @can('shipment_position')
                                         <a href="{{ route('shipment_products.index') }}"
                                             class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции отгрузок</a>
-                                    @endcan
-                                    @can('supply_position')
-                                        <a href="{{ route('supply_positions.index') }}"
-                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Позиции приёмок</a>
                                     @endcan
                                     @can('operator_order')
                                         <a href="{{ route('operator.orders') }}"
@@ -884,11 +939,6 @@
                                     @can('report_manager_two')
                                         <a href="{{ route('manager.managerTwo') }}"
                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры 2</a>
-                                    @endcan
-
-                                    @can('report_manager_two')
-                                        <a href="{{ route('report.material_manager') }}"
-                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Журнал материалы</a>
                                     @endcan
 
                                     @can('report_day')

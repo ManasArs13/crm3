@@ -11,6 +11,10 @@ use DateTime;
 
 class MaterialController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:journal_materials')->only(['index', 'index2', 'filter']);
+    }
     public function index(Request $request){
         $entityName = 'Журнал материалы';
 
