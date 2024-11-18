@@ -423,6 +423,7 @@ $(document).ready(function(){
             type: "POST",
             data: $form.serialize(),
             beforeSend: function() {
+                console.log($form.serialize());
               $(".preloader").addClass("active");
             },
             success: function(data) {
