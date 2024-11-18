@@ -29,7 +29,7 @@ use App\Http\Controllers\Report\DaysController;
 use App\Http\Controllers\Report\DeviationController;
 use App\Http\Controllers\Report\CounterpartyController;
 use App\Http\Controllers\Report\ReportDeliveryController;
-use App\Http\Controllers\report\MaterialController;
+use App\Http\Controllers\Report\MaterialController;
 use App\Http\Controllers\Report\TransportController as ReportTransportController;
 use App\Http\Controllers\Report\TransporterController;
 use App\Http\Controllers\Report\TransporterFeeController;
