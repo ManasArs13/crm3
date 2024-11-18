@@ -393,6 +393,12 @@
                                         </x-dropdown-link>
                                     @endcan
 
+                                    @can('report_manager_two')
+                                        <x-dropdown-link :href="route('report.material_manager')">
+                                            Журнал материалы
+                                        </x-dropdown-link>
+                                    @endcan
+
                                     @can('report_day')
                                         <x-dropdown-link :href="route('report.days')">
                                             Сводка по дням
@@ -878,6 +884,11 @@
                                     @can('report_manager_two')
                                         <a href="{{ route('manager.managerTwo') }}"
                                            class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Менеджеры 2</a>
+                                    @endcan
+
+                                    @can('report_manager_two')
+                                        <a href="{{ route('report.material_manager') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Журнал материалы</a>
                                     @endcan
 
                                     @can('report_day')

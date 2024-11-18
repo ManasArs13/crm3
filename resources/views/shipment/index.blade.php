@@ -166,8 +166,7 @@
                                                     </div>
                                                     <div class="basis-4/5">
                                                         <select
-                                                            class="select-default border border-solid border-neutral-300 rounded w-full py-2 mb-4"
-                                                            , name="filters[{{ $filter['name'] }}]"
+                                                            class="select-default border border-solid border-neutral-300 rounded w-full py-2 mb-4" name="filters[{{ $filter['name'] }}]"
                                                             data-offset="false">
                                                             @foreach ($filter['values'] as $value)
                                                                 <option
