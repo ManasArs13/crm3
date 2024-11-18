@@ -29,6 +29,7 @@ use App\Http\Controllers\Report\DaysController;
 use App\Http\Controllers\Report\DeviationController;
 use App\Http\Controllers\Report\CounterpartyController;
 use App\Http\Controllers\Report\ReportDeliveryController;
+use App\Http\Controllers\report\MaterialController;
 use App\Http\Controllers\Report\TransportController as ReportTransportController;
 use App\Http\Controllers\Report\TransporterController;
 use App\Http\Controllers\Report\TransporterFeeController;
@@ -136,6 +137,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/report/counterparty', [CounterpartyController::class, 'index'])->name('counteparty');
         Route::get('/report/counterparty_block', [CounterpartyController::class, 'block'])->name('counteparty.block');
         Route::get('/report/counterparty_concrete', [CounterpartyController::class, 'concrete'])->name('counteparty.concrete');
+
+        // Менеджер материалы
+        Route::get('/report/materials_manager', [MaterialController::class, 'index'])->name('material_manager');
 
         // Route::get('/report/cash', [CashController::class, 'index'])->name('cash.index');
         // Route::get('/report/cash/in', [CashController::class, 'cashin'])->name('cash.cashin');
