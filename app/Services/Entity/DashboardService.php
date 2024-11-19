@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardService
@@ -61,6 +62,41 @@ class DashboardService
 
         $datePrev = $date1->modify('-1 day')->format('Y-m-d');
         $dateNext = $date2->modify('+1 day')->format('Y-m-d');
+
+        $residual = DB::table('categories')
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
+            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
+            ->where(function ($query) {
+                $query->where('categories.building_material', Category::BLOCK)
+                    ->orWhere('categories.building_material', Category::CONCRETE);
+            })
+            ->where('products.release', '!=', 0)
+            ->where('orders.status_id', '=', 4)
+            ->selectRaw('SUM(DISTINCT products.residual / products.release) as residual')
+            ->first()->residual;
+
+        $orderCount = DB::table('categories')
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
+            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
+            ->where(function ($query) {
+                $query->where('categories.building_material', Category::BLOCK)
+                    ->orWhere('categories.building_material', Category::CONCRETE);
+            })
+            ->where('orders.status_id', 4)
+            ->where('products.type', Product::PRODUCTS)
+            ->selectRaw('
+                products.id,
+                SUM(order_positions.quantity) as total_quantity,
+                COUNT(DISTINCT order_positions.order_id) as unique_orders
+            ')
+            ->groupBy('products.id')
+            ->get()
+            ->sum(fn($product) => $product->unique_orders > 0
+                ? $product->total_quantity / $product->unique_orders
+                : 0
+            );
 
         $entityItems = Order::query()->with(
             'positions',
@@ -231,7 +267,9 @@ class DashboardService
             'datePrev',
             'date',
             'transports',
-            'shifts'
+            'shifts',
+            'residual',
+            'orderCount'
         ));
     }
 
@@ -479,6 +517,38 @@ class DashboardService
 
         $datePrev = $date1->modify('-1 day')->format('Y-m-d');
         $dateNext = $date2->modify('+1 day')->format('Y-m-d');
+        $residual = DB::table('categories')
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
+            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
+            ->where(function ($query) {
+                $query->where('categories.building_material', Category::BLOCK);
+            })
+            ->where('products.release', '!=', 0)
+            ->where('orders.status_id', '=', 4)
+            ->selectRaw('SUM(DISTINCT products.residual / products.release) as residual')
+            ->first()->residual;
+
+        $orderCount = DB::table('categories')
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
+            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
+            ->where(function ($query) {
+                $query->where('categories.building_material', Category::BLOCK);
+            })
+            ->where('orders.status_id', 4)
+            ->where('products.type', Product::PRODUCTS)
+            ->selectRaw('
+                products.id,
+                SUM(order_positions.quantity) as total_quantity,
+                COUNT(DISTINCT order_positions.order_id) as unique_orders
+            ')
+            ->groupBy('products.id')
+            ->get()
+            ->sum(fn($product) => $product->unique_orders > 0
+                ? $product->total_quantity / $product->unique_orders
+                : 0
+            );
 
         $entityItems = Order::query()->with(
             'positions',
@@ -672,7 +742,9 @@ class DashboardService
             'date',
             'shipments',
             'transports',
-            'shifts'
+            'shifts',
+            'residual',
+            'orderCount'
         ));
     }
 
@@ -691,6 +763,39 @@ class DashboardService
 
         $datePrev = $date1->modify('-1 day')->format('Y-m-d');
         $dateNext = $date2->modify('+1 day')->format('Y-m-d');
+
+        $residual = DB::table('categories')
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
+            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
+            ->where(function ($query) {
+                $query->Where('categories.building_material', Category::CONCRETE);
+            })
+            ->where('products.release', '!=', 0)
+            ->where('orders.status_id', '=', 4)
+            ->selectRaw('SUM(DISTINCT products.residual / products.release) as residual')
+            ->first()->residual;
+
+        $orderCount = DB::table('categories')
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
+            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
+            ->where(function ($query) {
+                $query->Where('categories.building_material', Category::CONCRETE);
+            })
+            ->where('orders.status_id', 4)
+            ->where('products.type', Product::PRODUCTS)
+            ->selectRaw('
+                products.id,
+                SUM(order_positions.quantity) as total_quantity,
+                COUNT(DISTINCT order_positions.order_id) as unique_orders
+            ')
+            ->groupBy('products.id')
+            ->get()
+            ->sum(fn($product) => $product->unique_orders > 0
+                ? $product->total_quantity / $product->unique_orders
+                : 0
+            );
 
         $entityItems = Order::query()->with(
             'positions',
@@ -868,6 +973,8 @@ class DashboardService
             'shipments',
             'transports',
             'shifts',
+            'residual',
+            'orderCount'
         ));
     }
 

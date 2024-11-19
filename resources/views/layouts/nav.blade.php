@@ -38,11 +38,9 @@
 
                     @can('calculator')
                         {{-- Калькулятор --}}
-                        <div class="hidden md:flex md:items-center md:ms-1">
-                            <x-nav-link :href="route('calculator.block') . '#content-1'">
-                                Калькулятор
-                            </x-nav-link>
-                        </div>
+                        <x-nav-link :href="route('calculator.block') . '#content-1'">
+                            Калькулятор
+                        </x-nav-link>
                     @endcan
 
                     @canany(['residual', 'supply', 'supply_position', 'loss', 'enter', 'journal_material'])
