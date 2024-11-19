@@ -60,6 +60,22 @@
             </div>
         </div>
         <div class="flex flex-col gap-4 basis-1/4">
+            <div class="">
+                <div class="flex gap-2">
+                    <div class="bg-white rounded-md px-4 py-2 flex-1">
+                        <div>Остаток:</div>
+                        <span class="font-bold text-lg">{{ number_format((int) $residual, 1, '.', ' ') }}</span>
+                    </div>
+                    <div class="bg-white rounded-md px-4 py-2 flex-1">
+                        <div>Заказов:</div>
+                        <span class="font-bold text-lg">{{ number_format((int) $orderCount, 1, '.', ' ') }}</span>
+                    </div>
+                    <div class="bg-green-500 text-white rounded-md px-4 py-2 flex-1">
+                        <div>Состояние:</div>
+                        <span class="font-bold text-lg">{{ number_format((int) $residual - $orderCount, 1, '.', ' ') }}</span>
+                    </div>
+                </div>
+            </div>
             <div class="flex flex-col bg-white rounded-md shadow overflow-x-auto">
 
                 <table>

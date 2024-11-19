@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\TechChartMaterial;
 use App\Models\TechChartProduct;
 use App\Models\TechProcess;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class ResidualController extends Controller
