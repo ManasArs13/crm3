@@ -519,8 +519,7 @@ class DashboardService
         $residual = DB::table('categories')
             ->join('products', 'categories.id', '=', 'products.category_id')
             ->where(function ($query) {
-                $query->where('categories.building_material', Category::BLOCK)
-                    ->orWhere('categories.building_material', Category::CONCRETE);
+                $query->where('categories.building_material', Category::BLOCK);
             })
             ->where('products.release', '!=', 0)
             ->whereExists(function ($query) {
@@ -539,8 +538,7 @@ class DashboardService
             ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
             ->join('orders', 'order_positions.order_id', '=', 'orders.id')
             ->where(function ($query) {
-                $query->where('categories.building_material', Category::BLOCK)
-                    ->orWhere('categories.building_material', Category::CONCRETE);
+                $query->where('categories.building_material', Category::BLOCK);
             })
             ->where('orders.status_id', 4)
             ->where('products.type', Product::PRODUCTS)
