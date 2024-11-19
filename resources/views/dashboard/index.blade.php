@@ -64,15 +64,15 @@
                 <div class="flex gap-2">
                     <div class="bg-white rounded-md px-4 py-2 flex-1">
                         <div>Остаток:</div>
-                        <span class="font-bold text-lg">{{ number_format((int) $residual, 1, '.', ' ') }}</span>
+                        <span class="font-bold text-lg">{{ number_format($residual, 1, '.', ' ') }}</span>
                     </div>
                     <div class="bg-white rounded-md px-4 py-2 flex-1">
                         <div>Заказов:</div>
-                        <span class="font-bold text-lg">{{ number_format((int) $orderCount, 1, '.', ' ') }}</span>
+                        <span class="font-bold text-lg">{{ number_format($orderCount, 1, '.', ' ') }}</span>
                     </div>
                     <div class="bg-green-500 text-white rounded-md px-4 py-2 flex-1">
                         <div>Состояние:</div>
-                        <span class="font-bold text-lg">{{ number_format((int) $residual - $orderCount, 1, '.', ' ') }}</span>
+                        <span class="font-bold text-lg">{{ number_format($residual - $orderCount, 1, '.', ' ') }}</span>
                     </div>
                 </div>
             </div>
