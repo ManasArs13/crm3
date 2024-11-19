@@ -3,6 +3,7 @@
 namespace App\Services\Entity;
 
 use App\Models\Order;
+use App\Models\OrderPosition;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Option;
@@ -64,39 +65,8 @@ class DashboardService
         $dateNext = $date2->modify('+1 day')->format('Y-m-d');
 
 
-        $residual = DB::table('categories')
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->where(function ($query) {
-                $query->where('categories.building_material', Category::BLOCK)
-                    ->orWhere('categories.building_material', Category::CONCRETE);
-            })
-            ->where('products.release', '!=', 0)
-            ->whereExists(function ($query) use ($date) {
-                    $query->select(DB::raw(1))
-                    ->from('order_positions')
-                    ->join('orders', 'order_positions.order_id', '=', 'orders.id')
-                    ->whereColumn('order_positions.product_id', 'products.id')
-                    ->where('orders.status_id', 4)
-                    ->whereDate('orders.date_plan', $date);
-            })
-            ->selectRaw('SUM(products.residual / products.release) as residual')
-            ->first()->residual;
 
-
-        $orderCount = DB::table('categories')
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
-            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
-            ->where(function ($query) {
-                $query->where('categories.building_material', Category::BLOCK)
-                    ->orWhere('categories.building_material', Category::CONCRETE);
-            })
-            ->where('orders.status_id', 4)
-            ->whereDate('orders.date_plan', $date)
-            ->where('products.type', Product::PRODUCTS)
-            ->selectRaw('products.id as product_id, SUM(order_positions.quantity) / products.release as ratio')
-            ->groupBy('products.id', 'products.release')
-            ->get()->sum('ratio');
+        $residualWidget = $this->residualWidget();
 
         $entityItems = Order::query()->with(
             'positions',
@@ -268,8 +238,7 @@ class DashboardService
             'date',
             'transports',
             'shifts',
-            'residual',
-            'orderCount'
+            'residualWidget'
         ));
     }
 
@@ -518,37 +487,7 @@ class DashboardService
         $datePrev = $date1->modify('-1 day')->format('Y-m-d');
         $dateNext = $date2->modify('+1 day')->format('Y-m-d');
 
-        $residual = DB::table('categories')
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->where(function ($query) {
-                $query->where('categories.building_material', Category::BLOCK);
-            })
-            ->where('products.release', '!=', 0)
-            ->whereExists(function ($query) use($date) {
-                $query->select(DB::raw(1))
-                    ->from('order_positions')
-                    ->join('orders', 'order_positions.order_id', '=', 'orders.id')
-                    ->whereColumn('order_positions.product_id', 'products.id')
-                    ->where('orders.status_id', 4)
-                    ->whereDate('orders.date_plan', $date);
-            })
-            ->selectRaw('SUM(products.residual / products.release) as residual')
-            ->first()->residual;
-
-
-        $orderCount = DB::table('categories')
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->join('order_positions', 'products.id', '=', 'order_positions.product_id')
-            ->join('orders', 'order_positions.order_id', '=', 'orders.id')
-            ->where(function ($query) {
-                $query->where('categories.building_material', Category::BLOCK);
-            })
-            ->where('orders.status_id', 4)
-            ->whereDate('orders.date_plan', $date)
-            ->where('products.type', Product::PRODUCTS)
-            ->selectRaw('products.id as product_id, SUM(order_positions.quantity) / products.release as ratio')
-            ->groupBy('products.id', 'products.release')
-            ->get()->sum('ratio');
+        $residualWidget = $this->residualWidget();
 
         $entityItems = Order::query()->with(
             'positions',
@@ -743,8 +682,7 @@ class DashboardService
             'shipments',
             'transports',
             'shifts',
-            'residual',
-            'orderCount'
+            'residualWidget'
         ));
     }
 
@@ -1038,5 +976,60 @@ class DashboardService
         } else {
             return $number;
         }
+    }
+
+    public function residualWidget(){
+
+
+        $products = Category::query()
+            ->where('building_material', Category::BLOCK)
+            ->orwhere('building_material', Category::CONCRETE)
+            ->get();
+
+        $orderCount = 0;
+        $residual = 0;
+
+        foreach ($products as $product) {
+            $product->pre_products = Product::query()
+                ->where('type', Product::PRODUCTS)
+                ->where('category_id', $product->id)
+                ->get();
+            $product->residual_norm = Product::query()
+                ->where('type', Product::PRODUCTS)
+                ->where('category_id', $product->id)
+                ->get()
+                ->sum('residual_norm');
+
+            $product_ids = $product->pre_products->pluck('id');
+
+            $product->totalOrderQuantity = OrderPosition::whereIn('product_id', $product_ids)
+                ->whereHas('order', function ($query) {
+                    $query->where('status_id', 4);
+                })
+                ->sum('quantity');
+            $product->totalOrderSum = OrderPosition::whereIn('product_id', $product_ids)
+                ->distinct('order_id')
+                ->whereHas('order', function ($query) {
+                    $query->where('status_id', 4);
+                })->count('order_id');
+
+            $preProductOrders = OrderPosition::whereIn('product_id', $product_ids)
+                ->whereHas('order', function ($query) {
+                    $query->where('status_id', 4);
+                })
+                ->selectRaw('product_id, SUM(quantity) as totalOrderQuantity')
+                ->groupBy('product_id')
+                ->get()
+                ->keyBy('product_id');
+            if($product->residual_norm){
+
+                foreach ($product->pre_products as $preProduct) {
+                    $residual += isset($preProduct->residual) && isset($preProduct->release) ? $preProduct->residual / $preProduct->release : 0;
+                    $orderCount += isset($preProductOrders[$preProduct->id]->totalOrderQuantity) && isset($preProduct->release) ? $preProductOrders[$preProduct->id]->totalOrderQuantity / $preProduct->release : 0;
+                }
+            }
+        }
+
+        return ['residual' => $residual, 'orderCount' => $orderCount ];
     }
 }
