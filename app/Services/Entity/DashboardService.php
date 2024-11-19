@@ -71,12 +71,13 @@ class DashboardService
                     ->orWhere('categories.building_material', Category::CONCRETE);
             })
             ->where('products.release', '!=', 0)
-            ->whereExists(function ($query) {
+            ->whereExists(function ($query) use ($date) {
                     $query->select(DB::raw(1))
                     ->from('order_positions')
                     ->join('orders', 'order_positions.order_id', '=', 'orders.id')
                     ->whereColumn('order_positions.product_id', 'products.id')
-                    ->where('orders.status_id', 4);
+                    ->where('orders.status_id', 4)
+                    ->whereDate('orders.date_plan', $date);
             })
             ->selectRaw('SUM(products.residual / products.release) as residual')
             ->first()->residual;
@@ -91,6 +92,7 @@ class DashboardService
                     ->orWhere('categories.building_material', Category::CONCRETE);
             })
             ->where('orders.status_id', 4)
+            ->whereDate('orders.date_plan', $date)
             ->where('products.type', Product::PRODUCTS)
             ->selectRaw('products.id as product_id, SUM(order_positions.quantity) / products.release as ratio')
             ->groupBy('products.id', 'products.release')
@@ -522,12 +524,13 @@ class DashboardService
                 $query->where('categories.building_material', Category::BLOCK);
             })
             ->where('products.release', '!=', 0)
-            ->whereExists(function ($query) {
+            ->whereExists(function ($query) use($date) {
                 $query->select(DB::raw(1))
                     ->from('order_positions')
                     ->join('orders', 'order_positions.order_id', '=', 'orders.id')
                     ->whereColumn('order_positions.product_id', 'products.id')
-                    ->where('orders.status_id', 4);
+                    ->where('orders.status_id', 4)
+                    ->whereDate('orders.date_plan', $date);
             })
             ->selectRaw('SUM(products.residual / products.release) as residual')
             ->first()->residual;
@@ -541,6 +544,7 @@ class DashboardService
                 $query->where('categories.building_material', Category::BLOCK);
             })
             ->where('orders.status_id', 4)
+            ->whereDate('orders.date_plan', $date)
             ->where('products.type', Product::PRODUCTS)
             ->selectRaw('products.id as product_id, SUM(order_positions.quantity) / products.release as ratio')
             ->groupBy('products.id', 'products.release')
