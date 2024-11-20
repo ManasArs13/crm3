@@ -265,12 +265,6 @@
                             </x-dropdown>
                         </div>
                     </form>
-
-
-
-
-
-
                     @can('order_edit')
                         @if (isset($urlCreate) && $urlCreate != '')
                             <div class="flex px-3 text-center font-bold">

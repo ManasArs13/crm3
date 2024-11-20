@@ -25,6 +25,14 @@ class PaymentFilter
             }
         }
 
+        if (isset($this->request->type_filter)) {
+            if ($this->request->type_filter === 'income') {
+                $this->builder->whereRaw("type IN ('paymentin', 'cashin')");
+            } elseif ($this->request->type_filter === 'expense') {
+                $this->builder->whereRaw("type NOT IN ('paymentin', 'cashin')");
+            }
+        }
+
         if(!isset($this->filters()['moment']['min']) && !isset($this->filters()['moment']['max']) && empty($this->filters())){
             $this->builder->where('moment', '>=', Carbon::now()->format('Y-m-d') . ' 00:00:00')
             ->where('moment', '<=', Carbon::now()->format('Y-m-d') . ' 23:59:59');
@@ -92,6 +100,14 @@ class PaymentFilter
 
         if ($value['max']) {
             $this->builder->where('sum', '<=', $value['max']);
+        }
+    }
+
+    public function sortable_sum($value){
+        if ($value === 'income') {
+            $this->builder->whereRaw("type IN ('paymentin', 'cashin')");
+        } elseif ($value === 'expense') {
+            $this->builder->whereRaw("type NOT IN ('paymentin', 'cashin')");
         }
     }
 
