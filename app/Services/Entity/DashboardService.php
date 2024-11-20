@@ -1025,7 +1025,12 @@ class DashboardService
 
                 foreach ($product->pre_products as $preProduct) {
                     $residual += isset($preProduct->residual) && isset($preProduct->release) ? $preProduct->residual / $preProduct->release : 0;
-                    $orderCount += isset($preProductOrders[$preProduct->id]->totalOrderQuantity) && isset($preProduct->release) ? $preProductOrders[$preProduct->id]->totalOrderQuantity / $preProduct->release : 0;
+                    $orderCount +=
+                        isset($preProductOrders[$preProduct->id]->totalOrderQuantity)
+                        && isset($preProduct->release)
+                        && $preProductOrders[$preProduct->id]->totalOrderQuantity != 0
+                        && $preProduct->release != 0
+                            ? $preProductOrders[$preProduct->id]->totalOrderQuantity / $preProduct->release : 0;
                 }
             }
         }
