@@ -259,7 +259,7 @@
                                             Приход
                                         </a>
                                         @if (isset($selectColumn) && $selectColumn == 'sortable_sum' && request('type_filter') == 'income')
-                                            @if ($orderBy == 'desc')
+                                            @if ($orderBy == 'asc')
                                                 &#9660;
                                             @else
                                                 &#9650;
