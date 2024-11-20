@@ -250,22 +250,39 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
 
-                            <td class="break-all w-16 overflow-auto px-2 py-3">
-                                №
-                            </td>
 
                             @foreach ($resColumns as $key => $column)
                                 @if ($column == 'Сумма')
                                     <th scope="col" class="px-2 py-3 text-right">
-                                        Приход
+                                        <a class="text-black"
+                                           href="{{ request()->fullUrlWithQuery(['column' => 'sortable_sum', 'orderBy' => $orderBy, 'type_filter' => 'income']) }}">
+                                            Приход
+                                        </a>
+                                        @if (isset($selectColumn) && $selectColumn == 'sortable_sum' && request('type_filter') == 'income')
+                                            @if ($orderBy == 'desc')
+                                                &#9660;
+                                            @else
+                                                &#9650;
+                                            @endif
+                                        @endif
                                     </th>
                                     <th scope="col" class="px-2 py-3 text-right">
-                                        Расход
+                                        <a class="text-black"
+                                           href="{{ request()->fullUrlWithQuery(['column' => 'sortable_sum', 'orderBy' => $orderBy, 'type_filter' => 'expense']) }}">
+                                            Расход
+                                        </a>
+                                        @if (isset($selectColumn) && $selectColumn == 'sortable_sum' && request('type_filter') == 'expense')
+                                            @if ($orderBy == 'desc')
+                                                &#9660;
+                                            @else
+                                                &#9650;
+                                            @endif
+                                        @endif
                                     </th>
                                 @else
                                     @if ($orderBy == 'asc')
                                         <th scope="col" class="px-2 py-3"
-                                            @if ($column == 'Операция' || $column == 'Комментарий' || $column == 'Контакт МС') style="text-align:left" @else style="text-align:right" @endif>
+                                            @if ($column == 'Операция' || $column == 'Комментарий' || $column == 'Контакт МС' || $key == 'id') style="text-align:left" @else style="text-align:right" @endif>
                                             <a class="text-black"
                                                 href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
                                             @if (isset($selectColumn) && $selectColumn == $key)
@@ -292,10 +309,6 @@
                                         </th>
                                     @endif
                                 @endif
-
-
-
-
                             @endforeach
 
                         </tr>
@@ -309,13 +322,21 @@
                         @foreach ($entityItems as $entityItem)
                             <tr class="border-b-2">
 
-                                <td class="break-all overflow-auto px-2 py-3 text-sm">
-                                    {{ $loop->iteration }}
-                                </td>
-
                                 @foreach ($resColumns as $column => $title)
                                     @switch($column)
+                                        @case('id')
+                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                {{ $entityItem->$column }}
+                                            </td>
+                                        @break
+
                                         @case('created_at')
+                                            <td class="break-all max-w-96 truncate px-2 py-3 text-right">
+                                                {{ $entityItem->$column }}
+                                            </td>
+                                        @break
+
+                                        @case('type')
                                             <td class="break-all max-w-96 truncate px-2 py-3 text-right">
                                                 {{ $entityItem->$column }}
                                             </td>
@@ -341,9 +362,9 @@
 
                                         @case('contact_id')
                                             <td class="break-all max-w-96 truncate px-2 py-3 text-left">
-                                                <a href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->contact->ms_id }}"
+                                                <a @if(isset($entityItem->contact)) href="https://online.moysklad.ru/app/#Company/edit?id={{ $entityItem->contact->ms_id ?? '' }}" @endif
                                                     target="_blank" class="text-blue-700 hover:text-blue-500 ">
-                                                    {{ $entityItem->contact->name }}
+                                                    {{ $entityItem->contact->name ?? '-' }}
                                                 </a>
                                             </td>
                                         @break

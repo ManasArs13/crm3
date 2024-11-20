@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Finance;
 use App\Filters\PaymentFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -21,7 +22,18 @@ class PaymentController extends Controller
         $urlFilter = 'finance.index';
 
 
-        $builder = Payment::query()->with('contact');
+        $builder = Payment::query()->with('contact')
+            ->addSelect([
+                'payments.*',
+                DB::raw("CASE
+                    WHEN type IN ('paymentin', 'cashin') THEN 'income'
+                    ELSE 'expense'
+                    END as operation_type"),
+                DB::raw("CASE
+                    WHEN type IN ('paymentin', 'cashin') THEN CAST(sum AS SIGNED)
+                    ELSE -CAST(sum AS SIGNED)
+                    END as sortable_sum"),
+            ]);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new PaymentFilter($builder, $request))->apply()->orderBy($request->column);
@@ -44,6 +56,7 @@ class PaymentController extends Controller
 
         // Columns
         $all_columns = [
+            "id",
             "name",
             "type",
             "operation",
@@ -56,6 +69,7 @@ class PaymentController extends Controller
         ];
 
         $select = [
+            "id",
             "name",
             "type",
             "moment",
@@ -200,6 +214,7 @@ class PaymentController extends Controller
                 'checked_value' => $checkedType,
             ],
         ];
+
 
         return view("finance.payment", compact(
             'entityItems',
