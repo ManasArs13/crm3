@@ -38,7 +38,24 @@ class ShipmentController extends Controller
         $entityName = 'Отгрузки';
 
         // Shipments
-        $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products');
+        $builder = Shipment::query()->with('order:id,name', 'carrier:id,name', 'contact:id,name', 'transport:id,name', 'transport_type:id,name', 'delivery:id,name', 'products')
+            ->addSelect([
+                'shipments.*',
+                'products_count' => DB::raw('(
+                    SELECT SUM(op.quantity)
+                    FROM shipment_products op
+                    JOIN products p ON op.product_id = p.id
+                    WHERE op.shipment_id = shipments.id
+                    AND p.building_material NOT IN ("доставка", "не выбрано")
+                ) as products_count'),
+                'sostav' => DB::raw('(
+                    SELECT p.short_name
+                    FROM products p
+                    JOIN shipment_products op ON op.product_id = p.id
+                    WHERE op.shipment_id = shipments.id
+                    LIMIT 1
+                ) as sostav'),
+            ]);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ShipmentFilter($builder, $request))->apply()->orderBy($request->column);
