@@ -15,6 +15,7 @@ use App\Models\Shipment;
 use App\Models\ShipmentProduct;
 use App\Models\Status;
 use App\Models\TransportType;
+use Illuminate\Support\Facades\DB;
 use App\Services\EntityMs\OrderMsService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -40,14 +41,49 @@ class OrderController extends Controller
         $entityName = 'Заказы';
 
         // Orders
-        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'shipment_products');
-//            ->leftJoin('contacts', 'orders.contact_id', '=', 'contacts.id')
-//            ->leftJoin('deliveries', 'orders.delivery_id', '=', 'deliveries.id')
-//            ->addSelect([
-//                'orders.*',
-//                'contact_created_at' => 'contacts.created_at',
-//                'delivery_created_at' => 'deliveries.created_at',
-//            ]);
+        $builder = Order::query()->with('contact:id,name', 'delivery:id,name', 'transport_type:id,name', 'positions', 'shipments', 'shipment_products')
+            ->addSelect([
+                'orders.*',
+                'sostav' => DB::raw('(
+                    SELECT p.short_name
+                    FROM products p
+                    JOIN order_positions op ON op.product_id = p.id
+                    WHERE op.order_id = orders.id
+                    LIMIT 1
+                ) as sostav'),
+                'positions_count' => DB::raw('(
+                    SELECT SUM(op.quantity)
+                    FROM order_positions op
+                    JOIN products p ON op.product_id = p.id
+                    WHERE op.order_id = orders.id
+                    AND p.building_material NOT IN ("доставка", "не выбрано")
+                ) as positions_count'),
+                'shipped_count' => DB::raw('(
+                    SELECT SUM(sp.quantity)
+                    FROM shipment_products sp
+                    JOIN shipments s ON sp.shipment_id = s.id
+                    WHERE s.order_id = orders.id
+                    GROUP BY s.order_id
+                ) as shipped_count'),
+                'residual_count' => DB::raw('(
+                    SELECT IFNULL(
+                        (
+                            SELECT SUM(op.quantity)
+                            FROM order_positions op
+                            JOIN products p ON op.product_id = p.id
+                            WHERE op.order_id = orders.id
+                            AND p.building_material NOT IN ("доставка", "не выбрано")
+                        ), 0) - IFNULL(
+                            (
+                                SELECT SUM(sp.quantity)
+                                FROM shipment_products sp
+                                JOIN shipments s ON sp.shipment_id = s.id
+                                WHERE s.order_id = orders.id
+                                GROUP BY s.order_id
+                            ), 0
+                        )
+                ) as residual_count')
+            ]);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new OrderFilter($builder, $request))->apply()->orderBy($request->column);
@@ -631,16 +667,17 @@ class OrderController extends Controller
             ->leftJoin('shipments', 'orders.id', '=', 'shipments.order_id')
             ->leftJoin('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id');
 
+        $order = (new OrderFilter(Order::query(), $request))->apply();
         $order_sum = (new OrderFilter($order_builder, $request))->apply()->sum('quantity');
         $shipment_sum = (new OrderFilter($shipment_builder, $request))->apply()->sum('quantity');
 
         $order_totals = [
-            'total_sum' => $entityItems->sum('orders.sum'),
-            'total_delivery_price' => $entityItems->sum('orders.delivery_price'),
-            'total_payed_sum' => $entityItems->sum('orders.payed_sum'),
-            'total_shipped_sum' => $entityItems->sum('orders.shipped_sum'),
-            'total_reserved_sum' => $entityItems->sum('orders.reserved_sum'),
-            'total_debt' => $entityItems->sum('orders.debt'),
+            'total_sum' => $order->sum('sum'),
+            'total_delivery_price' => $order->sum('delivery_price'),
+            'total_payed_sum' => $order->sum('payed_sum'),
+            'total_shipped_sum' => $order->sum('shipped_sum'),
+            'total_reserved_sum' => $order->sum('reserved_sum'),
+            'total_debt' => $order->sum('debt'),
             'shipped_count' => $shipment_sum,
             'positions_count' => $order_sum,
         ];

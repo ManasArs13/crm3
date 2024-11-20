@@ -291,7 +291,7 @@
                         <tr class="bg-neutral-200 font-semibold">
                             <th scope="col" class="px-2 py-2"></th>
                             @foreach ($resColumns as $key => $column)
-                                @if ($key === 'remainder' || $key == 'positions_count')
+                                @if ($key === 'remainder' || $key === 'ms_link')
                                     <th scope="col" class="px-2 py-2">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
                                     <th scope="col" class="px-2 py-2"
