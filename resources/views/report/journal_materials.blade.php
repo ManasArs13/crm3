@@ -53,12 +53,12 @@
 
                     {{-- body card --}}
                     <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                        <table class="text-left text-md text-nowrap">
+                        <table class="text-left text-md text-nowrap" id="journalsTable">
                             <thead>
                             <tr class="bg-neutral-200 font-semibold">
                                 @foreach ($resColumns as $key => $column)
                                     @if($key == 'material')
-                                        <th scope="col" class="px-2 py-3">
+                                        <th scope="col" class="px-2 py-3 hover:cursor-pointer" id="th_{{ $key }}" onclick="orderBy(`{{ $key }}`)">
                                             @foreach ($filter['values'] as $value)
                                                 @if($value['value'] == $filter['checked_value'] && $value['value'] == 'index')
                                                     {{ $column }}
@@ -68,7 +68,7 @@
                                             @endforeach
                                         </th>
                                     @else
-                                        <th scope="col" class="px-2 py-3">
+                                        <th scope="col" class="px-2 py-3 hover:cursor-pointer" id="th_{{ $key }}" onclick="orderBy(`{{ $key }}`)">
                                             {{ $column }}
                                         </th>
                                     @endif
@@ -139,19 +139,135 @@
                 </div>
             </div>
 
-            <script>
-                $(document).ready(function () {
-                    $('select[name^="filters"]').on('change', function () {
-                        const url = new URL(window.location.href);
-                        const params = new URLSearchParams(url.search);
+                <script>
+                    $(document).ready(function () {
+                        $('select[name^="filters"]').on('change', function () {
+                            const url = new URL(window.location.href);
+                            const params = new URLSearchParams(url.search);
 
-                        const filterName = $(this).attr('name').match(/\[(.*)\]/)[1];
-                        const filterValue = $(this).val();
+                            const filterName = $(this).attr('name').match(/\[(.*)\]/)[1];
+                            const filterValue = $(this).val();
 
-                        params.set(`filters[${filterName}]`, filterValue);
+                            params.set(`filters[${filterName}]`, filterValue);
 
-                        window.location.href = `${url.pathname}?${params.toString()}`;
+                            window.location.href = `${url.pathname}?${params.toString()}`;
+                        });
                     });
-                });
-            </script>
+                </script>
+
+                <script type="text/javascript">
+                    function orderBy(column) {
+
+                        let sortedRows = Array.from(journalsTable.rows).slice(1, -1);
+                        let totalRow = Array.from(journalsTable.rows).slice(journalsTable.rows.length - 1);
+
+                        let th_date = document.getElementById('th_date');
+                        let th_material = document.getElementById('th_material');
+                        let th_incoming = document.getElementById('th_incoming');
+                        let th_outgoing = document.getElementById('th_outgoing');
+                        let th_residual = document.getElementById('th_residual');
+
+                        switch (column) {
+
+                            case 'date':
+                                if (th_date.innerText == `Дата ↓`) {
+                                    th_date.innerText = `Дата ↑`
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) > parseInt(rowB.cells[0]
+                                        .innerText) ? 1 : -
+                                        1);
+                                } else {
+                                    th_date.innerText = `Дата ↓`;
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) < parseInt(rowB.cells[0]
+                                        .innerText) ? 1 : -
+                                        1);
+                                }
+
+                                th_material.innerText = 'Материал';
+                                th_incoming.innerText = 'Приход';
+                                th_outgoing.innerText = 'Расход';
+                                th_residual.innerText = 'Остаток';
+                                break;
+
+                            case 'material':
+                                if (th_material.innerText == `Материал ↓`) {
+                                    th_material.innerText = `Материал ↑`
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) > parseInt(rowB.cells[1]
+                                        .innerText) ? 1 : -
+                                        1);
+                                } else {
+                                    th_material.innerText = `Материал ↓`;
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) < parseInt(rowB.cells[1]
+                                        .innerText) ? 1 : -
+                                        1);
+                                }
+
+                                th_date.innerText = 'Дата';
+                                th_incoming.innerText = 'Приход';
+                                th_outgoing.innerText = 'Расход';
+                                th_residual.innerText = 'Остаток';
+                                break;
+
+                            case 'incoming':
+                                if (th_incoming.innerText == `Приход ↓`) {
+                                    th_incoming.innerText = `Приход ↑`
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) > parseInt(rowB.cells[2]
+                                        .innerText) ? 1 : -
+                                        1);
+                                } else {
+                                    th_incoming.innerText = `Приход ↓`;
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) < parseInt(rowB.cells[2]
+                                        .innerText) ? 1 : -
+                                        1);
+                                }
+
+                                th_date.innerText = 'Дата';
+                                th_material.innerText = 'Материал';
+                                th_outgoing.innerText = 'Расход';
+                                th_residual.innerText = 'Остаток';
+                                break;
+
+                            case 'outgoing':
+                                if (th_outgoing.innerText == `Расход ↓`) {
+                                    th_outgoing.innerText = `Расход ↑`
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3]
+                                        .innerText) ? 1 : -
+                                        1);
+                                } else {
+                                    th_outgoing.innerText = `Расход ↓`;
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3]
+                                        .innerText) ? 1 : -
+                                        1);
+                                }
+
+                                th_date.innerText = 'Дата';
+                                th_material.innerText = 'Материал';
+                                th_incoming.innerText = 'Приход';
+                                th_residual.innerText = 'Остаток';
+                                break;
+
+                            case 'residual':
+                                if (th_residual.innerText == `Остаток ↓`) {
+                                    th_residual.innerText = `Остаток ↑`
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) > parseInt(rowB.cells[4]
+                                        .innerText) ? 1 : -
+                                        1);
+                                } else {
+                                    th_residual.innerText = `Остаток ↓`;
+                                    sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) < parseInt(rowB.cells[4]
+                                        .innerText) ? 1 : -
+                                        1);
+                                }
+
+                                th_date.innerText = 'Дата';
+                                th_material.innerText = 'Материал';
+                                th_incoming.innerText = 'Приход';
+                                th_outgoing.innerText = 'Расход';
+                                break;
+
+                        }
+
+                        sortedRows.push(totalRow[0])
+                        journalsTable.tBodies[0].append(...sortedRows);
+                    }
+                </script>
 </x-app-layout>
