@@ -241,7 +241,6 @@
                                             $column == 'Имя' ||
                                                 $column == 'Дата создания' ||
                                                 $column == 'Сумма' ||
-                                                $column == 'Кол-во' ||
                                                 $column == 'Дата обновления' ||
                                                 $column == 'Вес') style="text-align:right" @else style="text-align:left" @endif>
                                         <a class="text-black"
@@ -257,7 +256,6 @@
                                                 $column == '№' ||
                                                 $column == 'Дата создания' ||
                                                 $column == 'Сумма' ||
-                                                $column == 'Кол-во' ||
                                                 $column == 'Дата обновления' ||
                                                 $column == 'Вес') style="text-align:right" @else style="text-align:left" @endif>
                                         <a class="text-black"
