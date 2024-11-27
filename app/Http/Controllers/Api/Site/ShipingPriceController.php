@@ -14,6 +14,7 @@ class ShipingPriceController extends Controller
             $distance = (int)$request->get("distance");
             $vehicleType = (int)$request->get("vehicleType");
             $weightTn = (float)$request->get("weightTn");
+            $delivery=$request->get("delivery")
 
             $price=0;
             $deliveryPrice=0;
@@ -72,6 +73,12 @@ class ShipingPriceController extends Controller
                 $deliveryPrice=round($deliveryPrice/100)*100;
             else if ($vehicleType==4 && $weightTn<=14)
                 $deliveryPrice=round($deliveryPrice/500)*500;
+
+            if ($delivery=='28803b00-5c8f-11ea-0a80-02ed000b1ce1')
+            {
+                $price=0;
+                $deliveryPrice=0;
+            }
 
             return response()->json(["price"=>$price, "deliveryPrice"=>$deliveryPrice, 'weightTn'=>$weightTn], 200);
         }  catch (\Exception $e) {
