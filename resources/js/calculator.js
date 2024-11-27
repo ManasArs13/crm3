@@ -351,11 +351,12 @@ $(document).ready(function(){
     function calcDelivery(formClass) {
         if (!$(formClass+'.deliveryPrice').hasClass("disabled") && !$(formClass+'.price-tn.input').hasClass("disabled")){
             let deliveryValue = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-distance");
-
+            let delivery = $(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id");
             $(formClass+'[name="attributes[delivery][id]"]').val($(formClass+' .delivery').next().find('.select2-selection__rendered span').attr("data-id"));
             let vehicleType = $(formClass+'select[name="attributes[vehicle_type][id]"]').find('option:selected').attr("data-type");
             let weight = $(formClass+".weight-tn").val();
-            let data = {"weightTn": weight, "distance": deliveryValue, "vehicleType": vehicleType};
+
+            let data = {"weightTn": weight, "distance": deliveryValue, "vehicleType": vehicleType, "delivery": delivery};
             let priceTotal=parseInt($(formClass+'#price_total').html());
 
             $.ajax({
@@ -412,7 +413,7 @@ $(document).ready(function(){
 
 
     });
-    
+
     $('body').on('click','.submit', function(e){
         e.preventDefault();
         let $form =$(this).parents("form");
