@@ -87,7 +87,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ms:import-price-list')->daily();
         $schedule->command('ms:import-payment')->hourly();
 
-        $schedule->command('ms:import-contact')->dailyAt('01:00');
+        $schedule->command('ms:import-contact --all')->dailyAt('01:00');
 
         $schedule->command('app:set-errors')->daily();
     }
