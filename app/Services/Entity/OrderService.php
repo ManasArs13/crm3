@@ -262,6 +262,8 @@ class OrderService implements EntityInterface
 
             $entity->save();
 
+            $entity->positions()->delete();
+
             $needDelete = $this->orderPositionService->import($row["positions"], $entity->id);
 
             if ($needDelete["isDemand"]) {

@@ -6,7 +6,6 @@ namespace App\Services\Api;
 use App\Models\Option;
 use GuzzleHttp\Client;
 use App\Contracts\EntityInterface;
-use Exception;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7;
@@ -115,7 +114,7 @@ class MoySkladService
             if ($downloadPath != '') {
                 return file_put_contents($downloadPath, $response->getBody());
             }
-            //        sleep(1);
+ 
             return $result;
         } catch (RequestException  $e) {
             info($e->getResponse()->getBody()->getContents());
@@ -172,7 +171,6 @@ class MoySkladService
                 return false;
             }
         } catch (ClientException  $e) {
-            // var_dump($e->getResponse()->getBody()->getContents());
             info($e->getResponse()->getBody()->getContents());
             return  Psr7\Message::toString($e->getResponse());
         }
@@ -185,7 +183,6 @@ class MoySkladService
                 'headers' => [
                     'content-type' => 'application/json',
                     'Accept-Encoding' => 'gzip',
-                   // 'user-agent' => 'My User Agent',
                     'Authorization' => 'Basic ' . $this->auth
                 ],
                 'json' => $array
@@ -201,11 +198,6 @@ class MoySkladService
             }
             return false;
         } catch (ClientException $e) {
-
-            // echo Psr7\Message::toString($e->getRequest());
-            // echo Psr7\Message::toString($e->getResponse());
-            // var_dump($e->getResponse()->getBody()->getContents());
-           // $rrr=var_export($e->getResponse()->getBody()->getContents(), true);
             info($e->getResponse()->getBody()->getContents());
             return  Psr7\Message::toString($e->getResponse());
         }
