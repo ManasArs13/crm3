@@ -14,8 +14,11 @@ class ShipingPriceController extends Controller
             $distance = (int)$request->get("distance");
             $vehicleType = (int)$request->get("vehicleType");
             $weightTn = (float)$request->get("weightTn");
-            
+
             $delivery=$request->get("delivery");
+
+            if ($delivery==null)
+                $delivery='28803b00-5c8f-11ea-0a80-02ed000b1ce1';
 
             $price=0;
             $deliveryPrice=0;

@@ -50,7 +50,7 @@ class OrderController extends Controller
                 throw new \Exception(trans("error.noState"));
 
             if (!isset($array["attributes"]["delivery"]) || $array["attributes"]["delivery"]['id'] == null)
-                throw new \Exception(trans("error.noDelivery"));
+                $array["attributes"]["delivery"]['id']='28803b00-5c8f-11ea-0a80-02ed000b1ce1';
 
             $result = $orderMsService->updateOrderMs($array);
 
@@ -73,7 +73,7 @@ class OrderController extends Controller
         $shipment = Order::find($id);
 
         $text=" cоздан";
-        
+
         if ($shipment->ms_id!=null){
             $text=" отредактирован";
         }

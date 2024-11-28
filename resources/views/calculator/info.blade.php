@@ -4,7 +4,7 @@
 
             <div class="select-popup">
                 <select class="select2 input change_delivery delivery">
-                    <option value="" selected disabled>{{__('column.delivery')}}</option>
+                    <option value="" selected disabled>000 Самовывоз</option>
                 </select>
             </div>
             <div class="select-popup {{($form!="calcBeton")?'select2':'hidden'}}">
