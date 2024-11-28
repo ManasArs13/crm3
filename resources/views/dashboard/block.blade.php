@@ -200,7 +200,7 @@
                             @endphp
                             <tr class="border-b-2 {{ $statusColor }} group">
                                 <td class="px-1 m-2 border-r-2 py-3 text-center ships-group-show text-blue-700 cursor-pointer" data-ships="{{ $shipment->first()->id ?? '' }}">{{ $transportNumber }}</td>
-                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
+                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
                                     {{ $transportName ? $transportName : 'не указано' }}
                                 </td>
                                 <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
@@ -214,7 +214,7 @@
                         @if(!isset($shift->end_shift))
                             <tr class="border-b-2 group">
                                 <td class="px-1 m-2 border-r-2 py-3 text-center shifts-group-show text-blue-700 cursor-pointer" data-shifts="{{ $shift->id ?? '' }}">{{ $shift->transport->car_number }}</td>
-                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
+                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
                                     {{ $shift->transport->name ? $shift->transport->name : 'не указано' }}
                                 </td>
                                 <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $shift->transport->tonnage }}</td>
@@ -279,7 +279,7 @@
                             @endphp
                             <tr class="border-b-2 {{ $statusColor }} group">
                                 <td class="px-1 m-2 border-r-2 py-3 text-center ships-group-show text-blue-700 cursor-pointer" data-ships="{{ $shipment->first()->id ?? '' }}">{{ $transportNumber }}</td>
-                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
+                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
                                     {{ $transportName ? $transportName : 'не указано' }}
                                 </td>
                                 <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $transportTonnage }}</td>
@@ -294,7 +294,7 @@
                         @if(isset($shift->end_shift))
                             <tr class="border-b-2 group">
                                 <td class="px-1 m-2 border-r-2 py-3 text-center shifts-group-show text-blue-700 cursor-pointer" data-shifts="{{ $shift->id ?? '' }}">{{ $shift->transport->car_number }}</td>
-                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] text-center truncate">
+                                <td class="px-1 m-2 border-r-2 text-left py-3 max-w-[150px] truncate">
                                     {{ $shift->transport->name ? $shift->transport->name : 'не указано' }}
                                 </td>
                                 <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $shift->transport->tonnage }}</td>
