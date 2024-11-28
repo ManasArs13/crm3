@@ -94,19 +94,22 @@ class OrderMsService
                 $price = (float)$msOrder["attributes"]["deliveryPrice"] * 100;
             }
 
+            if (\Arr::exists($msOrder, "attributes") && \Arr::exists($msOrder["attributes"], "delivery") &&  \Arr::exists($msOrder["attributes"]["delivery"], "id")) {
 
-            $array["positions"][] = [
-                "quantity" => (float)$quantity,
-                "price" => (float)$price,
-                'vat' => (int)$vat,
-                "assortment" => [
-                    "meta" => [
-                        "href" => $urlService . $delivery_id,
-                        "type" => "service",
-                        "mediaType" => "application/json"
-                    ]
-                ]
-            ];
+                if ($msOrder["attributes"]["delivery"]["id"]!='28803b00-5c8f-11ea-0a80-02ed000b1ce1')
+                    $array["positions"][] = [
+                        "quantity" => (float)$quantity,
+                        "price" => (float)$price,
+                        'vat' => (int)$vat,
+                        "assortment" => [
+                            "meta" => [
+                                "href" => $urlService . $delivery_id,
+                                "type" => "service",
+                                "mediaType" => "application/json"
+                            ]
+                        ]
+                    ];
+            }
 
             if (\Arr::exists($msOrder, "services")){
                 foreach($msOrder["services"] as $key=>$position){
