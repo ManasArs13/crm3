@@ -953,8 +953,13 @@
             <tr class="border-b-2 bg-gray-100">
                 <td class="px-2 py-2 text-right">
                 </td>
+
                 @foreach ($resColumns as $column => $title)
-                    @if ($column == 'sum')
+                    @if($column == 'name')
+                        <td class="px-2 py-2 text-right">
+                            {{ $entityItems->count() ?? 0 }}
+                        </td>
+                    @elseif ($column == 'sum')
                         <td class="px-2 py-2 text-right">
                             {{ number_format((int) $totalSum, '0', '.', ' ') }}
                         </td>
