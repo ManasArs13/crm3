@@ -171,8 +171,11 @@
 
             if (document.getElementById('calcBeton').classList.contains("active")) {
                 let select__head = document.getElementsByClassName('select__head');
-                let quantity = document.getElementsByClassName('quantity ');
-                let positions_beton_quantity = quantity[20].children[0].value;
+                let positions_beton_quantity =document.getElementById('calcBeton').querySelector('.change_js').value;
+                let price =document.getElementById('calcBeton').querySelector('.price_js').innerText;
+
+                let  delivery_quantity=document.getElementById('calcBeton').querySelector('.weight-tn').value;
+                let  delivery_price=document.getElementById('calcBeton').querySelector('.price-tn').value;
 
                 // Цена продуктов
                 let price_total = document.getElementsByClassName('price_total')[2].innerText;
@@ -183,8 +186,7 @@
                 // Цена доставки
                 let price_delivery = Number(total) - Number(price_total);
 
-                // Цена 1 шт.
-                let price = Number(price_total) / Number(positions_beton_quantity)
+
 
                 let PRODUCT_BETON =
                     `${select__head[13].innerText}; ${positions_beton_quantity} * ${price} = ${price_total} руб.;`;
@@ -203,7 +205,7 @@
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     PRODUCT_BETON + `\n` +
-                    `Доставка: ${price_delivery} р.` + `\n` +
+                    `Доставка:  ${delivery_quantity} * ${delivery_price} = ${price_delivery} р.` + `\n` +
                     SERVICES_TEXT +
                     `ИТОГО С ДОСТАВКОЙ ${total} р.`;
 
