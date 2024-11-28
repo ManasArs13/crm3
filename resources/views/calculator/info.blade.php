@@ -18,13 +18,13 @@
 
             <div class="sim">
                 <div class="input-sim input-weight">
-                    <input type="text" class="weight-tn input input2" readonly>
+                    <input type="text" class="weight-tn input input2" readonly value="0">
                 </div>
                 <div class="input-sim input-price">
-                    <input type="text" name="{{($form=="calcBeton")?'attributes[deliveryPrice]':''}}" class="price-tn input input2" >
+                    <input type="text" name="{{($form=="calcBeton")?'attributes[deliveryPrice]':''}}" class="price-tn input input2"  value="0">
                 </div>
                 <div class="input-sim input-sum">
-                    <input type="text" name="{{($form!="calcBeton")?'attributes[deliveryPrice]':''}}" class="input input2 deliveryPrice" >
+                    <input type="text" name="{{($form!="calcBeton")?'attributes[deliveryPrice]':''}}" class="input input2 deliveryPrice"  value="0">
                 </div>
             </div>
     </div>
