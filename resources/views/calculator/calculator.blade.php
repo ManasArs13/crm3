@@ -91,6 +91,9 @@
             <div class="tab-content" id="calcMixers">
                 <div class="CEB w-11/12 max-w-7xl mx-auto pb-10">
                     <div class="CEB__row h-100">
+                        <img src="{{ Storage::url('pumps1.jpg') }}" alt="{{ __('column.pumps') }}">
+                    </div>
+                    <div class="CEB__row h-100">
                         <img src="{{ Storage::url('transports.jpg') }}" alt="{{ __('column.transport') }}">
                     </div>
                     <div class="img_delivery">
