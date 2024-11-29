@@ -37,4 +37,9 @@ class ContactAmo extends Model
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
     }
+
+    public function contact_type()
+    {
+        return $this->hasOne(ContactTypeAmo::class, 'id', 'contact_type_amo_id');
+    }
 }

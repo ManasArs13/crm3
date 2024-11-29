@@ -8,6 +8,7 @@ use App\Models\ContactAmo;
 use App\Models\Manager;
 use App\Models\Order;
 use App\Models\Shipment;
+use App\Models\ContactTypeAmo;
 use GuzzleHttp\Client;
 
 class ContactAmoService implements EntityInterface
@@ -36,7 +37,8 @@ class ContactAmoService implements EntityInterface
                 $phoneNorm = null;
                 $msContactLink = null;
                 $msContact = null;
-                $contactType = false;
+                $contactType = null;
+                $isSuccess=false;
                 $manager = null;
 
                 if ($customFields != null) {
@@ -57,11 +59,24 @@ class ContactAmoService implements EntityInterface
                     }
 
                     $contactTypeField = $customFields->getBy('fieldId', 603221);
+
                     if ($contactTypeField != null) {
-                        $contactTypeValue = $contactTypeField->getValues()[0]->getValue();
-                        if ($contactTypeValue == 'Покупатель') {
-                            $contactType = true;
+                        //$contactTypeValue = $contactTypeField->getValues()[0]->getValue();
+                        $contactTypeId = $contactTypeField->getValues()[0]->getEnumId();
+                        $entityContactType = ContactTypeAmo::firstOrNew(['amo_id' => $contactTypeId]);
+
+                        if ($entityContactType->id === null) {
+                            $entityContactType->amo_id =  $contactTypeId;
                         }
+
+                        $entityContactType->name=$contactTypeField->getValues()[0]->getValue();
+                        $entityContactType->save();
+                        $contactType=$entityContactType->id;
+                        $isSuccess=($contactType==1);
+
+                        // if ($contactTypeValue == 'Покупатель') {
+                        //     $contactType = true;
+                        // }
                     }
 
                     $phoneField = $customFields->getBy('fieldCode', 'PHONE');
@@ -92,7 +107,8 @@ class ContactAmoService implements EntityInterface
                 $entity->phone = $phones;
                 $entity->phone_norm = $phoneNorm;
                 $entity->phone1 = $phone1;
-                $entity->is_success = $contactType;
+                $entity->is_success = $isSuccess;
+                $entity->contact_type_amo_id=$contactType;
                 $entity->email = $email;
                 $entity->contact_ms_id = $msContact;
                 $entity->contact_ms_link = $msContactLink;
