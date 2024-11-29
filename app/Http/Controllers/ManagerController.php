@@ -1094,7 +1094,7 @@ class ManagerController extends Controller
         $emptyValues = array_fill_keys($tables, 0);
 
         $report = [];
-        $managers = ['Yaroslav' => 'Ярослав', 'Ekatirina' => 'Екатерина', 'Other' => 'Остальные', 'All' => 'Всего'];
+        $managers = ['Ekatirina' => 'Екатерина', 'Yaroslav' => 'Ярослав', 'Other' => 'Остальные', 'All' => 'Всего'];
         $totals = array_fill_keys($tables, array_fill_keys(array_keys($managers), 0));
 
         foreach ($tables as $table) {
