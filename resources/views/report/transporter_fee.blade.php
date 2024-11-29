@@ -108,7 +108,7 @@
 
                                         @case('total')
                                             <td class="break-all max-w-96 truncate px-2 py-3 text-right">
-                                                {{ $entityItem->delivery_fee + $entityItem->contact->balance ?? 0 }}</td>
+                                                {{ ($entityItem->delivery_fee ?? 0) + ($entityItem->contact->balance ?? 0) }}</td>
                                         @break
                                     @endswitch
                                 @endforeach
