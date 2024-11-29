@@ -66,6 +66,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/manager_block', [ManagerController::class, 'index_block'])->name('manager.index.block');
     Route::get('/manager_concrete', [ManagerController::class, 'index_concrete'])->name('manager.index.concrete');
     Route::get('/manager-two', [ManagerController::class, 'managerTwo'])->name('manager.managerTwo');
+    Route::get('/manager_shipments_block', [ManagerController::class, 'managerShipmentsBlock'])->name('manager.managerShipments.block');
+    Route::get('/manager_shipments_concerte', [ManagerController::class, 'managerShipmentsConcerte'])->name('manager.managerShipments.concerte');
+    Route::get('/manager_shipments', [ManagerController::class, 'managerShipments'])->name('manager.managerShipments');
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
