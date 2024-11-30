@@ -33,6 +33,21 @@ class OrderAmo extends Model
         return $this->hasOne(Manager::class, 'id', 'manager_id');
     }
 
+    public function source()
+    {
+        return $this->hasOne(OrderSourceAmo::class, 'id', 'source_id');
+    }
+
+    public function reason_for_closure()
+    {
+        return $this->hasOne(OrderReasonForClosureAmo::class, 'id', 'reason_for_closure_id');
+    }
+
+    public function employeeAmo()
+    {
+        return $this->hasOne(EmployeeAmo::class, 'id', 'employee_amo_id');
+    }
+
     public function contact_amo()
     {
         return $this->belongsTo(ContactAmo::class);

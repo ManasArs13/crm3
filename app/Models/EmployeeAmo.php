@@ -17,6 +17,11 @@ class EmployeeAmo extends Model
         return $this->hasMany(Call::class);
     }
 
+    public function order_amo()
+    {
+        return $this->hasMany(OrderAmo::class);
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i');
