@@ -403,6 +403,38 @@ class AmoService
         }
     }
 
+
+    public function getAllLeadsWithContacts()
+    {
+        $accessToken = $this->getToken();
+        $accessToken = $this->isExpiredToken($accessToken);
+        $baseDomain = $accessToken->getValues()['baseDomain'];
+
+        $this->apiClient->setAccessToken($accessToken)
+            ->setAccountBaseDomain($accessToken->getValues()['baseDomain']);
+
+        //Создадим фильтр по id сделки и ответственному пользователю
+        $filter = new LeadsFilter();
+        $filter->setLimit(250);
+
+        $leads = [];
+
+        try {
+
+            $leads[] = $this->apiClient->leads()->get($filter, [LeadModel::CONTACTS]);
+            $this->orderAmoService->import($leads);
+            $i = 2;
+            while ($leads[0]->getNextPageLink() != null) {
+                $filter->setPage($i);
+                $leads[] = $this->apiClient->leads()->get($filter, [LeadModel::CONTACTS]);
+                $this->orderAmoService->import($leads);
+                $i++;
+            }
+        } catch (AmoCRMApiNoContentException $exception) {
+            Log::error(__METHOD__ . ' setLead:' . $exception->getMessage());
+        }
+    }
+
     public function getTalks()
     {
         $accessToken = $this->getToken();

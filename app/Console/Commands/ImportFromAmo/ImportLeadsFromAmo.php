@@ -13,13 +13,13 @@ class ImportLeadsFromAmo extends Command
      * Имя и сигнатура консольной команды.
      * @var string
      */
-    protected $signature = 'app:import-leads-amo';
+    protected $signature = 'app:import-leads-amo {--all}';
 
     /**
      * Описание консольной команды.
      * @var string
      */
-    protected $description = 'Import leads amo';
+    protected $description = 'Import leads amo {--all}';
     /**
      * Создать новый экземпляр команды.
      * @return void
@@ -34,6 +34,14 @@ class ImportLeadsFromAmo extends Command
      */
     public function handle(AmoService $amoService): void
     {
-        $amoService->getLeadsWithContacts();
+
+        $all = $this->option('all');
+
+        if ($all) {
+            $amoService->getAllLeadsWithContacts();
+        }else{
+            $amoService->getLeadsWithContacts();
+        }
+
     }
 }
