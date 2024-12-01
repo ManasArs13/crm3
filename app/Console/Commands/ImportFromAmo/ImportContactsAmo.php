@@ -12,7 +12,7 @@ class ImportContactsAmo extends Command
      *
      * @var string
      */
-    protected $signature = 'app:import-contacts-amo';
+    protected $signature = 'app:import-contacts-amo {--all}';
 
     /**
      * The console command description.
@@ -26,6 +26,12 @@ class ImportContactsAmo extends Command
      */
     public function handle(AmoService $amoService)
     {
-        $amoService->getContacts();
+        $all = $this->option('all');
+
+        if ($all) {
+            $amoService->getContactsAll();
+        }else{
+            $amoService->getContacts();
+        }
     }
 }
