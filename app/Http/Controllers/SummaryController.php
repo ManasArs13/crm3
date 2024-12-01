@@ -103,7 +103,13 @@ class SummaryController extends Controller
         $cntContactsMS=$service->createUrl($urlContact,null, [], "", 2, false);
 
 
+        $shipmentsSite=Shipment::whereNull('ms_id')->get();
+        $ordersSite=Order::whereNull('ms_id')->get();
+        $contactsSite=Contact::whereNull('ms_id')->get();
+
+
         return view("summary.remains", compact("cntShipmentsSite", "cntOrdersSite", "cntContactsSite",
-                                                "cntShipmentsMS", "cntOrdersMS", "cntContactsMS"));
+                                                "cntShipmentsMS", "cntOrdersMS", "cntContactsMS",
+                                                 "ordersSite", "shipmentsSite", "contactsSite"));
     }
 }

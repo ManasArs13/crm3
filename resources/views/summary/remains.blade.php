@@ -86,12 +86,27 @@
                             </td>
                             <td class="break-all overflow-auto px-2 py-3 text-sm">
                                 {{ $cntOrdersSite-$cntOrdersMS }}
+
+                                @foreach($ordersSite as $order)
+
+                                 <p><a  class="underline text-blue-600 decoration-sky-600 md:decoration-blue-400" href="/order/{{  $order->id }}">Заказ №{{ $order->id }}</a></p>
+
+                                @endforeach
                             </td>
                             <td class="break-all overflow-auto px-2 py-3 text-sm">
                                 {{$cntShipmentsSite-$cntShipmentsMS}}
+
+                                @foreach($shipmentsSite as $shipment)
+
+                                <p><a  class="underline text-blue-600 decoration-sky-600 md:decoration-blue-400" href="/shipment/{{  $shipment->id }}">Отгрузка №{{ $order->id }}</a></p>
+
+                                @endforeach
                             </td>
                             <td class="break-all overflow-auto px-2 py-3 text-sm">
                                 {{ $cntContactsSite-$cntContactsMS  }}
+                                @foreach($contactsSite as $contact)
+                                  <p><a  class="underline text-blue-600 decoration-sky-600 md:decoration-blue-400" href="/contact/{{  $contact->id }}">Контакт №{{ $contact->id }}</a></p>
+                                @endforeach
                             </td>
                         </tr>
                     </tbody>
