@@ -89,7 +89,7 @@ class ErrorController extends Controller
         $allowedChecked = 'index';
         $responsibleChecked = 'index';
 
-        $status = [['value' => 'index', 'name' => 'Все'], ['value' => 1, 'name' => '1'], ['value' => 0, 'name' => '0']];
+        $status = [['value' => 'index', 'name' => 'Все'], ['value' => 1, 'name' => 'Не исправлен'], ['value' => 0, 'name' => 'Исправлен']];
         $allowed = [['value' => 'index', 'name' => 'Все'], ['value' => 1, 'name' => 'Допущен'], ['value' => 0, 'name' => 'Не допущен']];
         $responsible[] = ['value' => 'index', 'name' => 'Все'];
         $types[] = ['value' => 'index', 'name' => 'Все типы'];
