@@ -139,27 +139,43 @@
             //change selectboxes to selectize mode to be searchable
             $('.select2').select2({
                 ajax: {
-                    url: `{{ route($searchContacts) }}`,
-                    data: function(params) {
-
-                        var queryParameters = {
-                            term: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function(data) {
+                    url: '/api/contacts/get/name',
+                    data: function (params) {
                         return {
-                            results: $.map(data, function(item) {
-                                return {
-                                    text: item.name + '   ' + (item.description ? item
-                                        .description : ' '),
-                                    id: item.id,
-                                }
-                            })
+                            q: params.term,
+                            page: params.page || 1
                         };
+                    },
+                    processResults: function (data,params) {
+                        params.current_page = params.current_page || 1;
+
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: (params.current_page * data.per_page) < data.total
+                            }
+                        };
+                    },
+                    cache: true,
+                    error: function(response) {
+                        $("#message").html(response.responseJSON.message+response.responseJSON.file+response.responseJSON.line);
                     }
                 },
+                templateResult: formatName,
+                templateSelection: formatName
+
             });
+
+            function formatName(state) {
+                if (state.text){
+                    return state.text;
+                }
+                var $state = $(
+                    '<span data-id="'+state.ms_id+'" data-phone="'+state.phone+'" data-name="'+state.name+'" data-change="change_phone">'+state.name+'</span>'
+                );
+                return $state;
+            };
+        
 
             $('.select1').select2({
                 ajax: {
