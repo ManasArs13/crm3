@@ -107,9 +107,10 @@ class SummaryController extends Controller
         $ordersSite=Order::whereNull('ms_id')->get();
         $contactsSite=Contact::whereNull('ms_id')->get();
 
+        $contactsSite1=Contact::where('is_exist','=','0')->get();
 
         return view("summary.remains", compact("cntShipmentsSite", "cntOrdersSite", "cntContactsSite",
                                                 "cntShipmentsMS", "cntOrdersMS", "cntContactsMS",
-                                                 "ordersSite", "shipmentsSite", "contactsSite"));
+                                                 "ordersSite", "shipmentsSite", "contactsSite", "contactsSite1"));
     }
 }

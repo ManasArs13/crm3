@@ -107,6 +107,9 @@
                                 @foreach($contactsSite as $contact)
                                   <p><a  class="underline text-blue-600 decoration-sky-600 md:decoration-blue-400" href="/contact/{{  $contact->id }}">Контакт №{{ $contact->id }}</a></p>
                                 @endforeach
+                                @foreach($contactsSite1 as $contact)
+                                <p><a  class="underline text-blue-600 decoration-sky-600 md:decoration-blue-400" href="/contact/{{  $contact->id }}">Контакт №{{ $contact->id }}</a></p>
+                              @endforeach
                             </td>
                         </tr>
                     </tbody>
