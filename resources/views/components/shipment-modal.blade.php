@@ -30,7 +30,7 @@
                                         @endphp
                                         <tr class="border-y-2">
                                             <td class="px-1 m-2 border-x-2 py-3 text-center"><a target="_blank" href="{{ route('shipment.show', ['shipment' => $transport->id]) }}">{{ $num + 1 }}</a></td>
-                                            <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transport->delivery->name }}</td>
+                                            <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transport->delivery->name ?? '' }}</td>
                                             <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $createdAt->format('H:i') }}</td>
                                             <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $timeToCome->format('H:i') }}</td>
                                             <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $timeToOut->format('H:i') }}</td>
