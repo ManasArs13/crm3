@@ -15,45 +15,6 @@
         <h3 class="text-4xl font-bold mb-6">{{ __('title.summary') }}</h3>
         {{-- header --}}
 
-        <div class="border-b-2 border-neutral-100">
-            <div class="w-full mb-12 flex flex-wrap w-full p-3 items-start">
-                <div class="gap-1 flex flex-wrap flex-col sm:flex-row items-start">
-                    <div class="mt-2">
-                        <a href="{{ route('summary.index') }}"
-                               class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                            {{ __('title.summary') }}</a>
-                    </div>
-                    <div class="mt-2">
-                        <a href="{{ route('manager.index') }}"
-                           class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                            Сводка - Менеджеры</a>
-
-                    </div>
-                    <div class="mt-2">
-                        <a href="{{ route('report.transport') }}"
-                           class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                            Сводка - Транспорт</a>
-
-                    </div>
-                    <div class="mt-2">
-                        <a href="{{ route('report.transporter') }}"
-                           class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                            Сводка - Перевозчик</a>
-                    </div>
-                    <div class="mt-2">
-                        <a href="{{ route('report.transporter_fee') }}"
-                           class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                            Сводка - Перевозчик (оплата)</a>
-                    </div>
-                    <div class="mt-2">
-                        <a href="{{ route('report.counteparty') }}"
-                               class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">
-                            Сводка - Контрагенты</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
         @include('summary.canvas')
         <div class="flex flex-wrap">
