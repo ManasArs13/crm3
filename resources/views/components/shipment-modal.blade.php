@@ -13,6 +13,7 @@
                                     <thead>
                                         <tr class="font-light border-b-2 text-sm bg-neutral-200">
                                             <th class="border-l-2 py-2 px-1 text-center">Рейсы</th>
+                                            <th class="border-l-2 py-2 px-1 text-center">Объект</th>
                                             <th class="border-l-2 py-2 px-1 text-center">Отгружен</th>
                                             <th class="border-r-2 py-2 px-1 text-center">На объекте</th>
                                             <th class="border-r-2 py-2 px-1 text-center">Возврат</th>
@@ -28,7 +29,8 @@
                                             $timeToReturn = \Carbon\Carbon::parse($transport->time_to_return);
                                         @endphp
                                         <tr class="border-y-2">
-                                            <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $num + 1 }}</td>
+                                            <td class="px-1 m-2 border-x-2 py-3 text-center"><a target="_blank" href="{{ route('shipment.show', ['shipment' => $transport->id]) }}">{{ $num + 1 }}</a></td>
+                                            <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $transport->delivery->name }}</td>
                                             <td class="px-1 m-2 border-r-2 py-3 text-center">{{ $createdAt->format('H:i') }}</td>
                                             <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $timeToCome->format('H:i') }}</td>
                                             <td class="px-1 m-2 border-x-2 py-3 text-center">{{ $timeToOut->format('H:i') }}</td>
