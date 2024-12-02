@@ -37,7 +37,7 @@ class SetErrors extends Command
         $types = ErrorTypes::get()->keyBy('id');
         $now = now();
 
-        ContactAmo::chunkById(500, function ($contacts) use ($types, $now) {
+        ContactAmo::chunkById(100, function ($contacts) use ($types, $now) {
             $contactIds = $contacts->pluck('id')->toArray();
 
             $existingErrors = Errors::where('type_id', $types[1]['id'])
@@ -79,7 +79,7 @@ class SetErrors extends Command
 
 
         // у отгрузки нет заказа
-        Shipment::chunkById(500, function ($shipments) use ($types, $now) {
+        Shipment::chunkById(100, function ($shipments) use ($types, $now) {
             $shipmentIds = $shipments->pluck('id')->toArray();
 
             $existingErrors = Errors::where('type_id', $types[3]['id'])
@@ -116,7 +116,7 @@ class SetErrors extends Command
 
 
         // у заказа отгрузки в разных днях у бетона
-        Shipment::chunkById(500, function ($shipments) use ($types, $now) {
+        Shipment::chunkById(100, function ($shipments) use ($types, $now) {
             $shipmentIds = $shipments->pluck('id')->toArray();
 
             $existingErrors = Errors::where('type_id', $types[4]['id'])
@@ -172,7 +172,7 @@ class SetErrors extends Command
 
 
         // заказ и отгрузки не сходятся
-        Order::chunkById(500, function ($orders) use ($types, $now) {
+        Order::chunkById(100, function ($orders) use ($types, $now) {
             $orderIds = $orders->pluck('id')->toArray();
 
             $existingErrors = Errors::where('type_id', $types[5]['id'])
@@ -201,7 +201,7 @@ class SetErrors extends Command
                             'type_id' => $types[5]['id'],
                             'link' => $link,
                             'description' => 'заказ и отгрузки не сходятся',
-                            'responsible_user' => $types[4]['responsible'],
+                            'responsible_user' => $types[5]['responsible'],
                             'tab_id' => $order->id,
                             'created_at' => $now,
                             'updated_at' => $now,
