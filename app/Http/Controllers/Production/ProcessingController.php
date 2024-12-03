@@ -9,6 +9,7 @@ use App\Http\Requests\ProcessingRequest;
 use App\Models\TechProcess;
 use App\Models\TechProcessMaterial;
 use App\Models\TechProcessProduct;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ProcessingController extends Controller
@@ -348,7 +349,11 @@ class ProcessingController extends Controller
         $urlFilter = 'processings.materials';
         $entityName = 'Тех-операции (Состав - материалы)';
 
-        $builder = TechProcessMaterial::query()->with('product:id,name');
+        $builder = TechProcessMaterial::query()->with('product:id,name')
+            ->addSelect([
+                '*',
+                DB::raw('quantity_norm - quantity as saldo')
+            ]);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ProcessingProductFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);

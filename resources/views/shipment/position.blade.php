@@ -255,6 +255,7 @@
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
                             @foreach ($resColumns as $key => $column)
+                                @php $key = $key != 'deviation_price' ? $key : 'price_norm' @endphp
                                 @if ($key === 'remainder')
                                     <th scope="col" class="px-6 py-2">{{ $column }}</th>
                                 @elseif(isset($orderBy) && $orderBy == 'desc')
@@ -357,6 +358,8 @@
                                             @else
                                                 {{ null }}
                                             @endif
+                                        @elseif($column == 'deviation_price')
+                                            {{ $entityItem->price_norm }}
                                         @elseif(preg_match('/_link/u', $column) && $entityItem->$column !== null && $entityItem->$column !== '')
                                             <a href="{{ $entityItem->$column }}" target="_blank">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

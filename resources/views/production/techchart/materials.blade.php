@@ -58,25 +58,25 @@
 
             {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-left text-md text-nowrap">
+                <table class="text-left text-md text-nowrap" id="chartsTable">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_id" onclick="orderBy('id')">
                                 {{ __('column.id') }}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_techchart_id" onclick="orderBy('techchart_id')">
                                 {{ __('column.techchart_id') }}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_product_id" onclick="orderBy('product_id')">
                                 {{ __('column.product_id') }}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_quantity" onclick="orderBy('quantity')">
                                 {{ __('column.quantity') }}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_created_at" onclick="orderBy('created_at')">
                                 {{ __('column.created_at') }}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_updated_at" onclick="orderBy('updated_at')">
                                 {{ __('column.updated_at') }}
                             </th>
                         </tr>
@@ -122,4 +122,148 @@
         </div>
     </div>
 
+
+    <script type="text/javascript">
+        function orderBy(column) {
+
+            let sortedRows = Array.from(chartsTable.rows).slice(1, -1);
+            let totalRow = Array.from(chartsTable.rows).slice(chartsTable.rows.length - 1);
+
+
+            let th_id = document.getElementById('th_id');
+            let th_techchart_id = document.getElementById('th_techchart_id');
+            let th_product_id = document.getElementById('th_product_id');
+            let th_quantity = document.getElementById('th_quantity');
+            let th_created_at = document.getElementById('th_created_at');
+            let th_updated_at = document.getElementById('th_updated_at');
+
+            switch (column) {
+
+                case 'id':
+                    if (th_id.innerText == `№ ↓`) {
+                        th_id.innerText = `№ ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) > parseInt(rowB.cells[0]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_id.innerText = `№ ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) < parseInt(rowB.cells[0]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'techchart_id':
+                    if (th_techchart_id.innerText == `Карта ↓`) {
+                        th_techchart_id.innerText = `Карта ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) > parseInt(rowB.cells[1]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_techchart_id.innerText = `Карта ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) < parseInt(rowB.cells[1]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'product_id':
+                    if (th_product_id.innerText == `Товар ↓`) {
+                        th_product_id.innerText = `Товар ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) > parseInt(rowB.cells[2]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_product_id.innerText = `Товар ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) < parseInt(rowB.cells[2]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'quantity':
+                    if (th_quantity.innerText == `Количество ↓`) {
+                        th_quantity.innerText = `Количество ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_quantity.innerText = `Количество ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'created_at':
+                    if (th_created_at.innerText == `Дата создания ↓`) {
+                        th_created_at.innerText = `Дата создания ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) > parseInt(rowB.cells[4]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_created_at.innerText = `Дата создания ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) < parseInt(rowB.cells[4]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'updated_at':
+                    if (th_updated_at.innerText == `Дата обновления ↓`) {
+                        th_updated_at.innerText = `Дата обновления ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) > parseInt(rowB.cells[5]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_updated_at.innerText = `Дата обновления ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) < parseInt(rowB.cells[5]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    break;
+
+
+            }
+
+            sortedRows.push(totalRow[0])
+            chartsTable.tBodies[0].append(...sortedRows);
+        }
+    </script>
 </x-app-layout>
