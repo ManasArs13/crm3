@@ -252,12 +252,25 @@
                                     <th scope="col" class="px-2 py-2 text-black">
                                         @switch($key)
                                             @case('status')
-                                                {{ __('column.status_id') }}
+                                                @php $column = 'Статус'; @endphp
                                             @break
-
-                                            @default
-                                                {{ $column }}
+                                            @case('type')
+                                                @php $key = 'type_id'; @endphp
+                                            @break
                                         @endswitch
+                                            @if(isset($orderBy) && $orderBy == 'desc')
+                                                <a class="text-black"
+                                                   href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'desc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                                @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'desc')
+                                                    &#9650;
+                                                @endif
+                                            @else
+                                                <a class="text-black"
+                                                   href="{{ request()->fullUrlWithQuery(['column' => $key, 'orderBy' => 'asc', 'type' => request()->type ?? null]) }}">{{ $column }}</a>
+                                                @if (isset($selectColumn) && $selectColumn == $key && $orderBy == 'asc')
+                                                    &#9660;
+                                                @endif
+                                        @endif
                                     </th>
 
                                 @endforeach

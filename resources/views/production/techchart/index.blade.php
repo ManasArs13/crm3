@@ -6,6 +6,9 @@
             {{ __('entity.' . $entity) }}
         </x-slot>
     @endif
+    <x-slot:head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </x-slot>
 
 
     <div class="w-11/12 mx-auto py-8 max-w-10xl">
@@ -59,19 +62,19 @@
 
             {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-left text-md text-nowrap">
+                <table class="text-left text-md text-nowrap" id="chartsTable">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_id" onclick="orderBy('id')">
                                 {{__("column.id")}}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_name" onclick="orderBy('name')">
                                 {{__("column.name")}}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_price" onclick="orderBy('price')">
                                 {{__("column.price")}}
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_description" onclick="orderBy('description')">
                                 {{__("column.description")}}
                             </th>
                         </tr>
@@ -119,5 +122,96 @@
 
         </div>
     </div>
+    <script type="text/javascript">
+        function orderBy(column) {
 
+            let sortedRows = Array.from(chartsTable.rows).slice(1, -1);
+            let totalRow = Array.from(chartsTable.rows).slice(chartsTable.rows.length - 1);
+
+            let th_id = document.getElementById('th_id');
+            let th_name = document.getElementById('th_name');
+            let th_price = document.getElementById('th_price');
+            let th_description = document.getElementById('th_description');
+
+            switch (column) {
+
+                case 'id':
+                    if (th_id.innerText == `№ ↓`) {
+                        th_id.innerText = `№ ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) > parseInt(rowB.cells[0]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_id.innerText = `№ ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) < parseInt(rowB.cells[0]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_name.innerText = 'Имя';
+                    th_price.innerText = 'Цена';
+                    th_description.innerText = 'Комментарий';
+                    break;
+
+                case 'name':
+                    if (th_name.innerText == `Имя ↓`) {
+                        th_name.innerText = `Имя ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) > parseInt(rowB.cells[1]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_name.innerText = `Имя ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) < parseInt(rowB.cells[1]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_price.innerText = 'Цена';
+                    th_description.innerText = 'Комментарий';
+                    break;
+
+                case 'price':
+                    if (th_price.innerText == `Цена ↓`) {
+                        th_price.innerText = `Цена ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) > parseInt(rowB.cells[2]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_price.innerText = `Цена ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) < parseInt(rowB.cells[2]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_name.innerText = 'Имя';
+                    th_description.innerText = 'Комментарий';
+                    break;
+
+                case 'description':
+                    if (th_description.innerText == `Комментарий ↓`) {
+                        th_description.innerText = `Комментарий ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_description.innerText = `Комментарий ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_name.innerText = 'Имя';
+                    th_price.innerText = 'Цена';
+                    break;
+
+
+            }
+
+            sortedRows.push(totalRow[0])
+            chartsTable.tBodies[0].append(...sortedRows);
+        }
+    </script>
 </x-app-layout>
