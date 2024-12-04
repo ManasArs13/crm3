@@ -14,7 +14,7 @@ class DeliveryColumnsSeeder extends Seeder
     public function run(): void
     {
 
-        $filePath = database_path('seeders\data\delivery.csv');
+        $filePath = database_path('seeders/data/delivery.csv');
         $data = [];
 
 
