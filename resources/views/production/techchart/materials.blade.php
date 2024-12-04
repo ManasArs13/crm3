@@ -61,53 +61,56 @@
                 <table class="text-left text-md text-nowrap" id="chartsTable">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_id" onclick="orderBy('id')">
-                                {{ __('column.id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_techchart_id" onclick="orderBy('techchart_id')">
-                                {{ __('column.techchart_id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_product_id" onclick="orderBy('product_id')">
-                                {{ __('column.product_id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_quantity" onclick="orderBy('quantity')">
-                                {{ __('column.quantity') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_created_at" onclick="orderBy('created_at')">
-                                {{ __('column.created_at') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2 cursor-pointer" id="th_updated_at" onclick="orderBy('updated_at')">
-                                {{ __('column.updated_at') }}
-                            </th>
+                            @foreach($selectedColumns as $column)
+                                @if(isset($orderBy) && $orderBy == 'desc')
+                                    <th scope="col" class="px-6 py-2">
+                                        <a class="text-black"
+                                           href="{{ request()->fullUrlWithQuery(['column' => $column, 'orderBy' => 'desc']) }}">{{ __('column.' . $column) }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $column && $orderBy == 'desc')
+                                            &#9650;
+                                        @endif
+                                    </th>
+                                @else
+                                    <th scope="col" class="px-6 py-2">
+                                        <a class="text-black"
+                                           href="{{ request()->fullUrlWithQuery(['column' => $column, 'orderBy' => 'asc']) }}">{{ __('column.' . $column) }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $column && $orderBy == 'asc')
+                                            &#9660;
+                                        @endif
+                                    </th>
+                                @endif
+                            @endforeach
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($tech_chart_materials as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->id }}
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    <a class="text-blue-700 hover:text-blue-500"
-                                    href="{{ route('techcharts.show', ['techchart' => $product->tech_chart_id]) }}">
-                                        {{ $product->tech_chart_id }}
-                                    </a>
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    <a href="{{ route('product.show', ['product' => $product->product_id]) }}">
-                                        {{ $product->product_id }}
-                                    </a>
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->quantity }}
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->created_at }}
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->updated_at }}
-                                </td>
+                                @foreach($selectedColumns as $column)
+                                    @switch($column)
+                                        @case('tech_chart_id')
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                                <a class="text-blue-700 hover:text-blue-500"
+                                                   href="{{ route('techcharts.show', ['techchart' => $product->tech_chart_id]) }}">
+                                                    {{ $product->tech_chart_id }}
+                                                </a>
+                                            </td>
+                                        @break
+                                        @case('product_id')
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                                <a class="text-blue-700 hover:text-blue-500"
+                                                   href="{{ route('product.show', ['product' => $product->product_id]) }}">
+                                                    {{ $product->product_id }}
+                                                </a>
+                                            </td>
+                                        @break
+                                        @default
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                                {{ $product->$column }}
+                                            </td>
+                                        @break
+                                    @endswitch
+                                @endforeach
                             </tr>
                         @endforeach
                     </tbody>
