@@ -40,11 +40,33 @@ class TechChartController extends Controller
         $needMenuForItem = true;
         $entity = 'techcharts';
 
-        $tech_chart_products = TechChartProduct::with('tech_chart', 'products')
-                                            ->orderBy('created_at', 'desc')
-                                            ->paginate(100);
+        $tech_chart_products = TechChartProduct::with('tech_chart', 'products');
 
-        return view('production.techchart.products', compact("needMenuForItem", "entity", 'tech_chart_products'));
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $tech_chart_products = $tech_chart_products->orderBy($request->column);
+            $orderBy = 'desc';
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+            $tech_chart_products = $tech_chart_products->orderByDesc($request->column);
+            $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $tech_chart_products = $tech_chart_products->orderBy('created_at', 'desc');
+            $selectColumn = null;
+        }
+        $tech_chart_products = $tech_chart_products->paginate(100);
+
+        $selectedColumns = [
+            'id',
+            'tech_chart_id',
+            'product_id',
+            'quantity',
+            'created_at',
+            'updated_at'
+        ];
+
+        return view('production.techchart.products', compact("needMenuForItem", "entity", 'tech_chart_products', 'selectedColumns', 'selectColumn', 'orderBy'));
     }
 
     public function materials(Request $request)
@@ -52,10 +74,33 @@ class TechChartController extends Controller
         $needMenuForItem = true;
         $entity = 'techcharts';
 
-        $tech_chart_materials = TechChartMaterial::with('tech_chart', 'products')
-                                            ->orderBy('created_at', 'desc')
-                                            ->paginate(100);
+        $tech_chart_materials = TechChartMaterial::with('tech_chart', 'products');
 
-        return view('production.techchart.materials', compact("needMenuForItem", "entity", 'tech_chart_materials'));
+        if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
+            $tech_chart_materials = $tech_chart_materials->orderBy($request->column);
+            $orderBy = 'desc';
+            $selectColumn = $request->column;
+        } elseif (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'desc') {
+            $tech_chart_materials = $tech_chart_materials->orderByDesc($request->column);
+            $orderBy = 'asc';
+            $selectColumn = $request->column;
+        } else {
+            $orderBy = 'desc';
+            $tech_chart_materials = $tech_chart_materials->orderBy('created_at', 'desc');
+            $selectColumn = null;
+        }
+
+        $tech_chart_materials = $tech_chart_materials->paginate(100);
+
+        $selectedColumns = [
+            'id',
+            'tech_chart_id',
+            'product_id',
+            'quantity',
+            'created_at',
+            'updated_at'
+        ];
+
+        return view('production.techchart.materials', compact("needMenuForItem", "entity", 'tech_chart_materials', 'orderBy', 'selectColumn', 'selectedColumns'));
     }
 }
