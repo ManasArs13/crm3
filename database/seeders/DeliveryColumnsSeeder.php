@@ -40,6 +40,7 @@ class DeliveryColumnsSeeder extends Seeder
                     'coords' => $row['coords'] ?? null,
                     'source' => $row['source'] ?? null,
                     'sourceID' => $row['sourceID'] ?? null,
+                    'route' => $row['route'] ?? null,
                 ]
             );
         }
