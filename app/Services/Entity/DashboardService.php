@@ -58,6 +58,11 @@ class DashboardService
             $date = date('Y-m-d');
         }
 
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+        $startOfMonth = Carbon::create($year, $month, 1);
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
         $date1 = new DateTime($date);
         $date2 = new DateTime($date);
 
@@ -116,6 +121,39 @@ class DashboardService
             ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
+
+
+        // Количество рейсов текущего месяца
+        $allFlights = [];
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'), // Только день
+                'shipments_count' => 0,
+                'routes_count' => 0,
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE)->orWhere('building_material', Product::BLOCK);
+                });
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        foreach ($shipmentsMount as $row) {
+            $allFlights[$row->day] = [
+                'day' => date('d', strtotime($row->day)), // Только день
+                'shipments_count' => $row->shipments_count,
+                'routes_count' => $row->routes_count,
+            ];
+        }
+
 
         if ($date > date('Y-m-d')) {
 
@@ -238,7 +276,8 @@ class DashboardService
             'date',
             'transports',
             'shifts',
-            'residualWidget'
+            'residualWidget',
+            'allFlights'
         ));
     }
 
@@ -481,6 +520,11 @@ class DashboardService
             $date = date('Y-m-d');
         }
 
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+        $startOfMonth = Carbon::create($year, $month, 1);
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
         $date1 = new DateTime($date);
         $date2 = new DateTime($date);
 
@@ -549,6 +593,37 @@ class DashboardService
             ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
+
+        // Количество рейсов текущего месяца
+        $allFlights = [];
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'), // Только день
+                'shipments_count' => 0,
+                'routes_count' => 0,
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        foreach ($shipmentsMount as $row) {
+            $allFlights[$row->day] = [
+                'day' => date('d', strtotime($row->day)), // Только день
+                'shipments_count' => $row->shipments_count,
+                'routes_count' => $row->routes_count,
+            ];
+        }
 
 
 
@@ -682,7 +757,8 @@ class DashboardService
             'shipments',
             'transports',
             'shifts',
-            'residualWidget'
+            'residualWidget',
+            'allFlights'
         ));
     }
 
@@ -695,6 +771,11 @@ class DashboardService
         } else {
             $date = date('Y-m-d');
         }
+
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+        $startOfMonth = Carbon::create($year, $month, 1);
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $date1 = new DateTime($date);
         $date2 = new DateTime($date);
@@ -791,6 +872,38 @@ class DashboardService
             ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
+
+
+        // Количество рейсов текущего месяца
+        $allFlights = [];
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'), // Только день
+                'shipments_count' => 0,
+                'routes_count' => 0,
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        foreach ($shipmentsMount as $row) {
+            $allFlights[$row->day] = [
+                'day' => date('d', strtotime($row->day)), // Только день
+                'shipments_count' => $row->shipments_count,
+                'routes_count' => $row->routes_count,
+            ];
+        }
 
 
 
@@ -912,7 +1025,8 @@ class DashboardService
             'transports',
             'shifts',
             'residual',
-            'orderCount'
+            'orderCount',
+            'allFlights'
         ));
     }
 
