@@ -29,7 +29,36 @@ class AmosContactController extends Controller
             ->with('contact.manager', 'AmoContact.amo_order', 'AmoContact.manager')
             ->with(['contact.shipments' => function($query) {
                 $query->withSum('products', DB::raw('quantity * price'));
-            }]);
+            }])
+            ->addSelect([
+                'contact_amo_contacts.*',
+                'created_at_ms' => DB::table('contacts')
+                    ->select('created_at')
+                    ->whereColumn('contacts.id', 'contact_amo_contacts.contact_id')
+                    ->limit(1),
+                'created_at_amo' => DB::table('contact_amos')
+                    ->select('created_at')
+                    ->whereColumn('contact_amos.id', 'contact_amo_contacts.contact_amo_id')
+                    ->limit(1),
+                'shipment_id_ms' => DB::table('shipments')
+                    ->join('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id')
+                    ->selectRaw('SUM(shipment_products.quantity * shipment_products.price)')
+                    ->whereColumn('shipments.contact_id', 'contact_amo_contacts.contact_id')
+                    ->limit(1),
+                'shipment_id_amo' => DB::table('shipments')
+                    ->join('shipment_products', 'shipments.id', '=', 'shipment_products.shipment_id')
+                    ->selectRaw('SUM(shipment_products.quantity * shipment_products.price)')
+                    ->whereColumn('shipments.contact_id', 'contact_amo_contacts.contact_id')
+                    ->limit(1),
+                'shipment_id_amo' => DB::table('order_amos')
+                    ->selectRaw('SUM(price)')
+                    ->whereColumn('order_amos.contact_amo_id', 'contact_amo_contacts.contact_amo_id')
+                    ->limit(1),
+                'manager_id_ms' => DB::table('contacts')
+                    ->select('created_at')
+                    ->whereColumn('contacts.id', 'contact_amo_contacts.contact_id')
+                    ->limit(1),
+            ]);
 
         if (isset($request->column) && isset($request->orderBy) && $request->orderBy == 'asc') {
             $entityItems = (new ContactAmoFilter($builder, $request))->apply()->orderBy($request->column)->paginate(100);
