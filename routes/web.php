@@ -134,6 +134,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Доставки
         Route::get('/report/delivery', [ReportDeliveryController::class, 'index'])->name('delivery');
         Route::get('/report/delivery_category', [ReportDeliveryController::class, 'category'])->name('delivery.category');
+        Route::get('/report/frequency_of_deliveries', [ReportDeliveryController::class, 'frequencyOfDeliveries'])->name('delivery.frequency');
         //        Route::get('/report/delivery_object', [ReportDeliveryController::class, 'object'])->name('delivery.object');
 
         // Контрагенты

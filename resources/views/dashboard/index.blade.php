@@ -328,26 +328,36 @@
                     @foreach($allFlights as $days)
                         <th class="px-2 py-3 text-center font-semibold">{{ $days['day'] }}</th>
                     @endforeach
+                    <th class="px-2 py-3 font-semibold text-center">Итого</th>
                 </tr>
                 </thead>
                 <tbody>
+                @php
+                    $carsTotal = 0;
+                    $reisTotal = 0;
+                @endphp
                     <tr class="border-b-2">
                         <td class="px-2 py-3 text-left font-semibold">Рейсов</td>
                         @foreach($allFlights as $days)
+                            @php $carsTotal += $days['shipments_count']; @endphp
                             <th class="px-2 py-3 border-l-2 text-center font-normal">{{ $days['shipments_count'] }}</th>
                         @endforeach
+                        <td class="px-2 py-3 border-l-2 text-center font-normal">{{ $carsTotal }}</td>
                     </tr>
                     <tr class="border-b-2">
                         <td class="px-2 py-3 text-left font-semibold">Машин</td>
                         @foreach($allFlights as $days)
+                            @php $reisTotal += $days['routes_count']; @endphp
                             <th class="px-2 py-3 border-l-2 text-center font-normal">{{ $days['routes_count'] }}</th>
                         @endforeach
+                        <td class="px-2 py-3 border-l-2 text-center font-normal">{{ $reisTotal }}</td>
                     </tr>
                     <tr>
                         <td class="px-2 py-3 text-left font-semibold">Средн</td>
                         @foreach($allFlights as $days)
                             <th class="px-2 py-3 border-l-2 text-center font-normal">{{ $days['shipments_count'] != 0 && $days['routes_count'] != 0 ? round($days['shipments_count'] / $days['routes_count'], 1) : 0 }}</th>
                         @endforeach
+                        <td class="px-2 py-3 border-l-2 text-center font-normal">{{ $carsTotal != 0 && $reisTotal != 0 ? round($carsTotal / $reisTotal, 1) : 0 }}</td>
                     </tr>
                 </tbody>
             </table>

@@ -394,6 +394,69 @@ class ReportDeliveryController extends Controller
             'dateRus',
         ));
     }
+
+    public function frequencyOfDeliveries(){
+        $entityName = 'Частота доставок';
+
+        $distanceRanges = [
+            ['min' => 20, 'max' => 25],
+            ['min' => 25, 'max' => 30],
+            ['min' => 30, 'max' => 40],
+            ['min' => 40, 'max' => 50],
+            ['min' => 50, 'max' => 60],
+            ['min' => 60, 'max' => 70],
+            ['min' => 70, 'max' => 80],
+            ['min' => 80, 'max' => 90],
+            ['min' => 90, 'max' => 100],
+            ['min' => 100, 'max' => 110],
+            ['min' => 110, 'max' => 120],
+            ['min' => 120, 'max' => 130],
+            ['min' => 130, 'max' => 140],
+            ['min' => 140, 'max' => 150],
+            ['min' => 150, 'max' => 160],
+            ['min' => 160, 'max' => 170],
+        ];
+
+        $weightRanges = [
+            ['min' => 6000, 'max' => 7000],
+            ['min' => 7000, 'max' => 8000],
+            ['min' => 8000, 'max' => 9000],
+            ['min' => 9000, 'max' => 10000],
+            ['min' => 10000, 'max' => 11000],
+            ['min' => 11000, 'max' => 12000],
+            ['min' => 12000, 'max' => 13000],
+            ['min' => 13000, 'max' => 14000],
+        ];
+
+
+        $shipments = Shipment::whereHas('delivery')
+            ->whereHas('transport_type', function ($query) {
+                $query->where('name', 'Манипулятор');
+            })
+            ->whereYear('created_at', date('Y'))
+            ->with('delivery')
+            ->get();
+
+
+        $resultTable = [];
+        foreach ($distanceRanges as $distanceRange) {
+            $row = [];
+            foreach ($weightRanges as $weightRange) {
+                $count = $shipments->filter(function ($shipment) use ($distanceRange, $weightRange) {
+                    return $shipment->delivery->distance >= $distanceRange['min']
+                        && $shipment->delivery->distance <= $distanceRange['max']
+                        && $shipment->weight >= $weightRange['min']
+                        && $shipment->weight < $weightRange['max'];
+                })->count();
+
+                $row[] = $count;
+            }
+            $resultTable[] = $row;
+        }
+
+        return view("report.frequency_of_deliveries", compact('entityName', 'distanceRanges', 'weightRanges', 'resultTable'));
+    }
+
     public function object(){
 
     }

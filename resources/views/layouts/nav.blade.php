@@ -452,6 +452,12 @@
                                         </x-dropdown-link>
                                     @endcan
 
+                                    @can('report_delivery')
+                                        <x-dropdown-link :href="route('report.delivery.frequency')">
+                                            Частота доставок
+                                        </x-dropdown-link>
+                                    @endcan
+
                                     @can('report_transport')
                                         <x-dropdown-link :href="route('report.transport')">
                                             Сводка - Транспорт
@@ -968,6 +974,11 @@
                                     @can('report_delivery')
                                         <a href="{{ route('report.delivery') }}"
                                             class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Сводка - Все доставки</a>
+                                    @endcan
+
+                                    @can('report_delivery')
+                                        <a href="{{ route('report.delivery.frequency') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Частота доставок</a>
                                     @endcan
 
                                     @can('report_transport')
