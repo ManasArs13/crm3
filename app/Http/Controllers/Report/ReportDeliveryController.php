@@ -418,6 +418,11 @@ class ReportDeliveryController extends Controller
         ];
 
         $weightRanges = [
+            ['min' => 0, 'max' => 2000],
+            ['min' => 2000, 'max' => 3000],
+            ['min' => 3000, 'max' => 4000],
+            ['min' => 4000, 'max' => 5000],
+            ['min' => 5000, 'max' => 6000],
             ['min' => 6000, 'max' => 7000],
             ['min' => 7000, 'max' => 8000],
             ['min' => 8000, 'max' => 9000],
@@ -426,6 +431,8 @@ class ReportDeliveryController extends Controller
             ['min' => 11000, 'max' => 12000],
             ['min' => 12000, 'max' => 13000],
             ['min' => 13000, 'max' => 14000],
+            ['min' => 14000, 'max' => 15000],
+            ['min' => 15000, 'max' => 16000]
         ];
 
 

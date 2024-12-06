@@ -41,7 +41,7 @@
                             <tr class="bg-neutral-200 font-semibold">
                                 <th class="font-semibold px-2">Дистанция (км)</th>
                                 @foreach($weightRanges as $index => $weightRange)
-                                    <th scope="col" class="px-2 py-3 font-semibold">{{ $index + 6 }} Тон</th>
+                                    <th scope="col" class="px-2 py-3 font-semibold">{{ $index + 1 }} Тон</th>
                                 @endforeach
                             </tr>
                             </thead>
