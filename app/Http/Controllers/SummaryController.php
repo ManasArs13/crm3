@@ -12,6 +12,7 @@ use App\Models\Option;
 use App\Services\Api\MoySkladService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 use Illuminate\Support\Carbon;
 
 
@@ -24,6 +25,17 @@ class SummaryController extends Controller
     }
 
     public function index(Request $request){
+        if (isset($request->date_plan)) {
+            $date = $request->date_plan;
+        } else {
+            $date = date('Y-m-d');
+        }
+        $date1 = new DateTime($date);
+        $date2 = new DateTime($date);
+
+        $datePrev = $date1->modify('-1 day')->format('Y-m-d');
+        $dateNext = $date2->modify('+1 day')->format('Y-m-d');
+
         $sumMaterials=Product::where("category_id", 8)->sum(DB::raw('residual * price'));
         $sumProducts=Product::whereIn("category_id", [5,6,7,11,12,15,16,21])->sum(DB::raw('residual * price'));
         $sumMutualSettlement=Contact::whereNot("balance",NULL)->sum("balance"); // Взаиморасчеты наши
@@ -82,7 +94,7 @@ class SummaryController extends Controller
             "sumMaterials","sumProducts", "sumMutualSettlement",
         "sumMutualSettlementMain", "mainSuppliers", "sumCarriers", "materialNorm",
         "sumBuyer","sumUnfilled", "sumAnother", "msBalance", "ourBalance", "total",
-        "kassaAndTinkoff", "carriers_two", "totals_two"
+        "kassaAndTinkoff", "carriers_two", "totals_two", "date", "datePrev", "dateNext"
         ));
     }
 

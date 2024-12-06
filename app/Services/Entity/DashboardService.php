@@ -285,6 +285,7 @@ class DashboardService
     {
         $arUrl = explode("/", session('_previous.url'));
         $referer = explode("?", $arUrl[3])[0];
+        $referer2 = isset($arUrl[4]) ? explode("?", $arUrl[4])[0] : null;
         $roundPallet = Option::where('code', '=', "round_number")->first()?->value;
 
         if ($date_plan) {
@@ -345,11 +346,11 @@ class DashboardService
         $shipments = Shipment::select('id', 'created_at')->with('products')
             ->whereDate('created_at', $date);
 
-        if ($referer == 'dashboard') {
+        if ($referer == 'dashboard' || ($referer == 'summary' && $referer2 == 'all')) {
 
             $orders = $orders->get();
             $shipments = $shipments->get();
-        } else if ($referer == 'dashboard-2') {
+        } else if ($referer == 'dashboard-2' || ($referer == 'summary' && $referer2 == 'block')) {
 
             $orders = $orders->whereHas('positions', function ($query) {
                 $query->whereHas('product', function ($queries) {
@@ -364,7 +365,7 @@ class DashboardService
             })->get();
 
             $count = 'count_pallets';
-        } else if ($referer == 'dashboard-3') {
+        } else if ($referer == 'dashboard-3' || ($referer == 'summary' && $referer2 == 'concerte')) {
 
             $orders = $orders->whereHas('positions', function ($query) {
                 $query->whereHas('product', function ($queries) {
@@ -406,7 +407,7 @@ class DashboardService
 
 
 
-                if ($referer == 'dashboard-3') {
+                if ($referer == 'dashboard-3' || ($referer == 'summary' && $referer2 == 'concerte')) {
 
                     $orders_whereBetwen = $orders->whereBetween('date_plan', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->all();
 
