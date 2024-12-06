@@ -121,6 +121,7 @@ class DemandService implements EntityInterface
 
                 $entity->created_at = isset($row['moment']) ? $row['moment'] : Carbon::now();
                 $entity->updated_at = isset($row['updated']) ? $row['updated'] : Carbon::now();
+                $entity->moment_at = isset($row['moment']) ? $row['moment'] : Carbon::now();
 
                 if (isset($row["attributes"])) {
                     foreach ($row["attributes"] as $attribute) {
