@@ -36,7 +36,7 @@ class DashboardController extends Controller
     {
         $arUrl = explode("/", session('_previous.url'));
 
-        if (count(explode("?", $arUrl[3])) > 1) {
+        if (count(explode("?", $arUrl[3])) > 1 || (isset($arUrl[4]) && count(explode("?", $arUrl[4])) > 1)) {
             $date_plan = $date;
         } else {
             $date_plan = null;

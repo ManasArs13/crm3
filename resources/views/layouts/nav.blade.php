@@ -477,7 +477,7 @@
                                     @endcan
 
                                     @can('report_summary')
-                                        <x-dropdown-link :href="route('summary.index')">
+                                        <x-dropdown-link :href="route('summary.index', ['material' => 'all'])">
                                             {{ __('title.summary') }}
                                         </x-dropdown-link>
                                     @endcan
@@ -997,7 +997,7 @@
                                     @endcan
 
                                     @can('report_summary')
-                                        <a href="{{ route('summary.index') }}"
+                                        <a href="{{ route('summary.index', ['material' => 'all']) }}"
                                             class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('title.summary') }}</a>
                                     @endcan
                                     @can('report_summary_remains')
