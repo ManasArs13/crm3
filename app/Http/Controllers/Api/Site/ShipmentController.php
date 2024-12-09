@@ -30,7 +30,7 @@ class ShipmentController extends Controller
             '09',
             '10',
             '11',
-            '12'
+            '12',
         ];
         $charts= [];
 
@@ -50,11 +50,30 @@ class ShipmentController extends Controller
         $datasets=[];
 
         foreach ($dbResults as $dbRow) {
+
+            if($dbRow->material == 'блок'){
+                $color = '#86EFAC';
+            }elseif($dbRow->material == 'бетон'){
+                $color = '#FFCD56';
+            }else{
+                $color = '#FCA5A5';
+            }
+
+            if (!isset($charts[$dbRow->material])) {
+                $charts[$dbRow->material] = array_fill_keys($labels, null); // Заполняем null для всех месяцев
+            }
+
             $charts[$dbRow->material][$dbRow->month1] = $dbRow->sum1;
-            $datasets[$dbRow->material]=["label"=>$dbRow->material, "hidden"=>false,"data"=>$charts[$dbRow->material], "backgroundColor"=>"#".dechex(rand(0,10000000)), "borderColor"=>"#".dechex(rand(0,10000000)), "borderWidth"=>4];
+
+            $datasets[$dbRow->material] = [
+                "label" => $dbRow->material,
+                "hidden" => false,
+                "data" => array_values($charts[$dbRow->material]),
+                "backgroundColor" => $color,
+                "borderColor" => $color,
+                "borderWidth" => 4
+            ];
         }
-
-
         return response()->json([
             'charts'=>$charts,
             'labels'=>$labels,
