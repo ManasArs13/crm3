@@ -1,4 +1,4 @@
-<div class="p-5">
+<div class="p-5 border-t-2">
     <div class="chart-container" style="height:20vh;">
         <canvas id="chart"></canvas>
     </div>
@@ -44,6 +44,11 @@
                             max: 4
                         }
                     },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
                     interaction: {
                         mode: 'index'
                     },
@@ -51,6 +56,26 @@
                     maintainAspectRatio: false,
                     width: 400,
                 },
+            });
+
+            const toggleButtons = document.querySelectorAll(".toggle-dataset");
+
+            toggleButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const datasetLabel = this.getAttribute("data-dataset");
+
+                    const dataset = myChart.data.datasets.find(ds => ds.label === datasetLabel);
+
+                    if (dataset) {
+                        dataset.hidden = !dataset.hidden;
+
+                        myChart.update();
+
+                        this.classList.toggle("bg-blue-600");
+                        this.classList.toggle("bg-blue-300");
+
+                    }
+                });
             });
         });
     </script>

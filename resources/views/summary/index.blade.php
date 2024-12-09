@@ -20,52 +20,17 @@
             <div class="flex flex-row w-full p-3 justify-between">
                 <div class="flex gap-2">
                     <div class="">
-                        @if (request()->routeIs('summary.index') && request()->route('material') == 'all')
-                            <a href="{{ route('summary.index', ['material' => 'all', 'date_plan' => $date]) }}"
-                               class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
-                        @else
-                            <a href="{{ route('summary.index', ['material' => 'all', 'date_plan' => $date]) }}"
-                               class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВСЕ</a>
-                        @endif
+                        <button data-dataset="бетон" class="toggle-dataset rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</button>
                     </div>
                     <div>
-                        @if (request()->routeIs('summary.index') && request()->route('material') == 'block')
-                            <a href="{{ route('summary.index', ['material' => 'block', 'date_plan' => $date]) }}"
-                               class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
-                        @else
-                            <a href="{{ route('summary.index', ['material' => 'block', 'date_plan' => $date]) }}"
-                               class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</a>
-                        @endif
+                        <button data-dataset="блок" class="toggle-dataset rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</button>
                     </div>
                     <div>
-                        @if (request()->routeIs('summary.index') && request()->route('material') == 'concerte')
-                            <a href="{{ route('summary.index', ['material' => 'concerte', 'date_plan' => $date]) }}"
-                               class="rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
-                        @else
-                            <a href="{{ route('summary.index', ['material' => 'concerte', 'date_plan' => $date]) }}"
-                               class="rounded bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</a>
-                        @endif
+                        <button data-dataset="доставка" class="toggle-dataset rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ДОСТАВКА</button>
                     </div>
-                </div>
-
-                <div class="flex px-3 text-center font-bold">
-                    <div class="flex gap-2">
-                        <div class="font-medium mx-1 bg-yellow-200 rounded-md px-2">
-                            Кол-во: <span id="QuantityProduct">0</span>
-                        </div>
-                        <div class="font-medium mx-1 bg-green-200 rounded-md px-2">
-                            Отг-но: <span id="QuantityShipment">0</span>
-                        </div>
-                        <div class="font-medium mx-1 bg-red-200 rounded-md px-2">
-                            Остаток: <span id="QuantityResidual">0</span>
-                        </div>
-                    </div>
-                    <a href="{{ route('summary.index', ['material' => request()->route('material'), 'date_plan' => $datePrev]) }}" class="mx-2 text-lg">&#9668;</a>
-                    <p class="mx-2 text-lg">{{ $date }}</p>
-                    <a href="{{ route('summary.index', ['material' => request()->route('material'), 'date_plan' => $dateNext]) }}" class="mx-2 text-lg">&#9658;</a>
                 </div>
             </div>
-            @include('dashboard.components.canvas', ['date' => $date])
+            @include('summary.canvas')
         </div>
         <div class="flex flex-wrap mt-5">
             <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4 sm:pr-2">
