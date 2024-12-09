@@ -90,7 +90,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ms:import-contact --all')->dailyAt('01:00');
 
         $schedule->command('app:set-errors')->daily();
-        $schedule->command('app:fill-corrects-and-positions')->everyTenMinutes();
+        $schedule->command('app:fill-corrects-and-positions')->daily();
     }
 
     protected function commands(): void
