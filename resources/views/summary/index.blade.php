@@ -18,7 +18,7 @@
 
         <div class="flex flex-col basis-3/4 bg-white rounded-md shadow overflow-x-auto">
             <div class="flex flex-row w-full p-3 justify-between">
-                <div class="flex gap-2">
+                <div class="flex flex-wrap gap-1 flex-row items-start">
                     <div class="">
                         <button data-dataset="бетон" class="toggle-dataset rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</button>
                     </div>
@@ -27,6 +27,27 @@
                     </div>
                     <div>
                         <button data-dataset="доставка" class="toggle-dataset rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ДОСТАВКА</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Сделок амо" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">СДЕЛОК АМО</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Закрыто сделок" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ЗАКРЫТО СДЕЛОК</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Успешных сделок" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">УСПЕШНЫХ СДЕЛОК</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Циклы" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ЦИКЛЫ</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Входящие звонки" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВХОДЯЩИЕ ЗВОНКИ</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Исходящие звонки" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ИСХОДЯЩИЕ ЗВОНКИ</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Беседы" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕСЕДЫ</button>
                     </div>
                 </div>
             </div>
