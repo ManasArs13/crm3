@@ -222,7 +222,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/processing/products', [ProcessingController::class, 'products'])->name('processings.products');
     Route::get('/processing/materials', [ProcessingController::class, 'materials'])->name('processings.materials');
 
-    Route::get('/summary/{material}', [SummaryController::class, 'index'])->where('material', 'all|block|concerte')->name('summary.index');
+    Route::get('/summary', [SummaryController::class, 'index'])->name('summary.index');
     Route::get('/summary/remains', [SummaryController::class, 'remains'])->name('summary.remains');
 
 
