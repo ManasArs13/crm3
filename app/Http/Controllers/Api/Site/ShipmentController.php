@@ -27,7 +27,9 @@ class ShipmentController extends Controller
                 '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12',
             ];
         } elseif ($period === 'week') {
-            $labels = range(1, 52);
+            $labels = array_map(function($week) {
+                return str_pad($week, 2, '0', STR_PAD_LEFT); // Добавляем ведущий ноль
+            }, range(1, 52));
         }
 
         // Материалы
