@@ -50,6 +50,12 @@
                         <button data-dataset="Беседы" class="toggle-dataset rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕСЕДЫ</button>
                     </div>
                 </div>
+                <div class="flex flex-row gap-1 w-100">
+                    <select id="period" class="select-default border border-solid border-neutral-300 rounded w-full py-2">
+                        <option value="month">Месяц</option>
+                        <option value="week">Неделя</option>
+                    </select>
+                </div>
             </div>
             @include('summary.canvas')
         </div>
