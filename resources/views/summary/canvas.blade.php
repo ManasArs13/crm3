@@ -24,6 +24,18 @@
 
                 if (myChart) {
                     myChart.destroy();
+
+                    let materialBtns = document.querySelectorAll('.toggle-default-set');
+                    let OtherBtns = document.querySelectorAll('.toggle-default-delete');
+
+                    materialBtns.forEach(element => {
+                        element.classList.remove("bg-blue-300");
+                        element.classList.add("bg-blue-600");
+                    });
+                    OtherBtns.forEach(element => {
+                        element.classList.remove("bg-blue-600");
+                        element.classList.add("bg-blue-300");
+                    });
                 }
 
                 myChart = new Chart(ctx, {
