@@ -16,8 +16,50 @@
         {{-- header --}}
 
 
-        @include('summary.canvas')
-        <div class="flex flex-wrap">
+        <div class="flex flex-col basis-3/4 bg-white rounded-md shadow overflow-x-auto">
+            <div class="flex flex-row w-full p-3 justify-between">
+                <div class="flex flex-wrap gap-1 flex-row items-start">
+                    <div class="">
+                        <button data-dataset="бетон" class="toggle-dataset toggle-default-set rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕТОН</button>
+                    </div>
+                    <div>
+                        <button data-dataset="блок" class="toggle-dataset toggle-default-set rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЛОК</button>
+                    </div>
+                    <div>
+                        <button data-dataset="доставка" class="toggle-dataset toggle-default-set rounded bg-blue-600 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ДОСТАВКА</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Сделок амо" class="toggle-dataset toggle-default-delete rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">СДЕЛОК АМО</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Закрыто сделок" class="toggle-dataset toggle-default-delete rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ЗАКРЫТО СДЕЛОК</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Успешных сделок" class="toggle-dataset toggle-default-delete rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">УСПЕШНЫХ СДЕЛОК</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Циклы" class="toggle-dataset toggle-default-delete rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ЦИКЛЫ</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Входящие звонки" class="toggle-dataset toggle-default-delete rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ВХОДЯЩИЕ ЗВОНКИ</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Исходящие звонки" class="toggle-dataset toggle-default-delete rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">ИСХОДЯЩИЕ ЗВОНКИ</button>
+                    </div>
+                    <div>
+                        <button data-dataset="Беседы" class="toggle-dataset toggle-default-delete rounded bg-blue-300 px-6 pb-2 pt-2 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700">БЕСЕДЫ</button>
+                    </div>
+                </div>
+                <div class="flex flex-row gap-1 pl-5 min-w-[130px] w-[130px] max-h-[39px]">
+                    <select id="period" class="select-default border border-solid border-neutral-300 rounded w-full py-2 cursor-pointer">
+                        <option value="month">Месяц</option>
+                        <option value="week">Неделя</option>
+                    </select>
+                </div>
+            </div>
+            @include('summary.canvas')
+        </div>
+        <div class="flex flex-wrap mt-5">
             <div class="CEB__wrapTable mb-5 w-full md:w-1/2 xl:w-1/4 sm:pr-2">
                 <table class="sum border w-full">
                     <tr>

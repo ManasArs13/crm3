@@ -48,24 +48,9 @@
                             <thead>
                             <tr class="bg-neutral-200 font-semibold py-2">
                                 <th scope="col" class="px-5 py-2 md:py-4 text-left"></th>
-                                @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-left">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'name', 'orderBy' => 'desc']) }}">{{ __('column.name') }}</a>
-                                        @if (isset($column) && $column == 'name' && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-left">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'name', 'orderBy' => 'asc']) }}">{{ __('column.name') }}</a>
-                                        @if (isset($column) && $column == 'name' && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
-                                    </th>
-                                @endif
-
+                                <th scope="col" class="px-5 py-2 md:py-4 text-left">
+                                    {{ __('column.name') }}
+                                </th>
                                 <th scope="col" class="px-5 py-2 md:py-4">
                                     {{ __('column.status_id') }}
                                 </th>
@@ -75,82 +60,23 @@
                                 <th scope="col" class="px-5 py-2 md:py-4 text-right">
                                     {{ __('column.count_quantity') }}
                                 </th>
-
-                                @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-right">
-                                        <a class="text-black text-right"
-                                           href="{{ route($urlFilter, ['column' => 'residual_norm', 'orderBy' => 'desc']) }}">{{ __('column.residual_norm') }}</a>
-                                        @if (isset($column) && $column == 'residual_norm' && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'residual_norm', 'orderBy' => 'asc']) }}">{{ __('column.residual_norm') }}</a>
-                                        @if (isset($column) && $column == 'residual_norm' && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
-                                    </th>
-                                @endif
+                                <th scope="col" class="px-5 py-2 md:py-4 text-right">
+                                    {{ __('column.residual_norm') }}
+                                </th>
 
                                 @if (url()->current() == route('residual.blocksProducts'))
-
-                                    @if (isset($orderBy) && $orderBy == 'desc')
-                                        <th scope="col" class="px-5 py-2 md:py-4 text-center">
-                                            <a class="text-black"
-                                               href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'desc']) }}">{{ __('column.materials') }}</a>
-                                            @if (isset($column) && $column == 'materials' && $orderBy == 'desc')
-                                                &#9650;
-                                            @endif
-                                        </th>
-                                    @else
-                                        <th scope="col" class="px-5 py-2 md:py-4 text-center">
-                                            <a class="text-black"
-                                               href="{{ route($urlFilter, ['column' => 'materials', 'orderBy' => 'asc']) }}">{{ __('column.materials') }}</a>
-                                            @if (isset($column) && $column == 'materials' && $orderBy == 'asc')
-                                                &#9660;
-                                            @endif
-                                        </th>
-                                    @endif
-
-                                @endif
-
-                                @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'residual', 'orderBy' => 'desc']) }}">{{ __('column.residual') }}</a>
-                                        @if (isset($column) && $column == 'residual' && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'residual', 'orderBy' => 'asc']) }}">{{ __('column.residual') }}</a>
-                                        @if (isset($column) && $column == 'residual' && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
+                                    <th scope="col" class="px-5 py-2 md:py-4 text-center">
+                                        {{ __('column.materials') }}
                                     </th>
                                 @endif
 
-                                @if (isset($orderBy) && $orderBy == 'desc')
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'enough_days', 'orderBy' => 'desc']) }}">{{ __('column.enough_days') }}</a>
-                                        @if (isset($column) && $column == 'enough_days' && $orderBy == 'desc')
-                                            &#9650;
-                                        @endif
-                                    </th>
-                                @else
-                                    <th scope="col" class="px-5 py-2 md:py-4 text-right">
-                                        <a class="text-black"
-                                           href="{{ route($urlFilter, ['column' => 'enough_days', 'orderBy' => 'asc']) }}">{{ __('column.enough_days') }}</a>
-                                        @if (isset($column) && $column == 'enough_days' && $orderBy == 'asc')
-                                            &#9660;
-                                        @endif
-                                    </th>
-                                @endif
+                                <th scope="col" class="px-5 py-2 md:py-4 text-right">
+                                    {{ __('column.residual') }}
+                                </th>
+
+                                <th scope="col" class="px-5 py-2 md:py-4 text-right">
+                                    {{ __('column.enough_days') }}
+                                </th>
 
                                 <th scope="col" class="px-5 py-2 md:py-4  text-right">
                                     {{ __('column.need') }}

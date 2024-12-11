@@ -40,6 +40,7 @@ class DashboardService
             "positions_count",
             //'is_demand',
             "residual_count",
+            "n",
             "comment",
             "delivery_id",
             //            "ms_link",
@@ -51,12 +52,18 @@ class DashboardService
     public function dashboard($request): View
     {
         $urlShow = "order.show";
+        $pageMaterial = Product::CONCRETE;
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
         } else {
             $date = date('Y-m-d');
         }
+
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+        $startOfMonth = Carbon::create($year, $month, 1);
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $date1 = new DateTime($date);
         $date2 = new DateTime($date);
@@ -116,6 +123,39 @@ class DashboardService
             ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
+
+
+        // Количество рейсов текущего месяца
+        $allFlights = [];
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'), // Только день
+                'shipments_count' => 0,
+                'routes_count' => 0,
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE)->orWhere('building_material', Product::BLOCK);
+                });
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        foreach ($shipmentsMount as $row) {
+            $allFlights[$row->day] = [
+                'day' => date('d', strtotime($row->day)), // Только день
+                'shipments_count' => $row->shipments_count,
+                'routes_count' => $row->routes_count,
+            ];
+        }
+
 
         if ($date > date('Y-m-d')) {
 
@@ -238,7 +278,9 @@ class DashboardService
             'date',
             'transports',
             'shifts',
-            'residualWidget'
+            'residualWidget',
+            'allFlights',
+            'pageMaterial'
         ));
     }
 
@@ -246,6 +288,7 @@ class DashboardService
     {
         $arUrl = explode("/", session('_previous.url'));
         $referer = explode("?", $arUrl[3])[0];
+        $referer2 = isset($arUrl[4]) ? explode("?", $arUrl[4])[0] : null;
         $roundPallet = Option::where('code', '=', "round_number")->first()?->value;
 
         if ($date_plan) {
@@ -306,11 +349,11 @@ class DashboardService
         $shipments = Shipment::select('id', 'created_at')->with('products')
             ->whereDate('created_at', $date);
 
-        if ($referer == 'dashboard') {
+        if ($referer == 'dashboard' || ($referer == 'summary' && $referer2 == 'all')) {
 
             $orders = $orders->get();
             $shipments = $shipments->get();
-        } else if ($referer == 'dashboard-2') {
+        } else if ($referer == 'dashboard-2' || ($referer == 'summary' && $referer2 == 'block')) {
 
             $orders = $orders->whereHas('positions', function ($query) {
                 $query->whereHas('product', function ($queries) {
@@ -325,7 +368,7 @@ class DashboardService
             })->get();
 
             $count = 'count_pallets';
-        } else if ($referer == 'dashboard-3') {
+        } else if ($referer == 'dashboard-3' || ($referer == 'summary' && $referer2 == 'concerte')) {
 
             $orders = $orders->whereHas('positions', function ($query) {
                 $query->whereHas('product', function ($queries) {
@@ -367,7 +410,7 @@ class DashboardService
 
 
 
-                if ($referer == 'dashboard-3') {
+                if ($referer == 'dashboard-3' || ($referer == 'summary' && $referer2 == 'concerte')) {
 
                     $orders_whereBetwen = $orders->whereBetween('date_plan', [$day . ' ' . $thisTime, $day . ' ' . $labels[$nextKey]])->all();
 
@@ -474,12 +517,18 @@ class DashboardService
     private function getBlockOrder($request): View
     {
         $urlShow = "order.show";
+        $pageMaterial = Product::BLOCK;
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
         } else {
             $date = date('Y-m-d');
         }
+
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+        $startOfMonth = Carbon::create($year, $month, 1);
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $date1 = new DateTime($date);
         $date2 = new DateTime($date);
@@ -549,6 +598,37 @@ class DashboardService
             ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
+
+        // Количество рейсов текущего месяца
+        $allFlights = [];
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'), // Только день
+                'shipments_count' => 0,
+                'routes_count' => 0,
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::BLOCK);
+                });
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        foreach ($shipmentsMount as $row) {
+            $allFlights[$row->day] = [
+                'day' => date('d', strtotime($row->day)), // Только день
+                'shipments_count' => $row->shipments_count,
+                'routes_count' => $row->routes_count,
+            ];
+        }
 
 
 
@@ -682,19 +762,27 @@ class DashboardService
             'shipments',
             'transports',
             'shifts',
-            'residualWidget'
+            'residualWidget',
+            'allFlights',
+            'pageMaterial'
         ));
     }
 
     private function getConcreteOrder($request): View
     {
         $urlShow = "order.show";
+        $pageMaterial = Product::CONCRETE;
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
         } else {
             $date = date('Y-m-d');
         }
+
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+        $startOfMonth = Carbon::create($year, $month, 1);
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $date1 = new DateTime($date);
         $date2 = new DateTime($date);
@@ -791,6 +879,38 @@ class DashboardService
             ->sortBy(function ($groupedShipments) {
                 return $groupedShipments->first()['time_to_return'];
             });
+
+
+        // Количество рейсов текущего месяца
+        $allFlights = [];
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'), // Только день
+                'shipments_count' => 0,
+                'routes_count' => 0,
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
+            ->whereHas('products', function ($query) {
+                $query->whereHas('product', function ($queries) {
+                    $queries->where('building_material', Product::CONCRETE);
+                });
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        foreach ($shipmentsMount as $row) {
+            $allFlights[$row->day] = [
+                'day' => date('d', strtotime($row->day)), // Только день
+                'shipments_count' => $row->shipments_count,
+                'routes_count' => $row->routes_count,
+            ];
+        }
 
 
 
@@ -912,7 +1032,9 @@ class DashboardService
             'transports',
             'shifts',
             'residual',
-            'orderCount'
+            'orderCount',
+            'allFlights',
+            'pageMaterial'
         ));
     }
 

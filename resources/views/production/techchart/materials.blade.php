@@ -58,56 +58,59 @@
 
             {{-- body --}}
             <div class="flex flex-col w-100 p-1 bg-white overflow-x-auto">
-                <table class="text-left text-md text-nowrap">
+                <table class="text-left text-md text-nowrap" id="chartsTable">
                     <thead>
                         <tr class="bg-neutral-200 font-semibold">
-                            <th scope="col" class="px-6 py-2">
-                                {{ __('column.id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2">
-                                {{ __('column.techchart_id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2">
-                                {{ __('column.product_id') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2">
-                                {{ __('column.quantity') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2">
-                                {{ __('column.created_at') }}
-                            </th>
-                            <th scope="col" class="px-6 py-2">
-                                {{ __('column.updated_at') }}
-                            </th>
+                            @foreach($selectedColumns as $column)
+                                @if(isset($orderBy) && $orderBy == 'desc')
+                                    <th scope="col" class="px-6 py-2">
+                                        <a class="text-black"
+                                           href="{{ request()->fullUrlWithQuery(['column' => $column, 'orderBy' => 'desc']) }}">{{ __('column.' . $column) }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $column && $orderBy == 'desc')
+                                            &#9650;
+                                        @endif
+                                    </th>
+                                @else
+                                    <th scope="col" class="px-6 py-2">
+                                        <a class="text-black"
+                                           href="{{ request()->fullUrlWithQuery(['column' => $column, 'orderBy' => 'asc']) }}">{{ __('column.' . $column) }}</a>
+                                        @if (isset($selectColumn) && $selectColumn == $column && $orderBy == 'asc')
+                                            &#9660;
+                                        @endif
+                                    </th>
+                                @endif
+                            @endforeach
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach ($tech_chart_materials as $product)
                             <tr class="border-b-2">
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->id }}
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    <a class="text-blue-700 hover:text-blue-500"
-                                    href="{{ route('techcharts.show', ['techchart' => $product->tech_chart_id]) }}">
-                                        {{ $product->tech_chart_id }}
-                                    </a>
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    <a href="{{ route('product.show', ['product' => $product->product_id]) }}">
-                                        {{ $product->product_id }}
-                                    </a>
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->quantity }}
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->created_at }}
-                                </td>
-                                <td class="break-all max-w-96 overflow-hidden px-6 py-2">
-                                    {{ $product->updated_at }}
-                                </td>
+                                @foreach($selectedColumns as $column)
+                                    @switch($column)
+                                        @case('tech_chart_id')
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                                <a class="text-blue-700 hover:text-blue-500"
+                                                   href="{{ route('techcharts.show', ['techchart' => $product->tech_chart_id]) }}">
+                                                    {{ $product->tech_chart_id }}
+                                                </a>
+                                            </td>
+                                        @break
+                                        @case('product_id')
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                                <a class="text-blue-700 hover:text-blue-500"
+                                                   href="{{ route('product.show', ['product' => $product->product_id]) }}">
+                                                    {{ $product->product_id }}
+                                                </a>
+                                            </td>
+                                        @break
+                                        @default
+                                            <td class="break-all max-w-96 overflow-hidden px-6 py-2">
+                                                {{ $product->$column }}
+                                            </td>
+                                        @break
+                                    @endswitch
+                                @endforeach
                             </tr>
                         @endforeach
                     </tbody>
@@ -122,4 +125,148 @@
         </div>
     </div>
 
+
+    <script type="text/javascript">
+        function orderBy(column) {
+
+            let sortedRows = Array.from(chartsTable.rows).slice(1, -1);
+            let totalRow = Array.from(chartsTable.rows).slice(chartsTable.rows.length - 1);
+
+
+            let th_id = document.getElementById('th_id');
+            let th_techchart_id = document.getElementById('th_techchart_id');
+            let th_product_id = document.getElementById('th_product_id');
+            let th_quantity = document.getElementById('th_quantity');
+            let th_created_at = document.getElementById('th_created_at');
+            let th_updated_at = document.getElementById('th_updated_at');
+
+            switch (column) {
+
+                case 'id':
+                    if (th_id.innerText == `№ ↓`) {
+                        th_id.innerText = `№ ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) > parseInt(rowB.cells[0]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_id.innerText = `№ ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[0].innerText) < parseInt(rowB.cells[0]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'techchart_id':
+                    if (th_techchart_id.innerText == `Карта ↓`) {
+                        th_techchart_id.innerText = `Карта ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) > parseInt(rowB.cells[1]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_techchart_id.innerText = `Карта ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[1].innerText) < parseInt(rowB.cells[1]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'product_id':
+                    if (th_product_id.innerText == `Товар ↓`) {
+                        th_product_id.innerText = `Товар ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) > parseInt(rowB.cells[2]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_product_id.innerText = `Товар ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[2].innerText) < parseInt(rowB.cells[2]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'quantity':
+                    if (th_quantity.innerText == `Количество ↓`) {
+                        th_quantity.innerText = `Количество ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) > parseInt(rowB.cells[3]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_quantity.innerText = `Количество ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[3].innerText) < parseInt(rowB.cells[3]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_created_at.innerText = 'Дата создания';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'created_at':
+                    if (th_created_at.innerText == `Дата создания ↓`) {
+                        th_created_at.innerText = `Дата создания ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) > parseInt(rowB.cells[4]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_created_at.innerText = `Дата создания ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[4].innerText) < parseInt(rowB.cells[4]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_updated_at.innerText = 'Дата обновления';
+                    break;
+
+                case 'updated_at':
+                    if (th_updated_at.innerText == `Дата обновления ↓`) {
+                        th_updated_at.innerText = `Дата обновления ↑`
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) > parseInt(rowB.cells[5]
+                            .innerText) ? 1 : -
+                            1);
+                    } else {
+                        th_updated_at.innerText = `Дата обновления ↓`;
+                        sortedRows.sort((rowA, rowB) => parseInt(rowA.cells[5].innerText) < parseInt(rowB.cells[5]
+                            .innerText) ? 1 : -
+                            1);
+                    }
+
+                    th_id.innerText = '№';
+                    th_techchart_id.innerText = 'Карта';
+                    th_product_id.innerText = 'Товар';
+                    th_quantity.innerText = 'Количество';
+                    th_created_at.innerText = 'Дата создания';
+                    break;
+
+
+            }
+
+            sortedRows.push(totalRow[0])
+            chartsTable.tBodies[0].append(...sortedRows);
+        }
+    </script>
 </x-app-layout>
