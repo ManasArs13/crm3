@@ -14,4 +14,9 @@ class DeliveryController extends Controller
 
         return response()->json($deliveries);
     }
+
+    public function getBetonPrice($id)
+    {
+        return  Delivery::where("id", $id)->first()?->betonprice;
+    }
 }
