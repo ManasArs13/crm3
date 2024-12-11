@@ -52,7 +52,7 @@ class DashboardService
     public function dashboard($request): View
     {
         $urlShow = "order.show";
-        $pageMaterial = Product::CONCRETE;
+        $pageMaterial = 'all';
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
