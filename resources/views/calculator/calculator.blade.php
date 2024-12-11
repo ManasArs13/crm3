@@ -223,7 +223,8 @@
                 let select__head = document.getElementsByClassName('select__head');
                 let positions_6_price = document.getElementsByClassName('price_client_6');
                 let price_total_6 = document.getElementsByClassName('price_total_6');
-                let type=document.querySelector("#calcBlock .vehicle_type").options[document.querySelector("#calcBlock .vehicle_type").selectedIndex].text;                ;
+                let type=document.querySelector("#calcBlock .vehicle_type").options[document.querySelector("#calcBlock .vehicle_type").selectedIndex].text;
+                let weight=document.querySelector("#calcBlock #weight_total").innerText;            ;
 
                 let PRODUCT_6 = ``;
                 if (positions_6_quantity[1].value !== '0') {
@@ -337,7 +338,7 @@
                     PRODUCT_5_1 +
                     PRODUCT_5 + '\n' +
                     `Итого:  ${price_total} р.` + '\n' +
-                    `Доставка:`+type+` ${price_delivery} р.` + `\n` +
+                    `Доставка: `+type+ ` `+weight+` тонн(ы) ${price_delivery} р.` + `\n` +
                     `Итого с доставкой ${total} р.`;
 
                 copy_button = copy_text_button[1];
@@ -346,7 +347,8 @@
 
             } else {
                 // Конструкция стены
-                let type=document.querySelector("#calcFence .vehicle_type").options[document.querySelector("#calcFence .vehicle_type").selectedIndex].text;                ;
+                let type=document.querySelector("#calcFence .vehicle_type").options[document.querySelector("#calcFence .vehicle_type").selectedIndex].text;
+                let weight=document.querySelector("#calcFence #weight_total").innerText;
 
                 let CEB__textReserve = document.getElementById('CEB__textReserve').value;
                 let ZAPAS = `Запас ${CEB__textReserve}%;`;
@@ -445,7 +447,7 @@
                     PRODUCT_11 + '\n' +
                     //    PRODUCT_pallet + '\n\n' +
                     `Итог: ${price_total} р.` + '\n' +
-                    `Доставка: `+type+` ${price_delivery} р.` + `\n` +
+                    `Доставка: `+type+ ` `+weight+` тонн(ы) ${price_delivery} р.` + `\n` +
                     `Итого с доставкой ${total} р.`;
 
                 copy_button = copy_text_button[0];
