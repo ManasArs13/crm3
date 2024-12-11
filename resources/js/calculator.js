@@ -400,26 +400,26 @@ $(document).ready(function(){
         let deliveryId=4;
         $('[data-type="'+id+'"]').toggleClass("hidden");
 
-        if (checked && id=="service_686"){
-            let distanceSpan = $('.calcBeton .delivery').next().find('.select2-selection__rendered span');
-            if (distanceSpan.length)
-                deliveryId=distanceSpan.attr("data-delivery-id");
-            else
-                deliveryId=4;
+        // if (checked && id=="service_686"){
+        //     let distanceSpan = $('.calcBeton .delivery').next().find('.select2-selection__rendered span');
+        //     if (distanceSpan.length)
+        //         deliveryId=distanceSpan.attr("data-delivery-id");
+        //     else
+        //         deliveryId=4;
 
-            $.ajax({
-                url: "/api/deliveries/get/betonprice/"+deliveryId,
-                type: "GET",
-                success: function(betonPrice) {
-                    let $price= $("[name='services[686][price]']");
-                    $price.val(betonPrice);
-                    $price.parent().next().find(".deliveryPrice-tt").val(betonPrice*8);
-                },
-                error: function(response) {
-                    console.log(response.responseText);
-                },
-            });
-        }
+        //     $.ajax({
+        //         url: "/api/deliveries/get/betonprice/"+deliveryId,
+        //         type: "GET",
+        //         success: function(betonPrice) {
+        //             let $price= $("[name='services[686][price]']");
+        //             $price.val(betonPrice);
+        //             $price.parent().next().find(".deliveryPrice-tt").val(betonPrice*8);
+        //         },
+        //         error: function(response) {
+        //             console.log(response.responseText);
+        //         },
+        //     });
+        // }
 
 
 
