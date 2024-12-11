@@ -248,6 +248,7 @@ class ShipmentController extends Controller
             ->where('created_at','>=', $year.'-01-01 00:00:00')
             ->where('type', 'incoming_call')
             ->where('duration', '>', 0)
+            ->where('employee_amo_id', 11)
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "' . $dateFormat . '")'))
             ->orderBy('period')
             ->get();
@@ -279,6 +280,7 @@ class ShipmentController extends Controller
             ->where('created_at','>=', $year.'-01-01 00:00:00')
             ->where('type', 'outgoing_call')
             ->where('duration', '>', 0)
+            ->where('employee_amo_id', 11)
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "' . $dateFormat . '")'))
             ->orderBy('period')
             ->get();
@@ -308,6 +310,7 @@ class ShipmentController extends Controller
         $uniqueContactsRecords = DB::table('talk_amos')
             ->selectRaw('DATE_FORMAT(created_at, "' . $dateFormat . '") as period, COUNT(DISTINCT contact_amo_id) as count')
             ->where('created_at','>=', $year.'-01-01 00:00:00')
+            ->where('employee_amo_id', 11)
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "' . $dateFormat . '")'))
             ->orderBy('period')
             ->get();

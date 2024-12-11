@@ -205,7 +205,7 @@
 
                                     @case('n')
                                         @if($pageMaterial == 'бетон')
-                                            {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : 'Пусто' }}
+                                            {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : '' }}
                                         @endif
                                     @break
 
@@ -402,14 +402,14 @@
                                             {{ $products_quantity }}
                                         @break
 
-                                        @case('n')
-                                            @if($pageMaterial == 'бетон')
-                                                {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : 'Пусто' }}
-                                            @endif
-                                        @break
-
                                         @case('residual_count')
                                             {{ $products_quantity - $products_shipped_count }}
+                                        @break
+
+                                        @case('n')
+                                            @if($pageMaterial == 'бетон')
+                                                {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : '' }}
+                                            @endif
                                         @break
 
                                         @case($column == 'ms_link' && $entityItem->ms_id)
@@ -609,6 +609,12 @@
 
                                             @case('residual_count')
                                                 {{ $products_quantity - $products_shipped_count }}
+                                            @break
+
+                                            @case('n')
+                                                @if($pageMaterial == 'бетон')
+                                                    {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : '' }}
+                                                @endif
                                             @break
 
                                             @case($column == 'ms_link' && $entityItem->ms_id)
@@ -812,7 +818,7 @@
 
                                             @case('n')
                                                 @if($pageMaterial == 'бетон')
-                                                    {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : 'Пусто' }}
+                                                    {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : '' }}
                                                 @endif
                                             @break
 
