@@ -128,11 +128,13 @@ class CalculatorController extends Controller
 
         foreach ($products as $product) {
             $idCategory = $product->category_id;
-            $nameCategory = $product->category->name;
+            $nameCategory = $product->category->short_name;
 
-            if ($product->ms_id == "a656eb95-be75-11ee-0a80-15e100320243") {
+            if ($product->id == 396) {
                 $idCategory = $product->category_id . "_1";
                 $nameCategory = $product->name;
+            }elseif($product->category_id==5){
+                $nameCategory = "Стеновой блок (2x)";
             }
 
             $productsByGroup[$idCategory]["name"] = $nameCategory;
@@ -172,7 +174,7 @@ class CalculatorController extends Controller
             $productsByBeton[$product->id]["product"] = $product->ms_id;
         }
 
-        $servicesByBeton=Product::select("id", "ms_id", "name", "price")->whereIn("ms_id", ['06fc57e5-1454-11ef-0a80-03d600151c37','a21b0df3-5c55-11ee-0a80-0c81000d5f04','ac929382-6e7d-11ef-0a80-0680003a6a7e'])->orderBy("name", "asc")->get();
+        $servicesByBeton=Product::select("id", "ms_id", "name", "price")->whereIn("id", [590,594,686])->orderBy("name", "asc")->get();
 
         $contacts = Contact::whereDoesntHave('contact_categories', function ($q) {
             $q->where('contact_category_id', '=', '9');
