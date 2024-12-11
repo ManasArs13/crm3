@@ -36,7 +36,7 @@
                 </div>
                 <div class="sim">
                     <div class="input-sim input-weight">
-                        <input type="text" name="services[{{$type->id}}][quantity]" class="quantity-tt input input2"  value="{{ ($type->id==594)?2:1 }}">
+                        <input type="text" name="services[{{$type->id}}][quantity]" class="quantity-tt input input2"  value="{{ ($type->id==594)?2:(($type->id==686)?8:1) }}">
                     </div>
                     <div class="input-sim input-price">
                         <input type="text" name="services[{{$type->id}}][price]" class="price-tt input input2" value="{{$type->price}}">
