@@ -208,9 +208,9 @@
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     PRODUCT_BETON + `\n` +
-                    `Доставка:  ${delivery_quantity} * ${delivery_price} = ${price_delivery} р.` + `\n` +
+                    `Доставка: Тип доставки ${delivery_quantity} * ${delivery_price} = ${price_delivery} р.` + `\n` +
                     SERVICES_TEXT +
-                    `ИТОГО С ДОСТАВКОЙ ${total} р.`;
+                    `Итого с доставкой ${total} р.`;
 
                 copy_button = copy_text_button[2];
                 copy_text_button[0].innerText = 'скопировать в буфер обмена';
@@ -337,7 +337,7 @@
                     PRODUCT_5 + '\n' +
                     `Итого:  ${price_total} р.` + '\n' +
                     `Доставка: ${price_delivery} р.` + `\n` +
-                    `ИТОГО С ДОСТАВКОЙ ${total} р.`;
+                    `Итого с доставкой ${total} р.`;
 
                 copy_button = copy_text_button[1];
                 copy_text_button[2].innerText = 'скопировать в буфер обмена';
@@ -443,7 +443,7 @@
                     //    PRODUCT_pallet + '\n\n' +
                     `Итог: ${price_total} р.` + '\n' +
                     `Доставка: ${price_delivery} р.` + `\n` +
-                    `ИТОГО С ДОСТАВКОЙ ${total} р.`;
+                    `Итого с доставкой ${total} р.`;
 
                 copy_button = copy_text_button[0];
                 copy_text_button[2].innerText = 'скопировать в буфер обмена';
