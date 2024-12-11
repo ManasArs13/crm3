@@ -176,6 +176,11 @@
                 let select__head = document.getElementsByClassName('select__head');
                 let positions_beton_quantity =document.getElementById('calcBeton').querySelector('.change_js').value;
                 let price =document.getElementById('calcBeton').querySelector('.price_js').innerText;
+                let weight=document.querySelector("#calcBeton .change_js").value;
+                let distance=0;
+                let distanceTag=document.querySelector('#calcBeton .delivery').nextElementSibling.querySelector('.select2-selection__rendered span');
+                if (distanceTag)
+                    distance=distanceTag.getAttribute("data-distance");
 
                 let  delivery_quantity=document.getElementById('calcBeton').querySelector('.weight-tn').value;
                 let  delivery_price=document.getElementById('calcBeton').querySelector('.price-tn').value;
@@ -208,7 +213,7 @@
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     PRODUCT_BETON + `\n` +
-                    `Доставка: ${delivery_quantity} * ${delivery_price} = ${price_delivery} р.` + `\n` +
+                    `Доставка `+distance+`км `+weight+`тонн(ы): ${delivery_quantity} * ${delivery_price} = ${price_delivery} р.` + `\n` +
                     SERVICES_TEXT +
                     `Итого с доставкой ${total} р.`;
 
@@ -224,7 +229,11 @@
                 let positions_6_price = document.getElementsByClassName('price_client_6');
                 let price_total_6 = document.getElementsByClassName('price_total_6');
                 let type=document.querySelector("#calcBlock .vehicle_type").options[document.querySelector("#calcBlock .vehicle_type").selectedIndex].text;
-                let weight=document.querySelector("#calcBlock #weight_total").innerText;            ;
+                let weight=document.querySelector("#calcBlock #weight_total").innerText;
+                let distance=0;
+                let distanceTag=document.querySelector('#calcBlock .delivery').nextElementSibling.querySelector('.select2-selection__rendered span');
+                if (distanceTag)
+                    distance=distanceTag.getAttribute("data-distance");
 
                 let PRODUCT_6 = ``;
                 if (positions_6_quantity[1].value !== '0') {
@@ -338,7 +347,7 @@
                     PRODUCT_5_1 +
                     PRODUCT_5 + '\n' +
                     `Итого:  ${price_total} р.` + '\n' +
-                    `Доставка: `+type+ ` `+weight+` тонн(ы) ${price_delivery} р.` + `\n` +
+                    `Доставка `+type+ ` `+distance+`км `+weight+`тонн(ы): ${price_delivery} р.` + `\n` +
                     `Итого с доставкой ${total} р.`;
 
                 copy_button = copy_text_button[1];
@@ -349,6 +358,10 @@
                 // Конструкция стены
                 let type=document.querySelector("#calcFence .vehicle_type").options[document.querySelector("#calcFence .vehicle_type").selectedIndex].text;
                 let weight=document.querySelector("#calcFence #weight_total").innerText;
+                let distance=0;
+                let distanceTag=document.querySelector('#calcFence .delivery').nextElementSibling.querySelector('.select2-selection__rendered span');
+                if (distanceTag)
+                    distance=distanceTag.getAttribute("data-distance");
 
                 let CEB__textReserve = document.getElementById('CEB__textReserve').value;
                 let ZAPAS = `Запас ${CEB__textReserve}%;`;
@@ -446,8 +459,8 @@
                     PRODUCT_15 +
                     PRODUCT_11 + '\n' +
                     //    PRODUCT_pallet + '\n\n' +
-                    `Итог: ${price_total} р.` + '\n' +
-                    `Доставка: `+type+ ` `+weight+` тонн(ы) ${price_delivery} р.` + `\n` +
+                    `Итого: ${price_total} р.` + '\n' +
+                    `Доставка `+type+ ` `+distance+`км `+weight+`тонн(ы): ${price_delivery} р.` + `\n` +
                     `Итого с доставкой ${total} р.`;
 
                 copy_button = copy_text_button[0];
