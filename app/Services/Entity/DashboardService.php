@@ -40,6 +40,7 @@ class DashboardService
             "positions_count",
             //'is_demand',
             "residual_count",
+            "n",
             "comment",
             "delivery_id",
             //            "ms_link",
@@ -51,6 +52,7 @@ class DashboardService
     public function dashboard($request): View
     {
         $urlShow = "order.show";
+        $pageMaterial = Product::CONCRETE;
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
@@ -277,7 +279,8 @@ class DashboardService
             'transports',
             'shifts',
             'residualWidget',
-            'allFlights'
+            'allFlights',
+            'pageMaterial'
         ));
     }
 
@@ -514,6 +517,7 @@ class DashboardService
     private function getBlockOrder($request): View
     {
         $urlShow = "order.show";
+        $pageMaterial = Product::BLOCK;
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
@@ -759,13 +763,15 @@ class DashboardService
             'transports',
             'shifts',
             'residualWidget',
-            'allFlights'
+            'allFlights',
+            'pageMaterial'
         ));
     }
 
     private function getConcreteOrder($request): View
     {
         $urlShow = "order.show";
+        $pageMaterial = Product::CONCRETE;
 
         if (isset($request->date_plan)) {
             $date = $request->date_plan;
@@ -1027,7 +1033,8 @@ class DashboardService
             'shifts',
             'residual',
             'orderCount',
-            'allFlights'
+            'allFlights',
+            'pageMaterial'
         ));
     }
 

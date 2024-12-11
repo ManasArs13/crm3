@@ -9,7 +9,15 @@
                     @elseif($column == 'Статус' || $column == 'Ссылка МС' || $column == 'Отгружено')
                         style="text-align:center"
                     @else style="text-align:right" @endif>
-                        {{ $column }}</th>
+                        @if($key == 'residual_count')
+                            Ост
+                        @elseif($key == 'n')
+                            {{ $pageMaterial == 'бетон' ? 'Н' : '' }}
+                        @else
+                            {{ $column }}
+                        @endif
+
+                    </th>
                 @endforeach
             </tr>
         </thead>
@@ -193,6 +201,12 @@
 
                                     @case('residual_count')
                                         {{ $products_quantity - $products_shipped_count }}
+                                    @break
+
+                                    @case('n')
+                                        @if($pageMaterial == 'бетон')
+                                            {{ $entityItem->positions->contains('product_id', 594) ? 1 : 0 }}
+                                        @endif
                                     @break
 
                                     @case($column == 'ms_link' && $entityItem->ms_id)
@@ -386,6 +400,12 @@
 
                                         @case('positions_count')
                                             {{ $products_quantity }}
+                                        @break
+
+                                        @case('n')
+                                            @if($pageMaterial == 'бетон')
+                                                {{ $entityItem->positions->contains('product_id', 594) ? 1 : 0 }}
+                                            @endif
                                         @break
 
                                         @case('residual_count')
@@ -788,6 +808,12 @@
 
                                             @case('residual_count')
                                                 {{ $products_quantity - $products_shipped_count }}
+                                            @break
+
+                                            @case('n')
+                                                @if($pageMaterial == 'бетон')
+                                                    {{ $entityItem->positions->contains('product_id', 594) ? 1 : 0 }}
+                                                @endif
                                             @break
 
                                             @case($column == 'ms_link' && $entityItem->ms_id)
