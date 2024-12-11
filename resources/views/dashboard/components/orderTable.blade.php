@@ -102,7 +102,7 @@
                                     @break
 
                                     @case('delivery_id')
-                                        {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                        {{ $entityItem->delivery ? $entityItem->delivery->locality . ' (' . $entityItem->delivery->distance . ')' : '-' }}
                                     @break
 
                                     @case('transport_type_id')
@@ -205,7 +205,7 @@
 
                                     @case('n')
                                         @if($pageMaterial == 'бетон')
-                                            {{ $entityItem->positions->contains('product_id', 594) ? 1 : 0 }}
+                                            {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : 'Пусто' }}
                                         @endif
                                     @break
 
@@ -302,7 +302,7 @@
                                         @break
 
                                         @case('delivery_id')
-                                            {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                            {{ $entityItem->delivery ? $entityItem->delivery->locality . ' (' . $entityItem->delivery->distance . ')' : '-' }}
                                         @break
 
                                         @case('transport_type_id')
@@ -404,7 +404,7 @@
 
                                         @case('n')
                                             @if($pageMaterial == 'бетон')
-                                                {{ $entityItem->positions->contains('product_id', 594) ? 1 : 0 }}
+                                                {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : 'Пусто' }}
                                             @endif
                                         @break
 
@@ -505,7 +505,7 @@
                                             @break
 
                                             @case('delivery_id')
-                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                                {{ $entityItem->delivery ? $entityItem->delivery->locality . ' (' . $entityItem->delivery->distance . ')' : '-' }}
                                             @break
 
                                             @case('transport_type_id')
@@ -704,7 +704,7 @@
                                             @break
 
                                             @case('delivery_id')
-                                                {{ $entityItem->delivery ? $entityItem->delivery->name : '-' }}
+                                                {{ $entityItem->delivery ? $entityItem->delivery->locality . ' (' . $entityItem->delivery->distance . ')' : '-' }}
                                             @break
 
                                             @case('transport_type_id')
@@ -812,7 +812,7 @@
 
                                             @case('n')
                                                 @if($pageMaterial == 'бетон')
-                                                    {{ $entityItem->positions->contains('product_id', 594) ? 1 : 0 }}
+                                                    {{ $entityItem->positions->contains('product_id', 594) ? 'Н' : 'Пусто' }}
                                                 @endif
                                             @break
 
