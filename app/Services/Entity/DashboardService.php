@@ -832,7 +832,6 @@ class DashboardService
         $flightsByDaysTransport = $this->flightsByDaysTransport($startOfMonth, $endOfMonth, $year, $month, 'concrete');
 
 
-
         if ($date > date('Y-m-d')) {
 
             $orders = Order::query()->with('positions')
@@ -1139,7 +1138,6 @@ class DashboardService
             ];
             $startOfMonth->addDay();
         }
-
 
         $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, transport_id, COUNT(*) as flights_count')
             ->with('transport:name,id')
