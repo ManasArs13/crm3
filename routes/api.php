@@ -49,6 +49,7 @@ Route::post('/order_site/create', [SiteOrderController::class, 'setOrderFromCalc
 
 Route::get("/contact/get/balance", [App\Http\Controllers\Api\Site\ContactController::class,"getBalance"])->name("api.get.balance");
 Route::get("/shipping_price/get", [App\Http\Controllers\Api\Site\ShipingPriceController::class,"getPrice"])->name("api.get.shipping_price");
+Route::get("/deliveries/get/coords", [App\Http\Controllers\Api\Site\DeliveryController::class,"getCoords"])->name("api.get.coords");
 Route::get("/deliveries/get/name", [App\Http\Controllers\Api\Site\DeliveryController::class,"getByName"])->name("api.get.delivery");
 Route::get("/deliveries/get/betonprice/{id}", [App\Http\Controllers\Api\Site\DeliveryController::class,"getBetonPrice"])->name("api.get.delivery.betonprice");
 Route::get("/deliveries/set/kmFact/all", [App\Http\Controllers\Api\Site\DeliveryController::class,"setKmFact"])->name("api.set.delivery.kmFact");
