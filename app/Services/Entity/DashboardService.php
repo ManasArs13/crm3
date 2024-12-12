@@ -126,35 +126,8 @@ class DashboardService
 
 
         // Количество рейсов текущего месяца
-        $allFlights = [];
-
-        while ($startOfMonth <= $endOfMonth) {
-            $allFlights[$startOfMonth->format('Y-m-d')] = [
-                'day' => $startOfMonth->format('d'), // Только день
-                'shipments_count' => 0,
-                'routes_count' => 0,
-            ];
-            $startOfMonth->addDay();
-        }
-
-        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
-            ->whereHas('products', function ($query) {
-                $query->whereHas('product', function ($queries) {
-                    $queries->where('building_material', Product::CONCRETE)->orWhere('building_material', Product::BLOCK);
-                });
-            })
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->get();
-
-        foreach ($shipmentsMount as $row) {
-            $allFlights[$row->day] = [
-                'day' => date('d', strtotime($row->day)), // Только день
-                'shipments_count' => $row->shipments_count,
-                'routes_count' => $row->routes_count,
-            ];
-        }
+        $allFlights = $this->flightsByDays($startOfMonth, $endOfMonth, $year, $month, 'concrete_or_block');
+        $flightsByDaysTransport = $this->flightsByDaysTransport($startOfMonth, $endOfMonth, $year, $month, 'concrete_or_block');
 
 
         if ($date > date('Y-m-d')) {
@@ -280,7 +253,8 @@ class DashboardService
             'shifts',
             'residualWidget',
             'allFlights',
-            'pageMaterial'
+            'pageMaterial',
+            'flightsByDaysTransport'
         ));
     }
 
@@ -600,37 +574,8 @@ class DashboardService
             });
 
         // Количество рейсов текущего месяца
-        $allFlights = [];
-
-        while ($startOfMonth <= $endOfMonth) {
-            $allFlights[$startOfMonth->format('Y-m-d')] = [
-                'day' => $startOfMonth->format('d'), // Только день
-                'shipments_count' => 0,
-                'routes_count' => 0,
-            ];
-            $startOfMonth->addDay();
-        }
-
-        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
-            ->whereHas('products', function ($query) {
-                $query->whereHas('product', function ($queries) {
-                    $queries->where('building_material', Product::BLOCK);
-                });
-            })
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->get();
-
-        foreach ($shipmentsMount as $row) {
-            $allFlights[$row->day] = [
-                'day' => date('d', strtotime($row->day)), // Только день
-                'shipments_count' => $row->shipments_count,
-                'routes_count' => $row->routes_count,
-            ];
-        }
-
-
+        $allFlights = $this->flightsByDays($startOfMonth, $endOfMonth, $year, $month, 'block');
+        $flightsByDaysTransport = $this->flightsByDaysTransport($startOfMonth, $endOfMonth, $year, $month, 'block');
 
 
         if ($date > date('Y-m-d')) {
@@ -764,7 +709,8 @@ class DashboardService
             'shifts',
             'residualWidget',
             'allFlights',
-            'pageMaterial'
+            'pageMaterial',
+            'flightsByDaysTransport'
         ));
     }
 
@@ -882,38 +828,8 @@ class DashboardService
 
 
         // Количество рейсов текущего месяца
-        $allFlights = [];
-
-        while ($startOfMonth <= $endOfMonth) {
-            $allFlights[$startOfMonth->format('Y-m-d')] = [
-                'day' => $startOfMonth->format('d'), // Только день
-                'shipments_count' => 0,
-                'routes_count' => 0,
-            ];
-            $startOfMonth->addDay();
-        }
-
-        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
-            ->whereHas('products', function ($query) {
-                $query->whereHas('product', function ($queries) {
-                    $queries->where('building_material', Product::CONCRETE);
-                });
-            })
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->get();
-
-        foreach ($shipmentsMount as $row) {
-            $allFlights[$row->day] = [
-                'day' => date('d', strtotime($row->day)), // Только день
-                'shipments_count' => $row->shipments_count,
-                'routes_count' => $row->routes_count,
-            ];
-        }
-
-
-
+        $allFlights = $this->flightsByDays($startOfMonth, $endOfMonth, $year, $month, 'concrete');
+        $flightsByDaysTransport = $this->flightsByDaysTransport($startOfMonth, $endOfMonth, $year, $month, 'concrete');
 
 
         if ($date > date('Y-m-d')) {
@@ -1034,7 +950,8 @@ class DashboardService
             'residual',
             'orderCount',
             'allFlights',
-            'pageMaterial'
+            'pageMaterial',
+            'flightsByDaysTransport'
         ));
     }
 
@@ -1158,5 +1075,126 @@ class DashboardService
         }
 
         return ['residual' => $residual, 'orderCount' => $orderCount ];
+    }
+
+    public function flightsByDays($startOfMonth, $endOfMonth, $year, $month, $materialFilter){
+        $allFlights = [];
+        $startOfMonth = clone $startOfMonth;
+        $endOfMonth = clone $endOfMonth;
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'),
+                'shipments_count' => 0,
+                'routes_count' => 0,
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, COUNT(*) as shipments_count, COUNT(DISTINCT transport_id) as routes_count')
+            ->whereHas('products', function ($query) use ($materialFilter) {
+                $query->whereHas('product', function ($queries) use ($materialFilter) {
+                    switch ($materialFilter) {
+                        case 'concrete_or_block':
+                            $queries->where('building_material', Product::CONCRETE)
+                                ->orWhere('building_material', Product::BLOCK);
+                            break;
+
+                        case 'concrete':
+                            $queries->where('building_material', Product::CONCRETE);
+                            break;
+
+                        case 'block':
+                            $queries->where('building_material', Product::BLOCK);
+                            break;
+                    }
+                });
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        foreach ($shipmentsMount as $row) {
+            $allFlights[$row->day] = [
+                'day' => date('d', strtotime($row->day)),
+                'shipments_count' => $row->shipments_count,
+                'routes_count' => $row->routes_count,
+            ];
+        }
+        return $allFlights;
+    }
+
+    public function flightsByDaysTransport($startOfMonth, $endOfMonth, $year, $month, $materialFilter){
+        $allFlights = [];
+        $startOfMonth = clone $startOfMonth;
+        $endOfMonth = clone $endOfMonth;
+
+
+        while ($startOfMonth <= $endOfMonth) {
+            $allFlights[$startOfMonth->format('Y-m-d')] = [
+                'day' => $startOfMonth->format('d'),
+                'transports' => [],
+            ];
+            $startOfMonth->addDay();
+        }
+
+        $shipmentsMount = Shipment::selectRaw('DATE(created_at) as day, transport_id, COUNT(*) as flights_count')
+            ->with('transport:name,id')
+            ->whereHas('products', function ($query) use ($materialFilter) {
+                $query->whereHas('product', function ($queries) use ($materialFilter) {
+                    switch ($materialFilter) {
+                        case 'concrete_or_block':
+                            $queries->where('building_material', Product::CONCRETE)
+                                ->orWhere('building_material', Product::BLOCK);
+                            break;
+
+                        case 'concrete':
+                            $queries->where('building_material', Product::CONCRETE);
+                            break;
+
+                        case 'block':
+                            $queries->where('building_material', Product::BLOCK);
+                            break;
+                    }
+                });
+            })
+            ->whereHas('transport', function($query){
+                $query->where('main', 1);
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->groupBy(DB::raw('DATE(created_at)'), 'transport_id')
+            ->get();
+
+
+        $transports = [];
+        $transportNames = [];
+
+        foreach ($shipmentsMount as $row) {
+            $day = $row->day;
+            $transport = $row->transport;
+
+            if ($transport) {
+                $transportName = $transport->name;
+                $transportId = $row->transport_id;
+
+
+                if (!isset($transportNames[$transportId])) {
+                    $transportNames[$transportId] = $transportName;
+                }
+
+                if (!isset($transports[$transportName])) {
+                    $transports[$transportName] = array_fill_keys(array_keys($allFlights), 0);
+                }
+
+                $transports[$transportName][$day] = $row->flights_count;
+            }
+        }
+
+        return [
+            'days' => array_keys($allFlights),
+            'transports' => $transports,
+        ];
     }
 }
