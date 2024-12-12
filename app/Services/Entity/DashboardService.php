@@ -1159,6 +1159,9 @@ class DashboardService
                     }
                 });
             })
+            ->whereHas('transport', function($query){
+                $query->where('main', 1);
+            })
             ->whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
             ->groupBy(DB::raw('DATE(created_at)'), 'transport_id')

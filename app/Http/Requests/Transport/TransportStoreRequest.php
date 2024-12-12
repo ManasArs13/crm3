@@ -14,6 +14,15 @@ class TransportStoreRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        if (!$this->has('main')) {
+            $this->merge([
+                'main' => 0,
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,7 +39,8 @@ class TransportStoreRequest extends FormRequest
             'car_number' => 'string|nullable|max:255',
             'driver' => 'string|nullable|max:255',
             'phone' => 'string|nullable|max:255',
-            'type_id' => 'exists:App\Models\TransportType,id|nullable'
+            'type_id' => 'exists:App\Models\TransportType,id|nullable',
+            'main' => 'boolean'
         ];
     }
 }

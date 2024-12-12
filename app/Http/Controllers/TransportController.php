@@ -115,7 +115,6 @@ class TransportController extends Controller
 
     public function store(TransportStoreRequest $request)
     {
-//        dd($request);
         $validated = $request->validated();
 
         $transport = new Transport($validated);
