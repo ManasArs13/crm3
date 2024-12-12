@@ -12,7 +12,7 @@ class Transport extends Model
 
     protected $guarded = [];
 
-    protected $fillable = ['name', 'description', 'tonnage', 'contact_id', 'car_number', 'driver', 'phone', 'type_id', 'start_shift', 'end_shift'];
+    protected $fillable = ['name', 'description', 'tonnage', 'contact_id', 'car_number', 'driver', 'phone', 'type_id', 'start_shift', 'end_shift', 'main'];
 
 
     public function shifts()
