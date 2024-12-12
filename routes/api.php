@@ -51,6 +51,7 @@ Route::get("/contact/get/balance", [App\Http\Controllers\Api\Site\ContactControl
 Route::get("/shipping_price/get", [App\Http\Controllers\Api\Site\ShipingPriceController::class,"getPrice"])->name("api.get.shipping_price");
 Route::get("/deliveries/get/name", [App\Http\Controllers\Api\Site\DeliveryController::class,"getByName"])->name("api.get.delivery");
 Route::get("/deliveries/get/betonprice/{id}", [App\Http\Controllers\Api\Site\DeliveryController::class,"getBetonPrice"])->name("api.get.delivery.betonprice");
+Route::get("/deliveries/set/kmFact/all", [App\Http\Controllers\Api\Site\DeliveryController::class,"setKmFact"])->name("api.set.delivery.kmFact");
 
 Route::get("/contacts/get/name", [App\Http\Controllers\Api\Site\ContactController::class,"getByName"])->name("api.get.contact.name");
 Route::get("/contacts/get/phone", [App\Http\Controllers\Api\Site\ContactController::class,"getByPhone"])->name("api.get.contact.phone");

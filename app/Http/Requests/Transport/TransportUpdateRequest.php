@@ -14,6 +14,14 @@ class TransportUpdateRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        if (!$this->has('main')) {
+            $this->merge([
+                'main' => 0,
+            ]);
+        }
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,7 +38,8 @@ class TransportUpdateRequest extends FormRequest
             'driver' => 'string|nullable|max:255',
             'phone' => 'string|nullable|max:255',
             'type_id' => 'exists:App\Models\TransportType,id|nullable',
-            'contact_id' => 'exists:App\Models\Contact,id|nullable'
+            'contact_id' => 'exists:App\Models\Contact,id|nullable',
+            'main' => 'boolean'
         ];
     }
 }

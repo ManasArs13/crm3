@@ -88,6 +88,13 @@
                             </div>
                         </div>
 
+                        <div class="flex flex-row mb-1 h-[42px]">
+                            <label class="font-bold flex basis-1/3">Основа</label>
+                            <div class="flex basis-4/5 pt-1">
+                                <input class="rounded cursor-pointer" value="1" name="main" type="checkbox">
+                            </div>
+                        </div>
+
                         <div class="flex flex-row mb-1">
                             <label for="input_transport_ts" class="font-bold flex basis-1/3">Вид ТС</label>
                             <div class="flex basis-4/5">
