@@ -34,6 +34,7 @@ class TransportController extends Controller
         $all_columns = [
             'id',
             'name',
+            'main',
             'driver',
             'description',
             'phone',
@@ -48,8 +49,9 @@ class TransportController extends Controller
 
 
         $select = [
-            "id",
-            "name",
+            'id',
+            'name',
+            'main',
             'description',
             'tonnage',
             'contact_id',

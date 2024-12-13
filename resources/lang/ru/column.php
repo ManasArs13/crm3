@@ -162,6 +162,7 @@ return [
   "manager_id" => "Менеджер",
   "manager_id_ms" => "Менеджер мс",
   "manager_id_amo" => "Менеджер амо",
+  "main" => "Основа",
   "need_from_tc" => "Срочная потребность",
   "payed_sum" => "Сумма оплачено",
   "product_id" => "Товар",
