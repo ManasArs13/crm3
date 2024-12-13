@@ -524,4 +524,41 @@
             }, 1000);
         });
     </script>
+
+        <script>
+            $(document).ready(function(){
+                orderBy('flightsTotal', 1);
+            })
+            function orderBy(column, type) {
+
+                let sortedRows = Array.from(flightsTable.rows).slice(1, -1)
+                let totalRow = Array.from(flightsTable.rows).slice(flightsTable.rows.length - 1);
+                let lastColumnIndex = flightsTable.rows[0].cells.length - 1;
+
+                let th_flightsTotal = document.getElementById('th_flightsTotal');
+
+                switch (column) {
+                    case 'flightsTotal':
+                        if (th_flightsTotal.innerText == `Итого ↓`) {
+                            if(type != 1){
+                                th_flightsTotal.innerText = `Итого ↑`
+                            }
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowA.cells[lastColumnIndex].innerText) - parseInt(rowB.cells[lastColumnIndex].innerText)
+                            });
+                        } else {
+                            if(type != 1){
+                                th_flightsTotal.innerText = `Итого ↓`;
+                            }
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowB.cells[lastColumnIndex].innerText) - parseInt(rowA.cells[lastColumnIndex].innerText)
+                            });
+                        }
+
+                        break;
+                }
+                sortedRows.push(totalRow[0])
+                flightsTable.tBodies[0].append(...sortedRows);
+            }
+        </script>
 </x-app-layout>
