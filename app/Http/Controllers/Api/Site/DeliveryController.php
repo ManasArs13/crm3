@@ -51,14 +51,17 @@ class DeliveryController extends Controller
         $deliveries = Delivery::chunkById(100, function ($deliveries) {
             foreach ($deliveries as $delivery) {
                 if ($delivery->coords!=null){
-                        $φA=45.12410907456747;
-                        $λA=34.01251650000001;
+                    // try{
+                        $φA=45.124878;
+                        $λA=34.012968;
+
+                        // 44.948237, 34.100327
 
                         $coords=explode(",", $delivery->coords);
-                        $φB=$coords[0];
-                        $λB=$coords[1];
+                        $φB=(float)$coords[0];
+                        $λB=(float)$coords[1];
 
-                        $url='https://routing.api.2gis.com/get_dist_matrix?key=9583a383-181b-47d3-a5df-578e08cf5e9a&version=2.0';
+                        $url='https://routing.api.2gis.com/get_dist_matrix?key=4a32ceb1-0575-4607-8017-5ee399d961eb&version=2.0';
                         $client = new Client();
 
 
@@ -71,7 +74,8 @@ class DeliveryController extends Controller
                         $array["targets"]=[1];
                         $array["type"]="shortest";
                         $array["transport"]="truck";
-                        $array["vehicle_speed_limit"]= 90;
+                        $array["vehicle_speed_limit"]= 60;
+
 
                         $response = $client->request("POST", $url, [
                             'headers' => [
@@ -84,14 +88,17 @@ class DeliveryController extends Controller
 
                         if ($statusCode == 200) {
                             $result=json_decode($response->getBody()->getContents());
-
-                            $delivery->km_fact=round($result->routes[0]->distance/1000);
-
+                            
+                            $delivery->km_fact2=round($result->routes[0]->distance/1000);
                             $delivery->duration_min=round($result->routes[0]->duration/60);
                             $delivery->save();
                         } else {
                             print_r($response->getContent(false));
                         }
+
+                //     }catch(\Exception $e){
+                //         continue;
+                //     }
                 }
             }
         });
