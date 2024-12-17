@@ -74,7 +74,6 @@ class DeliveryController extends Controller
                         $array["sources"]=[0];
                         $array["targets"]=[1];
                         $array["type"]="shortest";
-                        $array["transport"]="truck";
                         $array["vehicle_speed_limit"]= 60;
 
 
@@ -90,7 +89,7 @@ class DeliveryController extends Controller
                         if ($statusCode == 200) {
                             $result=json_decode($response->getBody()->getContents());
                             $delivery->route=round($result->routes[0]->distance/1000);
-                            $delivery->route_duration_min=round($result->routes[0]->duration/60);
+                            // $delivery->route_duration_min=round($result->routes[0]->duration/60);
                             $delivery->save();
                         } else {
                             print_r($response->getContent(false));
