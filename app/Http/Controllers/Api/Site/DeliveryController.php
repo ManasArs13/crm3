@@ -74,7 +74,6 @@ class DeliveryController extends Controller
                         $array["sources"]=[0];
                         $array["targets"]=[1];
                         $array["type"]="shortest";
-                        $array["transport"]="truck";
                         $array["vehicle_speed_limit"]= 60;
 
 
