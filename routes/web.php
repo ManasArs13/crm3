@@ -201,6 +201,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/contactAmos/filter', [ContactAmoController::class, 'filter'])->name('contactAmo.filter');
     Route::get('/contacts/filter', [ContactController::class, 'filter'])->name('contact.filter');
     Route::get('/deliveries/filter', [DeliveryController::class, 'filter'])->name('delivery.filter');
+    Route::get('/deliveries/map', [DeliveryController::class, 'map'])->name('delivery.map');
     Route::get('/shiping_prices/filter', [ShipingPriceController::class, 'filter'])->name('shiping_price.filter');
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('category.filter');
     Route::get('/orderpositions/filter', [OrderPositionController::class, 'filter'])->name('orderposition.filter');

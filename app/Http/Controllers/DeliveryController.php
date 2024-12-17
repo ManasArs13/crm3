@@ -130,6 +130,11 @@ class DeliveryController extends Controller
         ));
     }
 
+    public function map(){
+        $entity = 'delivery_in_map';
+        return view('delivery.map', compact('entity'));
+    }
+
     public function create()
     {
         $entityItem = new Delivery();

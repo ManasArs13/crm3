@@ -45,14 +45,14 @@
 
 <div class="flex flex-col lg:flex-row flex-nowrap gap-3 w-11/12 mx-auto pb-10 max-w-10xl">
     <div class="flex flex-col w-full mb-10 bg-white overflow-x-auto shadow rounded-md">
-        <table class="text-left text-md text-nowrap">
+        <table class="text-left text-md text-nowrap" id="flightsTable">
             <thead>
             <tr class="bg-neutral-200 font-semibold">
                 <th class="px-2 py-3 font-semibold min-w-[250px] max-w-[250px] w-[250px]">Транспорт</th>
                 @foreach ($flightsByDaysTransport['days'] as $day)
                     <th class="px-2 py-3 text-center font-semibold min-w-[39px] max-w-[39px] w-[39px]">{{ \Carbon\Carbon::parse($day)->format('d') }}</th>
                 @endforeach
-                <th class="px-2 py-3 text-center font-semibold">Итого</th>
+                <th class="px-2 py-3 text-center font-semibold" id="th_flightsTotal" onclick="orderBy('flightsTotal', null)">Итого</th>
             </tr>
             </thead>
             <tbody>
