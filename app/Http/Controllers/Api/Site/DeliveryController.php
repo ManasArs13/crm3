@@ -51,7 +51,7 @@ class DeliveryController extends Controller
         $deliveries = Delivery::chunkById(100, function ($deliveries) {
             foreach ($deliveries as $delivery) {
                 if ($delivery->coords!=null){
-                    // try{
+                    try{
                         $φA=45.124878;
                         $λA=34.012968;
 
@@ -63,6 +63,7 @@ class DeliveryController extends Controller
 
                         $url='https://routing.api.2gis.com/get_dist_matrix?key=4a32ceb1-0575-4607-8017-5ee399d961eb&version=2.0';
                         $client = new Client();
+
 
 
                         $array["points"]=[
@@ -88,7 +89,7 @@ class DeliveryController extends Controller
 
                         if ($statusCode == 200) {
                             $result=json_decode($response->getBody()->getContents());
-                            
+
                             $delivery->km_fact2=round($result->routes[0]->distance/1000);
                             $delivery->duration_min=round($result->routes[0]->duration/60);
                             $delivery->save();
@@ -96,9 +97,10 @@ class DeliveryController extends Controller
                             print_r($response->getContent(false));
                         }
 
-                //     }catch(\Exception $e){
-                //         continue;
-                //     }
+                    }catch(\Exception $e){
+                        echo $delivery->id."-".$delivery->coords."<br>";
+                        continue;
+                    }
                 }
             }
         });
