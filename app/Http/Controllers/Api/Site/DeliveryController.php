@@ -48,7 +48,7 @@ class DeliveryController extends Controller
 
     public function setKmFactPath()
     {
-        $deliveries = Delivery::chunkById(100, function ($deliveries) {
+        $deliveries = Delivery::whereNull("km_fact2")->chunkById(100, function ($deliveries) {
             foreach ($deliveries as $delivery) {
                 if ($delivery->coords!=null){
                     try{
