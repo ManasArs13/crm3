@@ -50,7 +50,15 @@
                         </div>
                     </div>
                     <a href="{{ route('dashboard', ['date_plan' => $datePrev]) }}" class="mx-2 text-lg">&#9668;</a>
-                    <p class="mx-2 text-lg">{{ $date }}</p>
+                    <div>
+                        <input
+                            type="date"
+                            id="date-picker"
+                            class="text-center float-left text-lg w-[93px] pl-0 pr-0 pt-0 pb-0 border-none bg-transparent appearance-none focus:ring-0 focus:outline-none cursor-pointer"
+                            value="{{ $date }}"
+                        />
+                        <div id="picker-open" class="bg-blue-300 h-[100%] w-[100%] opacity-0 cursor-pointer !z-50 relative"></div>
+                    </div>
                     <a href="{{ route('dashboard', ['date_plan' => $dateNext]) }}" class="mx-2 text-lg">&#9658;</a>
                 </div>
             </div>
@@ -401,8 +409,37 @@
         .select2-selection__arrow{
             top: 4px !important;
         }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        input[type="date"]::-moz-calendar-picker-indicator {
+            display: none;
+        }
+
+        input[type="date"]::-ms-clear {
+            display: none;
+        }
     </style>
 
+    <script>
+        $(document).ready(function () {
+
+            $("#picker-open").on("click", function(){
+                $('#date-picker')[0].showPicker();
+            });
+
+            $('#date-picker').on('change', function () {
+                const selectedDate = $(this).val();
+                if (selectedDate) {
+                    const newUrl = "{{ route('dashboard') }}?date_plan=" + selectedDate;
+                    window.location.href = newUrl;
+                }
+            });
+
+        });
+    </script>
     <script>
         const day = "{{ $date }}";
         const modal = document.getElementById('shift_modal');
@@ -487,4 +524,41 @@
             }, 1000);
         });
     </script>
+
+        <script>
+            $(document).ready(function(){
+                orderBy('flightsTotal', 1);
+            })
+            function orderBy(column, type) {
+
+                let sortedRows = Array.from(flightsTable.rows).slice(1, -1)
+                let totalRow = Array.from(flightsTable.rows).slice(flightsTable.rows.length - 1);
+                let lastColumnIndex = flightsTable.rows[0].cells.length - 1;
+
+                let th_flightsTotal = document.getElementById('th_flightsTotal');
+
+                switch (column) {
+                    case 'flightsTotal':
+                        if (th_flightsTotal.innerText == `Итого ↓`) {
+                            if(type != 1){
+                                th_flightsTotal.innerText = `Итого ↑`
+                            }
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowA.cells[lastColumnIndex].innerText) - parseInt(rowB.cells[lastColumnIndex].innerText)
+                            });
+                        } else {
+                            if(type != 1){
+                                th_flightsTotal.innerText = `Итого ↓`;
+                            }
+                            sortedRows.sort(function(rowA, rowB) {
+                                return parseInt(rowB.cells[lastColumnIndex].innerText) - parseInt(rowA.cells[lastColumnIndex].innerText)
+                            });
+                        }
+
+                        break;
+                }
+                sortedRows.push(totalRow[0])
+                flightsTable.tBodies[0].append(...sortedRows);
+            }
+        </script>
 </x-app-layout>

@@ -273,6 +273,11 @@
                                             Оператор отгрузки
                                         </x-dropdown-link>
                                     @endcan
+                                    @can('operator_shipment')
+                                        <x-dropdown-link :href="route('delivery.map')">
+                                            Доставки на карте
+                                        </x-dropdown-link>
+                                    @endcan
                                 </x-slot>
                             </x-dropdown>
                         </div>
@@ -830,6 +835,10 @@
                                     @can('operator_shipment')
                                         <a href="{{ route('operator.shipments') }}"
                                             class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Оператор отгрузки</a>
+                                    @endcan
+                                    @can('operator_shipment')
+                                        <a href="{{ route('delivery.map') }}"
+                                           class="block rounded-lg py-2 pl-6 pr-3 font-semibold leading-7 text-gray-900 hover:bg-gray-50">Доставки на карте</a>
                                     @endcan
 
                                 </div>

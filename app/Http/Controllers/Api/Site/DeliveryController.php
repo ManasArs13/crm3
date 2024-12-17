@@ -140,4 +140,17 @@ class DeliveryController extends Controller
 
             return $dist;
     }
+
+    public function getCoords(){
+         $locations = Delivery::whereNotNull('coords')->select('coords', 'name')
+             ->get()->map(function($location){
+                 $coords = explode(',', $location->coords);
+                 return [
+                     'coords' => array_map('floatval', $coords),
+                     'description' => $location->name,
+                 ];
+             });
+
+         return response()->json($locations);
+    }
 }

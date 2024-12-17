@@ -3,6 +3,7 @@ return [
     'colors' => 'Цвета',
     'columns' => 'Высоты колоны',
     'deliveries' => 'Доставки',
+    'delivery_in_map' => 'Доставки на карте',
     'fence_types' => 'Типы забора',
     'orders' => 'Заказы',
     'products' => 'Товары',
