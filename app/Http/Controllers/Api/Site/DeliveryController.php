@@ -48,13 +48,12 @@ class DeliveryController extends Controller
 
     public function setKmFactPath()
     {
-        $deliveries = Delivery::where("route", 0)->chunkById(100, function ($deliveries) {
+        $deliveries = Delivery::where("km_fact2", 0)->chunkById(100, function ($deliveries) {
             foreach ($deliveries as $delivery) {
                 if ($delivery->coords!=null){
                     try{
-                        $φA=44.948237;
-                        $λA=34.100327;
-
+                        $φA=45.12410907456747;
+                        $λA=34.01251650000001;
                         // 44.948237, 34.100327
 
                         $coords=explode(",", $delivery->coords);
@@ -64,8 +63,6 @@ class DeliveryController extends Controller
                         $url='https://routing.api.2gis.com/get_dist_matrix?key=4a32ceb1-0575-4607-8017-5ee399d961eb&version=2.0';
                         $client = new Client();
 
-
-
                         $array["points"]=[
                             ["lat"=>$φA, "lon"=>$λA],
                             ["lat"=>$φB, "lon"=>$λB]
@@ -73,7 +70,7 @@ class DeliveryController extends Controller
 
                         $array["sources"]=[0];
                         $array["targets"]=[1];
-                        $array["type"]="shortest";
+
                         $array["vehicle_speed_limit"]= 60;
 
 
@@ -88,8 +85,8 @@ class DeliveryController extends Controller
 
                         if ($statusCode == 200) {
                             $result=json_decode($response->getBody()->getContents());
-                            $delivery->route=round($result->routes[0]->distance/1000);
-                            // $delivery->route_duration_min=round($result->routes[0]->duration/60);
+                            $delivery->km_fact2=round($result->routes[0]->distance/1000);
+                            $delivery->duration_min=round($result->routes[0]->duration/60);
                             $delivery->save();
                         } else {
                             print_r($response->getContent(false));
