@@ -48,12 +48,12 @@ class DeliveryController extends Controller
 
     public function setKmFactPath()
     {
-        $deliveries = Delivery::where("km_fact2", 0)->chunkById(100, function ($deliveries) {
+        $deliveries = Delivery::where("route", 0)->chunkById(100, function ($deliveries) {
             foreach ($deliveries as $delivery) {
                 if ($delivery->coords!=null){
                     try{
-                        $φA=45.12410907456747;
-                        $λA=34.01251650000001;
+                        $φA=44.948237;
+                        $λA=34.100327;
                         // 44.948237, 34.100327
 
                         $coords=explode(",", $delivery->coords);
@@ -85,8 +85,7 @@ class DeliveryController extends Controller
 
                         if ($statusCode == 200) {
                             $result=json_decode($response->getBody()->getContents());
-                            $delivery->km_fact2=round($result->routes[0]->distance/1000);
-                            $delivery->duration_min=round($result->routes[0]->duration/60);
+                            $delivery->route=round($result->routes[0]->distance/1000);
                             $delivery->save();
                         } else {
                             print_r($response->getContent(false));
