@@ -213,7 +213,7 @@
 
                 COPY_TEXT = `Ваш заказ/расчёт:` + `\n` +
                     PRODUCT_BETON + `\n` +
-                    `Доставка `+distance+`км `+weight+`тонн(ы): ${delivery_quantity} * ${delivery_price} = ${price_delivery} р.` + `\n` +
+                    `Доставка `+distance+`км: ${delivery_quantity} * ${delivery_price} = ${price_delivery} р.` + `\n` +
                     SERVICES_TEXT +
                     `Итого с доставкой ${total} р.`;
 
