@@ -359,26 +359,26 @@ $(document).ready(function(){
             let data = {"weightTn": weight, "distance": deliveryValue, "vehicleType": vehicleType, "delivery": delivery};
             let priceTotal=parseInt($(formClass+'#price_total').html());
 
-            if (formClass==".calcBeton " && $("#service_686").prop("checked")){
-                let deliveryId=4;
+            // if (formClass==".calcBeton " && $("#service_686").prop("checked")){
+            //     let deliveryId=4;
 
-                let distanceSpan = $('.calcBeton .delivery').next().find('.select2-selection__rendered span');
-                if (distanceSpan.length)
-                    deliveryId=distanceSpan.attr("data-delivery-id");
+            //     let distanceSpan = $('.calcBeton .delivery').next().find('.select2-selection__rendered span');
+            //     if (distanceSpan.length)
+            //         deliveryId=distanceSpan.attr("data-delivery-id");
 
-                $.ajax({
-                    url: "/api/deliveries/get/betonprice/"+deliveryId,
-                    type: "GET",
-                    success: function(betonPrice) {
-                        let $price= $("[name='services[686][price]']");
-                        $price.val(betonPrice);
-                        $price.parent().next().find(".deliveryPrice-tt").val(betonPrice*8);
-                    },
-                    error: function(response) {
-                        console.log(response.responseText);
-                    },
-                });
-            }
+            //     $.ajax({
+            //         url: "/api/deliveries/get/betonprice/"+deliveryId,
+            //         type: "GET",
+            //         success: function(betonPrice) {
+            //             let $price= $("[name='services[686][price]']");
+            //             $price.val(betonPrice);
+            //             $price.parent().next().find(".deliveryPrice-tt").val(betonPrice*8);
+            //         },
+            //         error: function(response) {
+            //             console.log(response.responseText);
+            //         },
+            //     });
+            // }
 
             $.ajax({
                 url: '/api/shipping_price/get',
