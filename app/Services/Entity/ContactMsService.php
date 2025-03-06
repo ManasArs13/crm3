@@ -69,6 +69,16 @@ class ContactMsService implements EntityInterface
                         $phoneNorm = "+7" . implode('', $matches[2]);
                 }
 
+                $inn=null;
+                $legalTitle=null;
+                if (Arr::exists($row, 'inn'))
+                    $inn = $row['inn'];
+
+                if (Arr::exists($row, 'legalTitle'))
+                    $legalTitle = $row['legalTitle'];
+
+                $entity->inn = $inn;
+                $entity->nameFull = $legalTitle;
                 $entity->phone = $phone;
                 $entity->phone_norm = $phoneNorm;
 
